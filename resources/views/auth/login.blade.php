@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    @include('extras.alerts')
     <div class="form-signin text-center">
         <img src="{{ asset('auth/images/login.png') }}" alt="Logotipo" class="logo">
         <h4 class="mb-4">Autenticação</h4>
@@ -47,6 +48,7 @@
         </form>
     </div>
     <!-- Bootstrap Bundle with Popper -->
+    <link href="{{ asset('auth/js/bootstrap.bundle.min.js') }}" rel="stylesheet">
     <link href="{{ asset('auth/js/bootstrap.bundle.min.js') }}" rel="stylesheet">
     <script>
         function togglePasswordVisibility() {
@@ -86,19 +88,6 @@
             };
         });
     </script>
-    <script>
-        $(document).ready(function() {
-            @if(session('success'))
-            toastr.success("{{ session('success') }}");
-            @endif
-
-            @if(session('error'))
-            console.log('erro')
-            toastr.error("{{ session('error') }}");
-            @endif
-        });
-    </script>
-
 
 </body>
 

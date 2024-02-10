@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    @include('extras.alerts')
     <div class="form-signin text-center">
         <img src="{{ asset('auth/images/login.png') }}" alt="Logotipo" class="logo">
         <h4 class="mb-4">Lembrar Senha</h4>
