@@ -25,7 +25,7 @@ class AuthController extends Controller
     }
 
     public function showResetRequestForm() {
-        return view('auth.lembrarSenha');
+        return view('auth.esqueciSenha');
     }
 
     public function showLoginForm()
