@@ -8,14 +8,15 @@
     <link href="{{ asset('auth/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ asset('auth/css/login.css') }}" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+    <!-- ALERT TOASTR -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <title>Login</title>
 </head>
 
 <body>
-
-
     <div class="form-signin text-center">
-        @include('extras.alerts')
         <img src="{{ asset('auth/images/login.png') }}" alt="Logotipo" class="logo">
         <h4 class="mb-4">Autenticação</h4>
         <form method="POST" action="{{ route('login') }}">
@@ -68,7 +69,36 @@
             loginButton.innerHTML = 'Carregando... <i class="fas fa-spinner fa-spin"></i>';
             loginButton.disabled = true;
         });
+
+        $(document).ready(function() {
+            toastr.options = {
+                "closeButton": true,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "showDuration": "300",
+                "hideDuration": "1000",
+                "timeOut": "5000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            };
+        });
     </script>
+    <script>
+        $(document).ready(function() {
+            @if(session('success'))
+            toastr.success("{{ session('success') }}");
+            @endif
+
+            @if(session('error'))
+            console.log('erro')
+            toastr.error("{{ session('error') }}");
+            @endif
+        });
+    </script>
+
 
 </body>
 

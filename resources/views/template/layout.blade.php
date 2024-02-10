@@ -21,6 +21,8 @@
     <link href="{{ asset('theme/assets/css/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css" />
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
 
+    <!-- ALERT TOASTR -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
 </head>
 
 <body>
@@ -68,8 +70,10 @@
             });
         </script>
         <script src="{{ asset('theme/assets/js/custom.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <!-- END GLOBAL MANDATORY SCRIPTS -->
         @yield('extras-scripts')
+
 </body>
 
 </html>

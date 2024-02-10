@@ -19,9 +19,8 @@ class AuthController extends Controller
             return redirect()->intended('dashboard');
         }
 
-        return back()->withErrors([
-            'email' => 'As credenciais fornecidas não correspondem aos nossos registros.',
-        ]);
+        session()->flash('error', 'E-mail ou senha inválida!');
+        return redirect()->back();
     }
 
     public function showResetRequestForm() {
