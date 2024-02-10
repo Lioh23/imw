@@ -10,7 +10,7 @@
 @if(session('error'))
 <script>
     window.onload = function(e) {
-        toastr.success("{{ session('error') }}");
+        toastr.error("{{ session('error') }}");
     };
 </script>
 @endif
