@@ -16,13 +16,15 @@
     <link href="{{ asset('theme/assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
 
-    <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <link href="{{ asset('theme/plugins/apex/apexcharts.css') }}" rel="stylesheet" type="text/css">
-    <link href="{{ asset('theme/assets/css/dashboard/dash_1.css') }}" rel="stylesheet" type="text/css" />
-    <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-
     <!-- ALERT TOASTR -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="{{ asset('theme/assets/css/elements/miscellaneous.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/elements/breadcrumb.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/tables/table-basic.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
+    <!--  END CUSTOM STYLE FILE  -->
+    @yield('extras-css')
 </head>
 
 <body>
@@ -49,6 +51,7 @@
                     <div class="col-xl-12 col-lg-12 col-md-12 layout-spacing">
                         <div class="widget widget-card-two">
                             <div class="widget-content">
+                                @yield('breadcrumb')
                                 @yield('content')
                             </div>
                         </div>
@@ -71,6 +74,7 @@
         </script>
         <script src="{{ asset('theme/assets/js/custom.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script src="{{ asset('theme/assets/js/elements/tooltip.js') }}"></script>
         <!-- END GLOBAL MANDATORY SCRIPTS -->
         @yield('extras-scripts')
 

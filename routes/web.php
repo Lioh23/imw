@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\MembrosController;
 use Illuminate\Support\Facades\Route;
 
 // Rotas de autenticação
@@ -18,7 +19,18 @@ Route::post('/esqueci-senha', [AuthController::class, 'submitResetRequest'])->na
 
 // Rotas protegidas por autenticação
 Route::middleware(['auth'])->group(function () {
-    Route::get('/dashboard', [HomeController::class, 'dashboard'])->name('dashboard');
+    Route::get('/', [HomeController::class, 'dashboard'])->name('dashboard');
     Route::get('/perfil', [HomeController::class, 'perfil'])->name('perfil');
     // Adicione mais rotas protegidas conforme necessário
+
+    // Grupo de rotas para 'membresia'
+    Route::prefix('membros')->name('membros')->group(function () {
+        Route::get('/', [MembrosController::class, 'index'])->name('index');
+        Route::get('/create', [MembrosController::class, 'create'])->name('create');
+        Route::post('/', [MembrosController::class, 'store'])->name('store');
+        Route::get('/{membros}', [MembrosController::class, 'show'])->name('show');
+        Route::get('/{membros}/edit', [MembrosController::class, 'edit'])->name('edit');
+        Route::put('/{membros}', [MembrosController::class, 'update'])->name('update');
+        Route::delete('/{membros}', [MembrosController::class, 'destroy'])->name('destroy');
+    });
 });
