@@ -62,3 +62,9 @@ body {
     top: 50%;
     transform: translateY(-50%);
 }
+
+.alert {
+    width: 100%; /* Garante que o alerta ocupe toda a largura do container */
+    margin-bottom: 20px; /* Espaçamento abaixo do alerta */
+    text-align: center; /* Centraliza o texto do alerta */
+}

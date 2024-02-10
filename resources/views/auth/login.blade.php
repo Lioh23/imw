@@ -13,7 +13,9 @@
 
 <body>
 
+
     <div class="form-signin text-center">
+        @include('extras.alerts')
         <img src="{{ asset('auth/images/login.png') }}" alt="Logotipo" class="logo">
         <h4 class="mb-4">Autenticação</h4>
         <form method="POST" action="{{ route('login') }}">
@@ -36,7 +38,10 @@
                     <input type="checkbox" value="remember-me"> Lembrar de mim
                 </label>
             </div>
-            <button class="w-100 btn btn-lg btn-primary" type="submit">Entrar</button>
+            <button class="w-100 btn btn-lg btn-primary" type="submit" id="loginButton">
+                Entrar
+            </button>
+
             <p class="mt-5 mb-3 text-muted">&copy; 2024</p>
         </form>
     </div>
@@ -58,6 +63,11 @@
                 passwordIcon.classList.add('fa-eye');
             }
         }
+        document.querySelector('form').addEventListener('submit', function() {
+            const loginButton = document.getElementById('loginButton');
+            loginButton.innerHTML = 'Carregando... <i class="fas fa-spinner fa-spin"></i>';
+            loginButton.disabled = true;
+        });
     </script>
 
 </body>
