@@ -7,9 +7,9 @@
 @endsection
 @section('content')
 <div class="container-fluid">
-    <button type="button" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
+    <button type="button" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
         <span>ROL ATUAL</span>
-        <span class="badge badge-info counter">146</span>
+        <span class="badge badge-warning counter">146</span>
     </button>
     <button type="button" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
         <span>DESLIGADOS</span>
