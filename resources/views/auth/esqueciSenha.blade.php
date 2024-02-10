@@ -25,6 +25,9 @@
             <button class="w-100 btn btn-lg btn-primary" type="submit" id="resetPasswordButton">
                 Enviar Link de Redefinição de Senha
             </button>
+            <div class="mt-3">
+                <a href="/login">Voltar ao login</a>
+            </div>
         </form>
 
     </div>
