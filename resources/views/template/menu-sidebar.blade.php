@@ -82,14 +82,26 @@
                         </a>
                         <ul class="collapse submenu list-unstyled" id="invoice" data-parent="#accordionExample">
                             <li>
-                                <a href="#"> Relatório Teste</a>
+                                <a href="#">Membresia</a>
                             </li>
                             <li>
-                                <a href="#"> Relatório Teste</a>
+                                <a href="#">Rol Atual</a>
                             </li>
                             <li>
-                                <a href="#"> Relatório Teste</a>
-                            </li>                          
+                                <a href="#">Rol Permanente</a>
+                            </li>    
+                            <li>
+                                <a href="#">Rol Excluídos</a>
+                            </li>     
+                            <li>
+                                <a href="#">Congregados</a>
+                            </li>     
+                            <li>
+                                <a href="#">Visitantes</a>
+                            </li>     
+                            <li>
+                                <a href="#">Aniversariantes</a>
+                            </li>             
                         </ul>
                     </li>
 
