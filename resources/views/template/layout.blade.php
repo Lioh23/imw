@@ -11,7 +11,7 @@
     <script src="{{ asset('theme/assets/js/loader.js') }}"></script>
     <script src="{{ asset('theme/assets/js/libs/jquery-3.1.1.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
-
+    <link href="{{ asset('theme/assets/css/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -76,6 +76,7 @@
         <script src="{{ asset('theme/assets/js/custom.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="{{ asset('theme/assets/js/elements/tooltip.js') }}"></script>
+        
         <!-- END GLOBAL MANDATORY SCRIPTS -->
         @yield('extras-scripts')
 
