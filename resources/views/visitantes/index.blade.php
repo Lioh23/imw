@@ -2,26 +2,20 @@
 @section('breadcrumb')
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Membros', 'url' => '/membros/', 'active' => true]
+    ['text' => 'Visitantes', 'url' => '/visitantes/', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
 @section('content')
 <div class="container-fluid">
-    <button type="button" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
-        <span>ROL ATUAL</span>
-        <span class="badge badge-warning counter">146</span>
-    </button>
-    <!-- <button type="button" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
-        <span>DESLIGADOS</span>
-        <span class="badge badge-danger counter">146</span>
-    </button> -->
-    <button type="button" class="btn btn-info position-relative mt-3 mb-3 ml-2">
-        <span>ROL PERMANENTE</span>
-        <span class="badge badge-info counter">594</span>
-    </button>
-    <!-- <button type="button" class="btn btn-success position-relative mt-3 mb-3 ml-2">
-        <span>ESTATÍSTICA</span>
-    </button> -->
+    <a href="{{ route('visitantes.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="8" x2="12" y2="16"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+        </svg>
+        <span class="ml-2">NOVO VISITANTE</span>
+    </a>
+
 </div>
 <!-- TABELA -->
 <div class="col-lg-12 col-12 layout-spacing">
@@ -29,7 +23,7 @@
         <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4>Lista de Membros</h4>
+                    <h4>Lista de Visitantes</h4>
                 </div>
             </div>
         </div>

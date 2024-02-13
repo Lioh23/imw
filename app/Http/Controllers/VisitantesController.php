@@ -12,7 +12,7 @@ class VisitantesController extends Controller
         return view('visitantes.index');
     }
 
-    public function create()
+    public function novo()
     {
         return view('visitantes.create');
     }
