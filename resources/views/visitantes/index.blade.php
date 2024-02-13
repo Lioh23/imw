@@ -40,41 +40,56 @@
                 <table class="table table-bordered table-striped table-hover mb-4">
                     <thead>
                         <tr>
-                            <th>ROL</th>
                             <th>NOME</th>
-                            <th>RECEPÇÃO</th>
-                            <th>EXCLUSÃO</th>
-                            <th>CONGREGAÇÃO</th>
+                            <th>TELEFONE</th>
+                            <th>E-MAIL</th>
+                            <th>ATUALIZADO EM</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td>320</td>
                             <td>Vinicius de Oliveira Almeida</td>
-                            <td>10/01/2023</td>
+                            <td>(24)999417827</td>
+                            <td>gvweb.solucoes@gmail.com</td>
                             <td>30/12/2023</td>
-                            <td>VILA RICA</td>
                             <td class="text-center">
-                                <button title="Apagar" class="btn btn-secundary mr-2 btn-rounded"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
+                                <button title="Editar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
                                         <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                    </svg></button>
+                                    </svg>
+                                </button>
+                                <button title="Apagar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
                         <tr>
-                            <td>433</td>
-                            <td>Rafel Souza da Paz</td>
-                            <td>10/01/2023</td>
-                            <td>30/12/2023</td>
-                            <td>VILA RICA</td>
+                            <td>Giselle Cristine Medeiros de Carvalho</td>
+                            <td>(24)99982771</td>
+                            <td>teste@gmail.com</td>
+                            <td>30/12/2022</td>
                             <td class="text-center">
-                                <button title="Editar" class="btn btn-secundary mr-2 btn-rounded"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
+                                <button title="Editar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
                                         <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                    </svg></button>
+                                    </svg>
+                                </button>
+                                <button title="Apagar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
+                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                </button>
                             </td>
                         </tr>
-
-
                     </tbody>
                 </table>
             </div>
