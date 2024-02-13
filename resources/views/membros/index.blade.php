@@ -11,20 +11,20 @@
         <span>ROL ATUAL</span>
         <span class="badge badge-warning counter">146</span>
     </button>
-    <button type="button" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
+    <!-- <button type="button" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
         <span>DESLIGADOS</span>
         <span class="badge badge-danger counter">146</span>
-    </button>
+    </button> -->
     <button type="button" class="btn btn-info position-relative mt-3 mb-3 ml-2">
         <span>ROL PERMANENTE</span>
         <span class="badge badge-info counter">594</span>
     </button>
-    <button type="button" class="btn btn-success position-relative mt-3 mb-3 ml-2">
+    <!-- <button type="button" class="btn btn-success position-relative mt-3 mb-3 ml-2">
         <span>ESTATÍSTICA</span>
-    </button>
+    </button> -->
 </div>
 <!-- TABELA -->
-<div id="tableHover" class="col-lg-12 col-12 layout-spacing">
+<div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
             <div class="row">

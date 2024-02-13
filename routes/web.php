@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MembrosController;
+use App\Http\Controllers\VisitantesController;
 use Illuminate\Support\Facades\Route;
 
 // Rotas de autenticação
@@ -33,4 +34,11 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/{membros}', [MembrosController::class, 'update'])->name('update');
         Route::delete('/{membros}', [MembrosController::class, 'destroy'])->name('destroy');
     });
+
+    // Grupo de rotas para 'visitantes'
+    Route::prefix('visitantes')->name('visitantes')->group(function () {
+        Route::get('/', [VisitantesController::class, 'index'])->name('index');
+        Route::post('/', [VisitantesController::class, 'store'])->name('store');
+    });
+
 });

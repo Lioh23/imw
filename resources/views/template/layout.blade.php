@@ -9,6 +9,8 @@
     <link rel="icon" type="image/x-icon" href="{{ asset('theme/assets/img/favicon.ico') }}" />
     <link href="{{ asset('theme/assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('theme/assets/js/loader.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/libs/jquery-3.1.1.js') }}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
 
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
@@ -62,7 +64,6 @@
         </div>
 
         <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-        <script src="{{ asset('theme/assets/js/libs/jquery-3.1.1.min.js') }}"></script>
         <script src="{{ asset('theme/bootstrap/js/popper.min.js') }}"></script>
         <script src="{{ asset('theme/bootstrap/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('theme/plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
