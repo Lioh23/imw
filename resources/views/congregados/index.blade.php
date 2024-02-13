@@ -2,18 +2,18 @@
 @section('breadcrumb')
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Visitantes', 'url' => '/visitantes/', 'active' => true]
+    ['text' => 'Congregados', 'url' => '/congregados/', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
 @section('content')
 <div class="container-fluid">
-    <a href="{{ route('visitantes.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
+    <a href="{{ route('congregados.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
             <circle cx="12" cy="12" r="10"></circle>
             <line x1="12" y1="8" x2="12" y2="16"></line>
             <line x1="8" y1="12" x2="16" y2="12"></line>
         </svg>
-        <span class="ml-2">INCLUIR VISITANTE</span>
+        <span class="ml-2">INCLUIR CONGREGADO</span>
     </a>
 
 </div>
@@ -23,7 +23,7 @@
         <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4>Lista de Visitantes</h4>
+                    <h4>Lista de Congregados</h4>
                 </div>
             </div>
         </div>
@@ -41,18 +41,14 @@
                     <thead>
                         <tr>
                             <th>NOME</th>
-                            <th>TELEFONE</th>
-                            <th>E-MAIL</th>
-                            <th>ATUALIZADO EM</th>
+                            <th>CONGREGAÇÃO</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
                             <td>Vinicius de Oliveira Almeida</td>
-                            <td>(24)999417827</td>
-                            <td>gvweb.solucoes@gmail.com</td>
-                            <td>30/12/2023</td>
+                            <td>VILA RICA</td>
                             <td class="text-center">
                                 <button title="Editar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
@@ -71,9 +67,7 @@
                         </tr>
                         <tr>
                             <td>Giselle Cristine Medeiros de Carvalho</td>
-                            <td>(24)99982771</td>
-                            <td>teste@gmail.com</td>
-                            <td>30/12/2022</td>
+                            <td>CAJUEIRO</td>
                             <td class="text-center">
                                 <button title="Editar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">

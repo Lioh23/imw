@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\VisitantesController;
@@ -42,4 +43,10 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [VisitantesController::class, 'store'])->name('store');
     });
 
+    // Grupo de rotas para 'visitantes'
+    Route::prefix('congregados')->name('congregados.')->group(function () {
+        Route::get('/', [CongregadosController::class, 'index'])->name('index');
+        Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo');
+        Route::post('/', [CongregadosController::class, 'store'])->name('store');
+    });
 });
