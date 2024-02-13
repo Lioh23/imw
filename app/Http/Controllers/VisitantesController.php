@@ -12,6 +12,10 @@ class VisitantesController extends Controller
         return view('visitantes.index');
     }
 
+    public function create()
+    {
+        return view('visitantes.create');
+    }
 
     public function store(Request $request)
     {
