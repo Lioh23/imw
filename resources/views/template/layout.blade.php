@@ -27,6 +27,17 @@
     <link href="{{ asset('theme/assets/css/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
     <!--  END CUSTOM STYLE FILE  -->
     @yield('extras-css')
+    <style>
+        .active-menu-item {
+            background-color: #4361ee;
+            color: white !important;
+        }
+
+        .active-menu-item svg {
+            stroke: #fff;
+            /* Muda a cor do ícone para branco */
+        }
+    </style>
 </head>
 
 <body>
@@ -76,9 +87,38 @@
         <script src="{{ asset('theme/assets/js/custom.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="{{ asset('theme/assets/js/elements/tooltip.js') }}"></script>
-        
+
         <!-- END GLOBAL MANDATORY SCRIPTS -->
         @yield('extras-scripts')
+        <script>
+            $(document).ready(function() {
+                // Restaurar o estado do menu e submenu após a recarga
+                const menuAtivo = localStorage.getItem('menuAtivo');
+                if (menuAtivo) {
+                    $(`a[href="${menuAtivo}"]`).addClass('active-menu-item');
+                    // Abre o submenu pai e marca como ativo, se necessário
+                    $(`a[href="${menuAtivo}"]`).parents('.collapse').addClass('show').prev('.dropdown-toggle').attr('aria-expanded', 'true');
+                }
+
+                // Evento de clique para os itens do menu e submenu
+                $('#sidebar .dropdown-toggle, #sidebar .submenu a').click(function(e) {
+                    // Salva o href do item clicado
+                    const href = $(this).attr('href');
+
+                    // Remover classes ativas anteriores e fechar submenus não ativos
+                    $('#sidebar .dropdown-toggle, #sidebar .submenu a').removeClass('active-menu-item');
+                    $('#sidebar .collapse').not($(this).parents('.collapse')).removeClass('show').prev('.dropdown-toggle').attr('aria-expanded', 'false');
+
+                    // Adiciona a classe ativa ao item clicado e ao submenu pai, se houver
+                    $(this).addClass('active-menu-item');
+                    $(this).parents('.collapse').addClass('show').prev('.dropdown-toggle').attr('aria-expanded', 'true');
+
+                    // Armazena o estado no localStorage
+                    localStorage.setItem('menuAtivo', href);
+                });
+            });
+        </script>
+
 
 </body>
 
