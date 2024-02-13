@@ -77,46 +77,6 @@
     // Aplica máscara de data
     $('#dataNascimento, #dataConversao').mask('00/00/0000');
     $('#telefonePreferencial, #telefoneAlternativo, #whatsapp').mask('(00) 00000-0000');
-
-    // Função para converter string de data no formato dd/mm/yyyy para objeto Date do JavaScript
-    function parseDataBrasileiraParaObjeto(stringData) {
-        var partesData = stringData.split("/");
-        return new Date(partesData[2], partesData[1] - 1, partesData[0]);
-    }
-
-    // Função de validação da data (nascimento e conversão)
-    function validarData(data, permitir150Anos) {
-        var dataAtual = new Date();
-        var data150AnosAtras = new Date(dataAtual.getFullYear() - 150, dataAtual.getMonth(), dataAtual.getDate());
-        
-        // Converte a data de string para Date
-        var dataObj = parseDataBrasileiraParaObjeto(data);
-        
-        // Checa se a data é válida (não é inválida, não é maior que a data atual, e, se for data de nascimento, não é menor que 150 anos atrás)
-        if (isNaN(dataObj.getTime()) || dataObj > dataAtual || (permitir150Anos && dataObj < data150AnosAtras)) {
-            return false;
-        }
-        return true;
-    }
-
-    // Evento de envio do formulário
-    $('form').submit(function(e) {
-        var dataNascimento = $('#dataNascimento').val();
-        var dataConversao = $('#dataConversao').val();
-        
-        // Valida a data de nascimento (deve ser válida e não pode ser maior que 150 anos atrás)
-        if (!validarData(dataNascimento, true)) {
-            e.preventDefault(); // Impede o envio do formulário
-            toastr.error("A data de nascimento deve ser uma data válida.");
-        }
-
-        // Valida a data de conversão (deve ser válida e não pode ser maior que a data atual)
-        if (dataConversao && !validarData(dataConversao, false)) {
-            e.preventDefault(); // Impede o envio do formulário
-            toastr.error('A data de conversão deve ser uma data válida e não pode ser maior que a data atual.');
-        }
     });
-});
-
 </script>
 @endsection
