@@ -28,6 +28,26 @@
     <!--  END CUSTOM STYLE FILE  -->
     @yield('extras-css')
     <style>
+        .menu-heading {
+            margin-top: -20px !important;
+        }
+        .user-info {
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        .user-photo img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .user-details {
+            text-align: center;
+            font-size: 14px;
+        }
+
         .active-menu-item {
             background-color: #4361ee;
             color: white !important;
