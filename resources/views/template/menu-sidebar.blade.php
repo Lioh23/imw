@@ -22,7 +22,7 @@
                    <span>Administrador</span>
                </div>
            </div>
-           <ul class="list-unstyled menu-categories" id="accordionExample" style="margin-top: -35px;">
+           <ul class="list-unstyled menu-categories" id="accordionExample" style="margin-top: -35px; overflow: auto;">
                <li class="menu">
                    <a href="/" aria-expanded="false" class="dropdown-toggle">
                        <div class="">
