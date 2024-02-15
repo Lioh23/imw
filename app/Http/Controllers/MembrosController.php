@@ -23,7 +23,7 @@ class MembrosController extends Controller
      */
     public function novo()
     {
-        //
+        return view('membros.form', ['mode' => 'create']);
     }
 
     /**

@@ -1,6 +1,6 @@
    <!--  BEGIN SIDEBAR  -->
    <div class="sidebar-wrapper sidebar-theme">
-       <nav id="sidebar">
+       <nav id="sidebar" style="overflow: hidden;">
            <ul class="navbar-nav theme-brand flex-row  text-center">
                <li class="nav-item theme-text">
                    <a href="index.html" class="nav-link"> {{ config('app.sigla') }} </a>
@@ -22,7 +22,7 @@
                    <span>Administrador</span>
                </div>
            </div>
-           <ul class="list-unstyled menu-categories" id="accordionExample" style="margin-top: -35px; overflow: auto;">
+           <ul class="list-unstyled menu-categories" id="accordionExample" style="margin-top: -35px;">
                <li class="menu">
                    <a href="/" aria-expanded="false" class="dropdown-toggle">
                        <div class="">
