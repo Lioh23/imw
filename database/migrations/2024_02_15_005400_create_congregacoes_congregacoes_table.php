@@ -47,6 +47,9 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('congregacoes_congregacaos');
+        Schema::table('congregacoes_congregacoes', function (Blueprint $table) {
+            $table->dropForeign('congregacoes_congregacoes_instituicao_id_foreign');
+        });
+        Schema::dropIfExists('congregacoes_congregacoes');
     }
 };

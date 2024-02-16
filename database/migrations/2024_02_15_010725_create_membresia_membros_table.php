@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('membresia_membros', function (Blueprint $table) {
-            $table->uuid();
+            $table->uuid('id')->primary();
             $table->string('status', 1);
             $table->string('nome', 100);
             $table->string('sexo', 1);
@@ -56,6 +56,14 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('membresia_membros', function (Blueprint $table) {
+            $table->dropForeign('membresia_membros_distrito_id_foreign');
+            $table->dropForeign('membresia_membros_igreja_id_foreign');
+            $table->dropForeign('membresia_membros_regiao_id_foreign');
+            $table->dropForeign('membresia_membros_escolaridade_id_foreign');
+            $table->dropForeign('membresia_membros_funcao_eclesiastica_id_foreign');
+            $table->dropForeign('membresia_membros_congregacao_id_foreign');
+        });
         Schema::dropIfExists('membresia_membros');
     }
 };
