@@ -185,6 +185,6 @@
     </div>
 </div>
 
-<script src="{{ asset('/congregados/js/create.js') }}"></script>
+<script src="{{ asset('/congregados/js/editar.js') }}"></script>
 
 @endsection
