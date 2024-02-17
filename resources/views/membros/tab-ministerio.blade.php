@@ -4,7 +4,7 @@
            <table class="table table-bordered table-striped table-hover mb-4">
                <thead>
                    <tr>
-                       <th>DEPARTAMENTO/MINISTÉRIO</th>
+                       <th>MINISTÉRIOS</th>
                        <th>FUNÇÃO</th>
                        <th>NOMEAÇÃO</th>
                        <th>EXONERAÇÃO</th>
