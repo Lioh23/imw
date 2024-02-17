@@ -35,11 +35,11 @@
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Data de Nascimento:</label>
-                        <input id="dataNascimento" name="dataNascimento" type="text" class="form-control" placeholder="ex: 31/12/2000" required>
+                        <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" value="{{ old('dataNascimento') }}" placeholder="ex: 31/12/2000">
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Data de Conversão:</label>
-                        <input id="dataConversao" name="dataConversao" type="text" class="form-control" placeholder="ex: 31/12/2000">
+                        <input type="date" class="form-control" id="dataConversao" name="dataConversao" value="{{ old('dataConversao') }}" placeholder="ex: 31/12/2000">
                     </div>
                 </div>
                 <div class="row">
@@ -75,9 +75,7 @@
 @section('extras-scripts')
 <script>
     $(document).ready(function() {
-    // Aplica máscara de data
-    $('#dataNascimento, #dataConversao').mask('00/00/0000');
-    $('#telefonePreferencial, #telefoneAlternativo, #whatsapp').mask('(00) 00000-0000');
+        $('#telefonePreferencial, #telefoneAlternativo, #whatsapp').mask('(00) 00000-0000');
     });
 </script>
 @endsection

@@ -71,7 +71,7 @@
       </div>
     </div>
 </div>
-
-<script src="{{ asset('/congregados/js/editar.js') }}"></script>
-
+@endsection
+@section('extras-scripts')
+    <script src="{{ asset('membros/js/editar.js') }}"></script>
 @endsection

@@ -14,24 +14,24 @@
           <div class="form-group @error('nome') has-error @enderror">
             <div class="row mb-4">
               <div class="col-xl-6">
-                <label for="nome">* Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}" required>
+                <label for="nome">Nome</label>
+                <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome') }}">
                 @error('nome')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
     
               <div class="col-xl-3">
-                <label for="cpf">* CPF</label>
-                <input type="number" class="form-control" id="cpf" name="cpf" value="{{ old('cpf') }}" required>
+                <label for="cpf">CPF</label>
+                <input type="text" class="form-control" id="cpf" name="cpf" value="{{ old('cpf') }}">
                 @error('cpf')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
               
               <div class="col-xl-3">
-                <label for="nascimento">* Dia de Nascimento</label>
-                <input type="date" class="form-control" id="nascimento" name="nascimento" value="{{ old('nascimento') }}" required>
+                <label for="nascimento">Dia de Nascimento</label>
+                <input type="date" class="form-control" id="nascimento" name="nascimento" value="{{ old('nascimento') }}">
                 @error('nascimento')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -40,8 +40,8 @@
             
             <div class="row mb-4">
               <div class="col-xl-3">
-                <label for="sexo">* Sexo</label>
-                <select class="form-control" id="sexo" name="sexo" required>
+                <label for="sexo">Sexo</label>
+                <select class="form-control" id="sexo" name="sexo">
                   <option value="M">Masculino</option>
                   <option value="F">Feminino</option>
                 </select>
@@ -51,8 +51,8 @@
               </div>
     
               <div class="col-xl-3">
-                <label for="estado-civil">* Estado Civíl</label>
-                <select class="form-control" id="estado-civil" name="estado-civil" required>
+                <label for="estado-civil">Estado Civíl</label>
+                <select class="form-control" id="estado-civil" name="estado-civil">
                   <option value="S">Solteiro</option>
                   <option value="C">Casado</option>
                   <option value="D">Divorciado</option>
@@ -64,16 +64,16 @@
               </div>
               
               <div class="col-xl-3">
-                <label for="nacionalidade">* Nacionalidade</label>
-                <input type="text" class="form-control" id="nacionalidade" name="nacionalidade" value="{{ old('nacionalidade') }}" required>
+                <label for="nacionalidade">Nacionalidade</label>
+                <input type="text" class="form-control" id="nacionalidade" name="nacionalidade" value="{{ old('nacionalidade') }}">
                 @error('nacionalidade')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
     
               <div class="col-xl-3">
-                <label for="uf">* UF</label>
-                <select class="form-control" id="uf" name="uf" required>
+                <label for="uf">UF</label>
+                <select class="form-control" id="uf" name="uf">
                   <!-- Opções de UF -->
                 </select>
                 @error('uf')
@@ -84,8 +84,8 @@
             
             <div class="row mb-4">
               <div class="col-xl-3">
-                <label for="rol">* No. Rol</label>
-                <input type="number" class="form-control" id="rol" name="rol" value="{{ old('rol') }}" required>
+                <label for="rol">No. Rol</label>
+                <input type="number" class="form-control" id="rol" name="rol" value="{{ old('rol') }}">
                 @error('rol')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
