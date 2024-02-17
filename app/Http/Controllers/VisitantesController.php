@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreVisitanteRequest;
 use Illuminate\Http\Request;
 
 class VisitantesController extends Controller
@@ -17,10 +18,8 @@ class VisitantesController extends Controller
         return view('visitantes.create');
     }
 
-    public function store(Request $request)
+    public function store(StoreVisitanteRequest $request)
     {
-        dd($request->all());
+       
     }
-
-   
 }

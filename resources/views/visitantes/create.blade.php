@@ -35,35 +35,35 @@
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Data de Nascimento:</label>
-                        <input type="date" class="form-control" id="dataNascimento" name="dataNascimento" value="{{ old('dataNascimento') }}" placeholder="ex: 31/12/2000">
+                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento') }}" placeholder="ex: 31/12/2000">
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Data de Conversão:</label>
-                        <input type="date" class="form-control" id="dataConversao" name="dataConversao" value="{{ old('dataConversao') }}" placeholder="ex: 31/12/2000">
+                        <input type="date" class="form-control" id="data_conversao" name="data_conversao" value="{{ old('data_conversao') }}" placeholder="ex: 31/12/2000">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Telefone Preferencial:</label>
-                        <input id="telefonePreferencial" name="telefonePreferencial" type="text" class="form-control" placeholder="ex: (00) 0000-0000">
+                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control" placeholder="ex: (00) 0000-0000">
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Telefone Alternativo:</label>
-                        <input id="telefoneAlternativo" name="telefoneAlternativo" type="text" class="form-control" placeholder="ex: (00) 0000-0000">
+                        <input id="telefone_alternativo" name="telefone_alternativo" type="text" class="form-control" placeholder="ex: (00) 0000-0000">
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Whatsapp:</label>
-                        <input id="whatsapp" name="whatsapp" type="text" class="form-control" placeholder="ex: (00) 00000-0000">
+                        <input id="telefone_whatsapp" name="telefone_whatsapp" type="text" class="form-control" placeholder="ex: (00) 00000-0000">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">E-mail Preferencial:</label>
-                        <input id="emailPreferencial" name="emailPreferencial" type="email" class="form-control">
+                        <input id="email_preferencial" name="email_preferencial" type="email" class="form-control">
                     </div>
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">E-mail Alternativo:</label>
-                        <input id="emailAlternativo" name="emailAlternativo" type="email" class="form-control">
+                        <input id="email_alternativo" name="email_alternativo" type="email" class="form-control">
                     </div>
                 </div>
                 <input type="submit" value="Salvar" class="btn btn-primary ml-3 mt-3">
@@ -75,7 +75,7 @@
 @section('extras-scripts')
 <script>
     $(document).ready(function() {
-        $('#telefonePreferencial, #telefoneAlternativo, #whatsapp').mask('(00) 00000-0000');
+        $('#telefone_preferencial, #telefone_alternativo, #whatsapp').mask('(00) 00000-0000');
     });
 </script>
 @endsection
