@@ -11,6 +11,6 @@ class CongregadosController extends Controller
     }
 
     public function novo() {
-        /* Falta a tela */
+        return view('congregados.novo');
     }
 }

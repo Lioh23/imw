@@ -19,22 +19,24 @@ Route::get('/esqueci-senha', [AuthController::class, 'showResetRequestForm'])->n
 // Rota para enviar o link de redefinição de senha
 Route::post('/esqueci-senha', [AuthController::class, 'submitResetRequest'])->name('password.email');
 
+
 // Rotas protegidas por autenticação
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [HomeController::class, 'dashboard'])->name('dashboard');
-    Route::get('/perfil', [HomeController::class, 'perfil'])->name('perfil');
+    
+    // Grupo de rotas para 'membresia'
+    Route::prefix('membro')->name('membro.')->group(function () {
+       
+        Route::get('', [MembrosController::class, 'index'])->name('index');
+        Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar');
+    });
+
+    Route::controller(HomeController::class)->group(function () {
+        Route::get('','dashboard')->name('dashboard');
+        Route::get('perfil', 'perfil')->name('perfil');
+    });
     // Adicione mais rotas protegidas conforme necessário
 
-    // Grupo de rotas para 'membresia'
-    Route::prefix('membros')->name('membros.')->group(function () {
-        Route::get('/', [MembrosController::class, 'index'])->name('index');
-        Route::get('/novo', [MembrosController::class, 'novo'])->name('novo');
-        Route::post('/', [MembrosController::class, 'store'])->name('store');
-        Route::get('/{membros}', [MembrosController::class, 'show'])->name('show');
-        Route::get('/{membros}/editar', [MembrosController::class, 'editar'])->name('editar');
-        Route::put('/{membros}', [MembrosController::class, 'update'])->name('update');
-        Route::delete('/{membros}', [MembrosController::class, 'destroy'])->name('destroy');
-    });
+  
 
     // Grupo de rotas para 'visitantes'
     Route::prefix('visitantes')->name('visitantes.')->group(function () {
@@ -44,7 +46,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     // Grupo de rotas para 'visitantes'
-    Route::prefix('congregados')->name('congregados.')->group(function () {
+    Route::prefix('congregado')->name('congregado.')->group(function () {
         Route::get('/', [CongregadosController::class, 'index'])->name('index');
         Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo');
         Route::post('/', [CongregadosController::class, 'store'])->name('store');

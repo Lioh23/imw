@@ -1,65 +1,43 @@
 @extends('template.layout')
 @section('breadcrumb')
-@if ($mode == 'create')
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Membros', 'url' => '/membros/', 'active' => false],
-    ['text' => 'Novo', 'url' => '/membros/form/', 'active' => true]
+    ['text' => 'Congregados', 'url' => '/congregado/', 'active' => false],
+    ['text' => 'Novo', 'url' => '/congregado/novo/', 'active' => true]
 ]"></x-breadcrumb>
-@else
-<x-breadcrumb :breadcrumbs="[
-    ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Membros', 'url' => '/membros/', 'active' => false],
-    ['text' => 'Editar', 'url' => '/membros/form/', 'active' => true]
-]"></x-breadcrumb>
-@endif
+
+@endsection
+@section('extras-css')
+  <link href="{{ asset('theme/assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 @section('content')
 <div style="margin: 0px 23px;">
-  <div class="row">
+  {{-- <div class="row">
       <div class="col-md-12">
-          <h4>{{$mode == 'create' ? 'Novo Membro' : 'Editar Membro'}}</h4>
+          <h4>Novo Congregado</h4>
       </div>
-  </div>
+  </div> --}}
     <div class="row">
       <div class="col-md-12">
-          <form action="" method="POST" id="post-form">
-              @csrf
-              <ul class="nav nav-tabs" id="myTab" role="tablist">
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link active" id="personal-data-tab" data-bs-toggle="tab" data-bs-target="#personal-data" type="button" role="tab" aria-controls="personal-data" aria-selected="true">
-                        Dados Pessoais
-                      </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
-                        Contatos
-                      </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="family-tab" data-bs-toggle="tab" data-bs-target="#family" type="button" role="tab" aria-controls="family" aria-selected="false">
-                        Familiar
-                      </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="family-tab" data-bs-toggle="tab" data-bs-target="#family" type="button" role="tab" aria-controls="family" aria-selected="false">
-                        Ministerial
-                      </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="family-tab" data-bs-toggle="tab" data-bs-target="#family" type="button" role="tab" aria-controls="family" aria-selected="false">
-                        Formação Eclesiástica
-                      </button>
-                  </li>
-                  <li class="nav-item" role="presentation">
-                      <button class="nav-link" id="family-tab" data-bs-toggle="tab" data-bs-target="#family" type="button" role="tab" aria-controls="family" aria-selected="false">
-                        Histórico Eclesiástico
-                      </button>
-                  </li>
-              </ul>
-              <div class="tab-content" style="background-color: #fff; border: 1px solid #dee2e6; border-top: none">
-                <div class="tab-pane fade show active" id="personal-data" role="tabpanel" aria-labelledby="personal-data-tab">
-                  <div class="form-group @error('nome') has-error @enderror" style="padding: 8px 0px;">
+          <!-- conteudo -->
+          <div class="widget-content widget-content-area border-top-tab">
+            <ul class="nav nav-tabs mb-3 mt-3" id="borderTop" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active" id="border-top-dados-pessoais" data-toggle="tab" href="#border-top-dados-pessoal" role="tab" aria-controls="border-top-dados-pessoais" aria-selected="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> Dados Pessoais</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="border-top-profile-tab" data-toggle="tab" href="#border-top-profile" role="tab" aria-controls="border-top-profile" aria-selected="false"> Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="border-top-contact-tab" data-toggle="tab" href="#border-top-contact" role="tab" aria-controls="border-top-contact" aria-selected="false"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-phone"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg> Contatos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="border-top-setting-tab" data-toggle="tab" href="#border-top-setting" role="tab" aria-controls="border-top-setting" aria-selected="false"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-settings"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg> Settings</a>
+                </li>
+            </ul>
+            <div class="tab-content" id="borderTopContent">
+                <div class="tab-pane fade show active" id="border-top-dados-pessoal" role="tabpanel" aria-labelledby="border-top-dados-pessoais">
+                  <div class="form-group @error('nome') has-error @enderror">
                     <div style="display:flex; padding: 8px; width: 100%;">
                       <div class="col-sm-6">
                         <label for="nome">* Nome</label>
@@ -178,15 +156,39 @@
                         @enderror
                       </div>
                     </div>
-                  </div>
+                  </div>    
                 </div>
-              </div>
-          </form>
+                <div class="tab-pane fade" id="border-top-profile" role="tabpanel" aria-labelledby="border-top-profile-tab">
+                    <div class="media">
+                        <img class="mr-3" src="assets/img/90x90.jpg" alt="Generic placeholder image">
+                        <div class="media-body">
+                            Cras sit amet nibh libero, in gravida nulla. Nulla vel metus scelerisque ante sollicitudin. Cras purus odio, vestibulum in vulputate at, tempus viverra turpis. Fusce condimentum nunc ac nisi vulputate fringilla. Donec lacinia congue felis in faucibus.
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-pane fade" id="border-top-contact" role="tabpanel" aria-labelledby="border-top-contact-tab">
+                    <p class="dropcap  dc-outline-primary">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+                        cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+                        proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                </div>
+                <div class="tab-pane fade" id="border-top-setting" role="tabpanel" aria-labelledby="border-top-setting-tab">
+                    <blockquote class="blockquote">
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+                        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+                        quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    </blockquote>
+                </div>
+            </div>
+          </div>
       </div>
     </div>
 </div>
 
-<script src="{{ asset('/membros/js/form.js') }}"></script>
-
+<script src="{{ asset('/congregados/js/create.js') }}"></script>
 
 @endsection
