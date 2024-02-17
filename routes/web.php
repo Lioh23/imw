@@ -48,7 +48,7 @@ Route::middleware(['auth'])->group(function () {
     // Grupo de rotas para 'visitantes'
     Route::prefix('congregado')->name('congregado.')->group(function () {
         Route::get('/', [CongregadosController::class, 'index'])->name('index');
-        Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo');
+        /* Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo'); */
         Route::post('/', [CongregadosController::class, 'store'])->name('store');
     });
 });
