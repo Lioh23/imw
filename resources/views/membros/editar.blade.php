@@ -60,12 +60,12 @@
                 </li>
             </ul>
             <div class="tab-content" id="borderTopContent">
-                @include('tab-dados-pessoal')
-                @include('tab-familia')
-                @include('tab-contato')
-                @include('tab-monisterio')
-                @include('tab-formacao')
-                @include('tab-historico')
+                @include('membros.tab-dados-pessoal')
+                @include('membros.tab-familia')
+                @include('membros.tab-contato')
+                @include('membros.tab-ministerio')
+                @include('membros.tab-formacao')
+                @include('membros.tab-historico')
             </div>
           </div>
       </div>
