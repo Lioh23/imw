@@ -17,6 +17,8 @@
           <h4>Novo Congregado</h4>
       </div>
   </div> --}}
+  <form method="POST" action="{{ route('congregado.store') }}" enctype="multipart/form-data">
+    @csrf
     <div class="row">
       <div class="col-md-12">
           <!-- conteudo -->
@@ -70,6 +72,11 @@
           </div>
       </div>
     </div>
+
+    <div class="form-group mt-4">
+      <button type="submit" class="btn btn-primary">Salvar</button>
+  </div>
+</form>
 </div>
 @endsection
 @section('extras-scripts')

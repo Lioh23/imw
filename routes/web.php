@@ -47,6 +47,6 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('congregado')->name('congregado.')->group(function () {
         Route::get('/', [CongregadosController::class, 'index'])->name('index');
         Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo');
-        Route::post('/', [CongregadosController::class, 'store'])->name('store');
+        Route::post('/salvar', [CongregadosController::class, 'store'])->name('store');
     });
 });
