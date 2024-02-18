@@ -17,16 +17,16 @@
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            <form class="form-vertical" action="#">
+            <form class="form-vertical" action="{{ route('visitantes.store') }}" id="form_create_visitantes">
                 <div class="row">
                     <div class="form-group mb-4 col-12">
-                        <label class="control-label">Nome:</label>
+                        <label class="control-label">* Nome:</label>
                         <input type="text" name="nome" class="form-control" required minlength="4">
                     </div>
                 </div>
                 <div class="row">
                     <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Sexo:</label>
+                        <label class="control-label">* Sexo:</label>
                         <select name="sexo" class="form-control" required>
                             <option value="" selected>Selecione</option>
                             <option value="M">Masculino</option>
@@ -34,7 +34,7 @@
                         </select>
                     </div>
                     <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Data de Nascimento:</label>
+                        <label class="control-label">* Data de Nascimento:</label>
                         <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento') }}" placeholder="ex: 31/12/2000">
                     </div>
                     <div class="form-group mb-4 col-md-4">
@@ -72,10 +72,7 @@
     </div>
 </div>
 @endsection
+
 @section('extras-scripts')
-<script>
-    $(document).ready(function() {
-        $('#telefone_preferencial, #telefone_alternativo, #whatsapp').mask('(00) 00000-0000');
-    });
-</script>
+<script src="{{ asset('visitantes/js/create.js') }}"></script>
 @endsection

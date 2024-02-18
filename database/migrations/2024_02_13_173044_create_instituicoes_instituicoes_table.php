@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('nome', 100);
             $table->foreignId('tipo_instituicao_id')->constrained('instituicoes_tiposinstituicao');
-            $table->foreignId('instituicao_pai_id')->constrained('instituicoes_instituicoes')->nullable();
+            $table->foreignId('instituicao_pai_id')->nullable()->constrained('instituicoes_instituicoes');
             $table->integer('codigo_host')->nullable();
             $table->boolean('ativo')->default(true);
             $table->string('bairro', 100)->nullable();

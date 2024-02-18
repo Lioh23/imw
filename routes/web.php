@@ -36,13 +36,12 @@ Route::middleware(['auth'])->group(function () {
     });
     // Adicione mais rotas protegidas conforme necessário
 
-  
 
     // Grupo de rotas para 'visitantes'
     Route::prefix('visitantes')->name('visitantes.')->group(function () {
         Route::get('/', [VisitantesController::class, 'index'])->name('index');
         Route::get('/novo', [VisitantesController::class, 'novo'])->name('novo');
-        Route::post('/', [VisitantesController::class, 'store'])->name('store');
+        Route::post('salvar', [VisitantesController::class, 'store'])->name('store');
     });
 
     // Grupo de rotas para 'visitantes'
