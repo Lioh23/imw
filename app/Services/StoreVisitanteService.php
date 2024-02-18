@@ -26,6 +26,7 @@ class StoreVisitanteService
             'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
             'telefone_alternativo'  => preg_replace('/[^0-9]/', '', $data['telefone_alternativo']),
             'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
+            'email_preferencial'     => $data['email_preferencial'],
             'email_alternativo'     => $data['email_alternativo'],
         ];
 
