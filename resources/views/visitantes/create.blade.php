@@ -2,7 +2,7 @@
 @section('breadcrumb')
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Visitantes', 'url' => '/visitantes/', 'active' => false],
+    ['text' => 'Visitantes', 'url' => '/visitante/', 'active' => false],
     ['text' => 'Novo', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
@@ -17,7 +17,7 @@
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            <form class="form-vertical" action="{{ route('visitantes.store') }}" id="form_create_visitantes">
+            <form class="form-vertical" action="{{ route('visitante.store') }}" id="form_create_visitantes">
                 <div class="row">
                     <div class="form-group mb-4 col-12">
                         <label class="control-label">* Nome:</label>

@@ -25,7 +25,7 @@ const createVisitantes = {
         
         $.ajax({
             type: "POST",
-            url: '/visitantes/salvar',
+            url: '/visitante/salvar',
             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
             data: data,
             beforeSend: function () {
