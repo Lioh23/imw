@@ -111,9 +111,6 @@
         </div>
     </div>
 </div>
-<div class="widget-content widget-content-area text-center">
-    <button class="mr-2 btn btn-primary error confirm">Confirm</button>
-</div>
 
 <script>
     $('.btn-confirm-delete').on('click', function () {
