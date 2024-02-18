@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVisitanteRequest;
+use App\Http\Requests\UpdateVisitanteRequest;
 use App\Services\DeletarVisitanteService;
+use App\Services\EditarVisitanteService;
 use App\Services\ListVisitanteService;
 use App\Services\PesquisarVisitanteService;
 use App\Services\StoreVisitanteService;
@@ -26,8 +28,24 @@ class VisitantesController extends Controller
         return view('visitantes.index', compact('visitantes'));
     }
 
+    public function update(UpdateVisitanteRequest $request){
+        try {
+            DB::beginTransaction();
+            app(EditarVisitanteService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('visitante.editar')->with('success', 'Visitante atualizado com sucesso.');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('visitante.editar')->with('error', 'Falha ao atualizar o visitante.');
+       }
+    }
+
     public function editar($id) {
-        dd($id);
+        $visitante = app(EditarVisitanteService::class)->listOne($id);
+        if (!$visitante) {
+            return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
+        }
+        return view('visitantes.editar', compact('visitante'));
     }
 
     public function deletar($id) {
@@ -49,10 +67,10 @@ class VisitantesController extends Controller
             DB::beginTransaction();
             app(StoreVisitanteService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('visitante.novo')->with('success', 'Operação concluída com sucesso!');
+            return redirect()->route('visitante.novo')->with('success', 'Visitante cadastrado com sucesso.');
         } catch(\Exception $e) {
             DB::rollback();
-            return redirect()->route('visitante.novo')->with('error', 'Operação concluída com sucesso!');
+            return redirect()->route('visitante.novo')->with('error', 'Falha ao cadastrar o visitante.');
        }
     }
 }

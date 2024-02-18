@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar');
         Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar');
         Route::post('/pesquisar', [VisitantesController::class, 'pesquisar'])->name('pesquisar');
+        Route::put('/visitante/{id}', [VisitantesController::class, 'update'])->name('update');
     });
 
     // Grupo de rotas para 'visitantes'
