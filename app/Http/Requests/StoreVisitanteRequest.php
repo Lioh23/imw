@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\RangeDateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreVisitanteRequest extends FormRequest
@@ -13,7 +14,7 @@ class StoreVisitanteRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -26,7 +27,10 @@ class StoreVisitanteRequest extends FormRequest
         return [
             'nome' => 'required',
             'sexo' => 'required',
-            'data_nascimento' => 'required'
+            'data_nascimento' => ['required', new RangeDateRule],
+            'data_conversao' => [new RangeDateRule],
+            'email_preferencial' => 'email',
+            'email_alternativo' => 'email'
         ];
     }
 }

@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
     Route::prefix('visitante')->name('visitante.')->group(function () {
         Route::get('/', [VisitantesController::class, 'index'])->name('index');
         Route::get('/novo', [VisitantesController::class, 'novo'])->name('novo');
-        Route::post('salvar', [VisitantesController::class, 'store'])->name('store');
+        Route::post('/salvar', [VisitantesController::class, 'store'])->name('store');
     });
 
     // Grupo de rotas para 'visitantes'

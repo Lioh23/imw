@@ -31,7 +31,7 @@ return new class extends Migration
             $table->foreignId('escolaridade_id')->nullable()->constrained('membresia_formacoes');
             $table->string('profissao')->nullable();
             $table->string('documento', 30)->nullable();
-            $table->string('documento_complemento', 50);
+            $table->string('documento_complemento', 50)->nullable();
             $table->string('tipo_documento', 3)->nullable();
             $table->string('foto')->nullable();
             $table->foreignId('funcao_eclesiastica_id')->nullable()->constrained('membresia_funcoeseclesiasticas');
