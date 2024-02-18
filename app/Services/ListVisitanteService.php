@@ -8,17 +8,16 @@ use Illuminate\Support\Facades\Auth;
 
 class ListVisitanteService
 {
-    public function execute()
+    public function execute($searchTerm = null)
     {
-        $visitantes = MembresiaMembro::where('vinculo', MembresiaMembro::VINCULO_VISITANTE)
-            ->join('membresia_contatos', 'membresia_membros.id', '=', 'membresia_contatos.membro_id')
-            ->paginate(100, [
-                'membresia_membros.id',
-                'membresia_membros.nome',
-                'membresia_contatos.telefone_preferencial',
-                'membresia_contatos.email_preferencial',
-                'membresia_membros.updated_at'
-            ]);
+        $visitantes = MembresiaMembro::with('contato')
+            ->where('vinculo', MembresiaMembro::VINCULO_VISITANTE)
+            ->when((bool) $searchTerm, function ($query) use ($searchTerm) {
+                $query->where('nome', 'like', "%$searchTerm%")
+                    ->orWhereHas('contato', function ($subQuery) use ($searchTerm) { $subQuery->where('email_preferencial', 'like', "%$searchTerm%"); })
+                    ->orWhereHas('contato', function ($subQuery) use ($searchTerm) { $subQuery->where('telefone_preferencial', 'like', "%$searchTerm%"); });
+            })
+            ->paginate(100);
     
         return $visitantes;
     }

@@ -43,7 +43,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/salvar', [VisitantesController::class, 'store'])->name('store');
         Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar');
         Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar');
-        Route::post('/pesquisar', [VisitantesController::class, 'pesquisar'])->name('pesquisar');
         Route::post('/visitante/{id}', [VisitantesController::class, 'update'])->name('update');
     });
 

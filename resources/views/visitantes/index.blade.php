@@ -29,8 +29,7 @@
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            <form action="{{ route('visitante.pesquisar') }}" method="POST">
-                @csrf 
+            <form>
                 <div class="row mb-4">
                     <div class="col-4">
                         <input type="text" name="search" id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar...">
@@ -60,10 +59,10 @@
                             <tr>
                                 <td>{{ $visitante->nome }}</td>
                                 <td>
-                                    {{ '(' . substr($visitante->telefone_preferencial, 0, 2) . ') ' . substr($visitante->telefone_preferencial, 2, 5) . '-' . substr($visitante->telefone_preferencial, 7) }}
+                                    {{ '(' . substr($visitante->contato->telefone_preferencial, 0, 2) . ') ' . substr($visitante->contato->telefone_preferencial, 2, 5) . '-' . substr($visitante->contato->telefone_preferencial, 7) }}
                                 </td>
                                 
-                                <td>{{ $visitante->email_preferencial }}</td>
+                                <td>{{ $visitante->contato->email_preferencial }}</td>
                                 <td>{{ $visitante->updated_at->format('d/m/Y H:i:s') }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('visitante.editar', $visitante->id) }}" title="Editar" class="btn btn-sm btn-dark mr-2 btn-rounded">

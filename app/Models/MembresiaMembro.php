@@ -48,4 +48,9 @@ class MembresiaMembro extends Model
         'codigo_host',
         'congregacao_id'
     ];
+
+    public function contato()
+    {
+        return $this->hasOne(MembresiaContato::class, 'membro_id');
+    }
 }

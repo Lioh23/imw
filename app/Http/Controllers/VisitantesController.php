@@ -7,7 +7,6 @@ use App\Http\Requests\UpdateVisitanteRequest;
 use App\Services\DeletarVisitanteService;
 use App\Services\EditarVisitanteService;
 use App\Services\ListVisitanteService;
-use App\Services\PesquisarVisitanteService;
 use App\Services\StoreVisitanteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,16 +14,10 @@ use Illuminate\Support\Facades\DB;
 class VisitantesController extends Controller
 {
 
-    public function index()
-    {
-        $visitantes = app(ListVisitanteService::class)->execute();
-        return view('visitantes.index', compact('visitantes'));
-    }
-
-    public function pesquisar(Request $request)
+    public function index(Request $request)
     {
         $searchTerm = $request->input('search');
-        $visitantes = app(PesquisarVisitanteService::class)->execute($searchTerm);
+        $visitantes = app(ListVisitanteService::class)->execute($searchTerm);
         return view('visitantes.index', compact('visitantes'));
     }
 
