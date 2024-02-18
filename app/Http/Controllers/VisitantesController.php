@@ -28,15 +28,15 @@ class VisitantesController extends Controller
         return view('visitantes.index', compact('visitantes'));
     }
 
-    public function update(UpdateVisitanteRequest $request){
+    public function update(UpdateVisitanteRequest $request, $id){
         try {
             DB::beginTransaction();
-            app(EditarVisitanteService::class)->execute($request->all());
+            app(EditarVisitanteService::class)->execute($id, $request->all());
             DB::commit();
-            return redirect()->route('visitante.editar')->with('success', 'Visitante atualizado com sucesso.');
+            return redirect()->route('visitante.editar', ['id' => $id])->with('success', 'Visitante atualizado com sucesso.');
         } catch(\Exception $e) {
             DB::rollback();
-            return redirect()->route('visitante.editar')->with('error', 'Falha ao atualizar o visitante.');
+            return redirect()->route('visitante.editar', ['id' => $id])->with('error', 'Falha ao atualizar o visitante.');
        }
     }
 

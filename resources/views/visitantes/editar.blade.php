@@ -22,9 +22,8 @@
         </div>
         <div class="widget-content widget-content-area">
             @if($visitante)
-            <form class="form-vertical" action="{{ route('visitante.update', $visitante->id ?? '') }}" method="post">
+            <form class="form-vertical" action="{{ route('visitante.update', $visitante->membro_id ?? '') }}" method="POST">
                 @csrf
-                @method('PUT')
                 <div class="row">
                     <div class="form-group mb-4 col-12">
                         <label class="control-label">* Nome:</label>

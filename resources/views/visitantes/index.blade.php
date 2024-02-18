@@ -63,7 +63,7 @@
                                     {{ '(' . substr($visitante->telefone_preferencial, 0, 2) . ') ' . substr($visitante->telefone_preferencial, 2, 5) . '-' . substr($visitante->telefone_preferencial, 7) }}
                                 </td>
                                 
-                                <td>{{ $visitante->email }}</td>
+                                <td>{{ $visitante->email_preferencial }}</td>
                                 <td>{{ $visitante->updated_at->format('d/m/Y H:i:s') }}</td>
                                 <td class="text-center">
                                     <a href="{{ route('visitante.editar', $visitante->id) }}" title="Editar" class="btn btn-sm btn-dark mr-2 btn-rounded">

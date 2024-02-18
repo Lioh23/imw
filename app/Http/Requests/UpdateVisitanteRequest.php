@@ -26,7 +26,7 @@ class UpdateVisitanteRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => ['required', new VisitanteExistenteRule($this->input('data_nascimento'))],
+            'nome' => 'required',
             'sexo' => 'required',
             'data_nascimento' => ['required', new RangeDateRule],
             'data_conversao' => [new RangeDateRule],
