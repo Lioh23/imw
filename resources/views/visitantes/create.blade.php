@@ -103,5 +103,5 @@
 @endsection
 
 @section('extras-scripts')
-<script src="{{ asset('visitantes/js/create.js') }}"></script>
+<script src="{{ asset('visitantes/js/create.js') }}?t={{ time() }}"></script>
 @endsection
