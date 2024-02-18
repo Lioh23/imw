@@ -15,12 +15,6 @@ class DeletarVisitanteService
         DB::beginTransaction();
 
         try {
-            // Busca o contato associado ao membro e deleta
-            $contato = MembresiaContato::where('membro_id', $membroId)->first();
-            if ($contato) {
-                $contato->delete();
-            }
-
             // Deleta o membro
             $membro = MembresiaMembro::findOrFail($membroId);
             $membro->delete();

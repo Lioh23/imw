@@ -5,6 +5,25 @@
     ['text' => 'Visitantes', 'url' => '/visitante/', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
+
+@section('extras-css')
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+    .swal2-popup .swal2-styled.swal2-cancel {
+        color: white!important;
+    }
+</style>
+@endsection
+
+@section('extras-scripts')
+<script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+@endsection
+
 @section('content')
 @include('extras.alerts')
 <div class="container-fluid">
@@ -55,7 +74,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($visitantes as $visitante)
+                            @foreach($visitantes as $index => $visitante)
                             <tr>
                                 <td>{{ $visitante->nome }}</td>
                                 <td>
@@ -70,9 +89,9 @@
                                             <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                                         </svg>
                                     </a>
-                                    <form action="{{ route('visitante.deletar', $visitante->id) }}" method="POST" style="display: inline-block;">
+                                    <form action="{{ route('visitante.deletar', $visitante->id) }}" method="POST" style="display: inline-block;" id="form_delete_visitante_{{ $index }}">
                                         @csrf
-                                        <button type="submit" title="Apagar" class="btn btn-sm btn-danger mr-2 btn-rounded">
+                                        <button type="button" title="Apagar" class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete" data-form-id="form_delete_visitante_{{ $index }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
                                                 <polyline points="3 6 5 6 21 6"></polyline>
                                                 <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
@@ -92,4 +111,25 @@
         </div>
     </div>
 </div>
+<div class="widget-content widget-content-area text-center">
+    <button class="mr-2 btn btn-primary error confirm">Confirm</button>
+</div>
+
+<script>
+    $('.btn-confirm-delete').on('click', function () {
+        const formId = $(this).data('form-id')
+        swal({
+            title: 'Deseja realmente apagar os registros deste visitante?',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+            confirmButtonColor: "#d33",
+            cancelButtonText: "Cancelar",
+            cancelButtonColor: "#3085d6",
+            padding: '2em'
+        }).then(function(result) {
+            if(result.value) document.getElementById(formId).submit()
+        })
+    })
+</script>
 @endsection
