@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\RangeDateRule;
+use App\Rules\VisitanteExistenteRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreVisitanteRequest extends FormRequest
@@ -25,12 +26,12 @@ class StoreVisitanteRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome' => 'required',
+            'nome' => ['required', new VisitanteExistenteRule($this->input('data_nascimento'))],
             'sexo' => 'required',
             'data_nascimento' => ['required', new RangeDateRule],
             'data_conversao' => [new RangeDateRule],
-            'email_preferencial' => 'email',
-            'email_alternativo' => 'email'
+            'email_preferencial' => 'email|nullable',
+            'email_alternativo' => 'email|nullable'
         ];
     }
 }

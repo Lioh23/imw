@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVisitanteRequest;
 use App\Services\StoreVisitanteService;
-use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -27,14 +26,10 @@ class VisitantesController extends Controller
             DB::beginTransaction();
             app(StoreVisitanteService::class)->execute($request->all());
             DB::commit();
-            
-            Session::flash('success', 'Operação concluída com sucesso!');
-            return redirect()->route('visitante.novo');
+            return redirect()->route('visitante.novo')->with('success', 'Operação concluída com sucesso!');
         } catch(\Exception $e) {
             DB::rollback();
-            
-            Session::flash('error', 'Operação concluída com sucesso!');
-            return redirect()->route('visitante.novo');
+            return redirect()->route('visitante.novo')->with('error', 'Operação concluída com sucesso!');
        }
     }
 }
