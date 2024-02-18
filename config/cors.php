@@ -15,20 +15,12 @@ return [
     |
     */
 
-    'paths' => ['*'],
-
+    'paths' => ['api/*', 'web/*', '*'], // Permite CORS para todas as rotas
     'allowed_methods' => ['*'],
-
     'allowed_origins' => ['*'],
-
     'allowed_origins_patterns' => [],
-
     'allowed_headers' => ['*'],
-
     'exposed_headers' => [],
-
     'max_age' => 0,
-
-    'supports_credentials' => false,
-
+    'supports_credentials' => false, // Defina como true se você precisar de credenciais, como cookies de sessão
 ];

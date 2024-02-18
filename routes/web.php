@@ -25,7 +25,6 @@ Route::middleware(['auth'])->group(function () {
     
     // Grupo de rotas para 'membresia'
     Route::prefix('membro')->name('membro.')->group(function () {
-       
         Route::get('', [MembrosController::class, 'index'])->name('index');
         Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar');
     });
