@@ -30,7 +30,7 @@ class CongregadosController extends Controller
         return view('congregados.editar', [
             'pessoa' => $pessoa['pessoa'],
              /* Populando Select */
-            'setores' => $pessoa['setores'],
+            'ministerios' => $pessoa['ministerios'],
             'funcoes' => $pessoa['funcoes']
         ]);
     }

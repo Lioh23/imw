@@ -23,12 +23,12 @@ class TornarCongregadoService
             ->first();
 
         //Somente buscar informações do campo select
-        $setores = MembresiaSetor::orderBy('descricao', 'asc')->get();
+        $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
         $funcoes = MembresiaFuncaoeclesiastica::orderBy('descricao', 'asc')->get();
 
         return [
             'pessoa' => $pessoa,
-            'setores' => $setores,
+            'ministerios' => $ministerios,
             'funcoes' => $funcoes
         ];
     }
