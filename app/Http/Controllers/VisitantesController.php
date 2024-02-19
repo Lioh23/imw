@@ -34,7 +34,7 @@ class VisitantesController extends Controller
     }
 
     public function editar($id) {
-        $visitante = app(EditarVisitanteService::class)->listOne($id);
+        $visitante = app(EditarVisitanteService::class)->findOne($id);
         if (!$visitante) {
             return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
         }

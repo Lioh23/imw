@@ -22,7 +22,8 @@ class CongregadosController extends Controller
         return view('congregados.editar');
     }
 
-    public function exemplo(Request $request)
+    
+   /*  public function exemplo(Request $request)
     {
         $request->validate([
             // Validações básicas para os campos do formulário
@@ -64,5 +65,5 @@ class CongregadosController extends Controller
 
         // Redirecionar após a criação
         return redirect()->route('alguma.rota.de.sucesso')->with('success', 'Membro criado com sucesso!');
-    }
+    } */
 }

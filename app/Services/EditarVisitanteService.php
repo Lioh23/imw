@@ -29,7 +29,7 @@ class EditarVisitanteService
         }
     }
 
-    public function listOne($id): ?MembresiaMembro
+    public function findOne($id): ?MembresiaMembro
     {
         $visitante = MembresiaMembro::select(
             'membresia_membros.*',
