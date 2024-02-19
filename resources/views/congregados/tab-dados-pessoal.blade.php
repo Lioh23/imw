@@ -3,7 +3,7 @@
     <div class="row mb-4">
       <!-- Coluna para foto do usuário -->
       <div class="col-xl-3 text-center">
-        <img src="https://via.placeholder.com/150" id="user-picture" class="rounded-circle img-fluid mb-3" alt="Foto do usuário">
+        <img src="{{ $pessoa->foto ? asset($pessoa->foto) : 'https://via.placeholder.com/150' }}" id="user-picture" class="rounded-circle img-fluid mb-3" alt="Foto do usuário" width="150px" height="150px;">
         <div>
           <button class="btn btn-primary btn-sm" id="upload-picture">Trocar Foto</button>
           <input type="file" class="d-none" id="upload-picture-input">

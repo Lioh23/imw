@@ -126,7 +126,8 @@ $(document).ready(function(){
         });
 
     // Adiciona um evento de clique ao botão "upload-picture"
-    $('#upload-picture').click(function() {
+    $('#upload-picture').click(function(event) {
+        event.preventDefault();
         // Dispara o clique no elemento de entrada de arquivo
         $('#upload-picture-input').click();
     });
@@ -144,7 +145,8 @@ $(document).ready(function(){
     });
 
     // Retorna foto para o padrão
-    $('#delete-picture').click(function() {
+    $('#delete-picture').click(function(event) {
+        event.preventDefault();
         $('#user-picture').attr('src', "https://via.placeholder.com/150");
         $('#upload-picture-input').val('');
     });
