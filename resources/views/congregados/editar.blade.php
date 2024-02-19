@@ -88,9 +88,5 @@
 </div>
 @endsection
 @section('extras-scripts')
-    {{-- <script>
-      var setores = @json($setores);
-      var funcoes = @json($funcoes);
-    </script> --}}
     <script src="{{ asset('congregados/js/editar.js') }}"></script>
 @endsection
