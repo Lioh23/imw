@@ -70,15 +70,13 @@ $(document).ready(function(){
                 <td>
                     <select class="form-control ministerial-departamento" name="ministerial-departamento[]">
                         <option value="">Selecione</option>
-                        <option value="dep1">Departamento Teste</option>
-                        <option value="dep2">Departamento Teste Dois</option>
+                        ` + setores.map(setor => `<option value="${setor.id}">${setor.descricao}</option>`).join('') + `
                     </select>
                 </td>
                 <td>
-                    <select class="form-control" name="ministerial-funcao[]">
+                    <select class="form-control ministerial-funcao" name="ministerial-funcao[]">
                         <option value="">Selecione</option>
-                        <option value="fun1">Função Teste</option>
-                        <option value="fun2">Função Teste Dois</option>
+                        ` + setores.map(setor => `<option value="${funcoes.id}">${funcoes.descricao}</option>`).join('') + `
                     </select>
                 </td>
                 <td>

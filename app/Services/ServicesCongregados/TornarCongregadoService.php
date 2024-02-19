@@ -1,29 +1,35 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\ServicesCongregados;
 
 use App\Models\MembresiaContato;
+use App\Models\MembresiaFuncaoeclesiastica;
 use App\Models\MembresiaMembro;
+use App\Models\MembresiaSetor;
 
 class TornarCongregadoService
 {
 
     public function execute($id): void
     {
-
     }
 
-    public function findOne($id): ?MembresiaMembro
+    public function findOne($id)
     {
-        $visitante = MembresiaMembro::select(
-            'membresia_membros.*',
-            'membresia_contatos.*'
-        )
-        ->join('membresia_contatos', 'membresia_membros.id', '=', 'membresia_contatos.membro_id')
-        ->where('membresia_membros.id', $id)
-        ->where('membresia_membros.vinculo', MembresiaMembro::VINCULO_VISITANTE)
-        ->first();
+        //With trazer relacionamentos definidos do model MembresiaMembro de forma prévia
+        $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar'])
+            ->where('id', $id)
+            ->whereIn('vinculo', [MembresiaMembro::VINCULO_VISITANTE, MembresiaMembro::VINCLULO_CONGREGADO])
+            ->first();
 
-        return $visitante;
+        //Somente buscar informações do campo select
+        $setores = MembresiaSetor::orderBy('descricao', 'asc')->get();
+        $funcoes = MembresiaFuncaoeclesiastica::orderBy('descricao', 'asc')->get();
+
+        return [
+            'pessoa' => $pessoa,
+            'setores' => $setores,
+            'funcoes' => $funcoes
+        ];
     }
 }

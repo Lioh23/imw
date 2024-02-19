@@ -53,4 +53,16 @@ class MembresiaMembro extends Model
     {
         return $this->hasOne(MembresiaContato::class, 'membro_id');
     }
+
+    public function familiar()
+    {
+        return $this->hasOne(MembresiaFamiliar::class, 'membro_id');
+    }
+  
+    public function funcoesMinisteriais()
+    {
+        return $this->hasMany(MembresiaFuncaoMinisterial::class, 'membro_id');
+    }
+
+   
 }

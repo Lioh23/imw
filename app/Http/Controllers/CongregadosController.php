@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ServicesCongregados\TornarCongregadoService;
 use Illuminate\Http\Request;
 
 class CongregadosController extends Controller
@@ -19,11 +20,22 @@ class CongregadosController extends Controller
     }
 
     public function tornarCongregado($id) {
-        return view('congregados.editar');
+        
+        $pessoa = app(TornarCongregadoService::class)->findOne($id);
+ 
+        if (!$pessoa['pessoa']) {
+            return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
+        }
+        
+        return view('congregados.editar', [
+            'pessoa' => $pessoa['pessoa'],
+             /* Populando Select */
+            'setores' => $pessoa['setores'],
+            'funcoes' => $pessoa['funcoes']
+        ]);
     }
 
-    
-   /*  public function exemplo(Request $request)
+    /*  public function salvar(Request $request)
     {
         $request->validate([
             // Validações básicas para os campos do formulário
