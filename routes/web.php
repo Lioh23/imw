@@ -44,6 +44,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar');
         Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar');
         Route::post('/visitante/{id}', [VisitantesController::class, 'update'])->name('update');
+        
     });
 
     // Grupo de rotas para 'visitantes'
@@ -51,5 +52,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [CongregadosController::class, 'index'])->name('index');
         Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo');
         Route::post('/salvar', [CongregadosController::class, 'store'])->name('store');
+        Route::get('/tornar-congregado/{id}', [CongregadosController::class, 'tornarCongregado'])->name('tornarCongregado');
     });
 });
