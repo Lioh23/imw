@@ -11,4 +11,16 @@ class MembresiaFormacaoEclesiastica extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'membresia_formacoeseclesiasticas';
+
+    protected $fillable = ['inicio', 'termino', 'curso_id', 'membro_id'];
+
+    public function membro()
+    {
+        return $this->belongsTo(MembresiaMembro::class, 'membro_id', 'id');
+    }
+
+    public function curso()
+    {
+        return $this->belongsTo(MembresiaCurso::class, 'curso_id', 'id');
+    }
 }
