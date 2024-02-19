@@ -70,6 +70,7 @@
                 <label for="nacionalidade">Nacionalidade</label>
                 <select class="form-control" id="nacionalidade" name="nacionalidade">
                   @php
+                    //Colocar no banco de dados 
                     $paises = [
                         'BR' => 'Brasil',
                         'US' => 'Estados Unidos',
@@ -108,6 +109,7 @@
                 <label for="uf">UF</label>
                 <select class="form-control" id="uf" name="uf">
                   @php
+                    //Colocar no banco de dados , esta estranho assim
                     $ufs = [
                       'AC' => 'Acre', 'AL' => 'Alagoas', 'AP' => 'Amapá', 'AM' => 'Amazonas',
                       'BA' => 'Bahia', 'CE' => 'Ceará', 'DF' => 'Distrito Federal', 'ES' => 'Espírito Santo',
