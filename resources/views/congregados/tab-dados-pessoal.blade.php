@@ -131,13 +131,16 @@
             </div>
             
             <div class="row mb-4">
-              <{{-- div class="col-xl-3">
-                <label for="rol">No. Rol</label>
-                <input type="number" class="form-control" id="rol" name="rol" value="{{ old('rol') }}">
-                @error('rol')
-                <span class="help-block text-danger">{{ $message }}</span>
-                @enderror
-              </div> --}}
+              {{-- 
+                Adicionar este campo quando for utilizar membros
+                    <div class="col-xl-3">
+                      <label for="rol">No. Rol</label>
+                      <input type="number" class="form-control" id="rol" name="rol" value="{{ old('rol') }}">
+                      @error('rol')
+                      <span class="help-block text-danger">{{ $message }}</span>
+                      @enderror
+                    </div> 
+              --}}
     
               <div class="col-xl-3">
                 <label for="data_conversao">Data de Conversão</label>
