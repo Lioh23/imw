@@ -18,4 +18,6 @@ class MembrosController extends Controller
     {
         return view('membros.editar');
     }
+
+   
 }

@@ -18,6 +18,10 @@ class CongregadosController extends Controller
         dd($request->all());
     }
 
+    public function tornarCongregado($id) {
+        return view('congregados.editar');
+    }
+
     public function exemplo(Request $request)
     {
         $request->validate([
