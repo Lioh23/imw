@@ -3,7 +3,7 @@
 namespace App\Services\ServicesCongregados;
 
 use App\Models\MembresiaContato;
-use App\Models\MembresiaFuncaoeclesiastica;
+use App\Models\MembresiaFuncaoEclesiastica;
 use App\Models\MembresiaMembro;
 use App\Models\MembresiaSetor;
 
@@ -24,7 +24,7 @@ class TornarCongregadoService
 
         //Somente buscar informações do campo select
         $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
-        $funcoes = MembresiaFuncaoeclesiastica::orderBy('descricao', 'asc')->get();
+        $funcoes = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();
 
         return [
             'pessoa' => $pessoa,
