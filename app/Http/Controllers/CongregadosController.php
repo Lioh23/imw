@@ -31,7 +31,8 @@ class CongregadosController extends Controller
             'pessoa' => $pessoa['pessoa'],
              /* Populando Select */
             'ministerios' => $pessoa['ministerios'],
-            'funcoes' => $pessoa['funcoes']
+            'funcoes' => $pessoa['funcoes'],
+            'cursos' => $pessoa['cursos']
         ]);
     }
 

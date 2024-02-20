@@ -12,7 +12,7 @@ class MembresiaFormacaoEclesiastica extends Model
 
     protected $table = 'membresia_formacoeseclesiasticas';
 
-    protected $fillable = ['inicio', 'termino', 'curso_id', 'membro_id'];
+    protected $fillable = ['inicio', 'observacao', 'termino', 'curso_id', 'membro_id'];
 
     public function membro()
     {
