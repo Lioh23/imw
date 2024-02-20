@@ -18,7 +18,7 @@ class TornarCongregadoService
     public function findOne($id)
     {
         //With trazer relacionamentos definidos do model MembresiaMembro de forma prévia
-        $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar'])
+        $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas'])
             ->where('id', $id)
             ->whereIn('vinculo', [MembresiaMembro::VINCULO_VISITANTE, MembresiaMembro::VINCLULO_CONGREGADO])
             ->first();
