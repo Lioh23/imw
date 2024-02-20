@@ -32,7 +32,7 @@
                             <input type="date" class="form-control" name="curso-data-conclusao[]" value="{{ $formacaoEclesiastica->termino }}">
                         </td>
                         <td>
-                            <input type="text" class="form-control" name="curso-observacao[]"  value="{{ $formacaoEclesiastica->termino }}">
+                            <input type="text" class="form-control" name="curso-observacao[]"  value="{{ $formacaoEclesiastica->observacao }}">
                         </td>
                         <td style="width: 100px;">
                             <button type="button"
