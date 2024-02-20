@@ -25,10 +25,10 @@ class CongregadosController extends Controller
             DB::beginTransaction();
             app(TornarCongregadoService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('visitante.novo')->with('success', 'Visitante cadastrado com sucesso.');
+            return redirect()->route('congregados.index')->with('success', 'Visitante cadastrado com sucesso.');
         } catch(\Exception $e) {
             DB::rollback();
-            return redirect()->route('visitante.novo')->with('error', 'Falha ao cadastrar o visitante.');
+            return redirect()->route('visitante.novo')->with('error', 'Falha ao atualizar visitante como congregado.');
        }
     }
 

@@ -12,7 +12,7 @@
                    </svg>
                </li>
            </ul>
-           <div class="shadow-bottom"></div>
+           {{-- <div class="shadow-bottom"></div> --}}
            <div class="user-info">
                <div class="user-photo" style="text-align: center; margin-bottom: 13px;">
                    <img src="https://via.placeholder.com/40" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
