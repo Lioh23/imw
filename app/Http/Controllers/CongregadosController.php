@@ -27,8 +27,8 @@ class CongregadosController extends Controller
             return redirect()->route('congregados.index')->with('success', 'Visitante cadastrado com sucesso.');
         } catch(\Exception $e) {
             DB::rollback();
-            return redirect()->route('visitante.novo')->with('error', 'Falha ao atualizar visitante como congregado.');
-       }
+            return redirect()->action([CongregadosController::class, 'tornarCongregado'], ['id' => $request->input('pessoa_id')])->with('error', 'Falha ao atualizar os dados.');
+        }
     }
 
     public function tornarCongregado($id) {

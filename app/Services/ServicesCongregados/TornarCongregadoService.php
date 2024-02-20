@@ -15,15 +15,27 @@ class TornarCongregadoService
 
     public function execute(array $data): void
     {
-        dd($data);
-        return;
+        $pessoa_id = $data['pessoa_id'];
         $dataMembro = [
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
             'data_nascimento' => $data['data_nascimento'],
+            'estado_civil'  => $data['estado_civil'],
+            'nacionalidade'  => $data['nacionalidade'],
+            'naturalidade'  => $data['naturalidade'],
+            'uf'  => $data['uf'],
+            'escolaridade_id'  => $data['escolaridade_id'],
+            'profissao'  => $data['profissao'],
+            'funcao_eclesiastica_id'  => $data['funcao_eclesiastica_id'],
+            'cpf'  => preg_replace('/[^0-9]/', '', $data['cpf']),
+            'tipo_documento'  => $data['tipo_documento'],
+            'documento'  => $data['documento'],
+            'documento_complemento'  => $data['documento_complemento'],
             'data_conversao'  => $data['data_conversao'],
+            'data_batismo'  => $data['data_batismo'],
+            'data_batismo_espirito'  => $data['data_batismo_espirito'],
             'vinculo'         => MembresiaMembro::VINCULO_CONGREGADO,
-            'status'          => 'A', // ATIVO
+
         ];
 
         $dataContato = [
@@ -32,6 +44,14 @@ class TornarCongregadoService
             'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
             'email_preferencial'     => $data['email_preferencial'],
             'email_alternativo'     => $data['email_alternativo'],
+            'cep' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
+            'endereco' => $data['endereco'],
+            'numero' => $data['numero'],
+            'complemento' => $data['complemento'],
+            'bairro' => $data['bairro'],
+            'cidade' => $data['cidade'],
+            'estado' => $data['estado'],
+            'observacoes' => $data['observacoes'],
         ];
     }
 

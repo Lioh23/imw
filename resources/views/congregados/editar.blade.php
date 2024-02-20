@@ -19,6 +19,7 @@
 @endsection
 @section('content')
 @include('extras.alerts-error-all')
+@include('extras.alerts')
 <div style="margin: 0px 23px;">
   <form method="POST" action="{{ route('congregado.store') }}" enctype="multipart/form-data">
     @csrf
