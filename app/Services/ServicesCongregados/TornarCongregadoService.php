@@ -5,6 +5,7 @@ namespace App\Services\ServicesCongregados;
 use App\Exceptions\MembroNotFoundException;
 use App\Models\MembresiaContato;
 use App\Models\MembresiaCurso;
+use App\Models\MembresiaFamiliar;
 use App\Models\MembresiaFormacao;
 use App\Models\MembresiaFuncaoEclesiastica;
 use App\Models\MembresiaMembro;
@@ -15,8 +16,8 @@ class TornarCongregadoService
 
     public function execute(array $data): void
     {
-        $pessoa_id = $data['pessoa_id'];
         $dataMembro = [
+            'membro_id' => $data['membro_id'],
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
             'data_nascimento' => $data['data_nascimento'],
@@ -39,12 +40,13 @@ class TornarCongregadoService
         ];
 
         $dataContato = [
+            'membro_id' => $data['membro_id'],
             'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
             'telefone_alternativo'  => preg_replace('/[^0-9]/', '', $data['telefone_alternativo']),
             'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
             'email_preferencial'     => $data['email_preferencial'],
             'email_alternativo'     => $data['email_alternativo'],
-            'cep' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
+            'cep' => preg_replace('/[^0-9]/', '', $data['cep']),
             'endereco' => $data['endereco'],
             'numero' => $data['numero'],
             'complemento' => $data['complemento'],
@@ -53,6 +55,49 @@ class TornarCongregadoService
             'estado' => $data['estado'],
             'observacoes' => $data['observacoes'],
         ];
+
+        $dataFamiliar = [
+            'mae_nome' => $data['mae_nome'], 
+            'pai_nome' => $data['pai_nome'], 
+            'conjuge_nome' => $data['conjuge_nome'],
+            'data_casamento' => $data['data_casamento'],
+            'filhos' => $data['filhos'],
+            'historico_familiar' => $data['historico_familiar'],
+            'membro_id' => $data['membro_id'],
+        ];
+
+        $this->handleUpdateMembro($dataMembro);
+        $this->handleUpdateContato($dataContato);
+        $this->handleUpdateFamiliar($dataFamiliar);
+    }
+
+    private function handleUpdateMembro($data): void
+    {
+        $membroId = $data['membro_id'];
+        $membro = MembresiaMembro::find($membroId);
+         if ($membro) {
+            $membro->update($data);
+         } else {
+             throw new \Exception("Registro não encontrado."); 
+        }
+    }
+
+    private function handleUpdateContato($data): void
+    {
+        $membroId = $data['membro_id'];
+        MembresiaContato::updateOrCreate(
+            ['membro_id' => $membroId], 
+            $data 
+        );      
+    }
+
+    private function handleUpdateFamiliar($data): void
+    {
+        $membroId = $data['membro_id'];
+        MembresiaFamiliar::updateOrCreate(
+            ['membro_id' => $membroId], 
+            $data 
+        );    
     }
 
     public function findOne($id)

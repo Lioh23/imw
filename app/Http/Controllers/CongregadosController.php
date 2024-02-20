@@ -24,10 +24,11 @@ class CongregadosController extends Controller
             DB::beginTransaction();
             app(TornarCongregadoService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('congregados.index')->with('success', 'Visitante cadastrado com sucesso.');
+            return redirect()->action([CongregadosController::class, 'tornarCongregado'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
         } catch(\Exception $e) {
             DB::rollback();
-            return redirect()->action([CongregadosController::class, 'tornarCongregado'], ['id' => $request->input('pessoa_id')])->with('error', 'Falha ao atualizar os dados.');
+            return redirect()->action([CongregadosController::class, 'tornarCongregado'], ['id' => $request->input('membro_id')])->with('error', 'Falha ao atualizar os dados.');
+       
         }
     }
 

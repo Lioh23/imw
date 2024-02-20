@@ -34,7 +34,7 @@
         </div>
         <div class="col-xl-3">
           <label for="sexo">E-mail Alternativo</label>
-          <input type="email" class="form-control @error('email_alternativo') is-invalid @enderror" id="email_alternativo" name="email-alternativo"  value="{{ old('email_alternativo', $pessoa->contato->email_alternativo) }}">
+          <input type="email" class="form-control @error('email_alternativo') is-invalid @enderror" id="email_alternativo" name="email_alternativo"  value="{{ old('email_alternativo', $pessoa->contato->email_alternativo) }}">
           @error('email_alternativo')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
