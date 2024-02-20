@@ -3,21 +3,21 @@
       <div class="row mb-4">
         <div class="col-xl-3">
           <label for="sexo">Telefone Preferencial</label>
-          <input type="text" class="form-control" id="telefone_preferencial" name="telefone_preferencial" value="{{ old('telefone_preferencial', $pessoa->contato->telefone_preferencial) }}">
+          <input type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" id="telefone_preferencial" name="telefone_preferencial" value="{{ old('telefone_preferencial', $pessoa->contato->telefone_preferencial) }}">
           @error('telefone_preferencial')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
         <div class="col-xl-3">
           <label for="sexo">Telefone Alternativo</label>
-          <input type="text" class="form-control" id="telefone_alternativo" name="telefone_alternativo" value="{{ old('telefone_alternativo', $pessoa->contato->telefone_alternativo) }}">
+          <input type="text" class="form-control @error('telefone_alternativo') is-invalid @enderror" id="telefone_alternativo" name="telefone_alternativo" value="{{ old('telefone_alternativo', $pessoa->contato->telefone_alternativo) }}">
           @error('telefone_alternativo')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
         <div class="col-xl-3">
           <label for="sexo">Telefone Whatsapp</label>
-          <input type="text" class="form-control" id="telefone_whatsapp" name="telefone_whatsapp" value="{{ old('telefone_whatsapp', $pessoa->contato->telefone_whatsapp) }}">
+          <input type="text" class="form-control @error('telefone_whatsapp') is-invalid @enderror" id="telefone_whatsapp" name="telefone_whatsapp" value="{{ old('telefone_whatsapp', $pessoa->contato->telefone_whatsapp) }}">
           @error('telefone_whatsapp')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
@@ -27,14 +27,14 @@
       <div class="row mb-4">
         <div class="col-xl-3">
           <label for="sexo">E-mail Preferencial</label>
-          <input type="email" class="form-control" id="email_preferencial" name="email_preferencial" value="{{ old('email_preferencial', $pessoa->contato->email_preferencial) }}">
+          <input type="email" class="form-control @error('email_preferencial') is-invalid @enderror" id="email_preferencial" name="email_preferencial" value="{{ old('email_preferencial', $pessoa->contato->email_preferencial) }}">
           @error('email_preferencial')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
         <div class="col-xl-3">
           <label for="sexo">E-mail Alternativo</label>
-          <input type="email" class="form-control" id="email_alternativo" name="email-alternativo"  value="{{ old('email_alternativo', $pessoa->contato->email_alternativo) }}">
+          <input type="email" class="form-control @error('email_alternativo') is-invalid @enderror" id="email_alternativo" name="email-alternativo"  value="{{ old('email_alternativo', $pessoa->contato->email_alternativo) }}">
           @error('email_alternativo')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
@@ -44,7 +44,7 @@
       <div class="row mb-4">
         <div class="col-xl-2">
           <label for="cep">CEP</label>
-          <input type="text" class="form-control" id="cep" name="cep"  value="{{ old('cep', $pessoa->contato->cep) }}">
+          <input type="text" class="form-control @error('cep') is-invalid @enderror" id="cep" name="cep"  value="{{ old('cep', $pessoa->contato->cep) }}">
           @error('cep')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror

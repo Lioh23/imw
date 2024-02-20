@@ -20,7 +20,6 @@ class CongregadosController extends Controller
 
     public function store(StoreCongregadoRequest $request)
     {
-       dd($request->all());
        try {
             DB::beginTransaction();
             app(TornarCongregadoService::class)->execute($request->all());

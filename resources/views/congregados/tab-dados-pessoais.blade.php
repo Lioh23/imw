@@ -16,7 +16,7 @@
             <div class="row mb-4">
               <div class="col-xl-6">
                 <label for="nome">* Nome</label>
-                <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome', $pessoa->nome) }}">
+                <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" value="{{ old('nome', $pessoa->nome) }}">
                 @error('nome')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -24,8 +24,8 @@
               
               <div class="col-xl-3">
                 <label for="nascimento">* Data de Nascimento</label>
-                <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento', $pessoa->data_nascimento) }}" min="1900-01-01">
-                @error('nascimento')
+                <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento', $pessoa->data_nascimento) }}" min="1900-01-01">
+                @error('data_nascimento')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
@@ -47,7 +47,7 @@
     
               <div class="col-xl-3">
                 <label for="estado_civil">* Estado Civíl</label>
-                <select class="form-control" id="estado_civil" name="estado_civil">
+                <select class="form-control @error('estado_civil') is-invalid @enderror" id="estado_civil" name="estado_civil">
                   <option value="">Selecione</option>
                   <option value="S" {{ $pessoa->estado_civil == 'S' ? 'selected' : '' }}>Solteiro</option>
                   <option value="C" {{ $pessoa->estado_civil == 'C' ? 'selected' : '' }}>Casado</option>
@@ -61,7 +61,8 @@
               
               <div class="col-xl-3">
                 <label for="nacionalidade">* Nacionalidade</label>
-                <select class="form-control" id="nacionalidade" name="nacionalidade">
+                <select class="form-control @error('estado_civil') is-invalid @enderror" id="nacionalidade" name="nacionalidade">
+                  <option value="">Selecione</option>
                   @php
                     //Colocar no banco de dados 
                     $paises = [
@@ -99,7 +100,7 @@
 
               <div class="col-xl-3">
                 <label for="naturalidade">* Naturalidade</label>
-                <input type="text" class="form-control" id="naturalidade" name="naturalidade" value="{{ old('naturalidade', $pessoa->naturalidade) }}" >
+                <input type="text" class="form-control @error('naturalidade') is-invalid @enderror" id="naturalidade" name="naturalidade" value="{{ old('naturalidade', $pessoa->naturalidade) }}" >
                 @error('naturalidade')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -107,7 +108,8 @@
 
               <div class="col-xl-3">
                 <label for="uf">* UF</label>
-                <select class="form-control" id="uf" name="uf">
+                <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf">
+                  <option value="">Selecione</option>
                   @php
                     //Colocar no banco de dados , esta estranho assim
                     $ufs = [
@@ -175,7 +177,7 @@
             <div class="row mb-4">
               <div class="col-xl-3">
                 <label for="cpf">* CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" value="{{ old('cpf', $pessoa->cpf) }}">
+                <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf" name="cpf" value="{{ old('cpf', $pessoa->cpf) }}">
                 @error('cpf')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -212,7 +214,7 @@
             <div class="row mb-4">
               <div class="col-xl-4">
                 <label for="data_conversao">Data de Conversão</label>
-                <input type="date" class="form-control" id="data_conversao" name="data_conversao" value="{{ old('data_conversao', $pessoa->data_conversao) }}">
+                <input type="date" class="form-control @error('data_conversao') is-invalid @enderror" id="data_conversao" name="data_conversao" value="{{ old('data_conversao', $pessoa->data_conversao) }}">
                 @error('data_conversao')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -220,7 +222,7 @@
 
               <div class="col-xl-4">
                 <label for="data_batismo">Data de Batismo</label>
-                <input type="date" class="form-control" id="data_batismo" name="data_batismo" value="{{ old('data_batismo', $pessoa->data_batismo) }}">
+                <input type="date" class="form-control @error('data_batismo') is-invalid @enderror" id="data_batismo" name="data_batismo" value="{{ old('data_batismo', $pessoa->data_batismo) }}">
                 @error('data_batismo')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -228,7 +230,7 @@
 
               <div class="col-xl-4">
                 <label for="data_batismo_espirito">Data de Batismo Espirito Santo</label>
-                <input type="date" class="form-control" id="data_batismo_espirito" name="data_batismo_espirito" value="{{ old('data_batismo_espirito', $pessoa->data_batismo_espirito) }}">
+                <input type="date" class="form-control @error('data_batismo_espirito') is-invalid @enderror" id="data_batismo_espirito" name="data_batismo_espirito" value="{{ old('data_batismo_espirito', $pessoa->data_batismo_espirito) }}">
                 @error('data_batismo_espirito')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror

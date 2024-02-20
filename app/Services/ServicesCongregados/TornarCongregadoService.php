@@ -15,6 +15,8 @@ class TornarCongregadoService
 
     public function execute(array $data): void
     {
+        dd($data);
+        return;
         $dataMembro = [
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],

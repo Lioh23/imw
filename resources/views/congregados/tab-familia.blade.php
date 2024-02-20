@@ -27,8 +27,8 @@
       </div>
       <div class="col-xl-3">
         <label>Data do Casamento</label>
-        <input type="date" class="form-control" id="data_casamento" name="data_casamento" value="{{ old('data_casamento', optional($pessoa->familiar)->data_casamento) }}">
-          @error('dtcasamento')
+        <input type="date" class="form-control @error('data_casamento') is-invalid @enderror" id="data_casamento" name="data_casamento" value="{{ old('data_casamento', optional($pessoa->familiar)->data_casamento) }}">
+          @error('data_casamento')
           <span class="help-block text-danger">{{ $message }}</span>
           @enderror
       </div>
