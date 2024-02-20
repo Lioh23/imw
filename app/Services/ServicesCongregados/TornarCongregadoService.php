@@ -30,7 +30,6 @@ class TornarCongregadoService
         $this->handleUpdateFamiliar($dataFamiliar);
         $this->handleUpdateFormacoes($dataFormacoes, $data['membro_id']);
         $this->handleUpdateMinisteriais($dataMinisteriais, $data['membro_id']);
-
     }
 
     private function prepareMembroData(array $data): array
@@ -81,8 +80,8 @@ class TornarCongregadoService
     private function prepareFamiliarData(array $data): array
     {
         return [
-            'mae_nome' => $data['mae_nome'], 
-            'pai_nome' => $data['pai_nome'], 
+            'mae_nome' => $data['mae_nome'],
+            'pai_nome' => $data['pai_nome'],
             'conjuge_nome' => $data['conjuge_nome'],
             'data_casamento' => $data['data_casamento'],
             'filhos' => $data['filhos'],
@@ -141,20 +140,36 @@ class TornarCongregadoService
 
     private function handleUpdateFormacoes(array $formacoes, $membroId): void
     {
+       
+        $idsExistentes = MembresiaFormacaoEclesiastica::where('membro_id', $membroId)
+                          ->pluck('curso_id')->toArray();
+    
+        $idsAtualizados = [];
         foreach ($formacoes as $formacao) {
             $formacao['membro_id'] = $membroId;
             MembresiaFormacaoEclesiastica::updateOrCreate(
-                ['membro_id' => $membroId, 'curso_id' => $formacao['curso_id']], 
+                ['membro_id' => $membroId, 'curso_id' => $formacao['curso_id']],
                 $formacao
             );
+            $idsAtualizados[] = $formacao['curso_id'];
+        }
+
+        $idsParaRemover = array_diff($idsExistentes, $idsAtualizados);
+        if (!empty($idsParaRemover)) {
+            MembresiaFormacaoEclesiastica::where('membro_id', $membroId)
+                ->whereIn('curso_id', $idsParaRemover)
+                ->delete();
         }
     }
 
     private function handleUpdateMinisteriais(array $ministeriais, $membroId): void
     {
+
+        $updatedMinisterialIds = [];
+
         foreach ($ministeriais as $ministerial) {
             $ministerial['membro_id'] = $membroId;
-            MembresiaFuncaoMinisterial::updateOrCreate(
+            $ministerialModel = MembresiaFuncaoMinisterial::updateOrCreate(
                 [
                     'membro_id' => $membroId,
                     'setor_id' => $ministerial['setor_id'],
@@ -162,16 +177,25 @@ class TornarCongregadoService
                 ],
                 $ministerial
             );
+
+            $updatedMinisterialIds[] = $ministerialModel->id;
         }
+
+        MembresiaFuncaoMinisterial::where('membro_id', $membroId)
+            ->whereNotIn('id', $updatedMinisterialIds)
+            ->delete();
     }
 
-    
+
+
     public function findOne($id)
     {
         $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas'])
             ->where('id', $id)
             ->whereIn('vinculo', [MembresiaMembro::VINCULO_VISITANTE, MembresiaMembro::VINCULO_CONGREGADO])
-            ->firstOr(function () { throw new MembroNotFoundException('Visitante não encontrado', 404); });
+            ->firstOr(function () {
+                throw new MembroNotFoundException('Visitante não encontrado', 404);
+            });
 
         $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
         $funcoes = MembresiaTipoAtuacao::orderBy('descricao', 'asc')->get();
