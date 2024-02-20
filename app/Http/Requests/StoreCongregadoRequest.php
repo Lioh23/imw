@@ -26,6 +26,7 @@ class StoreCongregadoRequest extends FormRequest
     public function rules()
     {
         return [
+            'foto' => 'image|nullable|max:1999',
             'nome' => 'required',
             'sexo' => 'required',
             'data_nascimento' => ['required', new RangeDateRule],

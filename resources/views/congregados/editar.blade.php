@@ -18,12 +18,8 @@
   </style>
 @endsection
 @section('content')
+@include('extras.alerts-error-all')
 <div style="margin: 0px 23px;">
-  {{-- <div class="row">
-      <div class="col-md-12">
-          <h4>Novo Congregado</h4>
-      </div>
-  </div> --}}
   <form method="POST" action="{{ route('congregado.store') }}" enctype="multipart/form-data">
     @csrf
     <div class="row">
