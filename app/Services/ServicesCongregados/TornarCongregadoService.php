@@ -7,16 +7,35 @@ use App\Models\MembresiaContato;
 use App\Models\MembresiaCurso;
 use App\Models\MembresiaFamiliar;
 use App\Models\MembresiaFormacao;
+use App\Models\MembresiaFormacaoEclesiastica;
 use App\Models\MembresiaFuncaoEclesiastica;
+use App\Models\MembresiaFuncaoMinisterial;
 use App\Models\MembresiaMembro;
 use App\Models\MembresiaSetor;
+use App\Models\MembresiaTipoAtuacao;
 
 class TornarCongregadoService
 {
 
     public function execute(array $data): void
     {
-        $dataMembro = [
+        $dataMembro = $this->prepareMembroData($data);
+        $dataContato = $this->prepareContatoData($data);
+        $dataFamiliar = $this->prepareFamiliarData($data);
+        $dataFormacoes = $this->prepareFormacoesData($data);
+        $dataMinisteriais = $this->prepareMinisteriaisData($data);
+
+        $this->handleUpdateMembro($dataMembro);
+        $this->handleUpdateContato($dataContato);
+        $this->handleUpdateFamiliar($dataFamiliar);
+        $this->handleUpdateFormacoes($dataFormacoes, $data['membro_id']);
+        $this->handleUpdateMinisteriais($dataMinisteriais, $data['membro_id']);
+
+    }
+
+    private function prepareMembroData(array $data): array
+    {
+        return [
             'membro_id' => $data['membro_id'],
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
@@ -36,10 +55,12 @@ class TornarCongregadoService
             'data_batismo'  => $data['data_batismo'],
             'data_batismo_espirito'  => $data['data_batismo_espirito'],
             'vinculo'         => MembresiaMembro::VINCULO_CONGREGADO,
-
         ];
+    }
 
-        $dataContato = [
+    private function prepareContatoData(array $data): array
+    {
+        return [
             'membro_id' => $data['membro_id'],
             'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
             'telefone_alternativo'  => preg_replace('/[^0-9]/', '', $data['telefone_alternativo']),
@@ -55,8 +76,11 @@ class TornarCongregadoService
             'estado' => $data['estado'],
             'observacoes' => $data['observacoes'],
         ];
+    }
 
-        $dataFamiliar = [
+    private function prepareFamiliarData(array $data): array
+    {
+        return [
             'mae_nome' => $data['mae_nome'], 
             'pai_nome' => $data['pai_nome'], 
             'conjuge_nome' => $data['conjuge_nome'],
@@ -65,52 +89,92 @@ class TornarCongregadoService
             'historico_familiar' => $data['historico_familiar'],
             'membro_id' => $data['membro_id'],
         ];
+    }
 
-        $this->handleUpdateMembro($dataMembro);
-        $this->handleUpdateContato($dataContato);
-        $this->handleUpdateFamiliar($dataFamiliar);
+    private function prepareFormacoesData(array $data): array
+    {
+        $dataFormacoes = [];
+        if (isset($data['curso-nome'])) {
+            foreach ($data['curso-nome'] as $index => $nome) {
+                $dataFormacoes[] = [
+                    'curso_id' => $nome,
+                    'inicio' => $data['curso-data-inicio'][$index] ?? null,
+                    'termino' => $data['curso-data-conclusao'][$index] ?? null,
+                    'observacao' => $data['curso-observacao'][$index] ?? '',
+                ];
+            }
+        }
+        return $dataFormacoes;
+    }
+
+    private function prepareMinisteriaisData(array $data): array
+    {
+        $dataMinisteriais = [];
+        if (isset($data['ministerial-departamento'])) {
+            foreach ($data['ministerial-departamento'] as $index => $departamento) {
+                $dataMinisteriais[] = [
+                    'setor_id' => $departamento,
+                    'tipoatuacao_id' => $data['ministerial-funcao'][$index] ?? null,
+                    'data_entrada' => $data['ministerial-nomeacao'][$index] ?? null,
+                    'data_saida' => $data['ministerial-exoneracao'][$index] ?? null,
+                    'observacoes' => $data['ministerial-observacao'][$index] ?? '',
+                ];
+            }
+        }
+        return $dataMinisteriais;
     }
 
     private function handleUpdateMembro($data): void
     {
-        $membroId = $data['membro_id'];
-        $membro = MembresiaMembro::find($membroId);
-         if ($membro) {
-            $membro->update($data);
-         } else {
-             throw new \Exception("Registro não encontrado."); 
-        }
+        MembresiaMembro::updateOrCreate(['id' => $data['membro_id']], $data);
     }
 
     private function handleUpdateContato($data): void
     {
-        $membroId = $data['membro_id'];
-        MembresiaContato::updateOrCreate(
-            ['membro_id' => $membroId], 
-            $data 
-        );      
+        MembresiaContato::updateOrCreate(['membro_id' => $data['membro_id']], $data);
     }
 
     private function handleUpdateFamiliar($data): void
     {
-        $membroId = $data['membro_id'];
-        MembresiaFamiliar::updateOrCreate(
-            ['membro_id' => $membroId], 
-            $data 
-        );    
+        MembresiaFamiliar::updateOrCreate(['membro_id' => $data['membro_id']], $data);
     }
 
+    private function handleUpdateFormacoes(array $formacoes, $membroId): void
+    {
+        foreach ($formacoes as $formacao) {
+            $formacao['membro_id'] = $membroId;
+            MembresiaFormacaoEclesiastica::updateOrCreate(
+                ['membro_id' => $membroId, 'curso_id' => $formacao['curso_id']], 
+                $formacao
+            );
+        }
+    }
+
+    private function handleUpdateMinisteriais(array $ministeriais, $membroId): void
+    {
+        foreach ($ministeriais as $ministerial) {
+            $ministerial['membro_id'] = $membroId;
+            MembresiaFuncaoMinisterial::updateOrCreate(
+                [
+                    'membro_id' => $membroId,
+                    'setor_id' => $ministerial['setor_id'],
+                    'tipoatuacao_id' => $ministerial['tipoatuacao_id'],
+                ],
+                $ministerial
+            );
+        }
+    }
+
+    
     public function findOne($id)
     {
-        //With trazer relacionamentos definidos do model MembresiaMembro de forma prévia
         $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas'])
             ->where('id', $id)
             ->whereIn('vinculo', [MembresiaMembro::VINCULO_VISITANTE, MembresiaMembro::VINCULO_CONGREGADO])
             ->firstOr(function () { throw new MembroNotFoundException('Visitante não encontrado', 404); });
 
-        //Somente buscar informações do campo select
         $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
-        $funcoes = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();
+        $funcoes = MembresiaTipoAtuacao::orderBy('descricao', 'asc')->get();
         $cursos = MembresiaCurso::orderBy('nome', 'asc')->get();
         $formacoes = MembresiaFormacao::orderBy('descricao', 'asc')->get();
         $funcoesEclesiasticas = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();

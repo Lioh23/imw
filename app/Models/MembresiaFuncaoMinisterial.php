@@ -11,4 +11,12 @@ class MembresiaFuncaoMinisterial extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'membresia_funcoesministeriais';
+    protected $fillable = [
+        'data_entrada',
+        'data_saida',
+        'observacoes',
+        'membro_id',
+        'setor_id',
+        'tipoatuacao_id',
+    ];
 }
