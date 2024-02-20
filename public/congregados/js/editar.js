@@ -71,4 +71,32 @@ $(document).ready(function () {
     // Inicializar visibilidade dos botões
     atualizarBotoesMinisterial();
     atualizarBotoesFormacao();
+
+
+    //Foto Usuario
+    // Adiciona um evento de clique ao botão "upload-picture"
+    $('#upload-picture').click(function(event) {
+        event.preventDefault();
+        // Dispara o clique no elemento de entrada de arquivo
+        $('#upload-picture-input').click();
+    });
+
+    $('#upload-picture-input').change(function() {
+        // Verifica se o arquivo foi selecionado
+        var file = this.files[0];
+        var reader = new FileReader();
+        reader.onload = function(event) {
+            // Define a URL da imagem carregada como a fonte da imagem de visualização
+            $('#user-picture').attr('src', event.target.result);
+          };
+        reader.readAsDataURL(file);
+
+    });
+
+    // Retorna foto para o padrão
+    $('#delete-picture').click(function(event) {
+        event.preventDefault();
+        $('#user-picture').attr('src', "https://via.placeholder.com/150");
+        $('#upload-picture-input').val('');
+    });
 });
