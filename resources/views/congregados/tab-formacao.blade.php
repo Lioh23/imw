@@ -23,7 +23,6 @@
                                         {{ $curso->nome }}</option>
                                 @endforeach
                             </select>
-                            
                         </td>
                         <td>
                             <input type="date" class="form-control" name="curso-data-inicio[]" value="{{ $formacaoEclesiastica->inicio }}">

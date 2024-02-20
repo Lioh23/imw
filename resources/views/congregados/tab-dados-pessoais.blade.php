@@ -21,14 +21,6 @@
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
-    
-              <div class="col-xl-3">
-                <label for="cpf">* CPF</label>
-                <input type="text" class="form-control" id="cpf" name="cpf" value="{{ old('cpf', $pessoa->cpf) }}">
-                @error('cpf')
-                <span class="help-block text-danger">{{ $message }}</span>
-                @enderror
-              </div>
               
               <div class="col-xl-3">
                 <label for="nascimento">* Data de Nascimento</label>
@@ -37,9 +29,7 @@
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
-            </div>
-            
-            <div class="row mb-4">
+
               <div class="col-xl-3">
                 <label for="sexo">Sexo</label>
                 <select class="form-control" id="sexo" name="sexo">
@@ -51,6 +41,9 @@
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
+            </div>
+            
+            <div class="row mb-4">
     
               <div class="col-xl-3">
                 <label for="estado_civil">* Estado Civíl</label>
@@ -111,8 +104,7 @@
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
-              
-    
+
               <div class="col-xl-3">
                 <label for="uf">* UF</label>
                 <select class="form-control" id="uf" name="uf">
@@ -139,22 +131,106 @@
             </div>
             
             <div class="row mb-4">
-              {{-- 
-                Adicionar este campo quando for utilizar membros
-                    <div class="col-xl-3">
-                      <label for="rol">No. Rol</label>
-                      <input type="number" class="form-control" id="rol" name="rol" value="{{ old('rol') }}">
-                      @error('rol')
-                      <span class="help-block text-danger">{{ $message }}</span>
-                      @enderror
-                    </div> 
-              --}}
-    
               <div class="col-xl-3">
+                <label for="escolaridade_id">Escolaridade</label>
+                <select class="form-control" name="escolaridade_id" id="escolaridade_id">
+                  <option value="">Selecione</option>
+                  @foreach ($formacoes as $formacao)
+                      <option value="{{ $formacao->id }}"
+                        {{ $formacao->id == old('escolaridade_id', $pessoa->escolaridade_id) ? 'selected' : '' }}>
+                        {{ $formacao->descricao }}
+                      </option>
+                  @endforeach
+                </select>
+                @error('escolaridade_id')
+                  <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="col-xl-3">
+                <label for="profissao">Profissão</label>
+                <input type="text" class="form-control" id="profissao" name="profissao" value="{{ old('profissao', $pessoa->profissao) }}" >
+                @error('profissao')
+                  <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="col-xl-6">
+                <label for="funcao_eclesiastica_id">Função Eclesiástica</label>
+                <select class="form-control" name="funcao_eclesiastica_id" id="funcao_eclesiastica_id">
+                  <option value="">Selecione</option>
+                  @foreach ($funcoesEclesiasticas as $funcaoEclesiastica)
+                      <option value="{{ $funcaoEclesiastica->id }}"
+                        {{ $funcaoEclesiastica->id == old('funcao_eclesiastica_id', $pessoa->funcao_eclesiastica_id) ? 'selected' : '' }}>
+                        {{ $funcaoEclesiastica->descricao }}
+                      </option>
+                  @endforeach
+                </select>
+                @error('funcao_eclesiastica_id')
+                  <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+            </div>
+
+            <div class="row mb-4">
+              <div class="col-xl-3">
+                <label for="cpf">* CPF</label>
+                <input type="text" class="form-control" id="cpf" name="cpf" value="{{ old('cpf', $pessoa->cpf) }}">
+                @error('cpf')
+                <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="col-xl-3">
+                <label for="tipo_documento">Tipo Documento</label>
+                <select class="form-control" name="tipo_documento" id="tipo_documento">
+                  <option value="">Selecione</option>
+                  <option value="RG">RG</option>
+                  <option value="CNH">CNH</option>    
+                </select>
+                @error('tipo_documento')
+                  <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="col-xl-3">
+                <label for="documento">Documento</label>
+                <input type="text" class="form-control" id="documento" name="documento" value="{{ old('documento', $pessoa->documento) }}">
+                @error('documento')
+                  <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="col-xl-3">
+                <label for="documento_complemento">Complemento Documento</label>
+                <input type="text" class="form-control" id="documento_complemento" name="documento_complemento" value="{{ old('documento_complemento', $pessoa->documento_complemento) }}">
+                @error('documento_complemento')
+                <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-xl-4">
                 <label for="data_conversao">Data de Conversão</label>
                 <input type="date" class="form-control" id="data_conversao" name="data_conversao" value="{{ old('data_conversao', $pessoa->data_conversao) }}">
                 @error('data_conversao')
-                <span class="help-block text-danger">{{ $message }}</span>
+                  <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="col-xl-4">
+                <label for="data_batismo">Data de Batismo</label>
+                <input type="date" class="form-control" id="data_batismo" name="data_batismo" value="{{ old('data_batismo', $pessoa->data_batismo) }}">
+                @error('data_batismo')
+                  <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+
+              <div class="col-xl-4">
+                <label for="data_batismo_espirito">Data de Batismo Espirito Santo</label>
+                <input type="date" class="form-control" id="data_batismo_espirito" name="data_batismo_espirito" value="{{ old('data_batismo_espirito', $pessoa->data_batismo_espirito) }}">
+                @error('data_batismo_espirito')
+                  <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
             </div>

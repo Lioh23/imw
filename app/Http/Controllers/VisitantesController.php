@@ -49,7 +49,6 @@ class VisitantesController extends Controller
         }
     }
 
-
     public function novo()
     {
         return view('visitantes.create');

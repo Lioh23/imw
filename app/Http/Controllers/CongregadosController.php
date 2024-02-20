@@ -38,14 +38,17 @@ class CongregadosController extends Controller
             $pessoa = app(TornarCongregadoService::class)->findOne($id);
             
             return view('congregados.editar', [
-                'pessoa'      => $pessoa['pessoa'],
-                'ministerios' => $pessoa['ministerios'],
-                'funcoes'     => $pessoa['funcoes'],
-                'cursos'      => $pessoa['cursos']
+                'pessoa'               => $pessoa['pessoa'],
+                'ministerios'          => $pessoa['ministerios'],
+                'funcoes'              => $pessoa['funcoes'],
+                'cursos'               => $pessoa['cursos'],
+                'formacoes'            => $pessoa['formacoes'],
+                'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
             ]);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
         } catch(\Exception $e) {
+            dd($e);
             return redirect()->route('visitante.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
     }
