@@ -13,6 +13,8 @@ use App\Models\MembresiaFuncaoMinisterial;
 use App\Models\MembresiaMembro;
 use App\Models\MembresiaSetor;
 use App\Models\MembresiaTipoAtuacao;
+use Illuminate\Support\Facades\Storage;
+
 
 class TornarCongregadoService
 {
@@ -30,6 +32,24 @@ class TornarCongregadoService
         $this->handleUpdateFamiliar($dataFamiliar);
         $this->handleUpdateFormacoes($dataFormacoes, $data['membro_id']);
         $this->handleUpdateMinisteriais($dataMinisteriais, $data['membro_id']);
+
+        if (isset($data['foto'])) {
+            $this->handlePhotoUpload($data['foto'], $data['membro_id']);
+        }
+
+        
+    }
+
+    private function handlePhotoUpload($photo, $membroId)
+    {
+        $filePath = $photo->store('fotos', 'minio');
+        Storage::disk('minio')->setVisibility($filePath, 'public');
+
+        $membro = MembresiaMembro::find($membroId);
+        if ($membro) {
+            $membro->foto = Storage::disk('minio')->url($filePath);
+            $membro->save();
+        }
     }
 
     private function prepareMembroData(array $data): array
@@ -140,10 +160,10 @@ class TornarCongregadoService
 
     private function handleUpdateFormacoes(array $formacoes, $membroId): void
     {
-       
+
         $idsExistentes = MembresiaFormacaoEclesiastica::where('membro_id', $membroId)
-                          ->pluck('curso_id')->toArray();
-    
+            ->pluck('curso_id')->toArray();
+
         $idsAtualizados = [];
         foreach ($formacoes as $formacao) {
             $formacao['membro_id'] = $membroId;
