@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\RangeDateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCongregadoRequest extends FormRequest
@@ -24,9 +25,9 @@ class StoreCongregadoRequest extends FormRequest
     public function rules()
     {
         return [
-            'nome',
-            'sexo',
-            'data_nascimento',
+            'nome' => 'required',
+            'sexo' => 'required',
+            'data_nascimento' => ['required', new RangeDateRule],
             'estado_civil',
             'nacionalidade',
             'naturalidade',

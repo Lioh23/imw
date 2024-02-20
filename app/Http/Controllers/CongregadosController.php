@@ -6,6 +6,7 @@ use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreCongregadoRequest;
 use App\Services\ServicesCongregados\TornarCongregadoService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CongregadosController extends Controller
 {
@@ -17,8 +18,18 @@ class CongregadosController extends Controller
         return view('congregados.novo');
     }
 
-    public function store(StoreCongregadoRequest $request) {
-        dd($request->all());
+    public function store(StoreCongregadoRequest $request)
+    {
+       dd($request->all());
+       try {
+            DB::beginTransaction();
+            app(TornarCongregadoService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('visitante.novo')->with('success', 'Visitante cadastrado com sucesso.');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('visitante.novo')->with('error', 'Falha ao cadastrar o visitante.');
+       }
     }
 
     public function tornarCongregado($id) {

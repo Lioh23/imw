@@ -12,7 +12,7 @@ class MembresiaMembro extends Model
     use HasFactory, SoftDeletes, HasUuids;
 
     const VINCULO_VISITANTE = 'V';
-    const VINCLULO_CONGREGADO = 'C';
+    const VINCULO_CONGREGADO = 'C';
     const VINCULO_MEMBRO = 'M';
 
     protected $table = 'membresia_membros';
