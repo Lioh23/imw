@@ -7,7 +7,7 @@ use App\Models\InstituicoesTipoInstituicao;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class InstituicoesInstituicaoSeed extends Seeder
+class InstituicoesInstituicaoSeeder extends Seeder
 {
     public function run()
     {

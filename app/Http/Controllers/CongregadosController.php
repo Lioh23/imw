@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\MembroNotFoundException;
+use App\Http\Requests\StoreCongregadoRequest;
 use App\Services\ServicesCongregados\TornarCongregadoService;
 use Illuminate\Http\Request;
 
@@ -15,25 +17,26 @@ class CongregadosController extends Controller
         return view('congregados.novo');
     }
 
-    public function store(Request $request) {
+    public function store(StoreCongregadoRequest $request) {
         dd($request->all());
     }
 
     public function tornarCongregado($id) {
         
-        $pessoa = app(TornarCongregadoService::class)->findOne($id);
- 
-        if (!$pessoa['pessoa']) {
+        try {
+            $pessoa = app(TornarCongregadoService::class)->findOne($id);
+            
+            return view('congregados.editar', [
+                'pessoa'      => $pessoa['pessoa'],
+                'ministerios' => $pessoa['ministerios'],
+                'funcoes'     => $pessoa['funcoes'],
+                'cursos'      => $pessoa['cursos']
+            ]);
+        } catch(MembroNotFoundException $e) {
             return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
+        } catch(\Exception $e) {
+            return redirect()->route('visitante.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
-        
-        return view('congregados.editar', [
-            'pessoa' => $pessoa['pessoa'],
-             /* Populando Select */
-            'ministerios' => $pessoa['ministerios'],
-            'funcoes' => $pessoa['funcoes'],
-            'cursos' => $pessoa['cursos']
-        ]);
     }
 
     /*  public function salvar(Request $request)

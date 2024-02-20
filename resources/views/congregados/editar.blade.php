@@ -69,7 +69,7 @@
                 </li> --}}
             </ul>
             <div class="tab-content" id="borderTopContent">
-                @include('congregados.tab-dados-pessoal')
+                @include('congregados.tab-dados-pessoais')
                 @include('congregados.tab-familia')
                 @include('congregados.tab-contato')
                 @include('congregados.tab-ministerio')

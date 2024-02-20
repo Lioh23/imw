@@ -2,6 +2,7 @@
 
 namespace App\Services\ServicesCongregados;
 
+use App\Exceptions\MembroNotFoundException;
 use App\Models\MembresiaContato;
 use App\Models\MembresiaCurso;
 use App\Models\MembresiaFuncaoEclesiastica;
@@ -21,7 +22,7 @@ class TornarCongregadoService
         $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas'])
             ->where('id', $id)
             ->whereIn('vinculo', [MembresiaMembro::VINCULO_VISITANTE, MembresiaMembro::VINCLULO_CONGREGADO])
-            ->first();
+            ->firstOr(function () { throw new MembroNotFoundException('Visitante não encontrado', 404); });
 
         //Somente buscar informações do campo select
         $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();

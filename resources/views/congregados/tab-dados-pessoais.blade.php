@@ -15,7 +15,7 @@
           <div class="form-group @error('nome') has-error @enderror">
             <div class="row mb-4">
               <div class="col-xl-6">
-                <label for="nome">Nome</label>
+                <label for="nome">* Nome</label>
                 <input type="text" class="form-control" id="nome" name="nome" value="{{ old('nome', $pessoa->nome) }}">
                 @error('nome')
                 <span class="help-block text-danger">{{ $message }}</span>
@@ -23,7 +23,7 @@
               </div>
     
               <div class="col-xl-3">
-                <label for="cpf">CPF</label>
+                <label for="cpf">* CPF</label>
                 <input type="text" class="form-control" id="cpf" name="cpf" value="{{ old('cpf', $pessoa->cpf) }}">
                 @error('cpf')
                 <span class="help-block text-danger">{{ $message }}</span>
@@ -31,7 +31,7 @@
               </div>
               
               <div class="col-xl-3">
-                <label for="nascimento">Dia de Nascimento</label>
+                <label for="nascimento">* Data de Nascimento</label>
                 <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento', $pessoa->data_nascimento) }}" min="1900-01-01">
                 @error('nascimento')
                 <span class="help-block text-danger">{{ $message }}</span>
@@ -53,7 +53,7 @@
               </div>
     
               <div class="col-xl-3">
-                <label for="estado_civil">Estado Civíl</label>
+                <label for="estado_civil">* Estado Civíl</label>
                 <select class="form-control" id="estado_civil" name="estado_civil">
                   <option value="">Selecione</option>
                   <option value="S" {{ $pessoa->estado_civil == 'S' ? 'selected' : '' }}>Solteiro</option>
@@ -67,7 +67,7 @@
               </div>
               
               <div class="col-xl-3">
-                <label for="nacionalidade">Nacionalidade</label>
+                <label for="nacionalidade">* Nacionalidade</label>
                 <select class="form-control" id="nacionalidade" name="nacionalidade">
                   @php
                     //Colocar no banco de dados 
@@ -103,10 +103,18 @@
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
+
+              <div class="col-xl-3">
+                <label for="naturalidade">* Naturalidade</label>
+                <input type="text" class="form-control" id="naturalidade" name="naturalidade" value="{{ old('naturalidade', $pessoa->naturalidade) }}" >
+                @error('naturalidade')
+                  <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
               
     
               <div class="col-xl-3">
-                <label for="uf">UF</label>
+                <label for="uf">* UF</label>
                 <select class="form-control" id="uf" name="uf">
                   @php
                     //Colocar no banco de dados , esta estranho assim
@@ -152,10 +160,10 @@
             </div>
             <div class="row mb-4">
               <div class="col-xl-12">
-                <label for="historico">Histórico</label>
-                <textarea class="form-control" aria-label="With textarea" id="historico" name="historico" style="resize: none; overflow: auto;">{{ old('historico', $pessoa->historico) }}</textarea>
+                <label for="historico">Pastor Oficiante</label>
+                <input type="text" class="form-control" id="historico" name="historico" value="{{ old('historico', $pessoa->historico) }}">
                 @error('historico')
-                <span class="help-block text-danger">{{ $message }}</span>
+                  <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>            
             </div>
