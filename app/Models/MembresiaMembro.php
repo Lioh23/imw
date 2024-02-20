@@ -64,5 +64,7 @@ class MembresiaMembro extends Model
         return $this->hasMany(MembresiaFuncaoMinisterial::class, 'membro_id');
     }
 
-   
+    public function formacoesEclesiasticas() {
+        return $this->hasMany(MembresiaFormacaoEclesiastica::class, 'membro_id');
+    }
 }
