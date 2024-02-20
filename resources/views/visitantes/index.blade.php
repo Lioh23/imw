@@ -108,7 +108,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $visitantes->links() }}
+                    {{ $visitantes->links('vendor.pagination.index') }}
                 @endif
             </div>
         </div>
