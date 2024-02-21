@@ -48,14 +48,14 @@
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            <div class="row mb-4">
+            <form class="row mb-4">
                 <div class="col-4">
-                    <input type="text" id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar...">
+                    <input type="text" name="search" id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar...">
                 </div>
                 <div class="col-auto" style="margin-left: -19px;">
-                    <button id="searchButton" class="btn btn-primary btn-rounded" type="button">Pesquisar</button>
+                    <button type="submit" id="searchButton" class="btn btn-primary btn-rounded">Pesquisar</button>
                 </div>
-            </div>
+            </form>
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover mb-4">
                     <thead>
