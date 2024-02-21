@@ -5,6 +5,25 @@
     ['text' => 'Congregados', 'url' => '/congregado/', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
+
+@section('extras-css')
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+    .swal2-popup .swal2-styled.swal2-cancel {
+        color: white!important;
+    }
+</style>
+@endsection
+
+@section('extras-scripts')
+<script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+@endsection
+
 @section('content')
 @include('extras.alerts')
 <div class="container-fluid">
@@ -47,48 +66,47 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Vinicius de Oliveira Almeida</td>
-                            <td>VILA RICA</td>
-                            <td class="text-center">
-                                <button title="Editar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                    </svg>
-                                </button>
-                                <button title="Apagar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Giselle Cristine Medeiros de Carvalho</td>
-                            <td>CAJUEIRO</td>
-                            <td class="text-center">
-                                <button title="Editar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                    </svg>
-                                </button>
-                                <button title="Apagar" class="btn btn-sm btn-secundary mr-2 btn-rounded">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
-                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                                    </svg>
-                                </button>
-                            </td>
-                        </tr>
+                        @foreach ($congregados as $index => $congregado)
+                            <tr>
+                                <td>{{ $congregado->nome }}</td>
+                                <td>{{ optional($congregado->congregacao)->nome }}</td>
+                                <td class="text-center">
+                                    <a href="{{ route('congregado.editar', $congregado->id) }}" title="Editar" class="btn btn-sm btn-dark mr-2 btn-rounded">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
+                                    </a>
+                                    <form action="{{ route('congregado.deletar', $congregado->id) }}" method="POST" style="display: none;" id="form_delete_congregado_{{ $index }}">
+                                        @csrf
+                                        @method('DELETE')
+                                    </form>   
+                                    <button title="Apagar" class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete" data-form-id="form_delete_congregado_{{ $index }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
+                                    </button>
+                                </td>
+                            </tr>
+                        @endforeach
                     </tbody>
                 </table>
+                {{ $congregados->links('vendor.pagination.index') }}
             </div>
         </div>
     </div>
 </div>
+
+<script>
+    $('.btn-confirm-delete').on('click', function () {
+        const formId = $(this).data('form-id')
+        swal({
+            title: 'Deseja realmente apagar os registros deste congregado?',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+            confirmButtonColor: "#d33",
+            cancelButtonText: "Cancelar",
+            cancelButtonColor: "#3085d6",
+            padding: '2em'
+        }).then(function(result) {
+            if(result.value) document.getElementById(formId).submit()
+        })
+    })
+</script>
 @endsection

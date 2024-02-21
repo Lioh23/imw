@@ -4,14 +4,16 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreCongregadoRequest;
+use App\Services\ServicesCongregados\ListCongregadosService;
 use App\Services\ServicesCongregados\TornarCongregadoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class CongregadosController extends Controller
 {
-    public function index() {
-        return view('congregados.index');
+    public function index(Request $request) {
+        $congregados = app(ListCongregadosService::class)->execute($request->get('search'));
+        return view('congregados.index', compact('congregados'));
     }
 
     public function novo() {
@@ -49,9 +51,18 @@ class CongregadosController extends Controller
         } catch(MembroNotFoundException $e) {
             return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
         } catch(\Exception $e) {
-            dd($e);
             return redirect()->route('visitante.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
+    }
+
+    public function editar($id)
+    {
+        # TODO
+    }
+
+    public function deletar($id)
+    {
+        # TODO
     }
 
     /*  public function salvar(Request $request)

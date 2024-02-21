@@ -52,6 +52,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [CongregadosController::class, 'index'])->name('index');
         Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo');
         Route::post('/salvar', [CongregadosController::class, 'store'])->name('store');
+        Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar');
+        Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar');
         Route::get('/tornar-congregado/{id}', [CongregadosController::class, 'tornarCongregado'])->name('tornarCongregado');
     });
 });

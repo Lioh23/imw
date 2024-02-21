@@ -67,4 +67,9 @@ class MembresiaMembro extends Model
     public function formacoesEclesiasticas() {
         return $this->hasMany(MembresiaFormacaoEclesiastica::class, 'membro_id');
     }
+
+    public function congregacao()
+    {
+        return $this->belongsTo(CongregacoesCongregacao::class, 'congregacao_id');
+    }
 }
