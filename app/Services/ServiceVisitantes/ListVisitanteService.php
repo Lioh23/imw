@@ -1,10 +1,8 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\ServiceVisitantes;
 
-use App\Models\MembresiaContato;
 use App\Models\MembresiaMembro;
-use Illuminate\Support\Facades\Auth;
 
 class ListVisitanteService
 {

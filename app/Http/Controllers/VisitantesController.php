@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVisitanteRequest;
 use App\Http\Requests\UpdateVisitanteRequest;
-use App\Services\DeletarVisitanteService;
-use App\Services\EditarVisitanteService;
-use App\Services\ListVisitanteService;
-use App\Services\StoreVisitanteService;
+use App\Services\ServiceMembrosGeral\DeletarMembroService;
+use App\Services\ServiceVisitantes\EditarVisitanteService;
+use App\Services\ServiceVisitantes\ListVisitanteService;
+use App\Services\ServiceVisitantes\StoreVisitanteService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -42,9 +42,10 @@ class VisitantesController extends Controller
     }
 
     public function deletar($id) {
-        if (app(DeletarVisitanteService::class)->execute($id)) {
+        try {
+            app(DeletarMembroService::class)->execute($id);
             return redirect()->route('visitante.index')->with('success', 'Visitante deletado com sucesso.');
-        } else {
+        } catch(\Exception $e) {
             return back()->with('error', 'Falha ao deletar o visitante.');
         }
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreCongregadoRequest;
+use App\Services\ServiceMembrosGeral\DeletarMembroService;
 use App\Services\ServicesCongregados\ListCongregadosService;
 use App\Services\ServicesCongregados\TornarCongregadoService;
 use Illuminate\Http\Request;
@@ -62,7 +63,12 @@ class CongregadosController extends Controller
 
     public function deletar($id)
     {
-        # TODO
+        try {
+            app(DeletarMembroService::class)->execute($id);
+            return redirect()->route('congregado.index')->with('success', 'Congregado deletado com sucesso.');
+        } catch(\Exception $e) {
+            return back()->with('error', 'Falha ao deletar o congregado.');
+        }
     }
 
     /*  public function salvar(Request $request)
