@@ -56,11 +56,6 @@ class CongregadosController extends Controller
         }
     }
 
-    public function editar($id)
-    {
-        # TODO
-    }
-
     public function deletar($id)
     {
         try {
