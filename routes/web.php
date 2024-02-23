@@ -55,6 +55,5 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/store', [CongregadosController::class, 'store'])->name('store');
         Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar');
         Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar');
-        Route::get('/tornar-congregado/{id}', [CongregadosController::class, 'editar'])->name('editar');
     });
 });

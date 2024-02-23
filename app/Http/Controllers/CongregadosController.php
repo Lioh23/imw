@@ -8,6 +8,7 @@ use App\Services\ServiceMembrosGeral\DeletarMembroService;
 use App\Services\ServicesCongregados\EditarCongregadoService;
 use App\Services\ServicesCongregados\ListCongregadosService;
 use App\Services\ServicesCongregados\NovoCongregadoService;
+use App\Services\ServicesCongregados\SalvarCongregadoService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -42,13 +43,15 @@ class CongregadosController extends Controller
     {
        try {
             DB::beginTransaction();
-            app(EditarCongregadoService::class)->execute($request->all());
+            $membroID = app(SalvarCongregadoService::class)->execute($request->all());
             DB::commit();
-            return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
+            return redirect()->action([CongregadosController::class, 'editar'], ['id' => $membroID])->with('success', 'Registro atualizado.');
         } catch(\Exception $e) {
+
+        } catch(\Exception $e) {
+            dd($e);
             DB::rollback();
-            return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha ao atualizar os dados.');
-       
+            return redirect()->route('congregado.index')->with('success', 'Falha na criação do registro.');
         }
     }
 
@@ -60,8 +63,9 @@ class CongregadosController extends Controller
             DB::commit();
             return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
         } catch(\Exception $e) {
+            dd($e);
             DB::rollback();
-            return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha ao atualizar os dados.');
+            return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
        
         }
     }
@@ -91,9 +95,9 @@ class CongregadosController extends Controller
     {
         try {
             app(DeletarMembroService::class)->execute($id);
-            return redirect()->route('congregado.index')->with('success', 'Congregado deletado com sucesso.');
+            return redirect()->route('congregado.index')->with('success', 'Registro deletado com sucesso.');
         } catch(\Exception $e) {
-            return back()->with('error', 'Falha ao deletar o congregado.');
+            return back()->with('error', 'Falha ao deletar o registro.');
         }
     }
 
