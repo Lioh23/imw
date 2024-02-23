@@ -3,7 +3,7 @@
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Secretaria', 'url' => '/', 'active' => false],
     ['text' => 'Congregados', 'url' => '/congregado/', 'active' => false],
-    ['text' => 'Tornar Congregado', 'url' => '#', 'active' => true]
+    ['text' => 'Incluir', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 
 @endsection
@@ -66,11 +66,11 @@
                 </li> --}}
             </ul>
             <div class="tab-content" id="borderTopContent">
-                @include('congregados.tab-dados-pessoais')
-                @include('congregados.tab-familia')
-                @include('congregados.tab-contato')
-                @include('congregados.tab-ministerio')
-                @include('congregados.tab-formacao')
+                @include('congregados.novo.tab-dados-pessoais')
+                @include('congregados.novo.tab-familia')
+                @include('congregados.novo.tab-contato')
+                @include('congregados.novo.tab-ministerio')
+                @include('congregados.novo.tab-formacao')
            {{--      @include('congregados.tab-historico') --}}
             </div>
           </div>

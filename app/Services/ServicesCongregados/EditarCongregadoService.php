@@ -16,7 +16,7 @@ use App\Models\MembresiaTipoAtuacao;
 use Illuminate\Support\Facades\Storage;
 
 
-class TornarCongregadoService
+class EditarCongregadoService
 {
 
     public function execute(array $data): void
@@ -27,16 +27,15 @@ class TornarCongregadoService
         $dataFormacoes = $this->prepareFormacoesData($data);
         $dataMinisteriais = $this->prepareMinisteriaisData($data);
 
-        $this->handleUpdateMembro($dataMembro);
-        $this->handleUpdateContato($dataContato);
-        $this->handleUpdateFamiliar($dataFamiliar);
-        $this->handleUpdateFormacoes($dataFormacoes, $data['membro_id']);
-        $this->handleUpdateMinisteriais($dataMinisteriais, $data['membro_id']);
+        $membroID = $this->handleUpdateMembro($dataMembro);
+        $this->handleUpdateContato($dataContato, $membroID);
+        $this->handleUpdateFamiliar($dataFamiliar, $membroID);
+        $this->handleUpdateFormacoes($dataFormacoes, $membroID);
+        $this->handleUpdateMinisteriais($dataMinisteriais, $membroID);
 
         if (isset($data['foto'])) {
-            $this->handlePhotoUpload($data['foto'], $data['membro_id']);
+            $this->handlePhotoUpload($data['foto'], $membroID);
         }
-
         
     }
 
@@ -143,19 +142,20 @@ class TornarCongregadoService
         return $dataMinisteriais;
     }
 
-    private function handleUpdateMembro($data): void
+    private function handleUpdateMembro($data)
     {
-        MembresiaMembro::updateOrCreate(['id' => $data['membro_id']], $data);
+        $membresia = MembresiaMembro::updateOrCreate(['id' => $data['membro_id']], $data);
+        return $membresia->id;
     }
 
-    private function handleUpdateContato($data): void
+    private function handleUpdateContato($data, $membroId): void
     {
-        MembresiaContato::updateOrCreate(['membro_id' => $data['membro_id']], $data);
+        MembresiaContato::updateOrCreate(['membro_id' => $membroId], $data);
     }
 
-    private function handleUpdateFamiliar($data): void
+    private function handleUpdateFamiliar($data, $membroId): void
     {
-        MembresiaFamiliar::updateOrCreate(['membro_id' => $data['membro_id']], $data);
+        MembresiaFamiliar::updateOrCreate(['membro_id' => $membroId], $data);
     }
 
     private function handleUpdateFormacoes(array $formacoes, $membroId): void
