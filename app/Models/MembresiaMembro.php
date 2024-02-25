@@ -72,4 +72,9 @@ class MembresiaMembro extends Model
     {
         return $this->belongsTo(CongregacoesCongregacao::class, 'congregacao_id');
     }
+
+    public function rolPermanente()
+    {
+        return $this->hasMany(MembresiaRolPermanente::class, 'membro_id');
+    }
 }

@@ -28,7 +28,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', [MembrosController::class, 'index'])->name('index');
         Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar');
         Route::get('receber-novo/{id}', [MembrosController::class, 'receberNovo'])->name('receber_novo');
-        Route::post('receber-novo-store/{id}', [MembrosController::class, 'receberNovoStore'])->name('receber_novo_store');
+        Route::post('receber-novo-store/{id}', [MembrosController::class, 'storeReceberNovo'])->name('receber_novo_store');
         Route::post('atualizar/{id}', [MembrosController::class, 'update'])->name('update');
     });
 
