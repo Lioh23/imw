@@ -6,11 +6,14 @@ use App\Exceptions\MembroNotFoundException;
 use App\Exceptions\ReceberNovoMembroException;
 use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\UpdateMembroRequest;
+use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
 use App\Services\ServiceMembrosGeral\ListMembrosService;
+use App\Services\ServiceMembrosGeral\UpdateMembroService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class MembrosController extends Controller
 {
@@ -41,7 +44,17 @@ class MembrosController extends Controller
 
     public function update(UpdateMembroRequest $request, $id)
     {   
-        dd($request->all());
+        try {
+            DB::beginTransaction();
+            app(UpdateMembroService::class)->execute($request->all(), MembresiaMembro::VINCULO_MEMBRO);
+            DB::commit();
+            return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
+        } catch(\Exception $e) {
+            dd($e);
+            DB::rollback();
+            return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
+       
+        }
     }
 
     public function receberNovo($id)

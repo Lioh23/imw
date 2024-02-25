@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreCongregadoRequest;
+use App\Models\MembresiaMembro;
 use App\Services\ServiceMembrosGeral\DeletarMembroService;
+use App\Services\ServiceMembrosGeral\UpdateMembroService;
 use App\Services\ServicesCongregados\EditarCongregadoService;
 use App\Services\ServicesCongregados\ListCongregadosService;
 use App\Services\ServicesCongregados\NovoCongregadoService;
@@ -59,7 +61,7 @@ class CongregadosController extends Controller
     {
        try {
             DB::beginTransaction();
-            app(EditarCongregadoService::class)->execute($request->all());
+            app(UpdateMembroService::class)->execute($request->all(), MembresiaMembro::VINCULO_CONGREGADO);
             DB::commit();
             return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
         } catch(\Exception $e) {
@@ -74,7 +76,7 @@ class CongregadosController extends Controller
     public function editar($id) {
         
         try {
-            $pessoa = app(EditarCongregadoService::class)->findOne($id);
+            $pessoa = app(UpdateMembroService::class)->findOne($id);
             
             return view('congregados.editar.index', [
                 'pessoa'               => $pessoa['pessoa'],

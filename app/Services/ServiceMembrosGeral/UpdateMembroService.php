@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ServicesCongregados;
+namespace App\Services\ServiceMembrosGeral;
 
 use App\Exceptions\MembroNotFoundException;
 use App\Models\MembresiaContato;
@@ -16,12 +16,12 @@ use App\Models\MembresiaTipoAtuacao;
 use Illuminate\Support\Facades\Storage;
 
 
-class EditarCongregadoService
+class UpdateMembroService
 {
 
-    public function execute(array $data): void
+    public function execute(array $data, $vinculo): void
     {
-        $dataMembro = $this->prepareMembroData($data);
+        $dataMembro = $this->prepareMembroData($data, $vinculo);
         $dataContato = $this->prepareContatoData($data);
         $dataFamiliar = $this->prepareFamiliarData($data);
         $dataFormacoes = $this->prepareFormacoesData($data);
@@ -50,7 +50,7 @@ class EditarCongregadoService
         }
     }
 
-    private function prepareMembroData(array $data): array
+    private function prepareMembroData(array $data, $vinculo): array
     {
         return [
             'membro_id' => $data['membro_id'],
@@ -71,7 +71,7 @@ class EditarCongregadoService
             'data_conversao'  => $data['data_conversao'],
             'data_batismo'  => $data['data_batismo'],
             'data_batismo_espirito'  => $data['data_batismo_espirito'],
-            'vinculo'         => MembresiaMembro::VINCULO_CONGREGADO,
+            'vinculo'         => $vinculo,
         ];
     }
 
@@ -199,7 +199,7 @@ class EditarCongregadoService
                     ],
                     $ministerial
                 );
-    
+
                 $updatedMinisterialIds[] = $ministerialModel->id;
             }
         }
@@ -207,32 +207,5 @@ class EditarCongregadoService
         MembresiaFuncaoMinisterial::where('membro_id', $membroId)
             ->whereNotIn('id', $updatedMinisterialIds)
             ->delete();
-    }
-
-
-
-    public function findOne($id)
-    {
-        $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas'])
-            ->where('id', $id)
-            ->whereIn('vinculo', [MembresiaMembro::VINCULO_VISITANTE, MembresiaMembro::VINCULO_CONGREGADO])
-            ->firstOr(function () {
-                throw new MembroNotFoundException('Visitante não encontrado', 404);
-            });
-
-        $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
-        $funcoes = MembresiaTipoAtuacao::orderBy('descricao', 'asc')->get();
-        $cursos = MembresiaCurso::orderBy('nome', 'asc')->get();
-        $formacoes = MembresiaFormacao::orderBy('descricao', 'asc')->get();
-        $funcoesEclesiasticas = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();
-
-        return [
-            'pessoa'               => $pessoa,
-            'ministerios'          => $ministerios,
-            'funcoes'              => $funcoes,
-            'cursos'               => $cursos,
-            'formacoes'            => $formacoes,
-            'funcoesEclesiasticas' => $funcoesEclesiasticas,
-        ];
     }
 }
