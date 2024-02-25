@@ -22,7 +22,7 @@ class LeitorCsvService
             })
             ->map(fn ($row) => $row->map(function ($value) {
                 if ($value == '\0') return null;
-                if ($value == 'true' || $value == 'false') return $value == 'true' ? true : false;
+                if (mb_strtolower($value) == 'true' || mb_strtolower($value) == 'false') return mb_strtolower($value) == 'true' ? true : false;
                 return $value;
             }))
             ->sortBy('id')

@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('naturalidade', 50)->nullable();
             $table->string('uf', 2)->nullable();
             $table->text('historico')->nullable();
-            $table->string('cpf')->nullable();
+            $table->string('cpf')->nullable()->unique();
             $table->foreignId('distrito_id')->nullable()->constrained('instituicoes_instituicoes');
             $table->foreignId('igreja_id')->nullable()->constrained('instituicoes_instituicoes');
             $table->foreignId('regiao_id')->nullable()->constrained('instituicoes_instituicoes');
