@@ -37,4 +37,22 @@ class MembresiaRolPermanente extends Model
     {
         return $this->belongsTo(InstituicoesInstituicao::class, 'igreja_id');
     }
+
+    public function modoExclusao()
+    {
+        return $this->belongsTo(MembresiaSituacao::class, 'modo_exclusao_id');
+    }
+
+    public function modoRecepcao()
+    {
+        return $this->belongsTo(MembresiaSituacao::class, 'modo_recepcao_id');
+    }
+
+    public function clerigo() {
+        return $this->belongsTo(PessoasPessoa::class, 'clerigo_id');
+    }
+
+    public function congregacao() {
+        return $this->belongsTo(CongregacoesCongregacao::class, 'congregacao_id');
+    }
 }
