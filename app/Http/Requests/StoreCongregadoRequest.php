@@ -37,7 +37,7 @@ class StoreCongregadoRequest extends FormRequest
             'nacionalidade' => 'required',
             'naturalidade' => 'required',
             'uf' => 'required',
-            'cpf' => ['required', 'unique:cpf', new ValidaCPF],
+            'cpf' => ['required', 'unique:membresia_membros', new ValidaCPF],
             'email_preferencial' => 'email|nullable',
             'email_alternativo' => 'email|nullable',
             'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/'],
