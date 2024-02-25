@@ -7,6 +7,7 @@ use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
+use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use Illuminate\Http\Request;
 
 class MembrosController extends Controller
@@ -45,8 +46,14 @@ class MembrosController extends Controller
         }
     }
 
-    public function StoreReceberNovo(StoreReceberNovoMembroRequest $request)
+    public function storeReceberNovo(StoreReceberNovoMembroRequest $request, $id)
     {
-        
+        try {
+            app(StoreReceberNovoMembroService::class)->execute($request->all(), $id);
+
+            return redirect()->route('membro.editar', ['id' => $id])->with('success', 'Novo membro recebido com sucesso!');
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao tentar receber novo membro');
+        }
     }
 }

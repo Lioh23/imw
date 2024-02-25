@@ -1,17 +1,20 @@
 @extends('template.layout')
+
 @section('breadcrumb')
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Secretaria', 'url' => '/', 'active' => false],
     ['text' => 'Membros', 'url' => '/membro/', 'active' => false],
     ['text' => 'Recebimento de Novo Membro', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
-
 @endsection
+
 @section('extras-css')
   <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
 @endsection
-@section('content')
 
+@include('extras.alerts')
+
+@section('content')
   <div class="statbox widget box box-shadow">
     <div class="widget-header">
         <div class="row">
