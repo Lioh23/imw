@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\MembroNotFoundException;
 use App\Exceptions\ReceberNovoMembroException;
 use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\UpdateMembroRequest;
-use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
-use App\Services\ServicesMembrosGeral\ListMembrosService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
-
+use App\Services\ServiceMembrosGeral\EditarMembroService;
+use App\Services\ServiceMembrosGeral\ListMembrosService;
 use Illuminate\Http\Request;
 
 class MembrosController extends Controller
@@ -21,12 +21,27 @@ class MembrosController extends Controller
   
     public function editar($id)
     {
-        return view('membros.editar');
+        try {
+            $pessoa = app(EditarMembroService::class)->findOne($id);
+            
+            return view('membros.editar.index', [
+                'pessoa'               => $pessoa['pessoa'],
+                'ministerios'          => $pessoa['ministerios'],
+                'funcoes'              => $pessoa['funcoes'],
+                'cursos'               => $pessoa['cursos'],
+                'formacoes'            => $pessoa['formacoes'],
+                'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
+            ]);
+        } catch(MembroNotFoundException $e) {
+            return redirect()->route('membros.index')->with('error', 'Registro não encontrado.');
+        } catch(\Exception $e) {
+            return redirect()->route('membros.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+        }
     }
 
-    public function update(UpdateMembroRequest $request)
-    {
-        
+    public function update(UpdateMembroRequest $request, $id)
+    {   
+        dd($request->all());
     }
 
     public function receberNovo($id)

@@ -13,22 +13,16 @@
                  </tr>
              </thead>
              <tbody id="historico-tbody">
+               @foreach($pessoa->rolPermanente as $rolPermanente)
+                  <tr class="{{ $rolPermanente->status == 'A' ? 'tr-green' : ($rolPermanente->status == 'D' ? 'tr-red' : 'tr-red') }}">
+                     <td>27/06/2004</td>
+                     <td>Recebimento</td>
+                     <td>Adesão</td>
+                     <td>{{ $rolPermanente->igreja->nome }}</td>
+                     <td>-</td>
+                     <td>-</td>
                   <tr>
-                     <td class="text-success">27/06/2004</td>
-                     <td class="text-success">Recebimento</td>
-                     <td class="text-success">Adesão</td>
-                     <td class="text-success">IMW Gardênia Azul( Rio de Janeiro - RJ)</td>
-                     <td class="text-success">-</td>
-                     <td class="text-success">-</td>
-                  <tr>
-                  <tr>
-                     <td class="text-danger">04/02/2005</td>
-                     <td class="text-danger">Exclusão</td>
-                     <td class="text-danger">Abandono</td>
-                     <td class="text-danger">IMW Gardênia Azul( Rio de Janeiro - RJ)</td>
-                     <td class="text-danger">-</td>
-                     <td class="text-danger">-</td>
-                  <tr>
+               @endforeach
              </tbody>
          </table>
       </div>

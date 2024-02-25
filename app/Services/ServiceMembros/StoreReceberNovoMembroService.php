@@ -28,7 +28,7 @@ class StoreReceberNovoMembroService
 
     private function fetchCreateParams($params)
     {
-        $params['status']      = MembresiaRolPermanente::STATUS_ATIVO;
+        $params['status']      = MembresiaRolPermanente::STATUS_ADESAO;
         $params['regiao_id']   = Auth::user()->regioes->first()->id;
         $params['distrito_id'] = Auth::user()->distritos->first()->id;
         $params['igreja_id']   = Auth::user()->igrejasLocais->first()->id;

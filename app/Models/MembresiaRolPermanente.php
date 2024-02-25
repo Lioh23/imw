@@ -10,8 +10,9 @@ class MembresiaRolPermanente extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const STATUS_ATIVO = 'A';
-    const STATUS_INATIVO = 'I';
+    const STATUS_ADESAO = 'A';
+    const STATUS_DESISTENCIA = 'D';
+    const STATUS_EXCLUSAO = 'E';
 
     protected $table = 'membresia_rolpermanente';
 
@@ -30,4 +31,10 @@ class MembresiaRolPermanente extends Model
         'regiao_id',
         'congregacao_id'
     ];
+
+    
+    public function igreja()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'igreja_id');
+    }
 }

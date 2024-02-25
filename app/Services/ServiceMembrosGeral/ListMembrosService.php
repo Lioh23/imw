@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Services\ServicesMembrosGeral;
+namespace App\Services\ServiceMembrosGeral;
 
 use App\Models\MembresiaMembro;
 
