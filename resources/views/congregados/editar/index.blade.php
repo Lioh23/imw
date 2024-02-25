@@ -79,6 +79,11 @@
 
     <div class="form-group mt-4" style="margin-top: -25px !important;">
       <button type="submit" title="Salvar como congregado" class="btn btn-primary btn-lg ml-4">Salvar</button>
+      @if ($pessoa->vinculo == App\Models\MembresiaMembro::VINCULO_CONGREGADO)
+        <a href="{{ route('membro.receber_novo', ['id' => $pessoa->id]) }}" title="Receber Congregado como membro" class="btn btn-warning btn-lg ml-4">
+          Receber este Congregado como Membro
+        </a>
+      @endif
   </div>
 
 </form>
