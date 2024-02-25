@@ -9,6 +9,7 @@ use App\Services\ServiceVisitantes\EditarVisitanteService;
 use App\Services\ServiceVisitantes\ListVisitanteService;
 use App\Services\ServiceVisitantes\StoreVisitanteService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VisitantesController extends Controller
@@ -57,7 +58,9 @@ class VisitantesController extends Controller
 
     public function store(StoreVisitanteRequest $request)
     {
+        dd(Auth::user()->igrejasLocais);
        try {
+        
             DB::beginTransaction();
             app(StoreVisitanteService::class)->execute($request->all());
             DB::commit();

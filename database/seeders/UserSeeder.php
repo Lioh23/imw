@@ -24,8 +24,8 @@ class UserSeeder extends Seeder
             'password' => Hash::make('sk8namao'), // Utilize uma senha segura
         ]);
 
-        // UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 1]); // regiao
-        // UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 2]); // distrito
-        // UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 3]); // igreja
+         UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 13]); // regiao
+         UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 33]); // distrito
+         UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 2686]); // igreja
     }
 }

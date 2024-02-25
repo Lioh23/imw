@@ -111,7 +111,7 @@
 
         <!-- END GLOBAL MANDATORY SCRIPTS -->
         @yield('extras-scripts')
-        <script>
+       {{--  <script>
             $(document).ready(function() {
                 // Restaurar o estado do menu e submenu após a recarga
                 const menuAtivo = localStorage.getItem('menuAtivo');
@@ -138,7 +138,7 @@
                     localStorage.setItem('menuAtivo', href);
                 });
             });
-        </script>
+        </script> --}}
 
 
 </body>
