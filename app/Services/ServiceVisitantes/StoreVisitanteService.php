@@ -10,7 +10,7 @@ class StoreVisitanteService
 {
     public function execute(array $data): void
     {
-        
+
         $dataMembro = [
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],

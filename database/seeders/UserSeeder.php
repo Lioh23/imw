@@ -25,7 +25,7 @@ class UserSeeder extends Seeder
         ]);
 
          UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 13]); // regiao
-         UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 33]); // distrito
-         UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 2686]); // igreja
+         UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 1758]); // distrito
+         UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 2215]); // igreja
     }
 }

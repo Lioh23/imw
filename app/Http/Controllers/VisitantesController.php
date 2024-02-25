@@ -58,9 +58,7 @@ class VisitantesController extends Controller
 
     public function store(StoreVisitanteRequest $request)
     {
-        dd(Auth::user()->igrejasLocais);
-       try {
-        
+       try {        
             DB::beginTransaction();
             app(StoreVisitanteService::class)->execute($request->all());
             DB::commit();
