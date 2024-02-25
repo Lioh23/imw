@@ -21,8 +21,9 @@ class DatabaseSeeder extends Seeder
         $this->call(MembresiaCursoSeeder::class);
         $this->call(InstituicoesTipoInstituicaoSeeder::class);
         // $this->call(InstituicoesInstituicaoSeeder::class);
-        $this->call(UserSeeder::class);
         $this->call(MembresiaFormacaoSeeder::class);
         $this->call(ControleImportacaoCsvSeeder::class);
+        $this->call(ImportacoesCsvSeeder::class);
+        $this->call(UserSeeder::class);
     }
 }

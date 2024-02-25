@@ -18,7 +18,7 @@ class LeitorCsvService
         $collect = $content
             ->filter(fn ($row) => strlen($row))
             ->map(function ($row) use ($header) {
-                if(strlen($row)) return $header->combine(str_getcsv(CsvImportUtils::clearStr($row),';', '"'));
+                if(strlen($row)) return $header->combine(str_getcsv($row,';', '"'));
             })
             ->map(fn ($row) => $row->map(function ($value) {
                 if ($value == '\0') return null;

@@ -21,7 +21,7 @@ trait CsvImportUtils
         return preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $str);
     }
 
-    public static function import($collection, $controle)
+    public static function import($collection, $controle): bool
     {
         $conn = DB::connection();
         $conn->beginTransaction();
@@ -33,11 +33,11 @@ trait CsvImportUtils
             $conn->table('controle_importacoes_csv')->where('id', $controle->id)->update(['executed' => true]);
             $conn->commit();
             $conn->statement('SET FOREIGN_KEY_CHECKS=1;');
-            dd("Importação para {$controle->target_table} Realizada com sucesso!");
+            return true;
         } catch(\Exception $e) {
             $conn->rollBack();
             $conn->statement('SET FOREIGN_KEY_CHECKS=1;');
-            dd($e->getMessage());
+            return false;
         }        
     }
 }

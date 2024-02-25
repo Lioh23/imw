@@ -43,7 +43,7 @@ class ImportacaoService
                 ];
             });
 
-        CsvImportUtils::import($collection, $controle);
+        return CsvImportUtils::import($collection, $controle);
     }
 
     public static function congregacoes($collectOld, $controle)
@@ -77,7 +77,7 @@ class ImportacaoService
             ];
         });
 
-        CsvImportUtils::import($collection, $controle);
+        return CsvImportUtils::import($collection, $controle);
     }
 }
 
