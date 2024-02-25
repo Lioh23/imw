@@ -7,13 +7,14 @@ use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
+use App\Services\ServicesMembrosGeral\ListMembrosService;
 use Illuminate\Http\Request;
 
 class MembrosController extends Controller
 {
-    public function index()
-    {
-        return view('membros.index');
+    public function index(Request $request) {
+        $membros = app(ListMembrosService::class)->execute($request->get('search'));
+        return view('membros.index', compact('membros'));
     }
   
     public function editar($id)

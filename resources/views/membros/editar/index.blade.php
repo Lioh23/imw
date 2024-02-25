@@ -2,22 +2,26 @@
 @section('breadcrumb')
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Membros', 'url' => '/membro/', 'active' => false],
+    ['text' => 'Membro', 'url' => '/membro/', 'active' => false],
     ['text' => 'Editar', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 
 @endsection
 @section('extras-css')
   <link href="{{ asset('theme/assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet" type="text/css" />
+  <style> 
+    .centralizado {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+  </style>
 @endsection
 @section('content')
+@include('extras.alerts-error-all')
+@include('extras.alerts')
 <div style="margin: 0px 23px;">
-  {{-- <div class="row">
-      <div class="col-md-12">
-          <h4>Novo Congregado</h4>
-      </div>
-  </div> --}}
-  <form method="POST" action="{{ route('congregado.store') }}" enctype="multipart/form-data">
+  <form method="POST" action="{{ route('membro.update') }}" enctype="multipart/form-data">
     @csrf
     <div class="row">
       <div class="col-md-12">
@@ -54,28 +58,29 @@
                     Formação Eclesiática
                   </a>
                 </li>
-                <li class="nav-item">
+                {{-- <li class="nav-item">
                   <a class="nav-link" id="border-top-historicoeclesiastico" data-toggle="tab" href="#border-top-historico" role="tab" aria-controls="border-top-historico" aria-selected="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg> 
                     Histórico Eclesiástico
                   </a>
-                </li>
+                </li> --}}
             </ul>
             <div class="tab-content" id="borderTopContent">
-                @include('membros.tab-dados-pessoal')
-                @include('membros.tab-familia')
-                @include('membros.tab-contato')
-                @include('membros.tab-ministerio')
-                @include('membros.tab-formacao')
-                @include('membros.tab-historico')
+                @include('membros.editar.tab-dados-pessoais')
+                @include('membros.editar.tab-familia')
+                @include('membros.editar.tab-contato')
+                @include('membros.editar.tab-ministerio')
+                @include('membros.editar.tab-formacao')
+           {{-- @include('membros.tab-historico') --}}
             </div>
           </div>
       </div>
     </div>
 
-    <div class="form-group mt-4">
-      <button type="submit" class="btn btn-primary">Salvar</button>
+    <div class="form-group mt-4" style="margin-top: -25px !important;">
+      <button type="submit" title="Salvar" class="btn btn-primary btn-lg ml-4">Atualizar</button>
   </div>
+
 </form>
 </div>
 @endsection
