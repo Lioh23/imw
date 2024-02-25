@@ -20,7 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(MembresiaFuncaoEclesiasticaSeeder::class);
         $this->call(MembresiaCursoSeeder::class);
         $this->call(InstituicoesTipoInstituicaoSeeder::class);
-        // $this->call(InstituicoesInstituicaoSeeder::class);
         $this->call(MembresiaFormacaoSeeder::class);
         $this->call(ControleImportacaoCsvSeeder::class);
         $this->call(ImportacoesCsvSeeder::class);
