@@ -7,8 +7,11 @@ use App\Exceptions\MembroNotFoundException;
 use App\Exceptions\ReceberNovoMembroException;
 use App\Exceptions\ReintegrarMembroException;
 use App\Http\Requests\DeletarMembroRequest;
+use App\Http\Requests\StoreDisciplinarRequest;
 use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\StoreReintegracaoRequest;
+use App\Http\Requests\StoreTransferenciaExternaRequest;
+use App\Http\Requests\StoreTransferenciaInternaRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\DeletarMembroService;
@@ -152,5 +155,47 @@ class MembrosController extends Controller
         } catch(\Exception $e) {
             return redirect()->back()->with('error', 'Erro ao tentar reintegrar o membro');
         }
+    }
+
+    public function transferenciaInterna($id)
+    {
+        try {
+
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao abrir a página de Transferência Interna');
+        }
+    }
+
+    public function storeTransferenciaInterna(StoreTransferenciaInternaRequest $request, $id)
+    {
+        
+    }
+
+    public function transferenciaExterna($id)
+    {
+        try {
+
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao abrir a página de Transferência Externa');
+        }
+    }
+
+    public function storeTransferenciaExterna(StoreTransferenciaExternaRequest $request, $id)
+    {
+
+    }
+
+    public function disciplinar($id)
+    {
+        try {
+
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao abrir a página de Disciplinar');
+        }
+    }
+
+    public function storeDisciplinar(StoreDisciplinarRequest $request, $id)
+    {
+
     }
 }
