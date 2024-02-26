@@ -6,6 +6,25 @@
     ]">
     </x-breadcrumb>
 @endsection
+
+@section('extras-css')
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+
+<style>
+    .swal2-popup .swal2-styled.swal2-cancel {
+        color: white!important;
+    }
+</style>
+@endsection
+
+@section('extras-scripts')
+<script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+@endsection
+
 @section('content')
     <div class="container-fluid">
         <button type="button" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
@@ -111,4 +130,21 @@
             </div>
         </div>
     </div>
+    <script>
+        $('.btn-confirm-delete').on('click', function () {
+            const formId = $(this).data('form-id')
+            swal({
+                title: 'Deseja realmente apagar os registros deste membro?',
+                type: 'error',
+                showCancelButton: true,
+                confirmButtonText: "Deletar",
+                confirmButtonColor: "#d33",
+                cancelButtonText: "Cancelar",
+                cancelButtonColor: "#3085d6",
+                padding: '2em'
+            }).then(function(result) {
+                if(result.value) document.getElementById(formId).submit()
+            })
+        })
+    </script>
 @endsection

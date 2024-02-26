@@ -6,17 +6,17 @@
 ]"></x-breadcrumb>
 @endsection
 
-@section('extras-css')
-<link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
-<link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    @section('extras-css')
+    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
 
-<style>
-    .swal2-popup .swal2-styled.swal2-cancel {
-        color: white!important;
-    }
-</style>
-@endsection
+    <style>
+        .swal2-popup .swal2-styled.swal2-cancel {
+            color: white!important;
+        }
+    </style>
+    @endsection
 
 @section('extras-scripts')
 <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
