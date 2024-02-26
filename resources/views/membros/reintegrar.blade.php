@@ -4,7 +4,7 @@
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Secretaria', 'url' => '/', 'active' => false],
     ['text' => 'Membros', 'url' => '/membro/', 'active' => false],
-    ['text' => 'Recebimento de Novo Membro', 'url' => '#', 'active' => true]
+    ['text' => 'Reintegrar Membro', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
 
