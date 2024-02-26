@@ -77,4 +77,19 @@ class MembresiaMembro extends Model
     {
         return $this->hasMany(MembresiaRolPermanente::class, 'membro_id');
     }
+
+    public function ultimaAdesao()
+    {
+        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id')
+                    ->where('status', MembresiaRolPermanente::STATUS_ADESAO)
+                    ->latest('dt_recepcao');
+    }
+
+    public function ultimaExclusao()
+    {
+        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id')
+                    ->where('status', MembresiaRolPermanente::STATUS_EXCLUSAO)
+                    ->latest('dt_recepcao');
+    }
+
 }

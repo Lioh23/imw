@@ -3,7 +3,8 @@
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Secretaria', 'url' => '/', 'active' => false],
         ['text' => 'Membros', 'url' => '/membros/', 'active' => true],
-    ]"></x-breadcrumb>
+    ]">
+    </x-breadcrumb>
 @endsection
 @section('content')
     <div class="container-fluid">
@@ -12,16 +13,16 @@
             <span class="badge badge-warning counter">146</span>
         </button>
         <!-- <button type="button" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
-            <span>DESLIGADOS</span>
-            <span class="badge badge-danger counter">146</span>
-        </button> -->
+                        <span>DESLIGADOS</span>
+                        <span class="badge badge-danger counter">146</span>
+                    </button> -->
         <button type="button" class="btn btn-info position-relative mt-3 mb-3 ml-2">
             <span>ROL PERMANENTE</span>
             <span class="badge badge-info counter">594</span>
         </button>
         <!-- <button type="button" class="btn btn-success position-relative mt-3 mb-3 ml-2">
-            <span>ESTATÍSTICA</span>
-        </button> -->
+                        <span>ESTATÍSTICA</span>
+                    </button> -->
     </div>
     <!-- TABELA -->
     <div class="col-lg-12 col-12 layout-spacing">
@@ -58,9 +59,19 @@
                         <tbody>
                             @foreach ($membros as $index => $membro)
                                 <tr>
-                                    <td>{{ $membro->rol_atual }}</td>
+                                    <td>{{ optional($membro->ultimaAdesao ?? null)->numero_rol }}</td>
                                     <td>{{ $membro->nome }}</td>
-                                    <td>{{ optional($membro->congregacao)->nome }}</td>
+                                    <td>
+                                        @if (isset($membro->ultimaAdesao) && !is_null($membro->ultimaAdesao->dt_recepcao))
+                                            {{ \Carbon\Carbon::parse($membro->ultimaAdesao->dt_recepcao)->format('d/m/Y') }}
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if (isset($membro->ultimaExclusao) && !is_null($membro->ultimaExclusao->dt_recepcao))
+                                            {{ \Carbon\Carbon::parse($membro->ultimaExclusao->dt_exclusao)->format('d/m/Y') }}
+                                        @endif
+                                    </td>
+                                    <td>{{ optional($membro->ultimaAdesao ?? null)->congregacao->nome }}</td>
                                     <td class="text-center">
                                         <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
                                             class="btn btn-sm btn-dark mr-2 btn-rounded">
@@ -78,7 +89,7 @@
                                         </form>
                                         <button title="Apagar"
                                             class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
-                                            data-form-id="form_delete_congregado_{{ $index }}">
+                                            data-form-id="form_delete_membro_{{ $index }}">
                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                                 stroke-linecap="round" stroke-linejoin="round"

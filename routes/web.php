@@ -30,6 +30,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('receber-novo/{id}', [MembrosController::class, 'receberNovo'])->name('receber_novo');
         Route::post('receber-novo-store/{id}', [MembrosController::class, 'storeReceberNovo'])->name('receber_novo_store');
         Route::post('atualizar/{id}', [MembrosController::class, 'update'])->name('update');
+        Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar');
     });
 
     Route::controller(HomeController::class)->group(function () {

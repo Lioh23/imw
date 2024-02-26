@@ -55,4 +55,5 @@ class MembresiaRolPermanente extends Model
     public function congregacao() {
         return $this->belongsTo(CongregacoesCongregacao::class, 'congregacao_id');
     }
+    
 }
