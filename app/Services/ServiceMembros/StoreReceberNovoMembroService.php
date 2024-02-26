@@ -17,7 +17,11 @@ class StoreReceberNovoMembroService
 
             DB::beginTransaction();
             $pessoa = MembresiaMembro::find($id);
-            $pessoa->update(['vinculo' => MembresiaMembro::VINCULO_MEMBRO]);
+            $pessoa->update([
+                'vinculo' => MembresiaMembro::VINCULO_MEMBRO, 
+                'rol_atual' => $params['numero_rol'], 
+                'congregacao_id' => $params['congregacao_id']
+            ]);
             $pessoa->rolPermanente()->create($params);
             DB::commit();
         } catch (\Exception $e) {

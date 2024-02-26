@@ -59,5 +59,25 @@
                 </tbody>
             </table>
         </div>
+        <div class="row">
+            <div class="col-12">
+                <a href="#" class="btn btn-secondary">
+                    <x-bx-transfer-alt/>
+                    Transferir
+                </a>
+                <a href="#" class="btn btn-warning">
+                    <x-bx-block/>
+                    Disciplinar
+                </a>
+                <a href="{{ route('membro.tela_excluir', ['id' => $pessoa->id]) }}" class="btn btn-danger">
+                    <x-bx-minus-circle/>
+                    Excluir
+                </a>
+                <a href="#" class="btn btn-primary">
+                    <x-bx-transfer-alt/>
+                    Transferir Internamente
+                </a>
+            </div>
+        </div>
     </blockquote>
 </div>
