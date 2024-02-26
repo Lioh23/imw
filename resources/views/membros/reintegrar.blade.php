@@ -25,12 +25,17 @@
     </div>
 
     <div class="widget-content widget-content-area">
-      <form class="form-vertical" method="POST" action="{{ route('membro.receber_novo.store', ['id' => $pessoa->id]) }}" enctype="multipart/form-data">
+      <form class="form-vertical" method="POST" action="{{ route('membro.reintegrar.store', ['id' => $pessoa->id]) }}" enctype="multipart/form-data">
         @csrf
         <div class="row">
           <div class="col-md-12">
             <div class="alert alert-warning border-0 mb-4" role="alert">
-              <strong>Esta ação não pode ser revertida. Após receber este congregado como membro, o mesmo estará listado no menu de membros e não mais em congregados</strong>
+              <strong>
+                ATENÇÃO!!! Esta ação não pode ser revertida.<br> 
+                Após Reintegrar este membro DESLIGADO ao Rol Atual, ou seja, membros ativos, por Reconciliação ou Adesão o
+                mesmo passará a ser listado no menu de membros em ROL Atual e só deixará de ser ativo se for novamente Excluído
+                ou Transferido
+              </strong>
             </div> 
           </div>
         </div>
@@ -49,7 +54,7 @@
 
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
-            <label class="control-label">* Data de Recepção:</label>
+            <label class="control-label">* Data de Reintegração:</label>
           </div>
           <div class="col-lg-6">
             <input type="date" class="form-control @error('dt_recepcao') is-invalid @enderror" id="dt_recepcao" name="dt_recepcao" value="{{ old('dt_recepcao') }}" placeholder="ex: 31/12/2000">

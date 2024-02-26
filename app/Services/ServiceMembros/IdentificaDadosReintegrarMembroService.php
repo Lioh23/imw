@@ -25,8 +25,9 @@ class IdentificaDadosReintegrarMembroService
 
     private function fetchPessoa($id)
     {
-        return MembresiaMembro::where('id', $id)
-            ->where('vinculo', MembresiaMembro::VINCULO_CONGREGADO)
+        return MembresiaMembro::onlyTrashed()
+            ->where('id', $id)
+            ->where('vinculo', MembresiaMembro::VINCULO_MEMBRO)
             ->firstOr(fn () => throw new ReceberNovoMembroException());
     }
 

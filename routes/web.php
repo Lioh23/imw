@@ -28,10 +28,12 @@ Route::middleware(['auth'])->group(function () {
         Route::get('', [MembrosController::class, 'index'])->name('index');
         Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar');
         Route::get('receber-novo/{id}', [MembrosController::class, 'receberNovo'])->name('receber_novo');
-        Route::post('receber-novo-store/{id}', [MembrosController::class, 'storeReceberNovo'])->name('receber_novo_store');
+        Route::post('receber-novo-store/{id}', [MembrosController::class, 'storeReceberNovo'])->name('receber_novo.store');
         Route::post('atualizar/{id}', [MembrosController::class, 'update'])->name('update');
-        Route::delete('/deletar/{id}', [MembrosController::class, 'deletar'])->name('deletar');
         Route::get('excluir/{id}', [MembrosController::class, 'telaExcluir'])->name('tela_excluir');
+        Route::delete('deletar/{id}', [MembrosController::class, 'deletar'])->name('deletar');
+        Route::get('reintegrar/{id}', [MembrosController::class, 'reintegrar'])->name('reintegrar');
+        Route::post('reintegrar/store/{id}', [MembrosController::class, 'storeReintegracao'])->name('reintegrar.store');
     });
 
     Route::controller(HomeController::class)->group(function () {
