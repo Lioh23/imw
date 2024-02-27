@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\RangeDateRule;
 use App\Rules\ValidaCPF;
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCongregadoRequest extends FormRequest
@@ -25,6 +26,8 @@ class StoreCongregadoRequest extends FormRequest
      */
     public function rules()
     {
+        $membroId = $this->input('membro_id');
+        
         return [
             'foto' => 'image|nullable|max:1999',
             'nome' => 'required',
@@ -37,7 +40,12 @@ class StoreCongregadoRequest extends FormRequest
             'nacionalidade' => 'required',
             'naturalidade' => 'required',
             'uf' => 'required',
-            'cpf' => ['required', 'unique:membresia_membros', new ValidaCPF],
+            /* 'cpf' => ['required', 'unique:membresia_membros', new ValidaCPF], */
+            'cpf' => [
+                'required',
+                Rule::unique('membresia_membros')->ignore($membroId),
+                new ValidaCPF,
+            ],
             'email_preferencial' => 'email|nullable',
             'email_alternativo' => 'email|nullable',
             'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/'],
