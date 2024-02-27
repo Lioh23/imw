@@ -19,6 +19,7 @@ use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReintegrarMembroService;
+use App\Services\ServiceMembros\IdentificaDadosTransferenciaInternaService;
 use App\Services\ServiceMembros\IdentificaDadosTransferenciaPorExclusaoService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReintegracaoService;
@@ -163,8 +164,15 @@ class MembrosController extends Controller
     public function transferenciaInterna($id)
     {
         try {
+            $data = app(IdentificaDadosTransferenciaInternaService::class)->execute($id);
 
+            $pessoa       = $data['pessoa'];
+            $congregacoes = $data['congregacoes'];
+            $pastores     = $data['pastores'];
+
+            return view('membros.transferencia_interna', compact('pessoa', 'congregacoes', 'pastores'));
         } catch(\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Erro ao abrir a página de Transferência Interna');
         }
     }
