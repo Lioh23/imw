@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreCongregadoRequest;
+use App\Http\Requests\UpdateCongregadoRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembrosGeral\DeletarMembroService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
@@ -58,7 +59,7 @@ class CongregadosController extends Controller
         }
     }
 
-    public function update(StoreCongregadoRequest $request)
+    public function update(UpdateCongregadoRequest $request)
     {
        try {
             DB::beginTransaction();
