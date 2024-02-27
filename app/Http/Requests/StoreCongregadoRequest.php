@@ -40,18 +40,20 @@ class StoreCongregadoRequest extends FormRequest
             'nacionalidade' => 'required',
             'naturalidade' => 'required',
             'uf' => 'required',
-            /* 'cpf' => ['required', 'unique:membresia_membros', new ValidaCPF], */
-            'cpf' => [
-                'required',
-                Rule::unique('membresia_membros')->ignore($membroId),
-                new ValidaCPF,
-            ],
+            'cpf' => ['required', Rule::unique('membresia_membros')->ignore($membroId), new ValidaCPF],
             'email_preferencial' => 'email|nullable',
             'email_alternativo' => 'email|nullable',
             'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/'],
             'telefone_alternativo' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/'],
             'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/'],
             'data_casamento' => [new RangeDateRule],
+        ];
+    }
+
+    public function messages()
+    {
+        return [
+            'cpf.unique' => 'Este CPF já está sendo utilizado por outra pessoa'
         ];
     }
 }
