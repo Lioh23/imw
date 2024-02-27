@@ -53,4 +53,11 @@ class StoreCongregadoRequest extends FormRequest
             'data_casamento' => [new RangeDateRule],
         ];
     }
+
+    public function messages()
+    {
+        return [
+            'cpf.unique' => 'Este CPF já está sendo utilizado por outra pessoa'
+        ];
+    }
 }
