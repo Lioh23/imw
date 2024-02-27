@@ -40,7 +40,6 @@ class StoreCongregadoRequest extends FormRequest
             'nacionalidade' => 'required',
             'naturalidade' => 'required',
             'uf' => 'required',
-            /* 'cpf' => ['required', 'unique:membresia_membros', new ValidaCPF], */
             'cpf' => [
                 'required',
                 Rule::unique('membresia_membros')->ignore($membroId),
