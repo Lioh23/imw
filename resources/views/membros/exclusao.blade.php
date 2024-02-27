@@ -25,15 +25,15 @@
     </div>
 
     <div class="widget-content widget-content-area">
-      <form class="form-vertical" method="POST" action="{{ route('membro.deletar', ['id' => $pessoa->id]) }}" enctype="multipart/form-data">
+      <form class="form-vertical" method="POST" action="{{ route('membro.exclusao.store', ['id' => $pessoa->id]) }}" enctype="multipart/form-data">
         @csrf
         @method('DELETE')
         <div class="row">
           <div class="col-md-12">
             <div class="alert alert-danger border-0 mb-4" role="alert">
               <strong>
-                  ATENÇÃO!!! Esta ação não pode ser revertida <br>
-                  Após excluir este membro, o mesmo não será mais listado no ROL. Atual no menu de membros, apenas no rol Permanente e Desligados não sendo mais possível alterar seus dados
+                ATENÇÃO!!! Esta ação não pode ser revertida <br>
+                Após excluir este membro, o mesmo não será mais listado no ROL. Atual no menu de membros, apenas no rol Permanente e Desligados não sendo mais possível alterar seus dados
               </strong>
             </div> 
           </div>
@@ -44,7 +44,7 @@
             <label class="control-label">* Data de Exclusão:</label>
           </div>
           <div class="col-lg-6">
-            <input type="date" class="form-control @error('dt_exclusao') is-invalid @enderror" id="dt_exclusao" name="dt_exclusao" value="{{ old('dt_exclusao') }}" placeholder="ex: 31/12/2000">
+            <input type="date" class="form-control @error('dt_exclusao') is-invalid @enderror" id="dt_exclusao" name="dt_exclusao" value="{{ old('dt_exclusao', date('Y-m-d')) }}" placeholder="ex: 31/12/2000">
             @error('dt_exclusao')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -86,6 +86,9 @@
         </div> 
 
         <div class="form-group mt-4">
+          <a href="{{ route('membro.editar', ['id' => $pessoa->id]) }}" class="btn btn-secondary">
+            <x-bx-arrow-back/> Voltar
+          </a>
           <button type="submit" class="btn btn-primary">Salvar</button>
         </div>
       </form>

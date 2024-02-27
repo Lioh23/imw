@@ -6,6 +6,7 @@ use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreCongregadoRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembrosGeral\DeletarMembroService;
+use App\Services\ServiceMembrosGeral\EditarMembroService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;
 use App\Services\ServicesCongregados\EditarCongregadoService;
 use App\Services\ServicesCongregados\ListCongregadosService;
@@ -65,18 +66,16 @@ class CongregadosController extends Controller
             DB::commit();
             return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
         } catch(\Exception $e) {
-            dd($e);
             DB::rollback();
             return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
        
         }
     }
-
     
-    public function editar($id) {
-        
+    public function editar($id) 
+    {    
         try {
-            $pessoa = app(UpdateMembroService::class)->findOne($id);
+            $pessoa = app(EditarMembroService::class)->findOne($id);
             
             return view('congregados.editar.index', [
                 'pessoa'               => $pessoa['pessoa'],

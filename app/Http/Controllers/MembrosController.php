@@ -10,7 +10,7 @@ use App\Http\Requests\DeletarMembroRequest;
 use App\Http\Requests\StoreDisciplinarRequest;
 use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\StoreReintegracaoRequest;
-use App\Http\Requests\StoreTransferenciaExternaRequest;
+use App\Http\Requests\StoreExclusaoPorTransferenciaRequest;
 use App\Http\Requests\StoreTransferenciaInternaRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
@@ -18,6 +18,7 @@ use App\Services\ServiceMembros\DeletarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReintegrarMembroService;
+use App\Services\ServiceMembros\IdentificaDadosTransferenciaPorExclusaoService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReintegracaoService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
@@ -98,7 +99,7 @@ class MembrosController extends Controller
         }
     }
 
-    public function telaExcluir($id)
+    public function exclusao($id)
     {
         try {
             $data = app(IdentificaDadosExcluirMembroService::class)->execute($id);
@@ -108,15 +109,16 @@ class MembrosController extends Controller
             $pastores     = $data['pastores'];
             $modos        = $data['modos'];
     
-            return view('membros.excluir', compact('pessoa', 'sugestaoRol', 'pastores', 'modos'));
+            return view('membros.exclusao', compact('pessoa', 'sugestaoRol', 'pastores', 'modos'));
         } catch(IdentificaDadosExcluirMembroException $e) {
             return redirect()->back()->with('error', 'Erro ao tentar abrir a tela de exclusão de membro');
-        } catch(\Exception) {
+        } catch(\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Erro ao tentar abrir a tela de exclusão de membro');
         }
     }
 
-    public function deletar(DeletarMembroRequest $request, $id)
+    public function storeExclusao(DeletarMembroRequest $request, $id)
     {
         try {
             app(DeletarMembroService::class)->execute($request->all(), $id);
@@ -171,16 +173,23 @@ class MembrosController extends Controller
         
     }
 
-    public function transferenciaExterna($id)
+    public function exclusaoPorTransferencia($id)
     {
         try {
+            $data = app(IdentificaDadosTransferenciaPorExclusaoService::class)->execute($id);
 
+            $pessoa   = $data['pessoa'];
+            $pastores = $data['pastores'];
+            $igrejas  = $data['igrejas'];
+
+            return view('membros.exclusao_transferencia', compact('pessoa', 'pastores', 'igrejas'));
         } catch(\Exception $e) {
-            return redirect()->back()->with('error', 'Erro ao abrir a página de Transferência Externa');
+            dd($e);
+            return redirect()->back()->with('error', 'Erro ao abrir a página de Transferência Por Exclusão');
         }
     }
 
-    public function storeTransferenciaExterna(StoreTransferenciaExternaRequest $request, $id)
+    public function storeExclusaoPorTransferencia(StoreExclusaoPorTransferenciaRequest $request, $id)
     {
 
     }

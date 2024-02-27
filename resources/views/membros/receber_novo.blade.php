@@ -52,7 +52,7 @@
             <label class="control-label">* Data de Recepção:</label>
           </div>
           <div class="col-lg-6">
-            <input type="date" class="form-control @error('dt_recepcao') is-invalid @enderror" id="dt_recepcao" name="dt_recepcao" value="{{ old('dt_recepcao') }}" placeholder="ex: 31/12/2000">
+            <input type="date" class="form-control @error('dt_recepcao') is-invalid @enderror" id="dt_recepcao" name="dt_recepcao" value="{{ old('dt_recepcao', date('Y-m-d')) }}" placeholder="ex: 31/12/2000">
             @error('dt_recepcao')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
@@ -111,6 +111,10 @@
         </div> 
 
         <div class="form-group mt-4">
+          <a href="{{ route('congregado.editar', ['id' => $pessoa->id]) }}" class="btn btn-secondary">
+            <x-bx-arrow-back/>
+            Voltar
+          </a>
           <button type="submit" class="btn btn-primary">Salvar</button>
         </div>
       </form>

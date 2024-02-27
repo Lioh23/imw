@@ -30,14 +30,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('receber-novo/{id}', [MembrosController::class, 'receberNovo'])->name('receber_novo');
         Route::post('receber-novo-store/{id}', [MembrosController::class, 'storeReceberNovo'])->name('receber_novo.store');
         Route::post('atualizar/{id}', [MembrosController::class, 'update'])->name('update');
-        Route::get('excluir/{id}', [MembrosController::class, 'telaExcluir'])->name('tela_excluir');
-        Route::delete('deletar/{id}', [MembrosController::class, 'deletar'])->name('deletar');
+        Route::get('exclusao/{id}', [MembrosController::class, 'exclusao'])->name('exclusao');
+        Route::delete('exclusao/store/{id}', [MembrosController::class, 'storeExclusao'])->name('exclusao.store');
         Route::get('reintegrar/{id}', [MembrosController::class, 'reintegrar'])->name('reintegrar');
         Route::post('reintegrar/store/{id}', [MembrosController::class, 'storeReintegracao'])->name('reintegrar.store');
         Route::get('transferencia/interna/{id}', [MembrosController::class, 'transferenciaInterna'])->name('transferencia_interna');
         Route::post('transferencia/interna/store/{id}', [MembrosController::class, 'storeTransferenciaInterna'])->name('transferencia_interna.store');
-        Route::get('transferencia/externa/{id}', [MembrosController::class, 'transferenciaExterna'])->name('transferencia_externa');
-        Route::post('transferencia/externa/store/{id}', [MembrosController::class, 'storeTransferenciaExterna'])->name('transferencia_externa.store');
+        Route::get('exclusao/transferencia/{id}', [MembrosController::class, 'exclusaoPorTransferencia'])->name('exclusao_transferencia');
+        Route::post('exclusao/transferencia/store/{id}', [MembrosController::class, 'storeExclusaoPorTransferencia'])->name('exclusao_transferencia.store');
         Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar');
         Route::get('disciplinar/store/{id}', [MembrosController::class, 'storeDisciplinar'])->name('disciplinar.store');
         

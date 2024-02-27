@@ -61,21 +61,17 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <a href="{{ route('membro.transferencia_externa', ['id' => $pessoa->id]) }}" class="btn btn-secondary">
-                    <x-bx-transfer-alt/>
-                    Transferir
+                <a href="{{ route('membro.exclusao_transferencia', ['id' => $pessoa->id]) }}" class="btn btn-secondary">
+                    <x-bx-transfer-alt/> Transferir
                 </a>
                 <a href="{{ route('membro.disciplinar', ['id' => $pessoa->id]) }}" class="btn btn-warning">
-                    <x-bx-block/>
-                    Disciplinar
+                    <x-bx-block/> Disciplinar
                 </a>
-                <a href="{{ route('membro.tela_excluir', ['id' => $pessoa->id]) }}" class="btn btn-danger">
-                    <x-bx-minus-circle/>
-                    Excluir
+                <a href="{{ route('membro.exclusao', ['id' => $pessoa->id]) }}" class="btn btn-danger">
+                    <x-bx-minus-circle/> Excluir
                 </a>
                 <a href="{{ route('membro.transferencia_interna', ['id' => $pessoa->id]) }}" class="btn btn-primary">
-                    <x-bx-transfer-alt/>
-                    Transferir Internamente
+                    <x-bx-transfer-alt/> Transferir Internamente
                 </a>
             </div>
         </div>

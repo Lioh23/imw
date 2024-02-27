@@ -15,12 +15,10 @@ use Illuminate\Support\Facades\Storage;
 
 class EditarMembroService
 {
-
     public function findOne($id)
     {
         $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas'])
             ->where('id', $id)
-            ->whereIn('vinculo', [MembresiaMembro::VINCULO_MEMBRO, MembresiaMembro::VINCULO_CONGREGADO])
             ->firstOr(function () {
                 throw new MembroNotFoundException('Registro não encontrado', 404);
             });
