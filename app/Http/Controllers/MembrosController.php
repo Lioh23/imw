@@ -15,6 +15,7 @@ use App\Http\Requests\StoreTransferenciaInternaRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\DeletarMembroService;
+use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReintegrarMembroService;
@@ -197,7 +198,13 @@ class MembrosController extends Controller
     public function disciplinar($id)
     {
         try {
+            $data = app(IdentificaDadosDisciplinaService::class)->execute($id);
 
+            $pessoa   = $data['pessoa'];
+            $pastores = $data['pastores'];
+            $modos    = $data['modos'];
+
+            return view('membros.disciplinar', compact('pessoa', 'pastores', 'modos'));
         } catch(\Exception $e) {
             return redirect()->back()->with('error', 'Erro ao abrir a página de Disciplinar');
         }
