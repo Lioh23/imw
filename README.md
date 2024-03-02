@@ -9,7 +9,8 @@
 * [Equipe IMW](#imw)
 
 <h4 id="tutorialpipeLine">Tutorial PipeLine</h4>
-https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
+
+<a href="https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184">Link do tutorial</p>
 
 <ol>
     <li>crie uma pasta em seu projeto .github/workflows</li>
