@@ -3,36 +3,26 @@
 
 # Índice 
 
-* [Título e Imagem de capa](#Título-e-Imagem-de-capa)
-* [Badges](#badges)
-* [Índice](#índice)
-* [Descrição do Projeto](#descrição-do-projeto)
-* [Status do Projeto](#status-do-Projeto)
-* [Funcionalidades e Demonstração da Aplicação](#funcionalidades-e-demonstração-da-aplicação)
-* [Acesso ao Projeto](#acesso-ao-projeto)
-* [Tecnologias utilizadas](#tecnologias-utilizadas)
-* [Pessoas Contribuidoras](#pessoas-contribuidoras)
-* [Pessoas Desenvolvedoras do Projeto](#pessoas-desenvolvedoras)
-* [Licença](#licença)
-* [Conclusão](#conclusão)
+* [TutorialPipeLine](#tutorialpipeLine)
+* [Instalar Projeto no Linux Amazon 2](#amazonlinux)
 
-Tutorial PipeLine
+<h4 id="tutorialpipeLine">Tutorial PipeLine</h4>
 https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
 
-
-1. Instalar o Nginx
+<h4 id="amazonlinux">Instalação no Amazon Linux 2</h4>
+<h5>1. Instalar o Nginx</h5>
 sudo yum install nginx -y
 sudo systemctl start nginx
 sudo systemctl enable nginx
 
 
-2. Instalar o PHP 8.2.x
+<h5>2. Instalar o PHP 8.2.x</h5>
 sudo yum install -y php php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-json
 sudo systemctl start php-fpm
 sudo systemctl enable php-fpm
 
 
-3. Configurar o Nginx para o Laravel
+<h5>3. Configurar o Nginx para o Laravel</h5>
 server {
     listen 80;
     server_name homolog.imwpga.com.br; 
@@ -56,22 +46,22 @@ server {
 sudo nginx -t
 sudo systemctl restart nginx
 
-4. Instalar o Certbot para Certificado SSL
+<h5>4. Instalar o Certbot para Certificado SSL</h5>
 sudo yum install certbot python3-certbot-nginx -y
 sudo certbot --nginx -d homolog.imwpga.com.br 
 
-5. Configurar o Laravel
+<h5>5. Configurar o Laravel</h5>
 sudo chown -R nginx:nginx /var/www/laravel
 sudo chmod -R 777 /var/www/laravel/storage
 sudo chmod -R 755 /var/www/laravel/bootstrap/cache
 
-6. git 
+<h5>6. git </h5>
 sudo yum install git -y
 git --version
 cd /var/www/hml/
 git clone https://github.com/Lioh23/imw.git
 
-7. Composer
+<h5>7. Composer</h5>
 sudo curl -sS https://getcomposer.org/installer | php
 sudo mv composer.phar /usr/local/bin/composer
 composer --version
@@ -82,7 +72,7 @@ cd /var/www/hml/imw
 	sudo sudo php artisan db:seed #rodas os seeds iniciais
 
 
-8. Arquivo .env
+<h5>8. Arquivo .env</h5>
 mv /var/www/html/imw/.env.example /var/www/html/imw/.env
 
 
