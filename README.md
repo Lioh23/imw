@@ -11,6 +11,11 @@
 <h4 id="tutorialpipeLine">Tutorial PipeLine</h4>
 https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
 
+<ol>
+    <li>crie uma pasta em seu projeto .github/workflows</li>
+    <li>crie o arquivo deploy-aws.yml</li>
+    <li>adicione o seguinte código</li>
+</ol>
 
 ```
 name: CI Pipeline
