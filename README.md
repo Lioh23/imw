@@ -9,7 +9,42 @@
 * [Equipe IMW](#imw)
 
 <h4 id="tutorialpipeLine">Tutorial PipeLine</h4>
-https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
+
+<a href="https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184">Link do tutorial</p>
+
+<ol>
+    <li>crie uma pasta em seu projeto .github/workflows</li>
+    <li>crie o arquivo deploy-aws.yml</li>
+    <li>adicione o seguinte código</li>
+</ol>
+
+```
+name: CI Pipeline
+
+on:
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  check-application:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html && pwd && git pull origin master' 
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html/imw &&  sudo composer install --no-interaction --prefer-dist --optimize-autoloader'
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html/imw && php artisan migrate --force'
+```
 
 <h4 id="amazonlinux">Instalação Amazon Linux 2</h4>
 
