@@ -84,6 +84,7 @@ git clone https://github.com/Lioh23/imw.git
 ```
 
 <h5>7. Configurando o arquivo .env</h5>
+
 ```
 mv /var/www/html/imw/.env.example /var/www/html/imw/.env
 ```
