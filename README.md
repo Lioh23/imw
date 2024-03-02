@@ -1,13 +1,12 @@
 
-#Tutorial PipeLine
-https://medium.com/@peacevan/
-criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
+Tutorial PipeLine
+https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
 
 
 1. Instalar o Nginx
-sudo yum install nginx -y
-sudo systemctl start nginx
-sudo systemctl enable nginx
+´sudo yum install nginx -y´
+´sudo systemctl start nginx´
+´sudo systemctl enable nginx´
 
 
 2. Instalar o PHP 8.2.x
