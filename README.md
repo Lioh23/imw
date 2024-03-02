@@ -5,6 +5,8 @@
 
 * [TutorialPipeLine](#tutorialpipeLine)
 * [Instalar Projeto no Linux Amazon 2](#amazonlinux)
+* [Equipe Brasmid](#brasmid)
+* [Equipe IMW](#imw)
 
 <h4 id="tutorialpipeLine">Tutorial PipeLine</h4>
 https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
@@ -105,6 +107,12 @@ sudo php artisan migrate #rodar as migrações
 sudo sudo php artisan db:seed #rodas os seeds iniciais
 ```
 
+<h5 id="brasmid">Equipe Brasmid</h5>
++ Vinicius Almeida
++ Aurelio de Jesus
++ Pedro Medeiros
 
-
+<h5 id="imw">Equipe IMW</h5>
++ Marcos Batista
++ Johnatton
 
