@@ -107,12 +107,19 @@ sudo php artisan migrate #rodar as migrações
 sudo sudo php artisan db:seed #rodas os seeds iniciais
 ```
 
-<h5 id="brasmid">Equipe Brasmid</h5>
-* Vinicius Almeida @github/valmeidavr
-* Aurelio de Jesus @github/Lioh23
-* Pedro Medeiros
+<h5 id="brasmid">✒️ Equipe Brasmid</h5>
+<ul>
+    <li>Vinicius Almeida - <a href="https://github.com/valmeidavr">https://github.com/valmeidavr</a>
+    </li>
+    <li>Aurelio de Jesus - <a href="https://github.com/valmeidavr"> https://github.com/Lioh23</a>
+    </li>
+    <li>Pedro Medeiros - <a href="https://github.com/valmeidavr"> https://github.com</a></li>
+</ul>
 
-<h5 id="imw">Equipe IMW</h5>
-* Marcos Batista
-* Johnatton
+
+<h5 id="imw">✒️Equipe IMW</h5>
+<ul> 
+    <li>Marcos Batista</li>
+    <li>Johnatton</li>
+</ul>
 
