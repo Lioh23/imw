@@ -45,7 +45,6 @@ return new class extends Migration
         });
 
         Schema::table('membresia_disciplinas', function (Blueprint $table) {
-            
             $table->date('dt_termino');
             $table->text('observacao');
 
