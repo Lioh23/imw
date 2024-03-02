@@ -108,11 +108,11 @@ sudo sudo php artisan db:seed #rodas os seeds iniciais
 ```
 
 <h5 id="brasmid">Equipe Brasmid</h5>
-+ Vinicius Almeida
-+ Aurelio de Jesus
-+ Pedro Medeiros
+* Vinicius Almeida
+* Aurelio de Jesus
+* Pedro Medeiros
 
 <h5 id="imw">Equipe IMW</h5>
-+ Marcos Batista
-+ Johnatton
+* Marcos Batista
+* Johnatton
 
