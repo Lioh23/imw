@@ -4,14 +4,14 @@
 # Índice 
 
 * [TutorialPipeLine](#tutorialpipeLine)
-* [Instalar Projeto no Linux Amazon 2](#amazonlinux)
+* [Instalação Amazon Linux 2](#amazonlinux)
 * [Equipe Brasmid](#brasmid)
 * [Equipe IMW](#imw)
 
 <h4 id="tutorialpipeLine">Tutorial PipeLine</h4>
 https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
 
-<h4 id="amazonlinux">Instalação no Amazon Linux 2</h4>
+<h4 id="amazonlinux">Instalação Amazon Linux 2</h4>
 
 <h5>1. Instalar o Nginx</h5>
 
