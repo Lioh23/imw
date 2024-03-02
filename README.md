@@ -108,8 +108,8 @@ sudo sudo php artisan db:seed #rodas os seeds iniciais
 ```
 
 <h5 id="brasmid">Equipe Brasmid</h5>
-* Vinicius Almeida
-* Aurelio de Jesus
+* Vinicius Almeida @github/valmeidavr
+* Aurelio de Jesus @github/Lioh23
 * Pedro Medeiros
 
 <h5 id="imw">Equipe IMW</h5>
