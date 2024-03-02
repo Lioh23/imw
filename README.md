@@ -11,7 +11,7 @@
 <h4 id="tutorialpipeLine">Tutorial PipeLine</h4>
 https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184
 
-'''
+```
 name: CI Pipeline
 
 on:
@@ -37,7 +37,7 @@ jobs:
         ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html && pwd && git pull origin master' 
         ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html/imw &&  sudo composer install --no-interaction --prefer-dist --optimize-autoloader'
         ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html/imw && php artisan migrate --force'
-'''
+```
 
 <h4 id="amazonlinux">Instalação Amazon Linux 2</h4>
 
