@@ -111,9 +111,9 @@ sudo sudo php artisan db:seed #rodas os seeds iniciais
 <ul>
     <li>Vinicius Almeida - <a href="https://github.com/valmeidavr">https://github.com/valmeidavr</a>
     </li>
-    <li>Aurelio de Jesus - <a href="https://github.com/valmeidavr"> https://github.com/Lioh23</a>
+    <li>Aurelio de Jesus - <a href="https://github.com/Lioh23"> https://github.com/Lioh23</a>
     </li>
-    <li>Pedro Medeiros - <a href="https://github.com/valmeidavr"> https://github.com</a></li>
+    <li>Pedro Medeiros - <a href="#">Não informado</a></li>
 </ul>
 
 
