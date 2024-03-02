@@ -1,66 +1,160 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+![Badge em Desenvolvimento](http://img.shields.io/static/v1?label=STATUS&message=EM%20DESENVOLVIMENTO&color=GREEN&style=for-the-badge)
 
-## About Laravel
+# Índice 
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+* [TutorialPipeLine](#tutorialpipeLine)
+* [Instalação Amazon Linux 2](#amazonlinux)
+* [Equipe Brasmid](#brasmid)
+* [Equipe IMW](#imw)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+<h4 id="tutorialpipeLine">Tutorial PipeLine</h4>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+<a href="https://medium.com/@peacevan/criando-um-simples-pipeline-ci-cd-com-githubaction-laravel-aws-ec2-31d1cbe90184">Link do tutorial</p>
 
-## Learning Laravel
+<ol>
+    <li>crie uma pasta em seu projeto .github/workflows</li>
+    <li>crie o arquivo deploy-aws.yml</li>
+    <li>adicione o seguinte código</li>
+</ol>
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```
+name: CI Pipeline
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+on:
+  pull_request:
+    branches:
+      - master
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+jobs:
+  check-application:
+    runs-on: ubuntu-latest
 
-## Laravel Sponsors
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.5.0
+      with:
+        ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-### Premium Partners
+    - name: Deploy to EC2
+      run: |
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html && pwd && git pull origin master' 
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html/imw &&  sudo composer install --no-interaction --prefer-dist --optimize-autoloader'
+        ssh -o StrictHostKeyChecking=no ec2-user@${{ secrets.EC2_PUBLIC_IP }} ' cd /var/www/html/imw && php artisan migrate --force'
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[OP.GG](https://op.gg)**
-- **[WebReinvent](https://webreinvent.com/?utm_source=laravel&utm_medium=github&utm_campaign=patreon-sponsors)**
-- **[Lendio](https://lendio.com)**
+<h4 id="amazonlinux">Instalação Amazon Linux 2</h4>
 
-## Contributing
+<h5>1. Instalar o Nginx</h5>
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+```
+sudo yum install nginx -y
+sudo systemctl start nginx
+sudo systemctl enable nginx
+```
 
-## Code of Conduct
+<h5>2. Instalar o PHP 8.2.x</h5>
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+sudo yum install -y php php-cli php-fpm php-mysqlnd php-zip php-devel php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-json
+sudo systemctl start php-fpm
+sudo systemctl enable php-fpm
+```
 
-## Security Vulnerabilities
+<h5>3. Configurar o Nginx para o Laravel</h5>
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+```    
+server {
+        listen 80;
+        server_name homolog.imwpga.com.br; 
+        root /var/www/html/imw/public; # Substitua pelo caminho correto
 
-## License
+        index index.php index.html;
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+        location / {
+            try_files $uri $uri/ /index.php?$query_string;
+        }
+
+        location ~ \.php$ {
+            include fastcgi_params;
+            fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+            fastcgi_pass unix:/var/run/php-fpm/www.sock; # Verifique o caminho correto
+            try_files $uri =404;
+        }
+    }
+```
+
+```
+sudo nginx -t
+sudo systemctl restart nginx
+```
+
+<h5>4. Instalar o Certbot para Certificado SSL</h5>
+
+```
+sudo yum install certbot python3-certbot-nginx -y
+sudo certbot --nginx -d homolog.imwpga.com.br 
+```
+
+<h5>5. Configurar o Laravel</h5>
+
+```
+sudo chown -R nginx:nginx /var/www/laravel
+sudo chmod -R 777 /var/www/laravel/storage
+sudo chmod -R 755 /var/www/laravel/bootstrap/cache
+```
+
+<h5>6. Instalando o git </h5>
+
+```
+sudo yum install git -y
+git --version
+```
+
+cd /var/www/hml/
+
+```
+git clone https://github.com/Lioh23/imw.git
+```
+
+<h5>7. Configurando o arquivo .env</h5>
+
+```
+mv /var/www/html/imw/.env.example /var/www/html/imw/.env
+```
+
+<h5>8. Instalando o Composer</h5>
+
+```
+sudo curl -sS https://getcomposer.org/installer | php
+sudo mv composer.phar /usr/local/bin/composer
+composer --version
+```
+cd /var/www/hml/imw 
+#dentro da pasta /var/www/hml/imw
+
+```
+composer install #dentro da pasta /var/www/hml/imw , digite Y em todas as etapas
+sudo php artisan migrate #rodar as migrações
+sudo sudo php artisan db:seed #rodas os seeds iniciais
+```
+
+<h5 id="brasmid">✒️ Equipe Brasmid</h5>
+<ul>
+    <li>Vinicius Almeida - <a href="https://github.com/valmeidavr">https://github.com/valmeidavr</a>
+    </li>
+    <li>Aurelio de Jesus - <a href="https://github.com/Lioh23"> https://github.com/Lioh23</a>
+    </li>
+    <li>Pedro Medeiros - <a href="#">Não informado</a></li>
+</ul>
+
+
+<h5 id="imw">✒️Equipe IMW</h5>
+<ul> 
+    <li>Marcos Batista</li>
+    <li>Johnatton</li>
+</ul>
+
