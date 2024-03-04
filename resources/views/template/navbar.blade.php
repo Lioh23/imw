@@ -33,7 +33,7 @@
                          <div class="media mx-auto">
                              <img src="{{ asset('theme/assets/img/90x90.jpg') }}" class="img-fluid mr-2" alt="avatar">
                              <div class="media-body">
-                                 <h5>Vinicius Almeida</h5>
+                                 <h5>{{ $firstName }} {{ $lastName }}</h5>
                                  <p>Administrador</p>
                              </div>
                          </div>

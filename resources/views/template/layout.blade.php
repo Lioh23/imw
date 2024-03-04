@@ -18,7 +18,8 @@
     <link href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/plugins.css') }}" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
-    <link href="{{ asset('theme/assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet"
+        type="text/css" />
     <!-- ALERT TOASTR -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet">
     <!--  BEGIN CUSTOM STYLE FILE  -->
@@ -27,11 +28,23 @@
     <link href="{{ asset('theme/assets/css/tables/table-basic.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/elements/tooltip.css') }}" rel="stylesheet" type="text/css" />
     <!--  END CUSTOM STYLE FILE  -->
+    @php
+        $user = Auth::user();
+        $firstName = '';
+        $lastName = '';
+        if ($user) {
+            $nameParts = explode(' ', $user->name);
+            $firstName = $nameParts[0];
+            $lastName = end($nameParts);
+        }
+    @endphp
+
     @yield('extras-css')
     <style>
         .menu-heading {
             margin-top: -20px !important;
         }
+
         .user-info {
             padding: 15px;
             margin-bottom: 20px;
@@ -111,7 +124,7 @@
 
         <!-- END GLOBAL MANDATORY SCRIPTS -->
         @yield('extras-scripts')
-       {{--  <script>
+        {{--  <script>
             $(document).ready(function() {
                 // Restaurar o estado do menu e submenu após a recarga
                 const menuAtivo = localStorage.getItem('menuAtivo');

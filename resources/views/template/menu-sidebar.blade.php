@@ -1,4 +1,5 @@
    <!--  BEGIN SIDEBAR  -->
+   
    <div class="sidebar-wrapper sidebar-theme">
        <nav id="sidebar" style="overflow: hidden;">
            <ul class="navbar-nav theme-brand flex-row  text-center">
@@ -18,7 +19,7 @@
                    <img src="https://via.placeholder.com/40" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
                </div>
                <div class="user-details" style="text-align: center;">
-                   <span>Vinicius Almeida</span><br>
+                   <span>{{ $firstName }} {{ $lastName }}</span><br>
                    <span>Administrador</span>
                </div>
            </div>
