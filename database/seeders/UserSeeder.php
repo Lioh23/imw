@@ -24,8 +24,18 @@ class UserSeeder extends Seeder
             'password' => Hash::make('sk8namao'), // Utilize uma senha segura
         ]);
 
+        $usertwo = User::create([
+            'name' => 'Marcos Batista',
+            'email' => 'prnarcosbatista1@gnail.com',
+            'password' => Hash::make('Kadosh1957*'), // Utilize uma senha segura
+        ]);
+
          UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 13]); // regiao
          UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 1758]); // distrito
          UserInstituicao::create(['user_id' => $user->id, 'instituicao_id' => 2215]); // igreja
+
+         UserInstituicao::create(['user_id' => $usertwo->id, 'instituicao_id' => 13]); // regiao
+         UserInstituicao::create(['user_id' => $usertwo->id, 'instituicao_id' => 1758]); // distrito
+         UserInstituicao::create(['user_id' => $usertwo->id, 'instituicao_id' => 2215]); // igreja
     }
 }
