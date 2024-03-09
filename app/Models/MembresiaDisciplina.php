@@ -12,5 +12,5 @@ class MembresiaDisciplina extends Model
 
     protected $table = 'membresia_disciplinas';
 
-    protected $fillable = ['dt_inicio', 'dt_termino', 'modo_disciplina_id', 'pastor_id', 'observacao'];
+    protected $fillable = ['dt_inicio', 'dt_termino', 'modo_disciplina_id', 'pastor_id', 'observacao', 'membro_id', 'distrito_id', 'igreja_id', 'regiao_id', 'congregacao_id'];
 }

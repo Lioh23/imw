@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\RangeDateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreDisciplinarRequest extends FormRequest
@@ -24,7 +25,9 @@ class StoreDisciplinarRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'dt_inicio' => [new RangeDateRule],
+            'modo_exclusao_id'=> 'required',
+            'clerigo_id' => 'required',
         ];
     }
 }
