@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\MembrosController;
+use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\VisitantesController;
 use Illuminate\Support\Facades\Route;
 
@@ -46,6 +47,11 @@ Route::middleware(['auth'])->group(function () {
     Route::controller(HomeController::class)->group(function () {
         Route::get('','dashboard')->name('dashboard');
         Route::get('perfil', 'perfil')->name('perfil');
+    });
+
+    Route::prefix('perfil')->name('perfil.')->group(function () {
+        Route::get('/', [PerfilController::class, 'index'])->name('index');
+        Route::post('/perfil/{id}', [PerfilController::class, 'update'])->name('update');
     });
     // Adicione mais rotas protegidas conforme necessário
 
