@@ -31,10 +31,10 @@ class UserSeeder extends Seeder
         ]);
 
         // IDs das instituições específicas
-        $instituicaoIds = [13, 1758, 2215];
+        $instituicaoIds = [2215];
 
         // Atribuição do perfil Administrador aos usuários e vinculação com as instituições
-        $perfilAdmin = Perfil::where('nome', 'Administrador')->first();
+        $perfilAdmin = Perfil::where('nome', 'Administrador Local')->first();
         
         if ($perfilAdmin) {
             // Vinculando todas as regras ao perfil Administrador

@@ -17,7 +17,7 @@
             <div class="row">
                 <div class="col-md-6">
                     <blockquote class="blockquote">
-                        <h6 class="mb-2 text-center font-weight-bold">SEU PERFIL</h6>
+                        <h6 class="mb-2 text-center font-weight-bold">MEU PERFIL</h6>
                         <div class="row mb-4">
                             <div class="col-xl-12">
                                 <label for="name">* Nome</label>
@@ -73,7 +73,7 @@
 
                 <div class="col-md-6">
                     <blockquote class="blockquote">
-                        <h6 class="mb-4 text-center font-weight-bold">REGRAS DE ACESSO</h6>
+                        <h6 class="mb-4 text-center font-weight-bold">PERFILS DE ACESSO</h6>
                         <div class="row mb-4">
                             <div class="col-xl-12">
                                 <table class="table">
