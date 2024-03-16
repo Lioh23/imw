@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\VisitantesController;
@@ -53,8 +54,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/', [PerfilController::class, 'index'])->name('index');
         Route::post('/perfil/{id}', [PerfilController::class, 'update'])->name('update');
     });
-    // Adicione mais rotas protegidas conforme necessário
-
+    
+    Route::prefix('instituicoes')->name('instituicoes.')->group(function () {
+        Route::get('/instituicoes', [InstituicaoController::class, 'index']);
+    });
 
     // Grupo de rotas para 'visitantes'
     Route::prefix('visitante')->name('visitante.')->group(function () {

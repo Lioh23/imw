@@ -31,10 +31,10 @@
                  <div class="dropdown-menu position-absolute" aria-labelledby="userProfileDropdown">
                      <div class="user-profile-section">
                          <div class="media mx-auto">
-                             <img src="{{ asset('theme/assets/img/90x90.jpg') }}" class="img-fluid mr-2" alt="avatar">
+                            {{--    <img src="{{ asset('theme/assets/img/90x90.jpg') }}" class="img-fluid mr-2" alt="avatar"> --}}
                              <div class="media-body">
                                  <h5>{{ $firstName }} {{ $lastName }}</h5>
-                                 <p>Administrador</p>
+                               {{--   <p>Administrador</p> --}}
                              </div>
                          </div>
                      </div>
