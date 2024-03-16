@@ -15,10 +15,11 @@
         <form method="POST" action="{{ route('perfil.update', ['id' => $usuario->id]) }}" enctype="multipart/form-data">
             @csrf
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <blockquote class="blockquote">
+                        <h6 class="mb-2 text-center font-weight-bold">SEU PERFIL</h6>
                         <div class="row mb-4">
-                            <div class="col-xl-8">
+                            <div class="col-xl-12">
                                 <label for="name">* Nome</label>
                                 <input type="text" class="form-control @error('name') is-invalid @enderror"
                                     id="name" name="name" value="{{ old('name', $usuario->name) }}">
@@ -29,7 +30,7 @@
                         </div>
 
                         <div class="row mb-4">
-                            <div class="col-xl-8">
+                            <div class="col-xl-12">
                                 <label for="email">* E-mail</label>
                                 <input type="email" class="form-control @error('email') is-invalid @enderror"
                                     id="email" name="email" value="{{ old('email', $usuario->email) }}">
@@ -39,12 +40,8 @@
                             </div>
                         </div>
 
-                        {{-- Dentro do seu formulário em perfil.index --}}
-
-
-
                         <div class="row mb-4">
-                            <div class="col-xl-4">
+                            <div class="col-xl-6">
                                 <label for="password">Nova Senha</label>
                                 <input type="password" class="form-control @error('password') is-invalid @enderror"
                                     id="password" name="password">
@@ -54,7 +51,7 @@
                                 @enderror
                             </div>
 
-                            <div class="col-xl-4">
+                            <div class="col-xl-6">
                                 <label for="password_confirmation">Confirmar Nova Senha</label>
                                 <input type="password"
                                     class="form-control @error('password_confirmation') is-invalid @enderror"
@@ -67,8 +64,18 @@
                             </div>
                         </div>
 
+                        <div class="form-group mt-4">
+                            <button type="submit" title="atualizar" class="btn btn-primary btn-lg">Atualizar</button>
+                        </div>
+
+                    </blockquote>
+                </div>
+
+                <div class="col-md-6">
+                    <blockquote class="blockquote">
+                        <h6 class="mb-4 text-center font-weight-bold">REGRAS DE ACESSO</h6>
                         <div class="row mb-4">
-                            <div class="col-xl-8">
+                            <div class="col-xl-12">
                                 <table class="table">
                                     <thead>
                                         <tr>
@@ -80,19 +87,16 @@
                                         @foreach ($perfisUsuarios as $perfilUsuario)
                                             <tr>
                                                 <td>{{ $perfilUsuario->instituicao->nome ?? 'Não definido' }}</td>
-                                                <td>{{ $perfilUsuario->perfil->nome ?? 'Não definido' }}</td>
+                                                <td><span class="badge badge-pill badge-secondary">{{ $perfilUsuario->perfil->nome ?? 'Não definido' }}</span></td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
-
-                        <div class="form-group mt-4">
-                            <button type="submit" title="atualizar" class="btn btn-primary btn-lg">Atualizar</button>
-                        </div>
                     </blockquote>
                 </div>
+
             </div>
         </form>
     </div>
