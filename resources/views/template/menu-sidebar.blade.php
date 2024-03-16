@@ -195,7 +195,7 @@
                            <a href="/usuarios"> Usuários </a>
                        </li>
                        <li>
-                           <a href="/cargos"> Cargos </a>
+                           <a href="/perfils"> Perfils </a>
                        </li>
                    </ul>
                </li>
