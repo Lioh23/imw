@@ -23,6 +23,10 @@ class DatabaseSeeder extends Seeder
         $this->call(MembresiaFormacaoSeeder::class);
         $this->call(ControleImportacaoCsvSeeder::class);
         $this->call(ImportacoesCsvSeeder::class);
+        //Regras de Segurança
+        $this->call(PerfilsTableSeeder::class);
+        $this->call(RegrasTableSeeder::class);
+        $this->call(PerfilRegraTableSeeder::class);
         $this->call(UserSeeder::class);
     }
 }

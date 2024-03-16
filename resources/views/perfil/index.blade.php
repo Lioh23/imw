@@ -40,24 +40,9 @@
                         </div>
 
                         {{-- Dentro do seu formulário em perfil.index --}}
-                        <div class="row mb-4">
-                            <div class="col-xl-8">
-                                <label for="instituicao_nome">* Instituição</label>
-                                <div class="input-group">
-                                    <input type="text" class="form-control" id="instituicao_nome" name="instituicao_nome"
-                                        readonly value="{{ $usuario->instituicao->nome ?? '' }}">
-                                    <input type="hidden" id="instituicao_id" name="instituicao_id"
-                                        value="{{ $usuario->instituicao->id ?? '' }}">
-                                    <button type="button" id="abrirModalInstituicoes" class="btn btn-secondary"
-                                        data-bs-toggle="modal" data-bs-target="#modalInstituicoes">Selecionar</button>
-                                </div>
-                            </div>
-                        </div>
+                   
 
-                        {{-- Inclua o modal aqui --}}
-                        @include('perfil.modal-instituicoes')
-
-                        
+                            
                         <div class="row mb-4">
                             <div class="col-xl-4">
                                 <label for="password">Nova Senha</label>
@@ -79,6 +64,20 @@
                                 @error('password_confirmation')
                                     <span class="help-block text-danger">{{ $message }}</span>
                                 @enderror
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-xl-8">
+                                <label for="instituicao_nome">Instituição</label>
+                                
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+                            <div class="col-xl-8">
+                                <label for="instituicao_nome">Perfil</label>
+                                
                             </div>
                         </div>
 

@@ -59,4 +59,9 @@ class User extends Authenticatable
         return $this->belongsToMany(InstituicoesInstituicao::class, UserInstituicao::class, 'user_id', 'instituicao_id', 'id', 'id')
             ->where('instituicoes_instituicoes.tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL);
     }
+
+    public function perfils()
+    {
+        return $this->belongsToMany(Perfil::class);
+    }
 }
