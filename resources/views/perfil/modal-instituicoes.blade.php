@@ -12,7 +12,7 @@
             </div>
             <div class="modal-body">
                 <!-- Imagem de carregamento -->
-                <div id="loading" style="display: none;">
+                <div id="loading" style="display: none; align-items: center; justify-content: center; display: flex; height: 100px;">
                     <img src="{{ asset('theme/assets/img/loading.gif') }}" width="100px" alt="Carregando..." />
                 </div>
                 <!-- As instituições serão carregadas aqui -->
