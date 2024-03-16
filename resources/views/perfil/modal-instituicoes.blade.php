@@ -13,7 +13,7 @@
             <div class="modal-body">
                 <!-- Imagem de carregamento -->
                 <div id="loading" style="display: none;">
-                    <img src="{{ asset('theme/assets/img/loading.gif') }}" alt="Carregando..." />
+                    <img src="{{ asset('theme/assets/img/loading.gif') }}" width="100px" alt="Carregando..." />
                 </div>
                 <!-- As instituições serão carregadas aqui -->
                 <div id="instituicoesList"></div>
