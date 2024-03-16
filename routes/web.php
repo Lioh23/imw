@@ -56,7 +56,7 @@ Route::middleware(['auth'])->group(function () {
     });
     
     Route::prefix('instituicoes')->name('instituicoes.')->group(function () {
-        Route::get('/instituicoes', [InstituicaoController::class, 'index']);
+        Route::get('/', [InstituicaoController::class, 'index']);
     });
 
     // Grupo de rotas para 'visitantes'

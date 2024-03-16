@@ -67,21 +67,21 @@
 
                         {{-- Dentro do seu formulário em perfil.index --}}
                         <div class="row mb-4">
-                            <div class="col-xl-6">
+                            <div class="col-xl-4">
                                 <label for="instituicao_nome">Instituição</label>
                                 <div class="input-group">
                                     <input type="text" class="form-control" id="instituicao_nome" name="instituicao_nome"
                                         readonly value="{{ $usuario->instituicao->nome ?? '' }}">
                                     <input type="hidden" id="instituicao_id" name="instituicao_id"
                                         value="{{ $usuario->instituicao->id ?? '' }}">
-                                    <button type="button" class="btn btn-secondary" data-bs-toggle="modal"
-                                        data-bs-target="#modalInstituicoes">Selecionar</button>
+                                    <button type="button" id="abrirModalInstituicoes" class="btn btn-secondary"
+                                        data-bs-toggle="modal" data-bs-target="#modalInstituicoes">Selecionar</button>
                                 </div>
                             </div>
                         </div>
 
                         {{-- Inclua o modal aqui --}}
-
+                        @include('perfil.modal-instituicoes')
 
                         <div class="form-group mt-4">
                             <button type="submit" title="atualizar" class="btn btn-primary btn-lg">Atualizar</button>
@@ -93,59 +93,92 @@
     </div>
 @endsection
 @section('extras-scripts')
-<script>
-    document.addEventListener('DOMContentLoaded', function () {
-        $('#modalInstituicoes').on('show.bs.modal', function () {
-            loadInstituicoes(1); // Carrega a primeira página ao abrir o modal
-        });
-    
-        function loadInstituicoes(page) {
-            $.ajax({
-                url: '/instituicoes?page=' + page,
-                type: 'get',
-                dataType: 'json',
-                success: function(response) {
-                    $('#modalInstituicoes .modal-body').html('');
-                    response.data.forEach(function (instituicao) {
-                        $('#modalInstituicoes .modal-body').append(
-                            `<div class="list-group-item list-group-item-action instituicao-item" data-id="${instituicao.id}" data-nome="${instituicao.nome}">${instituicao.nome}</div>`
-                        );
-                    });
-    
-                    // Paginação
-                    $('#modalInstituicoes .modal-footer .pagination').remove();
-                    let paginationLinks = generatePaginationLinks(response);
-                    $('#modalInstituicoes .modal-footer').prepend(paginationLinks);
-                }
+    <script>
+        $(document).ready(function() {
+            $('#abrirModalInstituicoes').on('click', function() {
+                loadInstituicoes(1); // Carrega a primeira página
+                $('#modalInstituicoes').modal('show'); // Abre o modal
             });
-        }
-    
-        // Função para gerar links de paginação
-        function generatePaginationLinks(response) {
-            let paginationLinks = '<div class="pagination">';
-            for (let page = 1; page <= response.last_page; page++) {
-                paginationLinks += `<a href="#" class="page-link" data-page="${page}">${page}</a> `;
+
+            $('#searchButton').on('click', function() {
+                loadInstituicoes(1, $('#searchInstituicao').val()); // Carrega com os termos de pesquisa
+            });
+
+            function loadInstituicoes(page, search = '') {
+                $('#loading').show(); // Mostra a imagem de carregamento
+                $('#instituicoesList').hide(); // Oculta a lista durante o carregamento
+
+                $.ajax({
+                    url: '/instituicoes?page=' + page + '&search=' + search,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#instituicoesList').html('');
+                        response.data.forEach(function(instituicao) {
+                            $('#instituicoesList').append(
+                                `<div class="list-group-item list-group-item-action instituicao-item" data-id="${instituicao.id}" data-nome="${instituicao.nome}">${instituicao.nome}</div>`
+                            );
+                        });
+
+                        // Paginação
+                        $('#modalInstituicoes .modal-footer .pagination').remove();
+                        let paginationLinks = generatePaginationLinks(response);
+                        $('#modalInstituicoes .modal-footer').prepend(paginationLinks);
+
+                        $('#loading').hide(); // Oculta a imagem de carregamento
+                        $('#instituicoesList').show(); // Mostra a lista atualizada
+                    }
+                });
             }
-            paginationLinks += '</div>';
-            return paginationLinks;
-        }
-    
-        // Manipulação de clique nos links de paginação
-        $('#modalInstituicoes').on('click', '.page-link', function (e) {
-            e.preventDefault();
-            let page = $(this).data('page');
-            loadInstituicoes(page);
+
+            function generatePaginationLinks(response) {
+                let paginationLinks = '<div class="pagination">';
+                let currentPage = response.current_page;
+                let totalPage = response.last_page;
+                let range = 2;
+
+                if (totalPage <= (range * 2) + 3) {
+                    for (let page = 1; page <= totalPage; page++) {
+                        paginationLinks += generatePageLink(page, currentPage);
+                    }
+                } else {
+                    paginationLinks += generatePageLink(1, currentPage);
+                    paginationLinks += (currentPage > range + 2) ? '...' : '';
+
+                    let start = Math.max(currentPage - range, 2);
+                    let end = Math.min(currentPage + range, totalPage - 1);
+
+                    for (let page = start; page <= end; page++) {
+                        paginationLinks += generatePageLink(page, currentPage);
+                    }
+
+                    paginationLinks += (currentPage < totalPage - range - 1) ? '...' : '';
+                    paginationLinks += generatePageLink(totalPage, currentPage);
+                }
+
+                paginationLinks += '</div>';
+                return paginationLinks;
+            }
+
+            function generatePageLink(page, currentPage) {
+                return `<a href="#" class="page-link ${page === currentPage ? 'active' : ''}" data-page="${page}">${page}</a> `;
+            }
+
+            $('#modalInstituicoes').on('click', '.page-link', function(e) {
+                e.preventDefault();
+                let page = $(this).data('page');
+                loadInstituicoes(page);
+            });
+
+            $('#modalInstituicoes').on('click', '.instituicao-item', function() {
+                var nome = $(this).data('nome');
+                var id = $(this).data('id');
+
+                $('#instituicao_nome').val(nome);
+                $('#instituicao_id').val(id);
+
+                $('#modalInstituicoes').modal('hide');
+            });
         });
-    
-        $('#modalInstituicoes').on('click', '.instituicao-item', function () {
-            var nome = $(this).data('nome');
-            var id = $(this).data('id');
-    
-            $('#instituicao_nome').val(nome);
-            $('#instituicao_id').val(id);
-    
-            $('#modalInstituicoes').modal('hide');
-        });
-    });
-    </script>    
+    </script>
 @endsection

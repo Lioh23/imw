@@ -9,7 +9,13 @@ class InstituicaoController extends Controller
 {
     public function index(Request $request)
     {
-        $instituicoes = InstituicoesInstituicao::paginate(10); 
+        $query = InstituicoesInstituicao::query();
+
+        if ($request->has('search') && !empty($request->search)) {
+            $query->where('nome', 'like', '%' . $request->search . '%');
+        }
+    
+        $instituicoes = $query->paginate(10);
         return response()->json($instituicoes);
     }
 }
