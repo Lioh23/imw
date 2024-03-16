@@ -23,4 +23,9 @@ class InstituicoesTipoInstituicao extends Model
     protected $table = 'instituicoes_tiposinstituicao';
 
     protected $fillable = ['nome', 'cor', 'sigla', 'hierarquia'];
+
+    public function instituicoes()
+    {
+        return $this->hasMany(InstituicoesInstituicao::class, 'tipo_instituicao_id');
+    }
 }

@@ -48,4 +48,9 @@ class InstituicoesInstituicao extends Model
     {
         return $this->belongsToMany(Perfil::class, 'perfil_user')->withPivot('user_id');
     }
+
+    public function tipoInstituicao()
+    {
+        return $this->belongsTo(InstituicoesTipoInstituicao::class, 'tipo_instituicao_id');
+    }
 }

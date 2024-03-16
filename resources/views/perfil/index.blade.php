@@ -73,13 +73,14 @@
 
                 <div class="col-md-6">
                     <blockquote class="blockquote">
-                        <h6 class="mb-4 text-center font-weight-bold">PERFILS DE ACESSO</h6>
+                        <h6 class="mb-4 text-center font-weight-bold">NÍVEIS DE ACESSO</h6>
                         <div class="row mb-4">
                             <div class="col-xl-12">
                                 <table class="table">
                                     <thead>
                                         <tr>
                                             <th>Instituição</th>
+                                            <th>Tipo</th>
                                             <th>Perfil</th>
                                         </tr>
                                     </thead>
@@ -87,9 +88,14 @@
                                         @foreach ($perfisUsuarios as $perfilUsuario)
                                             <tr>
                                                 <td>{{ $perfilUsuario->instituicao->nome ?? 'Não definido' }}</td>
-                                                <td><span class="badge badge-pill badge-secondary">{{ $perfilUsuario->perfil->nome ?? 'Não definido' }}</span></td>
+                                                <td>{{ $perfilUsuario->instituicao->tipoInstituicao->nome ?? 'Não definido' }}
+                                                </td>
+                                                <td><span
+                                                        class="badge badge-pill badge-secondary">{{ $perfilUsuario->perfil->nome ?? 'Não definido' }}</span>
+                                                </td>
                                             </tr>
                                         @endforeach
+
                                     </tbody>
                                 </table>
                             </div>
