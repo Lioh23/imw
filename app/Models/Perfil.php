@@ -10,9 +10,11 @@ class Perfil extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['nome'];
+    
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class)->withPivot('instituicao_id');
     }
 
     public function regras()

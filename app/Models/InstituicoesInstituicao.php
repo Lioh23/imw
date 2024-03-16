@@ -38,4 +38,14 @@ class InstituicoesInstituicao extends Model
         'pastor',
         'tesoureiro'
     ];
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'perfil_user')->withPivot('perfil_id');
+    }
+
+    public function perfils()
+    {
+        return $this->belongsToMany(Perfil::class, 'perfil_user')->withPivot('user_id');
+    }
 }

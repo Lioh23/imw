@@ -10,6 +10,8 @@ class Regra extends Model
 {
     use HasFactory, SoftDeletes;
 
+    protected $fillable = ['nome'];
+
     public function perfils()
     {
         return $this->belongsToMany(Perfil::class);

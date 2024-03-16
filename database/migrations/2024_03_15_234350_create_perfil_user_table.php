@@ -15,8 +15,9 @@ return new class extends Migration
     {
         Schema::create('perfil_user', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('perfil_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('perfil_id')->constrained()->onDelete('cascade');
+            $table->foreignId('instituicao_id')->constrained('instituicoes_instituicoes');
             $table->timestamps();
         });
     }
