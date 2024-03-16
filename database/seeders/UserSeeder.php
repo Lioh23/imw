@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Perfil;
 use App\Models\Regra;
+use App\Models\UserInstituicao;
 
 class UserSeeder extends Seeder
 {
@@ -33,9 +34,18 @@ class UserSeeder extends Seeder
         // IDs das instituições específicas
         $instituicaoIds = [2215];
 
+        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 13]); // regiao
+        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 1758]); // distrito
+        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2215]); // igreja
+
+        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 13]); // regiao
+        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 1758]); // distrito
+        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2215]); // igreja
+
+
         // Atribuição do perfil Administrador aos usuários e vinculação com as instituições
         $perfilAdmin = Perfil::where('nome', 'Administrador Local')->first();
-        
+
         if ($perfilAdmin) {
             // Vinculando todas as regras ao perfil Administrador
             $regras = Regra::all();
