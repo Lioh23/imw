@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\UpdatePerfilRequest;
+use App\Models\PerfilUser;
 use App\Services\ServicePerfil\ListPerfilService;
 use App\Services\ServicePerfil\UpdatePerfilService;
 use Illuminate\Http\Request;
@@ -12,7 +13,11 @@ class PerfilController extends Controller
 {
     public function index(Request $request) {
         $usuario = app(ListPerfilService::class)->execute();
-        return view('perfil.index', compact('usuario'));
+        $perfisUsuarios = PerfilUser::with(['perfil', 'instituicao'])
+        ->where('user_id', $usuario->id)
+        ->get();
+        
+        return view('perfil.index', compact('usuario', 'perfisUsuarios'));
     }
 
     public function update(UpdatePerfilRequest $request, $id) {

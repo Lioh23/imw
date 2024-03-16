@@ -40,9 +40,9 @@
                         </div>
 
                         {{-- Dentro do seu formulário em perfil.index --}}
-                   
 
-                            
+
+
                         <div class="row mb-4">
                             <div class="col-xl-4">
                                 <label for="password">Nova Senha</label>
@@ -53,7 +53,7 @@
                                     <span class="help-block text-danger">{{ $message }}</span>
                                 @enderror
                             </div>
-                   
+
                             <div class="col-xl-4">
                                 <label for="password_confirmation">Confirmar Nova Senha</label>
                                 <input type="password"
@@ -69,15 +69,22 @@
 
                         <div class="row mb-4">
                             <div class="col-xl-8">
-                                <label for="instituicao_nome">Instituição</label>
-                                
-                            </div>
-                        </div>
-
-                        <div class="row mb-4">
-                            <div class="col-xl-8">
-                                <label for="instituicao_nome">Perfil</label>
-                                
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                            <th>Instituição</th>
+                                            <th>Perfil</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($perfisUsuarios as $perfilUsuario)
+                                            <tr>
+                                                <td>{{ $perfilUsuario->instituicao->nome ?? 'Não definido' }}</td>
+                                                <td>{{ $perfilUsuario->perfil->nome ?? 'Não definido' }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
 
@@ -91,94 +98,92 @@
     </div>
 @endsection
 @section('extras-scripts')
-<script>
-    $(document).ready(function() {
-        $('#abrirModalInstituicoes').on('click', function () {
-            loadInstituicoes(1); // Carrega a primeira página
-            $('#modalInstituicoes').modal('show'); // Abre o modal
-        });
-    
-        $('#searchButton').on('click', function() {
-            loadInstituicoes(1, $('#searchInstituicao').val());
-        });
-    
-        function loadInstituicoes(page, search = '') {
-            $('#loading').show(); // Mostra a imagem de carregamento
-            $('#instituicoesList').hide(); // Oculta a lista de instituições durante o carregamento
-    
-            $.ajax({
-                url: '/instituicoes?page=' + page + '&search=' + search,
-                type: 'get',
-                dataType: 'json',
-                success: function(response) {
-                    $('#instituicoesList').html(''); // Limpa a lista
-                    response.data.forEach(function (instituicao) {
-                        $('#instituicoesList').append(
-                            `<div class="list-group-item list-group-item-action instituicao-item" data-id="${instituicao.id}" data-nome="${instituicao.nome}" style="cursor: pointer;">${instituicao.nome}</div>`
-                        );
-                    });
-    
-                    $('#loading').hide(); // Oculta a imagem de carregamento
-                    $('#instituicoesList').show(); // Mostra a lista de instituições
-    
-                    // Paginação
-                    $('#modalInstituicoes .modal-footer .pagination').remove();
-                    let paginationLinks = generatePaginationLinks(response);
-                    $('#modalInstituicoes .modal-footer').prepend(paginationLinks);
-                }
+    <script>
+        $(document).ready(function() {
+            $('#abrirModalInstituicoes').on('click', function() {
+                loadInstituicoes(1); // Carrega a primeira página
+                $('#modalInstituicoes').modal('show'); // Abre o modal
             });
-        }
-    
-        function generatePaginationLinks(response) {
-            let paginationLinks = '<div class="pagination">';
-            let currentPage = response.current_page;
-            let totalPage = response.last_page;
-            let range = 2;
-    
-            if (totalPage <= (range * 2) + 3) {
-                for (let page = 1; page <= totalPage; page++) {
-                    paginationLinks += generatePageLink(page, currentPage);
-                }
-            } else {
-                paginationLinks += generatePageLink(1, currentPage);
-                paginationLinks += (currentPage > range + 2) ? '...' : ''; 
-                
-                let start = Math.max(currentPage - range, 2);
-                let end = Math.min(currentPage + range, totalPage - 1);
-    
-                for (let page = start; page <= end; page++) {
-                    paginationLinks += generatePageLink(page, currentPage);
-                }
-                
-                paginationLinks += (currentPage < totalPage - range - 1) ? '...' : ''; 
-                paginationLinks += generatePageLink(totalPage, currentPage);
-            }
-    
-            paginationLinks += '</div>';
-            return paginationLinks;
-        }
-    
-        function generatePageLink(page, currentPage) {
-            return `<a href="#" class="page-link ${page === currentPage ? 'active' : ''}" data-page="${page}">${page}</a> `;
-        }
-    
-        $('#modalInstituicoes').on('click', '.page-link', function (e) {
-            e.preventDefault();
-            let page = $(this).data('page');
-            loadInstituicoes(page);
-        });
-    
-        $('#modalInstituicoes').on('click', '.instituicao-item', function () {
-            var nome = $(this).data('nome');
-            var id = $(this).data('id');
-    
-            $('#instituicao_nome').val(nome);
-            $('#instituicao_id').val(id);
-    
-            $('#modalInstituicoes').modal('hide');
-        });
-    });
-    </script>
-    
-@endsection
 
+            $('#searchButton').on('click', function() {
+                loadInstituicoes(1, $('#searchInstituicao').val());
+            });
+
+            function loadInstituicoes(page, search = '') {
+                $('#loading').show(); // Mostra a imagem de carregamento
+                $('#instituicoesList').hide(); // Oculta a lista de instituições durante o carregamento
+
+                $.ajax({
+                    url: '/instituicoes?page=' + page + '&search=' + search,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#instituicoesList').html(''); // Limpa a lista
+                        response.data.forEach(function(instituicao) {
+                            $('#instituicoesList').append(
+                                `<div class="list-group-item list-group-item-action instituicao-item" data-id="${instituicao.id}" data-nome="${instituicao.nome}" style="cursor: pointer;">${instituicao.nome}</div>`
+                            );
+                        });
+
+                        $('#loading').hide(); // Oculta a imagem de carregamento
+                        $('#instituicoesList').show(); // Mostra a lista de instituições
+
+                        // Paginação
+                        $('#modalInstituicoes .modal-footer .pagination').remove();
+                        let paginationLinks = generatePaginationLinks(response);
+                        $('#modalInstituicoes .modal-footer').prepend(paginationLinks);
+                    }
+                });
+            }
+
+            function generatePaginationLinks(response) {
+                let paginationLinks = '<div class="pagination">';
+                let currentPage = response.current_page;
+                let totalPage = response.last_page;
+                let range = 2;
+
+                if (totalPage <= (range * 2) + 3) {
+                    for (let page = 1; page <= totalPage; page++) {
+                        paginationLinks += generatePageLink(page, currentPage);
+                    }
+                } else {
+                    paginationLinks += generatePageLink(1, currentPage);
+                    paginationLinks += (currentPage > range + 2) ? '...' : '';
+
+                    let start = Math.max(currentPage - range, 2);
+                    let end = Math.min(currentPage + range, totalPage - 1);
+
+                    for (let page = start; page <= end; page++) {
+                        paginationLinks += generatePageLink(page, currentPage);
+                    }
+
+                    paginationLinks += (currentPage < totalPage - range - 1) ? '...' : '';
+                    paginationLinks += generatePageLink(totalPage, currentPage);
+                }
+
+                paginationLinks += '</div>';
+                return paginationLinks;
+            }
+
+            function generatePageLink(page, currentPage) {
+                return `<a href="#" class="page-link ${page === currentPage ? 'active' : ''}" data-page="${page}">${page}</a> `;
+            }
+
+            $('#modalInstituicoes').on('click', '.page-link', function(e) {
+                e.preventDefault();
+                let page = $(this).data('page');
+                loadInstituicoes(page);
+            });
+
+            $('#modalInstituicoes').on('click', '.instituicao-item', function() {
+                var nome = $(this).data('nome');
+                var id = $(this).data('id');
+
+                $('#instituicao_nome').val(nome);
+                $('#instituicao_id').val(id);
+
+                $('#modalInstituicoes').modal('hide');
+            });
+        });
+    </script>
+@endsection

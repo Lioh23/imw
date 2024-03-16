@@ -67,6 +67,7 @@ class User extends Authenticatable
 
     public function instituicoes()
     {
-        return $this->belongsToMany(InstituicoesInstituicao::class, 'user_instituicoes', 'user_id', 'instituicao_id');
+        return $this->belongsToMany(InstituicoesInstituicao::class)->withPivot('instituicao_id');
+      
     }
 }
