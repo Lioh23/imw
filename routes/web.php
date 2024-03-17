@@ -40,7 +40,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('exclusao/transferencia/store/{id}', [MembrosController::class, 'storeExclusaoPorTransferencia'])->name('exclusao_transferencia.store');
         Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar');
         Route::post('disciplinar/store/{id}', [MembrosController::class, 'storeDisciplinar'])->name('disciplinar.store');
-        Route::post('disciplinar/editar/{id}', [MembrosController::class, 'encerrarDisciplina'])->name('disciplinar_encerrar');
+        Route::put('disciplinar/update/{id}', [MembrosController::class, 'updateDisciplinar'])->name('disciplinar.update');
         
     });
 

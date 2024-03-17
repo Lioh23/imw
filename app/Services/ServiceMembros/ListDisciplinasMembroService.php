@@ -8,7 +8,6 @@ class ListDisciplinasMembroService
 {
     public function execute ($id)
     {
-        $disciplinas = MembresiaDisciplina::where('membro_id', $id)->get();
-        return $disciplinas;
+        return MembresiaDisciplina::where('membro_id', $id)->get();
     }
 }

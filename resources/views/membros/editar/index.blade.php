@@ -9,6 +9,7 @@
 @endsection
 @section('extras-css')
   <link href="{{ asset('theme/assets/css/components/tabs-accordian/custom-tabs.css') }}" rel="stylesheet" type="text/css" />
+  <link href="{{ asset('theme/plugins/loaders/custom-loader.css') }}" rel="stylesheet" type="text/css" />
   <style> 
     .centralizado {
         display: flex;
@@ -21,6 +22,11 @@
 
     .tr-danger > td {
       color: red !important;
+    }
+
+    .loader-sm {
+      width: 1.2rem;
+      height: 1.2rem;
     }
   </style>
 @endsection
@@ -71,7 +77,7 @@
                     Histórico Eclesiástico
                   </a>
                 </li>
-                @if($discipinaCount > 0)
+                @if($disciplinas->count())
                 <li class="nav-item">
                   <a class="nav-link" id="border-top-historicoeclesiastico" data-toggle="tab" href="#border-top-disciplina" role="tab" aria-controls="border-top-disciplina" aria-selected="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bookmark"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg> 
@@ -86,8 +92,10 @@
                 @include('membros.editar.tab-contato')
                 @include('membros.editar.tab-ministerio')
                 @include('membros.editar.tab-formacao')
+                @if($disciplinas->count())
+                  @include('membros.editar.tab-disciplina')
+                @endif
                 @include('membros.editar.tab-historico')
-                @include('membros.editar.tab-disciplina')
             </div>
           </div>
       </div>
@@ -100,7 +108,9 @@
 </form>
 </div>
 @endsection
+
 @section('extras-scripts')
+    <script src="{{ asset('theme/plugins/fullcalendar/moment.min.js') }}"></script>
     <script src="{{ asset('membros/js/editar.js') }}"></script>
     <script>
       $('.btn-confirm-delete').on('click', function () {
@@ -119,4 +129,6 @@
           })
       })
   </script>
+
+  @stack('tab-scripts')
 @endsection

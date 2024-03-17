@@ -12,6 +12,7 @@ use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\StoreReintegracaoRequest;
 use App\Http\Requests\StoreExclusaoPorTransferenciaRequest;
 use App\Http\Requests\StoreTransferenciaInternaRequest;
+use App\Http\Requests\UpdateDisciplinarRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\DeletarMembroService;
@@ -26,6 +27,7 @@ use App\Services\ServiceMembros\ListDisciplinasMembroService;
 use App\Services\ServiceMembros\StoreDiciplinaService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReintegracaoService;
+use App\Services\ServiceMembros\UpdateDisciplinarService;
 use App\Services\ServiceMembros\VerificaMembroDiciplinaService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
 use App\Services\ServiceMembrosGeral\ListMembrosService;
@@ -45,7 +47,6 @@ class MembrosController extends Controller
     {
         try {
             $pessoa = app(EditarMembroService::class)->findOne($id);
-            $discipinaCount = app(VerificaMembroDiciplinaService::class)->execute($id);
             $disciplinas = app(ListDisciplinasMembroService::class)->execute($id);
             $igreja = Auth::user()->igrejasLocais->first()->nome;
             $regiao = Auth::user()->regioes->first()->nome;
@@ -57,7 +58,6 @@ class MembrosController extends Controller
                 'cursos'               => $pessoa['cursos'],
                 'formacoes'            => $pessoa['formacoes'],
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
-                'discipinaCount'       => $discipinaCount,
                 'disciplinas'          => $disciplinas,
                 'igreja'               => $igreja,
                 'regiao'               => $regiao,
@@ -244,16 +244,16 @@ class MembrosController extends Controller
         }
     }
 
-    public function encerrarDisciplina($request, $id)
+    public function updateDisciplinar(UpdateDisciplinarRequest $request, $id)
     {
-        dd($request, $id);
         try{
             DB::beginTransaction();
-            app(EditarDataTerminoDisciplinaService::class)->execute();
-        } catch(\Exception $e) 
-        {
-        DB::rollBack();
-        return(redirect()->route('membro.editar', ['id'=> $id])->with('error', 'Falha ao salvar data termino disciplina.'));
+            app(UpdateDisciplinarService::class)->execute($request->get('dt_termino'), $id);
+            DB::commit();
+            return response()->json(['message' => 'Disciplina atualizada com sucesso!']);
+        } catch(\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Ao atualizar a disciplina deste membro!']);
         }
     }
 }

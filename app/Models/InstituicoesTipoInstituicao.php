@@ -14,7 +14,7 @@ class InstituicoesTipoInstituicao extends Model
     const DISTRITO = 2;
     const REGIAO = 3;
     const IGREJA_GERAL = 6;
-    const ÓRGÃO_GERAL = 8;
+    const ORGAO_GERAL = 8;
     const SECRETARIA = 9;
     const CONTABILIDADE = 11;
     const CONGREGACAO = 13;
