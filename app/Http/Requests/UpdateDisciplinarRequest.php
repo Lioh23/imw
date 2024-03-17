@@ -2,10 +2,11 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\DisciplinarTerminoRule;
 use App\Rules\RangeDateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreDisciplinarRequest extends FormRequest
+class UpdateDisciplinarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,9 +26,7 @@ class StoreDisciplinarRequest extends FormRequest
     public function rules()
     {
         return [
-            'dt_inicio' => [new RangeDateRule],
-            'modo_exclusao_id'=> 'required',
-            'clerigo_id' => 'required',
+            'dt_termino' => ['required', 'date', new RangeDateRule, new DisciplinarTerminoRule]
         ];
     }
 }

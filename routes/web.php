@@ -41,7 +41,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('exclusao/transferencia/{id}', [MembrosController::class, 'exclusaoPorTransferencia'])->name('exclusao_transferencia');
         Route::post('exclusao/transferencia/store/{id}', [MembrosController::class, 'storeExclusaoPorTransferencia'])->name('exclusao_transferencia.store');
         Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar');
-        Route::get('disciplinar/store/{id}', [MembrosController::class, 'storeDisciplinar'])->name('disciplinar.store');
+        Route::post('disciplinar/store/{id}', [MembrosController::class, 'storeDisciplinar'])->name('disciplinar.store');
+        Route::put('disciplinar/update/{id}', [MembrosController::class, 'updateDisciplinar'])->name('disciplinar.update');
         
     });
 
@@ -70,7 +71,7 @@ Route::middleware(['auth'])->group(function () {
         
     });
 
-    // Grupo de rotas para 'visitantes'
+    // Grupo de rotas para 'congregado'
     Route::prefix('congregado')->name('congregado.')->group(function () {
         Route::get('/', [CongregadosController::class, 'index'])->name('index');
         Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo');

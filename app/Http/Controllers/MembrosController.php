@@ -12,21 +12,28 @@ use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\StoreReintegracaoRequest;
 use App\Http\Requests\StoreExclusaoPorTransferenciaRequest;
 use App\Http\Requests\StoreTransferenciaInternaRequest;
+use App\Http\Requests\UpdateDisciplinarRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\DeletarMembroService;
+use App\Services\ServiceMembros\EditarDataTerminoDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReintegrarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosTransferenciaInternaService;
 use App\Services\ServiceMembros\IdentificaDadosTransferenciaPorExclusaoService;
+use App\Services\ServiceMembros\ListDisciplinasMembroService;
+use App\Services\ServiceMembros\StoreDiciplinaService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReintegracaoService;
+use App\Services\ServiceMembros\UpdateDisciplinarService;
+use App\Services\ServiceMembros\VerificaMembroDiciplinaService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
 use App\Services\ServiceMembrosGeral\ListMembrosService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MembrosController extends Controller
@@ -40,6 +47,9 @@ class MembrosController extends Controller
     {
         try {
             $pessoa = app(EditarMembroService::class)->findOne($id);
+            $disciplinas = app(ListDisciplinasMembroService::class)->execute($id);
+            $igreja = Auth::user()->igrejasLocais->first()->nome;
+            $regiao = Auth::user()->regioes->first()->nome;
             
             return view('membros.editar.index', [
                 'pessoa'               => $pessoa['pessoa'],
@@ -48,6 +58,9 @@ class MembrosController extends Controller
                 'cursos'               => $pessoa['cursos'],
                 'formacoes'            => $pessoa['formacoes'],
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
+                'disciplinas'          => $disciplinas,
+                'igreja'               => $igreja,
+                'regiao'               => $regiao,
             ]);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('membros.index')->with('error', 'Registro não encontrado.');
@@ -220,6 +233,27 @@ class MembrosController extends Controller
 
     public function storeDisciplinar(StoreDisciplinarRequest $request, $id)
     {
+        try {
+            DB::beginTransaction();
+            app(StoreDiciplinaService::class)->execute($request->all(), $id);
+            DB::commit();
+            return(redirect()->route('membro.editar', ['id'=> $id])->with('success', 'Membro diciplinado com sucesso.'));
+        } catch(\Exception $e) {
+            DB::rollback();
+            return(redirect()->route('membro.editar', ['id'=> $id])->with('error', 'Falha ao diciplinar o membro.'));
+        }
+    }
 
+    public function updateDisciplinar(UpdateDisciplinarRequest $request, $id)
+    {
+        try{
+            DB::beginTransaction();
+            app(UpdateDisciplinarService::class)->execute($request->get('dt_termino'), $id);
+            DB::commit();
+            return response()->json(['message' => 'Disciplina atualizada com sucesso!']);
+        } catch(\Exception $e) {
+            DB::rollBack();
+            return response()->json(['message' => 'Ao atualizar a disciplina deste membro!']);
+        }
     }
 }
