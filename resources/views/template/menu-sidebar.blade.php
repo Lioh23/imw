@@ -107,19 +107,19 @@
                    </a>
                    <ul class="collapse submenu list-unstyled" id="financeiro" data-parent="#financeiro">
                        <li>
-                           <a href="{{route('movimento.caixa')}}">Movimento de Caixa</a>
+                           <a href="{{route('financeiro.movimento.caixa')}}">Movimento de Caixa</a>
                        </li>
                        <li>
-                           <a href="{{route('consolidar.caixa')}}">Consolidação de Caixa</a>
+                           <a href="{{route('financeiro.consolidar.caixa')}}">Consolidação de Caixa</a>
                        </li>
                        <li>
-                           <a href="{{route('plano.conta')}}">Plano Conta</a>
+                           <a href="{{route('financeiro.plano.conta')}}">Plano Conta</a>
                        </li>
                        <li>
-                           <a href="{{route('caixas')}}">Caixas</a>
+                           <a href="{{route('financeiro.caixas')}}">Caixas</a>
                        </li>
                        <li>
-                           <a href="{{route('fornecedores')}}">Fornecedores</a>
+                           <a href="{{route('financeiro.fornecedores')}}">Fornecedores</a>
                        </li>
                    </ul>
                </li>
