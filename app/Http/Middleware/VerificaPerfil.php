@@ -30,10 +30,10 @@ class VerificaPerfil
                 $perfil = PerfilUser::where('user_id', $user->id)
                 ->join('instituicoes_instituicoes', 'instituicoes_instituicoes.id', '=', 'perfil_user.instituicao_id')
                 ->join('perfils', 'perfils.id', '=', 'perfil_user.perfil_id')
-                ->select('instituicoes_instituicoes.instituicao_id', 
-                    'instituicoes_instituicoes.instituicao_nome', 
+                ->select('instituicoes_instituicoes.id as instituicao_id', 
+                    'instituicoes_instituicoes.nome as instituicao_nome', 
                     'perfils.id as perfil_id', 
-                    'perfils.nome as perfil')
+                    'perfils.nome as perfil_nome')
                 ->first();
                 
                 $perfil = [

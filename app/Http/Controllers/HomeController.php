@@ -23,24 +23,33 @@ class HomeController extends Controller
         $perfils = PerfilUser::where('user_id', $userID)
             ->join('instituicoes_instituicoes', 'instituicoes_instituicoes.id', '=', 'perfil_user.instituicao_id')
             ->join('perfils', 'perfils.id', '=', 'perfil_user.perfil_id')
-            ->select('instituicoes_instituicoes.instituicao_id', 'instituicoes_instituicoes.instituicao_nome', 'perfils.id as perfil_id', 'perfils.nome as perfil')
+            ->select(
+                'instituicoes_instituicoes.id as instituicao_id',
+                'instituicoes_instituicoes.nome as instituicao_nome',
+                'perfils.id as perfil_id',
+                'perfils.nome as perfil_nome'
+            )
             ->get();
 
         return view('selecionarPerfil', ['perfils' => $perfils]);
     }
 
-    public function postPerfil(Request $request) {
+    public function postPerfil(Request $request)
+    {
         if ($request->has('instituicao_id')) {
-                $instituicao = [
-                    'id' => $request->instituicao_id,
-                    'nome' => $request->instituicao_nome
-                ];
 
-            session(['session_perfil' => $instituicao]);
+            $perfil = [
+                'instituicao_id' => $request->instituicao_id,
+                'instituicao_nome' => $request->instituicao_nome,
+                'perfil_id' => $request->perfil_id,
+                'perfil_nome' => $request->perfil_nome
+            ];
 
-            return redirect()->route('dashboard'); 
+            session(['session_perfil' => $perfil]);
+
+            return redirect()->route('dashboard');
         } else {
-            return redirect()->back()->with('error', 'A seleção de instituição é obrigatória. Por favor, selecione.');
+            return redirect()->back()->with('error', 'A seleção de um perfil é obrigatória. Por favor, selecione.');
         }
     }
 }

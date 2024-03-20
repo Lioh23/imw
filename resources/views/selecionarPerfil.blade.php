@@ -21,73 +21,89 @@
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
-    
+    @php
+        $user = Auth::user();
+        $firstName = '';
+        $lastName = '';
+        if ($user) {
+            $nameParts = explode(' ', $user->name);
+            $firstName = $nameParts[0];
+            $lastName = end($nameParts);
+        }
+    @endphp
     <style>
         .swal2-popup .swal2-styled.swal2-cancel {
-            color: white!important;
+            color: white !important;
         }
     </style>
-    
+
     @include('extras.alerts')
-    
+
     @section('extras-scripts')
-    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+        <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+        <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+        <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     @endsection
 </head>
 
 <body>
     <section class="row flexbox-container justify-content-center align-items-center mt-3">
-        <div class="col-xl-10 col-md-10 col-10 ">
-          <div class="card bg-transparent shadow-none">
-            <div class="card-content">
-              <div class="card-body text-center">
-                <h3 class="mb-4">Você precisa selecionar uma instituição</h3>
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
-                @if($instituicoes->isEmpty())
-                    <p>Nenhum instituição de vinculada a este usuário.</p>
-                @else
-                    <div class="row justify-content-center align-items-center">
-                        @foreach ($instituicoes as $instituicao)
-                            <div class="col-lg-4 col-md-6 mb-4 ">
-                                <div class="card">
-                                    <div class="card-header bg-primary text-white text-bold-600">
-                                        {{ $instituicao->nome }}
-                                    </div>
-                                    <div class="card-body">
-                                    </div>
-                                    <div class="card-footer text-center">
-                                        <form action="{{ route('selecionar.perfil') }}" method="POST">
-                                            @csrf
-                                            <input type="hidden" name="instituicao_id" value="{{ $instituicao->id }}">
-                                            <input type="hidden" name="instituicao_nome" value="{{ $instituicao->nome }}">
-    
-                                            <button type="submit" class="btn btn-dark">
-                                                Selecionar
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
+        <div class="col-xl-8 col-md-8 col-8 ">
+            <div class="card bg-transparent shadow-none">
+                <div class="card-content">
+                    <div class="card-body text-center">
+                        <h5 class="mb-4"><b>Olá {{ $firstName }} {{ $lastName }}, você precisa selecionar um perfil de acesso:</b></h5>
+                        @if (session('error'))
+                            <div class="alert alert-danger">
+                                {{ session('error') }}
                             </div>
-                        @endforeach
+                        @endif
+                        @if ($perfils->isEmpty())
+                            <p>Nenhum perfil vinculado a este usuário.</p>
+                        @else
+                            <div class="row justify-content-center align-items-center">
+                                @foreach ($perfils as $perfil)
+                                    <div class="col-lg-4 col-md-6 mb-4 ">
+                                        <div class="card">
+                                            <div class="card-header bg-primary">
+                                                <h6 class="text-white text-bold-600"> {{ $perfil->instituicao_nome }}
+                                                </h6>
+                                            </div>
+                                            <div class="card-body">
+                                                <h6>{{ $perfil->perfil_nome }}</h6>
+                                            </div>
+                                            <div class="card-footer text-center">
+                                                <form action="{{ route('selecionar.perfil') }}" method="POST">
+                                                    @csrf
+                                                    <input type="hidden" name="instituicao_id"
+                                                        value="{{ $perfil->instituicao_id }}">
+                                                    <input type="hidden" name="instituicao_nome"
+                                                        value="{{ $perfil->instituicao_nome }}">
+                                                    <input type="hidden" name="perfil_id"
+                                                        value="{{ $perfil->perfil_id }}">
+                                                    <input type="hidden" name="perfil_nome"
+                                                        value="{{ $perfil->perfil_nome }}">
+                                                    <button type="submit" class="btn btn-dark">
+                                                        Selecionar
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        @endif
                     </div>
-                @endif
-              </div>
+                </div>
             </div>
-          </div>
         </div>
-      </section>
+    </section>
 
 
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script src="{{ asset('theme/bootstrap/js/popper.min.js') }}"></script>
     <script src="{{ asset('theme/bootstrap/js/bootstrap.min.js') }}"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
- </body>
+</body>
 
 </html>
