@@ -95,7 +95,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa');
             Route::get('/plano-conta', [FinanceiroController::class, 'planoconta'])->name('plano.conta');
             Route::get('/caixas', [FinanceiroController::class, 'caixas'])->name('caixas');
-
+            Route::get('/fornecedores', [FinanceiroController::class, 'fornecedores'])->name('fornecedores');
         });
     });
 });
