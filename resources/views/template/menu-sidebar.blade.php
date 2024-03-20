@@ -16,7 +16,7 @@
            {{-- <div class="shadow-bottom"></div> --}}
            <div class="user-info">
                <div class="user-photo" style="text-align: center; margin-bottom: 13px;">
-                   <img src="https://via.placeholder.com/70" alt="User" style="width: 70px; height: 70px; border-radius: 50%;">
+                   <img src="{{asset('theme/assets/img/perfil.png')}}" alt="User" style="width: 70px; height: 70px; border-radius: 50%;">
                </div>
                <div class="user-details" style="text-align: center;">
                    <h6 class="text-bold text-white">{{ $firstName }} {{ $lastName }}</h6>
