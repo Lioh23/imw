@@ -460,14 +460,14 @@
                                     consolidação?
                                 </div>
             
-                                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="alert"
+                                <button type="button" class="btn-close btn-close-white btn-rounded" data-bs-dismiss="alert"
                                     aria-label="Close"></button>
                             </div>
                         </div>
             
                         <div class="col-12">
                             <form method="post">
-                                <button class="btn btn-success p-2" type="submit">CONSOLIDAR O MÊS DE MARÇO DE 2024</button>
+                                <button class="btn btn-success p-2 btn-rounded" type="submit">CONSOLIDAR O MÊS DE MARÇO DE 2024</button>
                             </form>
                         </div>
                     </div>

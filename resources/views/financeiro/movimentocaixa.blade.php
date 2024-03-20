@@ -348,12 +348,12 @@
                         </div>
 
                         <div class="form-group col-lg-1 col-md-2 col-sm-6 mt-4">
-                            <button class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i>
+                            <button class="btn btn-primary btn-rounded"><i class="fa fa-search" aria-hidden="true"></i>
                                 Buscar</button>
                         </div>
                         <div class="form-group col-lg-1 col-md-2 col-sm-6 mt-4">
 
-                            <button class="btn btn-danger" type="button"> <i
+                            <button class="btn btn-danger btn-rounded" type="button"> <i
                                     class="fas fa-fw fa-eraser"></i> Limpar</button>
                         </div>
                     </div>
@@ -369,23 +369,23 @@
                     <div class="col-12">
 
                         <a href="#"
-                            title="Inserir um novo registro" class="btn btn-success right"> <i
+                            title="Inserir um novo registro" class="btn btn-success right btn-rounded"> <i
                                 class="fas fa-plus-circle"></i>
                             Entradas </a>
 
                         <a href="#"
-                            title="Inserir um novo registro" class="btn btn-danger right"> <i
+                            title="Inserir um novo registro" class="btn btn-danger right btn-rounded"> <i
                                 class="fas fa-minus-circle"></i>
                             Saída </a>
 
 
                         <a href="#"
-                            title="Inserir um novo registro" class="btn btn-warning right"> <i
+                            title="Inserir um novo registro" class="btn btn-warning right btn-rounded"> <i
                                 class="fas fa-forward"></i>
                             Transferência </a>
 
                         <a href="#"
-                            title="Inserir um novo registro" class="btn btn-primary right"> <i
+                            title="Inserir um novo registro" class="btn btn-primary right btn-rounded"> <i
                                 class="fas fa-money-bill-alt"></i> Saldo </a>
 
                         <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
@@ -413,7 +413,7 @@
 
                 <div class="row">
                     <div class="col-12 text-center">
-                        <button class="btn btn-success" onclick="exportReportToExcel();"><i class="fa fa-file-excel"
+                        <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i class="fa fa-file-excel"
                                 aria-hidden="true"></i> Exportar</button>
                     </div>
                 </div>

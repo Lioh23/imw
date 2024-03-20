@@ -32,7 +32,7 @@
                                     <input class="form-control " id="nome" name="nome" maxlength="200" value="" type="text" placeholder="">
                                 </div>
                                 <div class="form-group col-lg-1 col-md-1 col-sm-6 mt-4">
-                                    <button class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+                                    <button class="btn btn-primary btn-rounded"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
                                 </div>
                             </div>
                         </form>
@@ -41,9 +41,6 @@
                 <div class="row">
 
                     <div class="col-12">
-                        <!--
-                        <a href="https://www.imwplus.com.br/app/financeiro-planoconta/new" title="Inserir um novo registro" class="btn btn-primary right"> <i class="fas fa-plus-circle"></i> Novo </a>
-                -->
                         <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                             <thead class="thead-light">
                                 <tr>
