@@ -196,10 +196,10 @@
                    </a>
                    <ul class="collapse submenu list-unstyled" id="components" data-parent="#accordionExample">
                        <li>
-                           <a href="/usuarios"> Usuários </a>
+                           <a href="/perfil"> Meu Perfil </a>
                        </li>
                        <li>
-                           <a href="/perfils"> Perfils </a>
+                           <a href="{{route('selecionarPerfil')}}"> Trocar Perfil </a>
                        </li>
                    </ul>
                </li>

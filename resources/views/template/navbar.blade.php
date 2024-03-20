@@ -38,10 +38,16 @@
                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user">
                                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
                                  <circle cx="12" cy="7" r="4"></circle>
-                             </svg> <span> Perfil</span>
+                             </svg> <span> Meu Perfil</span>
                          </a>
                      </div>
-                     
+                     <div class="dropdown-item">
+                        <a href="{{ route('selecionarPerfil') }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-repeat __web-inspector-hide-shortcut__"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg>
+                            <span> Trocar Perfil</span>
+                        </a>
+                    </div>
+                    
                      <div class="dropdown-item">
                          <!-- Este link atua como um botão para submeter o formulário de logout -->
                          <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
