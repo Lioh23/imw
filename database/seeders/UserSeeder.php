@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         ]);
 
         // IDs das instituições específicas
-        $instituicaoIds = [2215];
+        $instituicaoIds = [2215, 2116];
 
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 13]); // regiao
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 1758]); // distrito
