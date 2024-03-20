@@ -16,10 +16,10 @@
            {{-- <div class="shadow-bottom"></div> --}}
            <div class="user-info">
                <div class="user-photo" style="text-align: center; margin-bottom: 13px;">
-                   <img src="https://via.placeholder.com/40" alt="User" style="width: 40px; height: 40px; border-radius: 50%;">
+                   <img src="https://via.placeholder.com/70" alt="User" style="width: 70px; height: 70px; border-radius: 50%;">
                </div>
                <div class="user-details" style="text-align: center;">
-                   <span>{{ $firstName }} {{ $lastName }}</span><br>
+                   <h6 class="text-bold text-white">{{ $firstName }} {{ $lastName }}</h6>
                    @if(session('session_perfil'))
                         <span>{{ session('session_perfil')['perfil_nome'] }}</span> <br>
                         <span>{{ session('session_perfil')['instituicao_nome'] }}</span> <br>

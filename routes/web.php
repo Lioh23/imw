@@ -29,8 +29,8 @@ Route::middleware(['auth'])->group(function () {
     Route::middleware([VerificaPerfil::class])->group(function () { 
         
         //Estas duas rotas estão com VerificaPerfil Middleware desabilitados
-        Route::get('/selecionarPerfil', [HomeController::class, 'selecionarPerfil'])->withoutMiddleware([VerificaPerfil::class]);
-        Route::post('/postPerfil', [HomeController::class, 'postPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('selecionar.perfil');
+        Route::get('/selecionarPerfil', [HomeController::class, 'selecionarPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('selecionarPerfil');
+        Route::post('/postPerfil', [HomeController::class, 'postPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('postPerfil');
        
         // Grupo de rotas para 'membresia'
         Route::prefix('membro')->name('membro.')->group(function () {

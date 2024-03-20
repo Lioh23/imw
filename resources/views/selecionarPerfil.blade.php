@@ -73,7 +73,7 @@
                                                 <h6>{{ $perfil->perfil_nome }}</h6>
                                             </div>
                                             <div class="card-footer text-center">
-                                                <form action="{{ route('selecionar.perfil') }}" method="POST">
+                                                <form action="{{ route('postPerfil') }}" method="POST">
                                                     @csrf
                                                     <input type="hidden" name="instituicao_id"
                                                         value="{{ $perfil->instituicao_id }}">
