@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CongregadosController;
+use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\MembrosController;
@@ -86,6 +87,15 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store', [CongregadosController::class, 'store'])->name('store');
             Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar');
             Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar');
+        });
+
+        /* Por enquanto somente visualiações */
+        Route::prefix('financeiro')->name('financeiro.')->group(function () {
+            Route::get('/movimento-caixa', [FinanceiroController::class, 'movimentocaixa'])->name('movimento.caixa');
+            Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa');
+            Route::get('/plano-conta', [FinanceiroController::class, 'planoconta'])->name('plano.conta');
+            Route::get('/caixas', [FinanceiroController::class, 'caixas'])->name('caixas');
+
         });
     });
 });
