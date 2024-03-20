@@ -8,6 +8,7 @@ use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\VisitantesController;
 use App\Http\Middleware\VerificaInstituicao;
+use App\Http\Middleware\VerificaPerfil;
 use Illuminate\Support\Facades\Route;
 
 // Rotas de autenticação
@@ -25,11 +26,11 @@ Route::post('/esqueci-senha', [AuthController::class, 'submitResetRequest'])->na
 
 // Rotas protegidas por autenticação
 Route::middleware(['auth'])->group(function () {
-    Route::middleware([VerificaInstituicao::class])->group(function () { 
+    Route::middleware([VerificaPerfil::class])->group(function () { 
         
-        //Estas duas rotas estão com VerificaInstituicao Middleware desabilitados
-        Route::get('/selecionarInstituicao', [HomeController::class, 'selecionarInstituicao'])->withoutMiddleware([VerificaInstituicao::class]);
-        Route::post('/postInstituicao', [HomeController::class, 'postInstituicao'])->withoutMiddleware([VerificaInstituicao::class])->name('selecionar.instituicao');
+        //Estas duas rotas estão com VerificaPerfil Middleware desabilitados
+        Route::get('/selecionarPerfil', [HomeController::class, 'selecionarPerfil'])->withoutMiddleware([VerificaPerfil::class]);
+        Route::post('/postPerfil', [HomeController::class, 'postPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('selecionar.perfil');
        
         // Grupo de rotas para 'membresia'
         Route::prefix('membro')->name('membro.')->group(function () {

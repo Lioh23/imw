@@ -14,28 +14,29 @@ class HomeController extends Controller
         return view('dashboard');
     }
 
-    public function selecionarInstituicao()
+    public function selecionarPerfil()
     {
         // Obter o ID do usuário autenticado
         $userID = Auth::id();
 
         // Consultar as Instituicoes dos Usuários Autenticados
-        $instituicoes = PerfilUser::where('user_id', $userID)
+        $perfils = PerfilUser::where('user_id', $userID)
             ->join('instituicoes_instituicoes', 'instituicoes_instituicoes.id', '=', 'perfil_user.instituicao_id')
-            ->select('instituicoes_instituicoes.id', 'instituicoes_instituicoes.nome')
+            ->join('perfils', 'perfils.id', '=', 'perfil_user.perfil_id')
+            ->select('instituicoes_instituicoes.instituicao_id', 'instituicoes_instituicoes.instituicao_nome', 'perfils.id as perfil_id', 'perfils.nome as perfil')
             ->get();
 
-        return view('selecionarInsticuicao', ['instituicoes' => $instituicoes]);
+        return view('selecionarPerfil', ['perfils' => $perfils]);
     }
 
-    public function postInstituicao(Request $request) {
+    public function postPerfil(Request $request) {
         if ($request->has('instituicao_id')) {
                 $instituicao = [
                     'id' => $request->instituicao_id,
                     'nome' => $request->instituicao_nome
                 ];
 
-            session(['session_instituicao' => $instituicao]);
+            session(['session_perfil' => $instituicao]);
 
             return redirect()->route('dashboard'); 
         } else {

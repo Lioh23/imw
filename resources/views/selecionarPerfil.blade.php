@@ -62,7 +62,7 @@
                                     <div class="card-body">
                                     </div>
                                     <div class="card-footer text-center">
-                                        <form action="{{ route('selecionar.instituicao') }}" method="POST">
+                                        <form action="{{ route('selecionar.perfil') }}" method="POST">
                                             @csrf
                                             <input type="hidden" name="instituicao_id" value="{{ $instituicao->id }}">
                                             <input type="hidden" name="instituicao_nome" value="{{ $instituicao->nome }}">
