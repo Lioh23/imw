@@ -1,4 +1,26 @@
 <div class="card mb-3">
+    <div class="bg-holder d-none d-lg-block bg-card gb-title">
+    </div>
+    <!--/.bg-holder-->
+    <div class="card-body">
+        <form action="">
+            <div class="row">
+                <div class="col-lg-12">
+                    <p class="mt-2">Filtros para pesquisa</p>
+                </div>
+                <div class="form-group col-lg-10 col-md-10 col-sm-9">
+                    <label for="nome">Nome</label>
+                    <input class="form-control " id="nome" name="nome" maxlength="200" value="" type="text"
+                        placeholder="">
+                </div>
+                <div class="form-group col-lg-1 col-md-1 col-sm-6 mt-4">
+                    <button class="btn btn-primary"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card mb-3">
     <div class="card-header">
         <h5 class="mb-0">Listagem de Registros</h5>
     </div>
@@ -10,65 +32,20 @@
                 <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                     <thead class="thead-light">
                         <tr>
-                            <th>Descrição</th>
-                            <th>Tipo</th>
+                            <th>Nome do Forncedor</th>
+                            <th>Cidade/Estado</th>
+                            <th>Telefone</th>
+                            <th>Celular</th>
+                            <th>E-mail</th>
                             <th width="150"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>Caixa Banco Bradesco</td>
-                            <td>Banco </td>
-                            <td class="table-action">
-                                <a href="#" title="editar"
-                                    class="btn"><i class="align-middle fas fa-fw fa-pen"></i></a>
-                                <a href="#" title="apagar"
-                                    class="btn"><i class="align-middle fas fa-fw fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Caixa Comunicação</td>
-                            <td>Secundário </td>
-                            <td class="table-action">
-                                <a href="#" title="editar"
-                                    class="btn"><i class="align-middle fas fa-fw fa-pen"></i></a>
-                                <a href="#"  title="apagar"
-                                    class="btn"><i class="align-middle fas fa-fw fa-trash"></i></a>
-                            </td>
-                        </tr>
-                            <td>Caixa Missões (caixa bradesco)</td>
-                            <td>Banco </td>
-                            <td class="table-action">
-                                <a href="#" title="editar"
-                                    class="btn"><i class="align-middle fas fa-fw fa-pen"></i></a>
-                                <a href="#" title="apagar"
-                                    class="btn"><i class="align-middle fas fa-fw fa-trash"></i></a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Caixa Principal</td>
-                            <td>Principal </td>
-                            <td class="table-action">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>Cozinha</td>
-                            <td>Secundário </td>
-                            <td class="table-action">
-                                <a href="#" title="editar"
-                                    class="btn"><i class="align-middle fas fa-fw fa-pen"></i></a>
-                                <a href="#" title="apagar"
-                                    class="btn"><i class="align-middle fas fa-fw fa-trash"></i></a>
-                            </td>
-                        </tr>
+
                     </tbody>
                 </table>
                 <nav aria-label="Page navigation example">
                     <ul class="pagination">
-                        <li class="page-item active">
-                            <a href="#" class="page-link">
-                                1 </a>
-                        </li>
                     </ul>
                 </nav>
             </div>
