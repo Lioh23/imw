@@ -119,7 +119,7 @@
                            <a href="{{route('financeiro.caixas')}}">Caixas</a>
                        </li>
                        <li>
-                           <a href="{{route('financeiro.fornecedores')}}">Fornecedores</a>
+                           <a href="{{route('fornecedor.index')}}">Fornecedores</a>
                        </li>
                    </ul>
                </li>

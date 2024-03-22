@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Financeiro', 'url' => '/', 'active' => false],
-        ['text' => 'Fornecedores', 'url' => '#', 'active' => true],
+        ['text' => 'Fornecedor', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 @section('content')
@@ -47,7 +47,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="#" title="Inserir um novo registro" class="btn btn-primary right"> <i
+                                <a href="{{route('fornecedor.novo')}}" title="Inserir um novo registro" class="btn btn-primary right"> <i
                                         class="fas fa-plus-circle"></i> Novo </a>
                                 <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                     <thead class="thead-light">

@@ -22,8 +22,5 @@ class FinanceiroController extends Controller
         return view('financeiro.caixas');
     }
 
-    public function fornecedores(){
-        return view('financeiro.fornecedores');
-    }
 
 }

@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\FinanceiroController;
+use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\MembrosController;
@@ -95,7 +96,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa');
             Route::get('/plano-conta', [FinanceiroController::class, 'planoconta'])->name('plano.conta');
             Route::get('/caixas', [FinanceiroController::class, 'caixas'])->name('caixas');
-            Route::get('/fornecedores', [FinanceiroController::class, 'fornecedores'])->name('fornecedores');
         });
+
+         /* Por enquanto somente visualiações */
+         Route::prefix('fornecedor')->name('fornecedor.')->group(function () {
+            Route::get('/', [FornecedorController::class, 'index'])->name('index');
+            Route::get('/novo', [FornecedorController::class, 'novo'])->name('novo');
+         });
     });
 });
