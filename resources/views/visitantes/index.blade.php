@@ -27,6 +27,21 @@
 @section('content')
 @include('extras.alerts')
 <div class="container-fluid">
+    <a href="{{ route('visitante.index') }}" class="btn btn-info position-relative mt-3 mb-3 ml-2">
+        <span>VISITANTES ATIVOS</span>
+        <span class="badge badge-info counter">{{ $countAtivos }}</span>
+    </a>
+
+    <a href="{{ route('visitante.index') }}?excluido=1" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
+        <span>VISITANTES EXCLUÍDOS</span>
+        <span class="badge badge-danger counter">{{ $countExcluidos }}</span>
+    </a>
+
+    <a href="{{ route('visitante.index') }}?has_errors=1" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
+        <span>ERROS DE CADASTRO</span>
+        <span class="badge badge-warning counter">{{ $countHasErrors }}</span>
+    </a>
+
     <a href="{{ route('visitante.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
             <circle cx="12" cy="12" r="10"></circle>
@@ -76,7 +91,13 @@
                         <tbody>
                             @foreach($visitantes as $index => $visitante)
                             <tr>
-                                <td>{{ $visitante->nome }}</td>
+                                <td>
+                                    @if(!$visitante->has_errors)
+                                        {{ $visitante->nome }}
+                                    @else
+                                        <span class="badge badge-warning"> {{ $visitante->nome }} </span>
+                                    @endif
+                                </td>
                                 <td>
                                     {{ '(' . substr($visitante->contato->telefone_preferencial, 0, 2) . ') ' . substr($visitante->contato->telefone_preferencial, 2, 5) . '-' . substr($visitante->contato->telefone_preferencial, 7) }}
                                 </td>

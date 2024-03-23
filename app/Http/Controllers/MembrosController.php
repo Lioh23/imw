@@ -39,8 +39,8 @@ use Illuminate\Support\Facades\DB;
 class MembrosController extends Controller
 {
     public function index(Request $request) {
-        $membros = app(ListMembrosService::class)->execute($request->get('search'));
-        return view('membros.index', compact('membros'));
+        $data = app(ListMembrosService::class)->execute($request->all());
+        return view('membros.index', $data);
     }
   
     public function editar($id)

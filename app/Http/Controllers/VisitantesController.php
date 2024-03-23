@@ -17,9 +17,8 @@ class VisitantesController extends Controller
 
     public function index(Request $request)
     {
-        $searchTerm = $request->input('search');
-        $visitantes = app(ListVisitanteService::class)->execute($searchTerm);
-        return view('visitantes.index', compact('visitantes'));
+        $data = app(ListVisitanteService::class)->execute($request->all());
+        return view('visitantes.index', $data);
     }
 
     public function update(UpdateVisitanteRequest $request, $id){

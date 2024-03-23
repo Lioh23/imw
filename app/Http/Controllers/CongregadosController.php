@@ -18,8 +18,8 @@ use Illuminate\Support\Facades\DB;
 class CongregadosController extends Controller
 {
     public function index(Request $request) {
-        $congregados = app(ListCongregadosService::class)->execute($request->get('search'));
-        return view('congregados.index', compact('congregados'));
+        $data = app(ListCongregadosService::class)->execute($request->all());
+        return view('congregados.index', $data);
     }
 
     public function novo() {
@@ -68,7 +68,6 @@ class CongregadosController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
             return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
-       
         }
     }
     
