@@ -76,13 +76,19 @@
                    </a>
                    <ul class="collapse submenu list-unstyled" id="secretaria" data-parent="#secretaria">
                        <li>
-                           <a href="/membro">Membros</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('membros-index'))
+                               <a href="/membro">Membros</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="/congregado">Congregados</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('congregados-index'))
+                               <a href="/congregado">Congregados</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="/visitante">Visitantes</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('visitantes-index'))
+                               <a href="/visitante">Visitantes</a>
+                           @endif
                        </li>
                    </ul>
                </li>
@@ -107,19 +113,29 @@
                    </a>
                    <ul class="collapse submenu list-unstyled" id="financeiro" data-parent="#financeiro">
                        <li>
-                           <a href="{{route('financeiro.movimento.caixa')}}">Movimento de Caixa</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-movimentocaixa-index'))
+                               <a href="{{ route('financeiro.movimento.caixa') }}">Movimento de Caixa</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="{{route('financeiro.consolidar.caixa')}}">Consolidação de Caixa</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-consolidarcaixa'))
+                               <a href="{{ route('financeiro.consolidar.caixa') }}">Consolidação de Caixa</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="{{route('financeiro.plano.conta')}}">Plano Conta</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-planoconta'))
+                               <a href="{{ route('financeiro.plano.conta') }}">Plano Conta</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="{{route('financeiro.caixas')}}">Caixas</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-caixas'))
+                               <a href="{{ route('financeiro.caixas') }}">Caixas</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="{{route('fornecedor.index')}}">Fornecedores</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('fornecedor-index'))
+                               <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
+                           @endif
                        </li>
                    </ul>
                </li>
@@ -147,30 +163,44 @@
                    </a>
                    <ul class="collapse submenu list-unstyled" id="relatorios" data-parent="#relatorios">
                        <li>
-                           <a href="relMembresia/">Membresia</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relmembresia-index'))
+                               <a href="relMembresia/">Membresia</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="relrolAtual/">Rol Atual</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolatual-index'))
+                               <a href="relrolAtual/">Rol Atual</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="relrolPermanente/">Rol Permanente</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolpermanente-index'))
+                               <a href="relrolPermanente/">Rol Permanente</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="relrolExcluidos/">Rol Excluídos</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolexcluidos-index'))
+                               <a href="relrolExcluidos/">Rol Excluídos</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="relCongregados/">Congregados</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relcongregados-index'))
+                               <a href="relCongregados/">Congregados</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="relVisitantes">Visitantes</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relvisitantes-index'))
+                               <a href="relVisitantes/">Visitantes</a>
+                           @endif
                        </li>
                        <li>
-                           <a href="relAniversariantes">Aniversariantes</a>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relaniversariantes-index'))
+                               <a href="relAniversariantes/">Aniversariantes</a>
+                           @endif
                        </li>
                    </ul>
                </li>
 
-               <li class="menu">
+               {{--  <li class="menu">
                    <a href="#impressos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                        <div class="">
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -204,7 +234,7 @@
                        </li>
                    </ul>
                </li>
-
+ --}}
                <li class="menu menu-heading">
                    <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

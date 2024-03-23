@@ -46,9 +46,25 @@ class RegrasTableSeeder extends Seeder
              ['nome' => 'membros-exclusaotransferencia'],
              ['nome' => 'membros-disciplinar'],
 
-             //Fornecedor
+             //Relatórios
+             ['nome' => 'relmembresia-index'],
+             ['nome' => 'relrolatual-index'],
+             ['nome' => 'relrolpermanente-index'],
+             ['nome' => 'relrolexcluidos-index'],
+             ['nome' => 'relcongregados-index'],
+             ['nome' => 'relvisitantes-index'],
+             ['nome' => 'relaniversariantes-index'],
+             
+             //Fornecedores
              ['nome' => 'fornecedores-index'],
              ['nome' => 'fornecedores-cadastrar'],
+
+             //Financeiro
+             ['nome' => 'financeiro-movimentocaixa-index'],
+             ['nome' => 'financeiro-consolidarcaixa'],
+             ['nome' => 'financeiro-planoconta'],
+             ['nome' => 'financeiro-caixas'],
+           
         ]);
     }
 }

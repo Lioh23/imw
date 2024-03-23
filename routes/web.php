@@ -92,10 +92,10 @@ Route::middleware(['auth'])->group(function () {
 
         /* Por enquanto somente visualiações */
         Route::prefix('financeiro')->name('financeiro.')->group(function () {
-            Route::get('/movimento-caixa', [FinanceiroController::class, 'movimentocaixa'])->name('movimento.caixa');
-            Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa');
-            Route::get('/plano-conta', [FinanceiroController::class, 'planoconta'])->name('plano.conta');
-            Route::get('/caixas', [FinanceiroController::class, 'caixas'])->name('caixas');
+            Route::get('/movimento-caixa', [FinanceiroController::class, 'movimentocaixa'])->name('movimento.caixa')->middleware(['seguranca:financeiro-movimentocaixa-index']);
+            Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa')->middleware(['seguranca:financeiro-consolidarcaixa']);
+            Route::get('/plano-conta', [FinanceiroController::class, 'planoconta'])->name('plano.conta')->middleware(['seguranca:financeiro-planoconta']);
+            Route::get('/caixas', [FinanceiroController::class, 'caixas'])->name('caixas')->middleware(['seguranca:financeiro-caixas']);
         });
 
          /* Por enquanto somente visualiações */
