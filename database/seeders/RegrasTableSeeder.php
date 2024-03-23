@@ -16,6 +16,11 @@ class RegrasTableSeeder extends Seeder
     public function run()
     {
         DB::table('regras')->insert([
+            //Menus
+            ['nome' => 'menu-secretaria'],
+            ['nome' => 'menu-financeiro'],
+            ['nome' => 'menu-relatorios'],
+  
             //Visitantes
             ['nome' => 'visitantes-index'],
             ['nome' => 'visitantes-cadastrar'],

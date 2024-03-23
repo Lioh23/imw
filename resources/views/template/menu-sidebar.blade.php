@@ -53,6 +53,7 @@
                        </svg><span>MENU PRINCIPAL</span></div>
                </li>
 
+               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-secretaria'))
                <li class="menu">
                    <a href="#secretaria" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                        <div class="">
@@ -92,6 +93,8 @@
                        </li>
                    </ul>
                </li>
+               @endif
+               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
                <li class="menu">
                    <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                        <div class="">
@@ -139,7 +142,9 @@
                        </li>
                    </ul>
                </li>
+               @endif
 
+               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                <li class="menu">
                    <a href="#relatorios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                        <div class="">
@@ -199,6 +204,7 @@
                        </li>
                    </ul>
                </li>
+               @endif
 
                {{--  <li class="menu">
                    <a href="#impressos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
