@@ -60,14 +60,18 @@ class User extends Authenticatable
             ->where('instituicoes_instituicoes.tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL);
     }
 
-    public function perfils()
-    {
-        return $this->belongsToMany(Perfil::class)->withPivot('instituicao_id');
-    }
-
     public function instituicoes()
     {
         return $this->belongsToMany(InstituicoesInstituicao::class)->withPivot('instituicao_id');
-      
     }
+
+    public function perfis()
+    {
+        return $this->belongsToMany(Perfil::class, 'perfil_user');
+    }
+
+    public function hasPerfilRegra($regraNome)
+    {
+        return $this->perfis->flatMap->regras->contains('nome', $regraNome);
+    }    
 }

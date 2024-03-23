@@ -11,14 +11,14 @@ class Perfil extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = ['nome'];
-    
-    public function users()
-    {
-        return $this->belongsToMany(User::class)->withPivot('instituicao_id');
-    }
 
     public function regras()
     {
-        return $this->belongsToMany(Regra::class);
+        return $this->belongsToMany(Regra::class, 'perfil_regra');
+    }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'perfil_user');
     }
 }

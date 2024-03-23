@@ -31,9 +31,21 @@ class UserSeeder extends Seeder
             'password' => Hash::make('Kadosh1957*'),
         ]);
 
-        // IDs das instituições específicas
-        $instituicaoIds = [2215, 2116];
+        // Vinculando o perfil Administrador aos usuários
+        $perfilAdmin = Perfil::where('nome', 'Administrador Local')->first();
 
+        if ($perfilAdmin) {
+            $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
+            $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2116]);
+
+            // Vinculando todas as regras ao perfil Administrador
+            $regras = Regra::all();
+            foreach ($regras as $regra) {
+                $perfilAdmin->regras()->attach($regra->id);
+            }
+        }
+
+        // Vinculando as instituições aos usuários
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 13]); // regiao
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 1758]); // distrito
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2215]); // igreja
@@ -41,23 +53,7 @@ class UserSeeder extends Seeder
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 13]); // regiao
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 1758]); // distrito
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2215]); // igreja
-
-
-        // Atribuição do perfil Administrador aos usuários e vinculação com as instituições
-        $perfilAdmin = Perfil::where('nome', 'Administrador Local')->first();
-
-        if ($perfilAdmin) {
-            // Vinculando todas as regras ao perfil Administrador
-            $regras = Regra::all();
-            foreach ($regras as $regra) {
-                $perfilAdmin->regras()->attach($regra->id);
-            }
-
-            // Associando cada instituição ao perfil de administrador para cada usuário
-            foreach ($instituicaoIds as $instituicaoId) {
-                $admin->perfils()->attach($perfilAdmin->id, ['instituicao_id' => $instituicaoId]);
-                $marcos->perfils()->attach($perfilAdmin->id, ['instituicao_id' => $instituicaoId]);
-            }
-        }
     }
 }
+
+

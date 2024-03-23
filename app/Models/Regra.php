@@ -12,8 +12,8 @@ class Regra extends Model
 
     protected $fillable = ['nome'];
 
-    public function perfils()
+    public function perfis()
     {
-        return $this->belongsToMany(Perfil::class);
+        return $this->belongsToMany(Perfil::class, 'perfil_regra');
     }
 }
