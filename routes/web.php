@@ -83,11 +83,11 @@ Route::middleware(['auth'])->group(function () {
         // Grupo de rotas para 'congregado'
         Route::prefix('congregado')->name('congregado.')->group(function () {
             Route::get('/', [CongregadosController::class, 'index'])->name('index')->middleware(['seguranca:congregados-index']);
-            Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo')->middleware(['congregados-cadastrar']);
-            Route::post('/update', [CongregadosController::class, 'update'])->name('update')->middleware(['congregados-atualizar']);
-            Route::post('/store', [CongregadosController::class, 'store'])->name('store')->middleware(['congregados-cadastrar']);
-            Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar')->middleware(['congregados-excluir']);
-            Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar')->middleware(['congregados-editar']);
+            Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo')->middleware(['seguranca:congregados-cadastrar']);
+            Route::post('/update', [CongregadosController::class, 'update'])->name('update')->middleware(['seguranca:congregados-atualizar']);
+            Route::post('/store', [CongregadosController::class, 'store'])->name('store')->middleware(['seguranca:congregados-cadastrar']);
+            Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar')->middleware(['seguranca:congregados-excluir']);
+            Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar')->middleware(['seguranca:congregados-editar']);
         });
 
         /* Por enquanto somente visualiações */
