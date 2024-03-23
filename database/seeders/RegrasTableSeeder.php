@@ -20,7 +20,15 @@ class RegrasTableSeeder extends Seeder
             ['nome' => 'menu-secretaria'],
             ['nome' => 'menu-financeiro'],
             ['nome' => 'menu-relatorios'],
-  
+
+             //Usuarios
+             ['nome' => 'usuarios-index'],
+             ['nome' => 'usuarios-cadastrar'],
+             ['nome' => 'usuarios-atualizar'],
+             ['nome' => 'usuarios-editar'],
+             ['nome' => 'usuarios-excluir'],
+             ['nome' => 'usuarios-pesquisar'],
+    
             //Visitantes
             ['nome' => 'visitantes-index'],
             ['nome' => 'visitantes-cadastrar'],

@@ -8,6 +8,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VisitantesController;
 use App\Http\Middleware\VerificaInstituicao;
 use App\Http\Middleware\VerificaPerfil;
@@ -103,5 +104,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [FornecedorController::class, 'index'])->name('index')->middleware(['seguranca:fornecedores-index']);
             Route::get('/novo', [FornecedorController::class, 'novo'])->name('novo')->middleware(['seguranca:fornecedores-cadastrar']);
          });
+
+        // Grupo de rotas para 'usuarios'
+        Route::prefix('usuarios')->name('usuarios.')->group(function () {
+            Route::get('/', [UsuarioController::class, 'index'])->name('index')->middleware(['seguranca:usuarios-index']);
+            Route::get('/novo', [UsuarioController::class, 'novo'])->name('novo')->middleware(['seguranca:usuarios-cadastrar']);
+            Route::post('/update', [UsuarioController::class, 'update'])->name('update')->middleware(['seguranca:usuarios-atualizar']);
+            Route::post('/store', [UsuarioController::class, 'store'])->name('store')->middleware(['seguranca:usuarios-cadastrar']);
+            Route::delete('/deletar/{id}', [UsuarioController::class, 'deletar'])->name('deletar')->middleware(['seguranca:usuarios-excluir']);
+            Route::get('/editar/{id}', [UsuarioController::class, 'editar'])->name('editar')->middleware(['seguranca:usuarios-editar']);
+        });
+
+        // Segurança
+        Route::get('/selecionarPerfil', [HomeController::class, 'selecionarPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('selecionarPerfil');
     });
 });

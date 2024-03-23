@@ -54,156 +54,159 @@
                </li>
 
                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-secretaria'))
-               <li class="menu">
-                   <a href="#secretaria" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                       <div class="">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-grid">
-                               <rect x="3" y="3" width="7" height="7"></rect>
-                               <rect x="14" y="3" width="7" height="7"></rect>
-                               <rect x="14" y="14" width="7" height="7"></rect>
-                               <rect x="3" y="14" width="7" height="7"></rect>
-                           </svg>
-                           <span>Secretaria</span>
-                       </div>
-                       <div>
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-chevron-right">
-                               <polyline points="9 18 15 12 9 6"></polyline>
-                           </svg>
-                       </div>
-                   </a>
-                   <ul class="collapse submenu list-unstyled" id="secretaria" data-parent="#secretaria">
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('membros-index'))
-                               <a href="/membro">Membros</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('congregados-index'))
-                               <a href="/congregado">Congregados</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('visitantes-index'))
-                               <a href="/visitante">Visitantes</a>
-                           @endif
-                       </li>
-                   </ul>
-               </li>
+                   <li class="menu">
+                       <a href="#secretaria" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                           <div class="">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                   stroke-linejoin="round" class="feather feather-grid">
+                                   <rect x="3" y="3" width="7" height="7"></rect>
+                                   <rect x="14" y="3" width="7" height="7"></rect>
+                                   <rect x="14" y="14" width="7" height="7"></rect>
+                                   <rect x="3" y="14" width="7" height="7"></rect>
+                               </svg>
+                               <span>Secretaria</span>
+                           </div>
+                           <div>
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                   fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                   stroke-linejoin="round" class="feather feather-chevron-right">
+                                   <polyline points="9 18 15 12 9 6"></polyline>
+                               </svg>
+                           </div>
+                       </a>
+                       <ul class="collapse submenu list-unstyled" id="secretaria" data-parent="#secretaria">
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('membros-index'))
+                                   <a href="{{ route('membro.index') }}">Membros</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('congregados-index'))
+                                   <a href="{{ route('congregado.index') }}">Congregados</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('visitantes-index'))
+                                   <a href="{{ route('visitante.index') }}">Visitantes</a>
+                               @endif
+                           </li>
+                       </ul>
+                   </li>
                @endif
                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
-               <li class="menu">
-                   <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                       <div class="">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-dollar-sign">
-                               <line x1="12" y1="1" x2="12" y2="23"></line>
-                               <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
-                           </svg>
-                           <span>Financeiro</span>
-                       </div>
-                       <div>
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-chevron-right">
-                               <polyline points="9 18 15 12 9 6"></polyline>
-                           </svg>
-                       </div>
-                   </a>
-                   <ul class="collapse submenu list-unstyled" id="financeiro" data-parent="#financeiro">
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-movimentocaixa-index'))
-                               <a href="{{ route('financeiro.movimento.caixa') }}">Movimento de Caixa</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-consolidarcaixa'))
-                               <a href="{{ route('financeiro.consolidar.caixa') }}">Consolidação de Caixa</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-planoconta'))
-                               <a href="{{ route('financeiro.plano.conta') }}">Plano Conta</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-caixas'))
-                               <a href="{{ route('financeiro.caixas') }}">Caixas</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('fornecedor-index'))
-                               <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
-                           @endif
-                       </li>
-                   </ul>
-               </li>
+                   <li class="menu">
+                       <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                           <div class="">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                   stroke-linecap="round" stroke-linejoin="round"
+                                   class="feather feather-dollar-sign">
+                                   <line x1="12" y1="1" x2="12" y2="23"></line>
+                                   <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                               </svg>
+                               <span>Financeiro</span>
+                           </div>
+                           <div>
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                   stroke-linecap="round" stroke-linejoin="round"
+                                   class="feather feather-chevron-right">
+                                   <polyline points="9 18 15 12 9 6"></polyline>
+                               </svg>
+                           </div>
+                       </a>
+                       <ul class="collapse submenu list-unstyled" id="financeiro" data-parent="#financeiro">
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-movimentocaixa-index'))
+                                   <a href="{{ route('financeiro.movimento.caixa') }}">Movimento de Caixa</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-consolidarcaixa'))
+                                   <a href="{{ route('financeiro.consolidar.caixa') }}">Consolidação de Caixa</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-planoconta'))
+                                   <a href="{{ route('financeiro.plano.conta') }}">Plano Conta</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-caixas'))
+                                   <a href="{{ route('financeiro.caixas') }}">Caixas</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('fornecedor-index'))
+                                   <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
+                               @endif
+                           </li>
+                       </ul>
+                   </li>
                @endif
 
                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
-               <li class="menu">
-                   <a href="#relatorios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                       <div class="">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-printer">
-                               <polyline points="6 9 6 2 18 2 18 9"></polyline>
-                               <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
-                               </path>
-                               <rect x="6" y="14" width="12" height="8"></rect>
-                           </svg>
-                           <span>Relatórios</span>
-                       </div>
-                       <div>
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-chevron-right">
-                               <polyline points="9 18 15 12 9 6"></polyline>
-                           </svg>
-                       </div>
-                   </a>
-                   <ul class="collapse submenu list-unstyled" id="relatorios" data-parent="#relatorios">
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relmembresia-index'))
-                               <a href="relMembresia/">Membresia</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolatual-index'))
-                               <a href="relrolAtual/">Rol Atual</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolpermanente-index'))
-                               <a href="relrolPermanente/">Rol Permanente</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolexcluidos-index'))
-                               <a href="relrolExcluidos/">Rol Excluídos</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relcongregados-index'))
-                               <a href="relCongregados/">Congregados</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relvisitantes-index'))
-                               <a href="relVisitantes/">Visitantes</a>
-                           @endif
-                       </li>
-                       <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relaniversariantes-index'))
-                               <a href="relAniversariantes/">Aniversariantes</a>
-                           @endif
-                       </li>
-                   </ul>
-               </li>
+                   <li class="menu">
+                       <a href="#relatorios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                           <div class="">
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                   stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer">
+                                   <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                   <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                                   </path>
+                                   <rect x="6" y="14" width="12" height="8"></rect>
+                               </svg>
+                               <span>Relatórios</span>
+                           </div>
+                           <div>
+                               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                   viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                   stroke-linecap="round" stroke-linejoin="round"
+                                   class="feather feather-chevron-right">
+                                   <polyline points="9 18 15 12 9 6"></polyline>
+                               </svg>
+                           </div>
+                       </a>
+                       <ul class="collapse submenu list-unstyled" id="relatorios" data-parent="#relatorios">
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relmembresia-index'))
+                                   <a href="#">Membresia</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolatual-index'))
+                                   <a href="#">Rol Atual</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolpermanente-index'))
+                                   <a href="#">Rol Permanente</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolexcluidos-index'))
+                                   <a href="#">Rol Excluídos</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relcongregados-index'))
+                                   <a href="#">Congregados</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relvisitantes-index'))
+                                   <a href="#">Visitantes</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relaniversariantes-index'))
+                                   <a href="#">Aniversariantes</a>
+                               @endif
+                           </li>
+                       </ul>
+                   </li>
                @endif
 
                {{--  <li class="menu">
@@ -273,10 +276,13 @@
                    </a>
                    <ul class="collapse submenu list-unstyled" id="seguranca" data-parent="#seguranca">
                        <li>
-                           <a href="/perfil"> Meu Perfil </a>
+                           <a href="{{ route('perfil.index') }} "> Meu Perfil </a>
                        </li>
                        <li>
                            <a href="{{ route('selecionarPerfil') }}"> Trocar Perfil </a>
+                       </li>
+                       <li>
+                           <a href="{{ route('usuarios.index') }}"> Usuários </a>
                        </li>
                    </ul>
                </li>
