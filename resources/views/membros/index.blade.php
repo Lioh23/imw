@@ -29,21 +29,20 @@
 
 @section('content')
     <div class="container-fluid">
-        <button type="button" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
+        <a href="{{ route('membro.index') }}" class="btn btn-info position-relative mt-3 mb-3 ml-2">
             <span>ROL ATUAL</span>
-            <span class="badge badge-warning counter">146</span>
-        </button>
-        <!-- <button type="button" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
-                        <span>DESLIGADOS</span>
-                        <span class="badge badge-danger counter">146</span>
-                    </button> -->
-        <button type="button" class="btn btn-info position-relative mt-3 mb-3 ml-2">
+            <span class="badge badge-info counter">{{ $countAtual }}</span>
+        </a>
+    
+        <a href="{{ route('membro.index') }}?rol_permanente=1" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
             <span>ROL PERMANENTE</span>
-            <span class="badge badge-info counter">594</span>
-        </button>
-        <!-- <button type="button" class="btn btn-success position-relative mt-3 mb-3 ml-2">
-                        <span>ESTATÍSTICA</span>
-                    </button> -->
+            <span class="badge badge-danger counter">{{ $countPermanente }}</span>
+        </a>
+
+        <a href="{{ route('membro.index') }}?has_errors=1" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
+            <span>ERROS DE CADASTRO</span>
+            <span class="badge badge-warning counter">{{ $countHasErrors }}</span>
+        </a>
     </div>
     <!-- TABELA -->
     <div class="col-lg-12 col-12 layout-spacing">
@@ -81,7 +80,13 @@
                             @foreach ($membros as $index => $membro)
                                 <tr>
                                     <td>{{ optional($membro->ultimaAdesao ?? null)->numero_rol }}</td>
-                                    <td>{{ $membro->nome }}</td>
+                                    <td>
+                                        @if(!$membro->has_errors)
+                                            {{ $membro->nome }}
+                                        @else
+                                            <span class="badge badge-warning"> {{ $membro->nome }} </span>
+                                        @endif
+                                    </td>
                                     <td>
                                         @if (isset($membro->ultimaAdesao) && !is_null($membro->ultimaAdesao->dt_recepcao))
                                             {{ \Carbon\Carbon::parse($membro->ultimaAdesao->dt_recepcao)->format('d/m/Y') }}

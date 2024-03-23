@@ -46,7 +46,8 @@ class MembresiaMembro extends Model
         'vinculo',
         'congregacao_host',
         'codigo_host',
-        'congregacao_id'
+        'congregacao_id',
+        'has_errors',
     ];
 
     public function contato()
