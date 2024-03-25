@@ -64,7 +64,7 @@ class VisitantesController extends Controller
             return redirect()->route('visitante.novo')->with('success', 'Visitante cadastrado com sucesso.');
         } catch(\Exception $e) {
             DB::rollback();
-            return redirect()->route('visitante.novo')->with('error', 'Falha ao cadastrar o visitante.');
+            return redirect()->route('visitante.novo')->with('error', $e);
        }
     }
 }
