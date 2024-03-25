@@ -31,7 +31,15 @@ class ControleImportacaoCsvSeeder extends Seeder
                 'target_table' => 'congregacoes_congregacoes',
                 'created_at' => Carbon::now(),
                 'updated_at' => Carbon::now()
-            ]
+            ],
+            [
+                'alias' => 'plano_contas',
+                'file' => 'csv/financeiro_plano_contas.csv',
+                'static_method' => 'planoContas',
+                'target_table' => 'financeiro_plano_contas',
+                'created_at' => Carbon::now(),
+                'updated_at' => Carbon::now()
+            ],
         ];
 
         foreach ($data as $d) { DB::table('controle_importacoes_csv')->insert($d); }

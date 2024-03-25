@@ -79,5 +79,26 @@ class ImportacaoService
 
         return CsvImportUtils::import($collection, $controle);
     }
+
+    public static function planoContas($collectOld, $controle)
+    {
+        $collection = $collectOld->map(function ($item) {
+            return [
+                "id"                  => $item["id"],
+                'nome'                => $item['nome'],
+                'posicao'             => $item['posicao'],
+                'numeracao'           => $item['numeracao'],
+                'tipo'                => $item['tipo'],
+                'conta_pai_id'        => $item['conta_pai_id'],
+                'selecionavel'        => $item['selecionavel'],
+                'essencial'           => $item['essencial'],
+                "created_at"          => substr($item["cadastrado_em"], 0, 19),
+                "updated_at"          => substr($item["modificado_em"], 0, 19),
+                "deleted_at"          => $item["excluido"] == "true" ? "2001-01-01 00:00:00" : null
+            ];
+        });
+        
+        return CsvImportUtils::import($collection, $controle);
+    }
 }
 
