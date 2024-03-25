@@ -19,7 +19,7 @@ class ListUsuariosService
         ->when(isset($parameters['search']), function ($query) use ($parameters) {
             $searchTerm = $parameters['search'];
             $query->where(function ($query) use ($searchTerm) {
-                $query->where('nome', 'like', "%$searchTerm%")
+                $query->where('name', 'like', "%$searchTerm%")
                       ->orWhere('email', 'like', "%$searchTerm%");
             });
         })
