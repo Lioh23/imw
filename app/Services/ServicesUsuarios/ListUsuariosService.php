@@ -9,7 +9,7 @@ class ListUsuariosService
     public function execute($parameters = null)
     {
         return [
-            'usuarios'         => $this->handleListaMembros($parameters),
+            'usuarios' => $this->handleListaMembros($parameters),
         ];
     }
 
