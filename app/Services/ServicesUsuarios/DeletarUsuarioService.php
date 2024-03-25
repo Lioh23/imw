@@ -1,22 +1,19 @@
 <?php 
+namespace App\Services\ServicesUsuarios;
 
-namespace App\Services\ServiceMembrosGeral;
+use App\Models\PerfilUser;
+use App\Models\User;
 
-use App\Exceptions\DeleteMembroException;
-use App\Models\MembresiaMembro;
-use Illuminate\Support\Facades\DB;
-
-class DeletarMembroService
+class DeletarUsuarioService
 {
-    public function execute($membroId): void
+    public function execute($id)
     {
-        try {
-            DB::beginTransaction();
-            $membro = MembresiaMembro::findOrFail($membroId);
-            $membro->delete();          
-            DB::commit();
-        } catch(\Exception $e) {
-            throw new DeleteMembroException();
-        }
+        $user = User::findOrFail($id);
+
+        // Deletar perfis associados ao usuário
+        PerfilUser::where('user_id', $user->id)->delete();
+
+        // Deletar o usuário
+        $user->delete();
     }
 }
