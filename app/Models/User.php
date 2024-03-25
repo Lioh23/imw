@@ -60,6 +60,11 @@ class User extends Authenticatable
             ->where('instituicoes_instituicoes.tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL);
     }
 
+    public function perfilUser()
+    {
+        return $this->hasMany(PerfilUser::class, 'user_id');
+    }
+
     public function instituicoes()
     {
         return $this->belongsToMany(InstituicoesInstituicao::class)->withPivot('instituicao_id');
