@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\PerfilUser;
+use App\Services\ServicePerfis\IdentificaPerfilService;
 use Closure;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,7 @@ class VerificaPerfil
      * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
      * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
      */
-    public function handle($request, Closure $next)
+    public function handle(Request $request, Closure $next)
     {
         // Verifica se a session 'perfil' não existe
         if (!session()->has('session_perfil')) {
@@ -36,12 +37,12 @@ class VerificaPerfil
                     'perfils.nome as perfil_nome')
                 ->first();
                 
-                $perfil = [
-                    'instituicao_id' => $perfil->instituicao_id, 
-                    'instituicao_nome' => $perfil->instituicao_nome,
-                    'perfil_id' => $perfil->perfil_id,
-                    'perfil_nome' => $perfil->perfil_nome
-                ];
+                $perfil = app(IdentificaPerfilService::class)->execute(
+                    $perfil->instituicao_id, 
+                    $perfil->instituicao_nome,
+                    $perfil->perfil_id,
+                    $perfil->perfil_nome,
+                );
 
                 session([
                     'session_perfil' => $perfil

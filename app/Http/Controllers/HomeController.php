@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PerfilUser;
+use App\Services\ServicePerfis\IdentificaPerfilService;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
@@ -38,12 +39,12 @@ class HomeController extends Controller
     {
         if ($request->has('instituicao_id')) {
 
-            $perfil = [
-                'instituicao_id' => $request->instituicao_id,
-                'instituicao_nome' => $request->instituicao_nome,
-                'perfil_id' => $request->perfil_id,
-                'perfil_nome' => $request->perfil_nome
-            ];
+            $perfil = app(IdentificaPerfilService::class)->execute(
+                $request->instituicao_id,
+                $request->instituicao_nome,
+                $request->perfil_id,
+                $request->perfil_nome,
+            );
 
             session(['session_perfil' => $perfil]);
 
