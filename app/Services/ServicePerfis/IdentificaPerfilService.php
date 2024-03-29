@@ -10,7 +10,7 @@ class IdentificaPerfilService
 {
     public function execute($instituicaoId, $instituicaoNome, $perfilId, $perfilNome)
     {
-        return [
+        return (object) [
             'instituicao_id'   => $instituicaoId,
             'instituicao_nome' => $instituicaoNome,
             'perfil_id'        => $perfilId,

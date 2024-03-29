@@ -24,8 +24,8 @@
                <div class="user-details" style="text-align: center;">
                    <h6 class="text-bold text-white">{{ $firstName }} {{ $lastName }}</h6>
                    @if (session('session_perfil'))
-                       <span>{{ session('session_perfil')['perfil_nome'] }}</span> <br>
-                       <span>{{ session('session_perfil')['instituicao_nome'] }}</span> <br>
+                       <span>{{ session('session_perfil')->perfil_nome }}</span> <br>
+                       <span>{{ session('session_perfil')->instituicao_nome }}</span> <br>
                    @endif
 
                </div>
