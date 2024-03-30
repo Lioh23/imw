@@ -15,7 +15,7 @@
                 <tbody id="historico-tbody">
                     @foreach ($pessoa->rolPermanente as $rolPermanente)
                         @php
-                            if ($rolPermanente->status == 'E') {
+                            if ($rolPermanente->status == 'I') {
                                 $class = 'tr-red';
                                 $data = [
                                     'date' => $rolPermanente->dt_exclusao->format('d/m/Y'),
@@ -29,17 +29,7 @@
                                 $class = 'tr-green';
                                 $data = [
                                     'date' => $rolPermanente->dt_recepcao->format('d/m/Y'),
-                                    'status' => 'Adesão',
-                                    'mode' => $rolPermanente->modoRecepcao->nome,
-                                    'church' => $rolPermanente->igreja->nome,
-                                    'congregation' => optional($rolPermanente->congregacao)->nome,
-                                    'cleric' => $rolPermanente->clerigo->nome,
-                                ];
-                            } elseif ($rolPermanente->status == 'D') {
-                                $class = 'tr-red';
-                                $data = [
-                                    'date' => $rolPermanente->dt_recepcao->format('d/m/Y'),
-                                    'status' => 'Desistência',
+                                    'status' => 'Recebimento',
                                     'mode' => $rolPermanente->modoRecepcao->nome,
                                     'church' => $rolPermanente->igreja->nome,
                                     'congregation' => optional($rolPermanente->congregacao)->nome,

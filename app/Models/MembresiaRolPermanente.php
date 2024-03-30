@@ -10,9 +10,8 @@ class MembresiaRolPermanente extends Model
 {
     use HasFactory, SoftDeletes;
 
-    const STATUS_ADESAO = 'A';
-    const STATUS_DESISTENCIA = 'D';
-    const STATUS_EXCLUSAO = 'E';
+    const STATUS_RECEBIMENTO = 'A';
+    const STATUS_EXCLUSAO = 'I';
 
     protected $table = 'membresia_rolpermanente';
 

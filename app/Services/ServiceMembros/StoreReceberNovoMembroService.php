@@ -34,7 +34,7 @@ class StoreReceberNovoMembroService
     
     private function fetchCreateParams($params)
     {
-        $params['status'] = MembresiaRolPermanente::STATUS_ADESAO;
+        $params['status'] = MembresiaRolPermanente::STATUS_RECEBIMENTO;
 
         return [...$params, ...Identifiable::fetchSessionInstituicoesStoreMembresia()];
     }

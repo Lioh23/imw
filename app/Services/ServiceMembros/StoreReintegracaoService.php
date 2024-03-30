@@ -35,7 +35,7 @@ class StoreReintegracaoService
     
     private function fetchParams($params)
     {
-        $params['status']      = MembresiaRolPermanente::STATUS_ADESAO;
+        $params['status']      = MembresiaRolPermanente::STATUS_RECEBIMENTO;
 
         return [...$params, ...Identifiable::fetchSessionInstituicoesStoreMembresia()];
     }

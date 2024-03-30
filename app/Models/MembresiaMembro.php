@@ -86,7 +86,7 @@ class MembresiaMembro extends Model
     public function ultimaAdesao()
     {
         return $this->hasOne(MembresiaRolPermanente::class, 'membro_id')
-                    ->where('status', MembresiaRolPermanente::STATUS_ADESAO)
+                    ->where('status', MembresiaRolPermanente::STATUS_RECEBIMENTO)
                     ->latest('dt_recepcao');
     }
 

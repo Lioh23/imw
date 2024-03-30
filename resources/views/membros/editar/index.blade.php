@@ -20,7 +20,7 @@
       color: green !important;
     }
 
-    .tr-danger > td {
+    .tr-red > td {
       color: red !important;
     }
 

@@ -48,7 +48,7 @@ class StoreTransferenciaInternaService
 
         // cria um novo rol com a congregacao atualizada
         MembresiaRolPermanente::create([
-            'status'           => MembresiaRolPermanente::STATUS_ADESAO,
+            'status'           => MembresiaRolPermanente::STATUS_RECEBIMENTO,
             'numero_rol'       => $rolAtual->numero_rol,
             'dt_recepcao'      => $params['dt_transferencia'],
             'clerigo_id'       => $params['clerigo_id'],
