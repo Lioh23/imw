@@ -11,6 +11,7 @@ use App\Http\Requests\StoreDisciplinarRequest;
 use App\Http\Requests\StoreReceberNovoMembroRequest;
 use App\Http\Requests\StoreReintegracaoRequest;
 use App\Http\Requests\StoreExclusaoPorTransferenciaRequest;
+use App\Http\Requests\StoreReceberMembroExternoRequest;
 use App\Http\Requests\StoreTransferenciaInternaRequest;
 use App\Http\Requests\UpdateDisciplinarRequest;
 use App\Http\Requests\UpdateMembroRequest;
@@ -18,12 +19,15 @@ use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\DeletarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
+use App\Services\ServiceMembros\IdentificaDadosReceberMembroExternoService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReintegrarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosTransferenciaInternaService;
 use App\Services\ServiceMembros\IdentificaDadosTransferenciaPorExclusaoService;
 use App\Services\ServiceMembros\ListDisciplinasMembroService;
 use App\Services\ServiceMembros\StoreDiciplinaService;
+use App\Services\ServiceMembros\StoreExclusaoPorTransferenciaService;
+use App\Services\ServiceMembros\StoreNotificacaoExclusaoPorTransferenciaService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReintegracaoService;
 use App\Services\ServiceMembros\StoreTransferenciaInternaService;
@@ -71,7 +75,6 @@ class MembrosController extends Controller
             DB::commit();
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
         } catch(\Exception $e) {
-            dd($e);
             DB::rollback();
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
        
@@ -122,7 +125,6 @@ class MembrosController extends Controller
         } catch(IdentificaDadosExcluirMembroException $e) {
             return redirect()->back()->with('error', 'Erro ao tentar abrir a tela de exclusão de membro');
         } catch(\Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', 'Erro ao tentar abrir a tela de exclusão de membro');
         }
     }
@@ -179,7 +181,6 @@ class MembrosController extends Controller
 
             return view('membros.transferencia_interna', compact('pessoa', 'congregacoes', 'pastores'));
         } catch(\Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', 'Erro ao abrir a página de Transferência Interna');
         }
     }
@@ -202,20 +203,22 @@ class MembrosController extends Controller
         try {
             $data = app(IdentificaDadosTransferenciaPorExclusaoService::class)->execute($id);
 
-            $pessoa   = $data['pessoa'];
-            $pastores = $data['pastores'];
-            $igrejas  = $data['igrejas'];
-
-            return view('membros.exclusao_transferencia', compact('pessoa', 'pastores', 'igrejas'));
+            return view('membros.exclusao_transferencia', $data);
         } catch(\Exception $e) {
-            dd($e);
             return redirect()->back()->with('error', 'Erro ao abrir a página de Transferência Por Exclusão');
         }
     }
 
     public function storeExclusaoPorTransferencia(StoreExclusaoPorTransferenciaRequest $request, $id)
     {
-
+        try {
+            DB::beginTransaction();
+            app(StoreNotificacaoExclusaoPorTransferenciaService::class)->execute($request->all(), $id);
+            DB::commit();
+            return redirect()->route('membro.editar', ['id' => $id])->with('success', 'Exclusão por transferência registrada com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('membro.exclusao_transferencia', ['id' => $id])->with('error', 'Erro ao registrar a transferência.');
+        }
     }
 
     public function disciplinar($id)
@@ -257,5 +260,21 @@ class MembrosController extends Controller
             DB::rollBack();
             return response()->json(['message' => 'Ao atualizar a disciplina deste membro!']);
         }
+    }
+
+    public function receberMembroExterno($id)
+    {
+        try {
+            $data = app(IdentificaDadosReceberMembroExternoService::class)->execute($id);
+
+            return view('membros.receber_membro_externo', $data);
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error', 'Erro ao abrir a página de recebimento de membro externo');
+        }
+    }
+
+    public function storeReceberMembroExterno(StoreReceberMembroExternoRequest $request, $id)
+    {
+        
     }
 }

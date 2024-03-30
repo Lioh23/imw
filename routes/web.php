@@ -50,6 +50,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('transferencia/interna/store/{id}', [MembrosController::class, 'storeTransferenciaInterna'])->name('transferencia_interna.store')->middleware(['seguranca:membros-transferenciainterna']);
             Route::get('exclusao/transferencia/{id}', [MembrosController::class, 'exclusaoPorTransferencia'])->name('exclusao_transferencia')->middleware(['seguranca:membros-exclusaotransferencia']);
             Route::post('exclusao/transferencia/store/{id}', [MembrosController::class, 'storeExclusaoPorTransferencia'])->name('exclusao_transferencia.store')->middleware(['seguranca:membros-exclusaotransferencia']);
+            Route::get('receber-membro-externo/{id}', [MembrosController::class, 'receberMembroExterno'])->name('receber_membro_externo')->middleware(['seguranca:membros-recebermembroexterno']);
+            Route::get('receber-membro-externo/store/{id}', [MembrosController::class, 'storeReceberMembroExterno'])->name('receber_membro_externo.store')->middleware(['seguranca:membros-recebermembroexterno']);
             Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar')->middleware(['seguranca:membros-disciplinar']);
             Route::post('disciplinar/store/{id}', [MembrosController::class, 'storeDisciplinar'])->name('disciplinar.store')->middleware(['seguranca:membros-disciplinar']);
             Route::put('disciplinar/update/{id}', [MembrosController::class, 'updateDisciplinar'])->name('disciplinar.update')->middleware(['seguranca:membros-disciplinar']);

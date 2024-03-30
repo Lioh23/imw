@@ -57,6 +57,7 @@ class RegrasTableSeeder extends Seeder
              ['nome' => 'membros-reintegrar'],
              ['nome' => 'membros-transferenciainterna'],
              ['nome' => 'membros-exclusaotransferencia'],
+             ['nome' => 'membros-recebermembroexterno'],
              ['nome' => 'membros-disciplinar'],
 
              //Relatórios

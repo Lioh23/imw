@@ -44,29 +44,12 @@
             <label class="control-label">* Data:</label>
           </div>
           <div class="col-lg-6">
-            <input type="date" class="form-control @error('dt_exclusao') is-invalid @enderror" id="dt_exclusao" name="dt_exclusao" value="{{ old('dt_exclusao', now()) }}" placeholder="ex: 31/12/2000">
-            @error('dt_exclusao')
+            <input type="date" class="form-control @error('dt_notificacao') is-invalid @enderror" id="dt_notificacao" name="dt_notificacao" value="{{ old('dt_notificacao', date('Y-m-d')) }}" placeholder="ex: 31/12/2000">
+            @error('dt_notificacao')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
         </div>
-
-        <div class="form-group row mb-4">
-          <div class="col-lg-2 text-right">
-            <label class="control-label">* Pastor:</label>
-          </div>
-          <div class="col-lg-6">
-            <select id="clerigo_id" name="clerigo_id" class="form-control @error('clerigo_id') is-invalid @enderror" >
-              <option value="" {{ old('clerigo_id') == '' ? 'selected' : '' }}>Selecione</option>
-              @foreach ($pastores as $pastor)
-                <option value="{{ $pastor->id }}" {{ old('clerigo_id') == $pastor->id ? 'selected' : '' }}>{{ $pastor->nome }}</option>
-              @endforeach
-            </select>
-            @error('modo_recepcao_id')
-                <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-        </div> 
 
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">

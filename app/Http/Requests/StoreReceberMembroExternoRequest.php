@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreExclusaoPorTransferenciaRequest extends FormRequest
+class StoreReceberMembroExternoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -19,13 +19,12 @@ class StoreExclusaoPorTransferenciaRequest extends FormRequest
     /**
      * Get the validation rules that apply to the request.
      *
-     * @return array<string, mixed
+     * @return array<string, mixed>
      */
     public function rules()
     {
         return [
-            'dt_notificacao' => 'required',
-            'igreja_id'      => 'required'
+            //
         ];
     }
 }

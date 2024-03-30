@@ -6,7 +6,6 @@ use App\Models\InstituicoesInstituicao;
 use App\Models\InstituicoesTipoInstituicao;
 use App\Models\MembresiaMembro;
 use App\Traits\Identifiable;
-use Illuminate\Support\Facades\Auth;
 
 class IdentificaDadosTransferenciaPorExclusaoService
 {
@@ -16,7 +15,6 @@ class IdentificaDadosTransferenciaPorExclusaoService
     {
         return [
             'pessoa'   => $this->fetchPessoa($id, MembresiaMembro::VINCULO_MEMBRO),
-            'pastores' => Identifiable::fetchPastores(),
             'igrejas'  => $this->fetchIgrejas()
         ];
     }

@@ -42,24 +42,6 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
-    public function regioes()
-    {
-        return $this->belongsToMany(InstituicoesInstituicao::class, UserInstituicao::class, 'user_id', 'instituicao_id', 'id', 'id')
-            ->where('instituicoes_instituicoes.tipo_instituicao_id', InstituicoesTipoInstituicao::REGIAO);
-    }
-
-    public function distritos()
-    {
-        return $this->belongsToMany(InstituicoesInstituicao::class, UserInstituicao::class, 'user_id', 'instituicao_id', 'id', 'id')
-            ->where('instituicoes_instituicoes.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO);
-    }
-
-    public function igrejasLocais()
-    {
-        return $this->belongsToMany(InstituicoesInstituicao::class, UserInstituicao::class, 'user_id', 'instituicao_id', 'id', 'id')
-            ->where('instituicoes_instituicoes.tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL);
-    }
-
     public function perfilUser()
     {
         return $this->hasMany(PerfilUser::class, 'user_id');
