@@ -27,7 +27,6 @@ return new class extends Migration
             $table->foreignId('user_finalizacao')->nullable()->constrained('users', 'id');
             $table->date('dt_aceite')->nullable();
             $table->date('dt_rejeicao')->nullable();
-            $table->text('motivo_rejeicao')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
