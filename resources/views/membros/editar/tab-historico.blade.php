@@ -19,10 +19,10 @@
                                 $class = 'tr-red';
                                 $data = [
                                     'date' => $rolPermanente->dt_exclusao->format('d/m/Y'),
-                                    'status' => 'Recebimento',
+                                    'status' => 'Exclusão',
                                     'mode' => $rolPermanente->modoExclusao->nome,
                                     'church' => $rolPermanente->igreja->nome,
-                                    'congregation' => $rolPermanente->congregacao->nome,
+                                    'congregation' => optional($rolPermanente->congregacao)->nome,
                                     'cleric' => $rolPermanente->clerigo->nome,
                                 ];
                             } elseif ($rolPermanente->status == 'A') {
@@ -32,7 +32,7 @@
                                     'status' => 'Adesão',
                                     'mode' => $rolPermanente->modoRecepcao->nome,
                                     'church' => $rolPermanente->igreja->nome,
-                                    'congregation' => $rolPermanente->congregacao->nome,
+                                    'congregation' => optional($rolPermanente->congregacao)->nome,
                                     'cleric' => $rolPermanente->clerigo->nome,
                                 ];
                             } elseif ($rolPermanente->status == 'D') {
@@ -42,7 +42,7 @@
                                     'status' => 'Desistência',
                                     'mode' => $rolPermanente->modoRecepcao->nome,
                                     'church' => $rolPermanente->igreja->nome,
-                                    'congregation' => $rolPermanente->congregacao->nome,
+                                    'congregation' => optional($rolPermanente->congregacao)->nome,
                                     'cleric' => $rolPermanente->clerigo->nome,
                                 ];
                             }

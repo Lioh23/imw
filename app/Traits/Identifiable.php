@@ -3,12 +3,14 @@
 namespace App\Traits;
 
 use App\Exceptions\CongregadoNotFoundException;
+use App\Exceptions\FetchRolAtualException;
 use App\Exceptions\MembroNotFoundException;
 use App\Exceptions\MissingSessionIgrejaLocalException;
 use App\Exceptions\VisitanteNotFoundException;
 use App\Models\CongregacoesCongregacao;
 use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaMembro;
+use App\Models\MembresiaRolPermanente;
 use App\Models\MembresiaSituacao;
 use App\Models\PessoasPessoa;
 
@@ -84,5 +86,13 @@ trait Identifiable
         if (!$igrejaLocal) throw new MissingSessionIgrejaLocalException();
 
         return $igrejaLocal;
+    }
+
+    public static function fetchRolAtual($membroId, $numeroRol)
+    {
+        return MembresiaRolPermanente::where('membro_id', $membroId)
+            ->where('numero_rol', $numeroRol)
+            ->orderByDesc('id')
+            ->firstOr(fn() => throw new FetchRolAtualException());
     }
 }

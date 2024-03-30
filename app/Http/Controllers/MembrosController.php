@@ -16,7 +16,6 @@ use App\Http\Requests\UpdateDisciplinarRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Services\ServiceMembros\DeletarMembroService;
-use App\Services\ServiceMembros\EditarDataTerminoDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
@@ -27,13 +26,12 @@ use App\Services\ServiceMembros\ListDisciplinasMembroService;
 use App\Services\ServiceMembros\StoreDiciplinaService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReintegracaoService;
+use App\Services\ServiceMembros\StoreTransferenciaInternaService;
 use App\Services\ServiceMembros\UpdateDisciplinarService;
-use App\Services\ServiceMembros\VerificaMembroDiciplinaService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
 use App\Services\ServiceMembrosGeral\ListMembrosService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class MembrosController extends Controller
@@ -188,7 +186,15 @@ class MembrosController extends Controller
 
     public function storeTransferenciaInterna(StoreTransferenciaInternaRequest $request, $id)
     {
-        
+        try {
+            DB::beginTransaction();
+            app(StoreTransferenciaInternaService::class)->execute($request->all(), $id);
+            DB::commit();
+            return(redirect()->route('membro.editar', ['id'=> $id])->with('success', 'Transferência Interna realizada com sucesso.'));
+        } catch(\Exception $e) {
+            DB::rollback();
+            return(redirect()->route('membro.transferencia_interna', ['id'=> $id])->with('error', 'Erro ao realizar a tranferência interna.'));
+        }
     }
 
     public function exclusaoPorTransferencia($id)
