@@ -14,7 +14,7 @@ class IdentificaDadosTransferenciaInternaService
     public function execute($id)
     {
         $pessoa       = Identifiable::fetchPessoa($id, MembresiaMembro::VINCULO_MEMBRO);
-        $congregacoes = Identifiable::fetchCongregacoes(Auth::user()->igrejasLocais->first()->id, $pessoa->congregacao_id);
+        $congregacoes = Identifiable::fetchCongregacoes($pessoa->congregacao_id);
         $pastores     = Identifiable::fetchPastores();
 
         return [

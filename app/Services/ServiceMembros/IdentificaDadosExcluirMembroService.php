@@ -41,7 +41,7 @@ class IdentificaDadosExcluirMembroService
     private function fetchSugestaoRol()
     {
         return MembresiaRolPermanente::selectRaw('IFNULL(MAX(numero_rol), 0) + 1 sugestao_rol')
-            ->where('igreja_id', Auth::user()->igrejasLocais->first()->id)
+            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->first()->sugestao_rol;
     }
 }

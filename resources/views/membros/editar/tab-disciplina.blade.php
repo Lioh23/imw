@@ -23,7 +23,7 @@
                                     <input class="form-control dt_termino_input" type="date" />
                                 @endif
                             </td>
-                            <td>{{ $igreja }}</td>
+                            <td>{{ optional($disciplina->igrejaLocal)->nome }}</td>
                             <td>{{ optional($disciplina->pastor)->nome }}</td>
                             <td>{{ optional($disciplina->regiao)->nome }}</td>
                             @if ($disciplina->dt_termino == null)

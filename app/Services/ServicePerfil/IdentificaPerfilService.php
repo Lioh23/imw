@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Services\ServicePerfis;
+namespace App\Services\ServicePerfil;
 
 use App\Dtos\SessionInstituicoesDto;
 use App\Exceptions\TipoInstituicaoNotFoundException;

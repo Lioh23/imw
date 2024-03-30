@@ -3,7 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Models\PerfilUser;
-use App\Services\ServicePerfis\IdentificaPerfilService;
+use App\Services\ServicePerfil\IdentificaPerfilService;
 use Closure;
 use Illuminate\Http\Request;
 

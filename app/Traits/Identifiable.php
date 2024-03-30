@@ -4,8 +4,10 @@ namespace App\Traits;
 
 use App\Exceptions\CongregadoNotFoundException;
 use App\Exceptions\MembroNotFoundException;
+use App\Exceptions\MissingSessionIgrejaLocalException;
 use App\Exceptions\VisitanteNotFoundException;
 use App\Models\CongregacoesCongregacao;
+use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaMembro;
 use App\Models\MembresiaSituacao;
 use App\Models\PessoasPessoa;
@@ -17,9 +19,10 @@ trait Identifiable
         return PessoasPessoa::all();
     }
 
-    public static function fetchPessoa($id, $vinculo)
+    public static function fetchPessoa($id, $vinculo, $trashed = false)
     {
         $membro = MembresiaMembro::where('id', $id)
+            ->when($trashed, fn($query) => $query->onlyTrashed())
             ->where('vinculo', $vinculo)
             ->firstOr(function() use ($vinculo) {
                 switch ($vinculo) {
@@ -44,14 +47,40 @@ trait Identifiable
         })->get();
     }
 
-    public static function fetchCongregacoes($igrejaId = null, $congregacaoId = null)
+    public static function fetchCongregacoes($unlessCongregacaoId = null)
     {
+        $igrejaId = optional(session()->get('session_perfil')->instituicoes->igrejaLocal)->id;
+
         return CongregacoesCongregacao::when((bool) $igrejaId, function ($query) use ($igrejaId) {
             $query->where('instituicao_id', $igrejaId);
         })
-        ->when((bool) $congregacaoId, function ($query) use ($congregacaoId) {
-            $query->where('id', '<>', $congregacaoId);
+        ->when((bool) $unlessCongregacaoId, function ($query) use ($unlessCongregacaoId) {
+            $query->where('id', '<>', $unlessCongregacaoId);
         })
         ->get();
+    }
+
+    public static function fetchSessionInstituicoesStoreMembresia(): array
+    {
+        /** @var SessionInstituicoesDto $sessionInstituicoes */
+        $sessionInstituicoes = session('session_perfil')->instituicoes;
+
+        if(! ($sessionInstituicoes->igrejaLocal) ) 
+            throw new MissingSessionIgrejaLocalException();
+
+        return [
+            'regiao_id'   => $sessionInstituicoes->regiao->id,
+            'distrito_id' => $sessionInstituicoes->distrito->id,
+            'igreja_id'   => $sessionInstituicoes->igrejaLocal->id
+        ];
+    }
+
+    public static function fetchSessionIgrejaLocal(): InstituicoesInstituicao
+    {
+        $igrejaLocal = session('session_perfil')->instituicoes->igrejaLocal;
+
+        if (!$igrejaLocal) throw new MissingSessionIgrejaLocalException();
+
+        return $igrejaLocal;
     }
 }

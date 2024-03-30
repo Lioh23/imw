@@ -11,6 +11,10 @@ class MembresiaMembro extends Model
 {
     use HasFactory, SoftDeletes, HasUuids;
 
+    // status
+    const STATUS_ATIVO = 'A';
+
+    // vinculo
     const VINCULO_VISITANTE = 'V';
     const VINCULO_CONGREGADO = 'C';
     const VINCULO_MEMBRO = 'M';

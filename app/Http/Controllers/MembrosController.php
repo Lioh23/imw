@@ -48,8 +48,6 @@ class MembrosController extends Controller
         try {
             $pessoa = app(EditarMembroService::class)->findOne($id);
             $disciplinas = app(ListDisciplinasMembroService::class)->execute($id);
-            $igreja = Auth::user()->igrejasLocais->first()->nome;
-            $regiao = Auth::user()->regioes->first()->nome;
             
             return view('membros.editar.index', [
                 'pessoa'               => $pessoa['pessoa'],
@@ -59,8 +57,6 @@ class MembrosController extends Controller
                 'formacoes'            => $pessoa['formacoes'],
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
                 'disciplinas'          => $disciplinas,
-                'igreja'               => $igreja,
-                'regiao'               => $regiao,
             ]);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('membros.index')->with('error', 'Registro não encontrado.');

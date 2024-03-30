@@ -2,23 +2,18 @@
 
 namespace App\Services\ServicesCongregados;
 
-use App\Exceptions\MembroNotFoundException;
 use App\Models\MembresiaContato;
-use App\Models\MembresiaCurso;
 use App\Models\MembresiaFamiliar;
-use App\Models\MembresiaFormacao;
 use App\Models\MembresiaFormacaoEclesiastica;
-use App\Models\MembresiaFuncaoEclesiastica;
 use App\Models\MembresiaFuncaoMinisterial;
 use App\Models\MembresiaMembro;
-use App\Models\MembresiaSetor;
-use App\Models\MembresiaTipoAtuacao;
-use Illuminate\Support\Facades\Auth;
+use App\Traits\Identifiable;
 use Illuminate\Support\Facades\Storage;
 
 
 class SalvarCongregadoService
 {
+    use Identifiable;
 
     public function execute(array $data)
     {
@@ -74,10 +69,8 @@ class SalvarCongregadoService
             'data_batismo'  => $data['data_batismo'],
             'data_batismo_espirito'  => $data['data_batismo_espirito'],
             'vinculo'         => MembresiaMembro::VINCULO_CONGREGADO,
-            'status' => 'A',
-            'regiao_id'       => Auth::user()->regioes->first()->id,
-            'distrito_id'     => Auth::user()->distritos->first()->id,
-            'igreja_id'       => Auth::user()->igrejasLocais->first()->id,
+            'status' => MembresiaMembro::STATUS_ATIVO,
+            ...Identifiable::fetchSessionInstituicoesStoreMembresia()
         ];
     }
 

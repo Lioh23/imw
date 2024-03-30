@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PerfilUser;
-use App\Services\ServicePerfis\IdentificaPerfilService;
+use App\Services\ServicePerfil\IdentificaPerfilService;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
