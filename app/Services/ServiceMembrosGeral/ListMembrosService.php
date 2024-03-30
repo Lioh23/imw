@@ -28,7 +28,7 @@ class ListMembrosService
                 $query->where('nome', 'like', "%$searchTerm%")
                     ->orWhereHas('congregacao', function ($subQuery) use ($searchTerm) { $subQuery->where('nome', 'like', "%$searchTerm%"); });
             })
-            ->when(isset($parameters['inativo']), function ($query) {
+            ->when(isset($parameters['rol_permanente']), function ($query) {
                 $query->onlyTrashed();
             })
             ->when(isset($parameters['has_errors']), function ($query) {

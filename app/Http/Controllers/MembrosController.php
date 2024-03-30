@@ -59,9 +59,9 @@ class MembrosController extends Controller
                 'disciplinas'          => $disciplinas,
             ]);
         } catch(MembroNotFoundException $e) {
-            return redirect()->route('membros.index')->with('error', 'Registro não encontrado.');
+            return redirect()->route('membro.index')->with('error', 'Registro não encontrado.');
         } catch(\Exception $e) {
-            return redirect()->route('membros.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+            return redirect()->route('membro.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
     }
 

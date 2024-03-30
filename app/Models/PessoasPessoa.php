@@ -73,4 +73,9 @@ class PessoasPessoa extends Model
         'isento_reservista',
         'isento_titulo_eleitor',
     ];
+
+    public function nomeacoes()
+    {
+        return $this->hasMany(PessoaNomeacao::class, 'pessoa_id', 'id');
+    }
 }

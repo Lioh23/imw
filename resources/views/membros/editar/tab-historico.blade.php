@@ -18,7 +18,7 @@
                             if ($rolPermanente->status == 'E') {
                                 $class = 'tr-red';
                                 $data = [
-                                    'date' => $rolPermanente->dt_exclusao,
+                                    'date' => $rolPermanente->dt_exclusao->format('d/m/Y'),
                                     'status' => 'Recebimento',
                                     'mode' => $rolPermanente->modoExclusao->nome,
                                     'church' => $rolPermanente->igreja->nome,
@@ -28,7 +28,7 @@
                             } elseif ($rolPermanente->status == 'A') {
                                 $class = 'tr-green';
                                 $data = [
-                                    'date' => $rolPermanente->dt_recepcao,
+                                    'date' => $rolPermanente->dt_recepcao->format('d/m/Y'),
                                     'status' => 'Adesão',
                                     'mode' => $rolPermanente->modoRecepcao->nome,
                                     'church' => $rolPermanente->igreja->nome,
@@ -38,7 +38,7 @@
                             } elseif ($rolPermanente->status == 'D') {
                                 $class = 'tr-red';
                                 $data = [
-                                    'date' => $rolPermanente->dt_recepcao,
+                                    'date' => $rolPermanente->dt_recepcao->format('d/m/Y'),
                                     'status' => 'Desistência',
                                     'mode' => $rolPermanente->modoRecepcao->nome,
                                     'church' => $rolPermanente->igreja->nome,

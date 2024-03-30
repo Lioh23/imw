@@ -32,6 +32,10 @@ class MembresiaRolPermanente extends Model
         'congregacao_id'
     ];
 
+    protected $casts = [
+        'dt_recepcao' => 'date',
+        'dt_exclusao' => 'date',
+    ];
     
     public function igreja()
     {

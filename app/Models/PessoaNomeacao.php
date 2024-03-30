@@ -25,4 +25,9 @@ class PessoaNomeacao extends Model
         'pessoa_id',
         'funcao_ministerial_id'
     ];
+
+    public function pessoa()
+    {
+        return $this->belongsTo(PessoasPessoa::class, 'pessoa_id', 'id');
+    }
 }

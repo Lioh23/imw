@@ -16,7 +16,9 @@ trait Identifiable
 {
     public static function fetchPastores()
     {
-        return PessoasPessoa::all();
+        return PessoasPessoa::with('nomeacoes')
+            ->whereHas('nomeacoes', fn ($query) => $query->where('instituicao_id', self::fetchSessionIgrejaLocal()->id)->whereNull('data_termino'))
+            ->get();
     }
 
     public static function fetchPessoa($id, $vinculo, $trashed = false)
