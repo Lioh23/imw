@@ -188,5 +188,31 @@ class ImportacaoService
 
         return CsvImportUtils::import($collection, $controle);
     }
+
+    public static function pessoasNomeacoes($collectOld, $controle)
+    {
+        $collection = $collectOld->map(function ($item) {
+            return [
+                'id'                    => $item['id'],
+                'codigo_host'           => $item['codigo_host'],
+                'data_nomeacao'         => CsvImportUtils::formatDateToImport($item['data_nomeacao']) ?? "2001-01-01 00:00:00",
+                'data_termino'          => CsvImportUtils::formatDateToImport($item['data_termino']),
+                'hist_distrito_id'      => $item['hist_distrito_id'],
+                'hist_geral_id'         => $item['hist_geral_id'],
+                'hist_igreja_id'        => $item['hist_igreja_id'],
+                'hist_orgao_id'         => $item['hist_orgao_id'],
+                'hist_regiao_id'        => $item['hist_regiao_id'],
+                'hist_secretaria_id'    => $item['hist_secretaria_id'],
+                'instituicao_id'        => $item['instituicao_id'],
+                'pessoa_id'             => $item['pessoa_id'],
+                'funcao_ministerial_id' => $item['funcao_ministerial_id'],
+                'created_at'            => substr($item["cadastrado_em"], 0, 19),
+                'updated_at'            => substr($item["modificado_em"], 0, 19),
+                'deleted_at'            => $item["excluido"] == "true" ? "2001-01-01 00:00:00" : null
+            ];
+        });
+
+        return CsvImportUtils::import($collection, $controle);
+    }
 }
 
