@@ -91,7 +91,10 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach ($user->perfilUser as $index => $perfilUser)
+                                    @php
+                                        $perfis = Auth::user()->id == $user->id ? $usuario->perfilUser : $user->perfilUserInstituicao;
+                                    @endphp
+                                    @foreach ($perfis as $index => $perfilUser)
                                     <tr>
                                         <td>
                                             <div class="form-group">

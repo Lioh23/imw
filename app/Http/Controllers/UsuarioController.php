@@ -53,8 +53,6 @@ class UsuarioController extends Controller
             $user = User::findOrFail($id);
             $perfis = app(NovoUsuarioService::class)->execute();
             return view('usuarios.editar', compact('user', 'perfis', 'id'));    
-        } catch (MembroNotFoundException $e) {
-            return redirect()->route('usuarios.index')->with('error', 'Registro não encontrado.');
         } catch (\Exception $e) {
             return redirect()->route('usuarios.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }

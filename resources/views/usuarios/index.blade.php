@@ -85,7 +85,10 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody>
-                                                        @foreach ($usuario->perfilUser as $perfilUser)
+                                                        @php
+                                                            $perfis = Auth::user()->id == $usuario->id ? $usuario->perfilUser : $usuario->perfilUserInstituicao;
+                                                        @endphp
+                                                        @foreach ($perfis as $perfilUser)
                                                             <tr>
                                                                 <td>{{ $perfilUser->instituicao->nome }}</td>
                                     </td>

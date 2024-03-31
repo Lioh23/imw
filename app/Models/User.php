@@ -47,9 +47,14 @@ class User extends Authenticatable
         return $this->hasMany(PerfilUser::class, 'user_id');
     }
 
+    public function perfilUserInstituicao()
+    {
+        return $this->hasMany(PerfilUser::class, 'user_id')->where('instituicao_id', session()->get('session_perfil')->instituicao_id);
+    }
+
     public function instituicoes()
     {
-        return $this->belongsToMany(InstituicoesInstituicao::class)->withPivot('instituicao_id');
+        return $this->belongsToMany(InstituicoesInstituicao::class, 'user_instituicoes', 'user_id', 'instituicao_id', 'users.id', 'instituicoes_instituicoes.id');
     }
 
     public function perfis()
