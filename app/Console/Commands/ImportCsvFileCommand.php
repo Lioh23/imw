@@ -31,7 +31,7 @@ class ImportCsvFileCommand extends Command
     public function handle()
     {
         $controle = ControleImportacaoCsv::where('alias', $this->argument('import_alias'))
-            // ->where('executed', false)
+            ->where('executed', false)
             ->firstOr(fn () => dd('Controle de importação já realizado ou não localizado!') );
 
         $collection = app(LeitorCsvService::class)->execute($controle->file);
