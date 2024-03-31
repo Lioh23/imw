@@ -48,6 +48,7 @@ class StoreReceberMembroExternoService
             $membro->update([
                 ...Identifiable::fetchSessionInstituicoesStoreMembresia(),
                 'congregacao_id' => $params['congregacao_id'],
+                'numero_rol'     => $params['numero_rol']
             ]);
 
         } catch (\Exception $e) {
