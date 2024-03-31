@@ -86,15 +86,15 @@ class MembresiaMembro extends Model
     public function ultimaAdesao()
     {
         return $this->hasOne(MembresiaRolPermanente::class, 'membro_id')
-                    ->where('status', MembresiaRolPermanente::STATUS_RECEBIMENTO)
+                    ->where(fn($query) => $query->where('status', MembresiaRolPermanente::STATUS_RECEBIMENTO)->orWhere('status', MembresiaRolPermanente::STATUS_TRANSFERENCIA))
                     ->latest('dt_recepcao');
     }
 
     public function ultimaExclusao()
     {
         return $this->hasOne(MembresiaRolPermanente::class, 'membro_id')
-                    ->where('status', MembresiaRolPermanente::STATUS_EXCLUSAO)
-                    ->latest('dt_recepcao');
+        ->where(fn($query) => $query->where('status', MembresiaRolPermanente::STATUS_RECEBIMENTO)->orWhere('status', MembresiaRolPermanente::STATUS_TRANSFERENCIA))
+        ->latest('dt_recepcao');
     }
 
 }
