@@ -26,7 +26,6 @@ class StoreTransferenciaInternaService
             DB::commit();
         } catch(\Exception $e) {
             DB::rollback();
-            dd($e);
             throw new TransferenciaInternaException();
         }
     }

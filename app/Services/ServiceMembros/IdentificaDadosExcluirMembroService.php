@@ -17,7 +17,7 @@ class IdentificaDadosExcluirMembroService
     {
         return [
             'pessoa'       => $this->fetchMembroExcluir($id),
-            'sugestao_rol' => $this->fetchSugestaoRol(),
+            'sugestao_rol' => Identifiable::fetchSugestaoRol(),
             'pastores'     => Identifiable::fetchPastores(),
             'modos'        => Identifiable::fetchModos(MembresiaSituacao::TIPO_EXCLUSAO),
         ];
@@ -36,12 +36,5 @@ class IdentificaDadosExcluirMembroService
         }
 
         return $membro;
-    }
-
-    private function fetchSugestaoRol()
-    {
-        return MembresiaRolPermanente::selectRaw('IFNULL(MAX(numero_rol), 0) + 1 sugestao_rol')
-            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
-            ->first()->sugestao_rol;
     }
 }

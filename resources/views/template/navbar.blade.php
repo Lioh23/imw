@@ -23,7 +23,7 @@
 
                             @foreach ($baseParams->notificacoesTransferencia as $notificacao)
                                 <div class="dropdown-item">
-                                    <a class="media server-log" href="{{ route('membro.receber_membro_externo', ['id' => $notificacao->membro_id]) }}">
+                                    <a class="media server-log" href="{{ route('membro.receber_membro_externo', ['notificacao' => $notificacao->id]) }}">
                                         <x-bx-door-open />
                                         <div class="media-body">
                                             <div class="data-info">

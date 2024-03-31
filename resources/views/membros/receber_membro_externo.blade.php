@@ -25,7 +25,7 @@
     </div>
 
     <div class="widget-content widget-content-area">
-      <form class="form-vertical" method="POST" action="{{ route('membro.receber_membro_externo.store', ['id' => $pessoa->id]) }}" enctype="multipart/form-data">
+      <form class="form-vertical" method="POST" action="{{ route('membro.receber_membro_externo.store', ['notificacao' => $notificacao->id]) }}" enctype="multipart/form-data">
         @csrf
         <div class="row">
           <div class="col-md-12">
@@ -40,15 +40,44 @@
 
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
+            <label class="control-label">* Nº do Rol:</label>
+          </div>
+          <div class="col-lg-6">
+            <input type="number" class="form-control @error('numero_rol') is-invalid @enderror" id="numero_rol" name="numero_rol" value="{{ old('numero_rol', $sugestaoRol) }}">
+            @error('numero_rol')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+        </div>
+
+        <div class="form-group row mb-4">
+          <div class="col-lg-2 text-right">
             <label class="control-label">* Data:</label>
           </div>
           <div class="col-lg-6">
-            <input type="date" class="form-control @error('dt_notificacao') is-invalid @enderror" id="dt_notificacao" name="dt_notificacao" value="{{ old('dt_notificacao', date('Y-m-d')) }}" placeholder="ex: 31/12/2000">
-            @error('dt_notificacao')
+            <input type="date" class="form-control @error('dt_resposta') is-invalid @enderror" id="dt_resposta" name="dt_resposta" value="{{ old('dt_resposta', date('Y-m-d')) }}" placeholder="ex: 31/12/2000">
+            @error('dt_resposta')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
         </div>
+
+        <div class="form-group row mb-4">
+          <div class="col-lg-2 text-right">
+            <label class="control-label">* Pastor:</label>
+          </div>
+          <div class="col-lg-6">
+            <select id="clerigo_id" name="clerigo_id" class="form-control @error('clerigo_id') is-invalid @enderror" >
+              <option value="" {{ old('clerigo_id') == '' ? 'selected' : '' }}>Selecione</option>
+              @foreach ($pastores as $pastor)
+                <option value="{{ $pastor->id }}" {{ old('clerigo_id') == $pastor->id ? 'selected' : '' }}>{{ $pastor->nome }}</option>
+              @endforeach
+            </select>
+            @error('modo_recepcao_id')
+                <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+        </div> 
 
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
@@ -71,33 +100,15 @@
           <a href="{{ route('membro.editar', ['id' => $pessoa->id]) }}" class="btn btn-secondary">
             <x-bx-arrow-back/> Voltar
           </a>
-          <button type="submit" class="btn btn-success">
+
+          <button type="submit" name="action" value="accept" class="btn btn-success">
             <x-bx-transfer-alt/> Aceitar
           </button>
-          <button id="rejeitar" class="btn btn-primary">
+
+          <button type="submit" name="action" value="reject" class="btn btn-danger">
             <x-bx-block/> Rejeitar
           </button>
         </div>
-
-        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-          <div class="modal-dialog" role="document">
-              <div class="modal-content">
-                  <div class="modal-header">
-                      <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <svg> ... </svg>
-                      </button>
-                  </div>
-                  <div class="modal-body">
-                      <p class="modal-text">Mauris mi tellus, pharetra vel mattis sed, tempus ultrices eros. Phasellus egestas sit amet velit sed luctus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse potenti. Vivamus ultrices sed urna ac pulvinar. Ut sit amet ullamcorper mi. </p>
-                  </div>
-                  <div class="modal-footer">
-                      <button class="btn" data-dismiss="modal"><i class="flaticon-cancel-12"></i> Discard</button>
-                      <button type="button" class="btn btn-primary">Save</button>
-                  </div>
-              </div>
-          </div>
-      </div>
 
       </form>
     </div>

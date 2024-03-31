@@ -16,11 +16,16 @@ class GetBaseParamsService
 
     private function fetchNotificacoesTransferencia()
     {
-        $sessionInstituicoes = session()->get('session_perfil')->instituicoes;
+        try {
+            $sessionInstituicoes = session()->get('session_perfil')->instituicoes;
+    
+            return NotificacaoTransferencia::where('igreja_destino_id', $sessionInstituicoes->igrejaLocal->id)
+                ->whereNull('dt_aceite')
+                ->whereNull('dt_rejeicao')
+                ->get();
+        } catch (\Exception $e) {
+            return null;
+        }
 
-        return NotificacaoTransferencia::where('igreja_destino_id', $sessionInstituicoes->igrejaLocal->id)
-            ->whereNull('dt_aceite')
-            ->whereNull('dt_rejeicao')
-            ->get();
     }
 }

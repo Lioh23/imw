@@ -12,6 +12,7 @@ class MembresiaRolPermanente extends Model
 
     const STATUS_RECEBIMENTO = 'A';
     const STATUS_EXCLUSAO = 'I';
+    const STATUS_TRANSFERENCIA = 'T';
 
     protected $table = 'membresia_rolpermanente';
 

@@ -95,4 +95,11 @@ trait Identifiable
             ->orderByDesc('id')
             ->firstOr(fn() => throw new FetchRolAtualException());
     }
+
+    public static function fetchSugestaoRol()
+    {
+        return MembresiaRolPermanente::selectRaw('IFNULL(MAX(numero_rol), 0) + 1 sugestao_rol')
+            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
+            ->first()->sugestao_rol;
+    }
 }

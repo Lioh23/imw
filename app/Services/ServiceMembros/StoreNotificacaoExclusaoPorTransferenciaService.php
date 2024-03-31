@@ -27,7 +27,6 @@ class StoreNotificacaoExclusaoPorTransferenciaService
                        
             DB::commit();
         } catch(\Exception $e) {
-            dd($e);
             DB::rollback();
             throw new StoreNotificacaoExclusaoPorTransferenciaException();
         }

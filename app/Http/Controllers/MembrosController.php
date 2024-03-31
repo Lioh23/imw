@@ -16,6 +16,7 @@ use App\Http\Requests\StoreTransferenciaInternaRequest;
 use App\Http\Requests\UpdateDisciplinarRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
+use App\Models\NotificacaoTransferencia;
 use App\Services\ServiceMembros\DeletarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
@@ -26,8 +27,8 @@ use App\Services\ServiceMembros\IdentificaDadosTransferenciaInternaService;
 use App\Services\ServiceMembros\IdentificaDadosTransferenciaPorExclusaoService;
 use App\Services\ServiceMembros\ListDisciplinasMembroService;
 use App\Services\ServiceMembros\StoreDiciplinaService;
-use App\Services\ServiceMembros\StoreExclusaoPorTransferenciaService;
 use App\Services\ServiceMembros\StoreNotificacaoExclusaoPorTransferenciaService;
+use App\Services\ServiceMembros\StoreReceberMembroExternoService;
 use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReintegracaoService;
 use App\Services\ServiceMembros\StoreTransferenciaInternaService;
@@ -262,10 +263,10 @@ class MembrosController extends Controller
         }
     }
 
-    public function receberMembroExterno($id)
+    public function receberMembroExterno(NotificacaoTransferencia $notificacao)
     {
         try {
-            $data = app(IdentificaDadosReceberMembroExternoService::class)->execute($id);
+            $data = app(IdentificaDadosReceberMembroExternoService::class)->execute($notificacao);
 
             return view('membros.receber_membro_externo', $data);
         } catch(\Exception $e) {
@@ -273,8 +274,15 @@ class MembrosController extends Controller
         }
     }
 
-    public function storeReceberMembroExterno(StoreReceberMembroExternoRequest $request, $id)
+    public function storeReceberMembroExterno(StoreReceberMembroExternoRequest $request, NotificacaoTransferencia $notificacao)
     {
-        
+        try {
+            DB::beginTransaction();
+            app(StoreReceberMembroExternoService::class)->execute($request->all(), $notificacao);
+            DB::commit();
+            return redirect()->route('membro.editar', ['id' => $notificacao->membro_id])->with('success', 'Membro externo recebido com sucesso!');
+        } catch (\Exception $e) {
+            return redirect()->route('membro.receber_membro_externo', ['notificacao' => $notificacao->id])->with('error', 'Erro ao finalizar o recebimento do membro externo');
+        }
     }
 }

@@ -5,7 +5,6 @@ namespace App\Rules;
 use App\Models\MembresiaRolPermanente;
 use App\Traits\Identifiable;
 use Illuminate\Contracts\Validation\Rule;
-use Illuminate\Support\Facades\Auth;
 
 class UniqueRolIgrejaRule implements Rule
 {

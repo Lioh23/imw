@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\UniqueRolIgrejaRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreReceberMembroExternoRequest extends FormRequest
@@ -24,7 +25,11 @@ class StoreReceberMembroExternoRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'clerigo_id'  => 'required|exists:pessoas_pessoas,.id',
+            'dt_resposta' => 'required|date',
+            'congregacao' => 'nullable|exists:congregacoes_congregacoes,id',
+            'action'      => 'required',
+            'numero_rol'  => ['required', new UniqueRolIgrejaRule],
         ];
     }
 }

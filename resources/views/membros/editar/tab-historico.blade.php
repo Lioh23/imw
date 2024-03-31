@@ -35,6 +35,16 @@
                                     'congregation' => optional($rolPermanente->congregacao)->nome,
                                     'cleric' => $rolPermanente->clerigo->nome,
                                 ];
+                            } elseif ($rolPermanente->status == 'T') {
+                                $class = 'tr-green';
+                                $data = [
+                                    'date' => $rolPermanente->dt_recepcao->format('d/m/Y'),
+                                    'status' => 'Transferência',
+                                    'mode' => $rolPermanente->modoRecepcao->nome,
+                                    'church' => $rolPermanente->igreja->nome,
+                                    'congregation' => optional($rolPermanente->congregacao)->nome,
+                                    'cleric' => $rolPermanente->clerigo->nome,
+                                ];
                             }
                         @endphp
                         <tr class="{{ $class }}">
