@@ -9,7 +9,10 @@ class InstituicaoController extends Controller
 {
     public function index(Request $request)
     {
-        $query = InstituicoesInstituicao::query();
+        $query = InstituicoesInstituicao::where(function ($query) {
+            $query->where('id', session()->get('session_perfil')->instituicao_id)
+                  ->orWhere('instituicao_pai_id', session()->get('session_perfil')->instituicao_id);
+        });
 
         if ($request->has('search') && !empty($request->search)) {
             $query->where('nome', 'like', '%' . $request->search . '%');
