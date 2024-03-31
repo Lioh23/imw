@@ -52,7 +52,6 @@ class CongregadosController extends Controller
         } catch(\Exception $e) {
 
         } catch(\Exception $e) {
-            dd($e);
             DB::rollback();
             return redirect()->route('congregado.index')->with('success', 'Falha na criação do registro.');
         }
