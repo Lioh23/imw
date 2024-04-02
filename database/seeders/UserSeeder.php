@@ -37,9 +37,11 @@ class UserSeeder extends Seeder
         if ($perfilAdmin) {
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2275]);
+            $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 13]);
 
             $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
             $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2275]);
+            $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 13]);
 
             // Vinculando todas as regras ao perfil Administrador
             $regras = Regra::all();
