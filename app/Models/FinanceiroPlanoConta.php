@@ -10,6 +10,11 @@ class FinanceiroPlanoConta extends Model
 {
     use HasFactory, SoftDeletes;
 
+    const TP_ENTRADA = 'E';
+    const TP_SAIDA = 'S';
+    const TP_TRANSFERENCIA = 'T';
+    const TP_R = 'R';
+
     protected $table = 'financeiro_plano_contas';
 
     protected $fillable = [
