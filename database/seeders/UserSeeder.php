@@ -37,11 +37,9 @@ class UserSeeder extends Seeder
         if ($perfilAdmin) {
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2275]);
-            $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 13]);
 
             $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
             $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2275]);
-            $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 13]);
 
             // Vinculando todas as regras ao perfil Administrador
             $regras = Regra::all();
@@ -52,15 +50,11 @@ class UserSeeder extends Seeder
 
         // Vinculando as instituições aos usuários
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 13]); // regiao
-        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 1758]); // distrito
+        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2275]); // distrito
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2215]); // igreja
 
-        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 13]); // regiao
-        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 1758]); // distrito
-        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2275]); // igreja
-
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 13]); // regiao
-        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 1758]); // distrito
+        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2275]); // distrito
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2275]); // igreja
     }
 }
