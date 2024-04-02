@@ -39,7 +39,6 @@ class CongregadosController extends Controller
         } catch(\Exception $e) {
             return redirect()->route('congregado.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
-    
     }
 
     public function store(StoreCongregadoRequest $request)
