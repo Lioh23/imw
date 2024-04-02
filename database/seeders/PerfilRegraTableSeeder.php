@@ -17,7 +17,7 @@ class PerfilRegraTableSeeder extends Seeder
      */
     public function run()
     {
-        $perfilAdmin = Perfil::where('nome', 'Administrador')->first();
+        $perfilAdmin = Perfil::where('nome', 'Administrador - Igreja')->first();
         $regras = Regra::all();
 
         if ($perfilAdmin) {

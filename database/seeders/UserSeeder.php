@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
         ]);
 
         // Vinculando o perfil Administrador aos usuários
-        $perfilAdmin = Perfil::where('nome', 'Administrador Local')->first();
+        $perfilAdmin = Perfil::where('nome', 'Administrador - Igreja')->first();
 
         if ($perfilAdmin) {
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
