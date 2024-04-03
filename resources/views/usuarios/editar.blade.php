@@ -92,7 +92,7 @@
                                 <tbody>
                                     
                                     @php
-                                        $perfisInstituicao = $user->perfilUserInstituicao;
+                                        $perfisInstituicao = $user->perfilUser;
                                     @endphp
                                   
                                     @foreach ($perfisInstituicao as $index => $perfilUser)
