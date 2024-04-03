@@ -16,7 +16,9 @@ class PerfilsTableSeeder extends Seeder
     public function run()
     {
         DB::table('perfils')->insert([
-            ['nome' => 'Administrador - Igreja']
+            ['nome' => 'Administrador - Igreja'],
+            ['nome' => 'Administrador - Distrito'],
+            ['nome' => 'Administrador - Região']
         ]);
     }
 }

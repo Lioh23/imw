@@ -33,13 +33,32 @@ class UserSeeder extends Seeder
 
         // Vinculando o perfil Administrador aos usuários
         $perfilAdmin = Perfil::where('nome', 'Administrador - Igreja')->first();
+        $perfilAdminDistrito = Perfil::where('nome', 'Administrador - Distrito')->first();
+        $perfilAdminRegiao = Perfil::where('nome', 'Administrador - Região')->first();
+
+        //Regra comuns de tela de usuário
+        function attachRegras($perfil, $regras) {
+            foreach ($regras as $regra) {
+                $perfil->regras()->attach($regra);
+            }
+        }
+        
+        $regrasComuns = [4, 5, 6, 7, 8, 9];
+        
+        if ($perfilAdminDistrito) {
+            attachRegras($perfilAdminDistrito, $regrasComuns);
+        }
+        
+        if ($perfilAdminRegiao) {
+            attachRegras($perfilAdminRegiao, $regrasComuns);
+        }
+        //Fim das regras comuns
 
         if ($perfilAdmin) {
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2275]);
 
-            $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
-            $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2275]);
+            $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 13]);
 
             // Vinculando todas as regras ao perfil Administrador
             $regras = Regra::all();
@@ -49,13 +68,11 @@ class UserSeeder extends Seeder
         }
 
         // Vinculando as instituições aos usuários
-        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 13]); // regiao
+        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 13]); // região
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2275]); // distrito
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2215]); // igreja
 
-        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 13]); // regiao
-        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2275]); // distrito
-        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2275]); // igreja
+        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 13]); // região
     }
 }
 
