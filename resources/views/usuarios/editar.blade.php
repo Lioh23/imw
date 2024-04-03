@@ -28,7 +28,6 @@
             </div>
             <div class="widget-content widget-content-area">
                 <form autocomplete="off" class="form-horizontal" method="POST" id="formEditarUsuario" action="{{ route('usuarios.update', $id) }}">
-
                     @csrf
                     <div class="row mb-1">
                         <div class="col-lg-5">
@@ -91,10 +90,12 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    
                                     @php
-                                        $perfis = Auth::user()->id == $user->id ? $usuario->perfilUser : $user->perfilUserInstituicao;
+                                        $perfisInstituicao = $user->perfilUser;
                                     @endphp
-                                    @foreach ($perfis as $index => $perfilUser)
+                                  
+                                    @foreach ($perfisInstituicao as $index => $perfilUser)
                                     <tr>
                                         <td>
                                             <div class="form-group">
