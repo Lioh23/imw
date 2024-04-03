@@ -89,10 +89,7 @@
                                                     </thead>
                                                     <tbody>
                                                         @php
-                                                            $perfis =
-                                                                Auth::user()->id == $usuario->id
-                                                                    ? $usuario->perfilUser
-                                                                    : $usuario->perfilUserInstituicao;
+                                                            $perfis = $usuario->perfilUser;
                                                         @endphp
                                                         @foreach ($perfis as $perfilUser)
                                                             <tr>
