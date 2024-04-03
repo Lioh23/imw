@@ -51,13 +51,16 @@ class UserSeeder extends Seeder
         
         if ($perfilAdminRegiao) {
             attachRegras($perfilAdminRegiao, $regrasComuns);
-            $marcos->perfis()->attach($perfilAdminRegiao->id, ['instituicao_id' => 13]);
+           
         }
         //Fim das regras comuns
 
         if ($perfilAdmin) {
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
             $admin->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2275]);
+
+            $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2215]);
+            $marcos->perfis()->attach($perfilAdmin->id, ['instituicao_id' => 2275]);
 
             // Vinculando todas as regras ao perfil Administrador
             $regras = Regra::all();
@@ -72,6 +75,8 @@ class UserSeeder extends Seeder
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2215]); // igreja
 
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 13]); // região
+        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2275]); // redistritogião
+        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2215]); // igreja
     }
 }
 
