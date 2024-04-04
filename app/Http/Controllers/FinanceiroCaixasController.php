@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreCaixasRequest;
+use App\Services\ServiceFinanceiroCaixas\DeletarFinanceiroCaixasService;
 use App\Services\ServiceFinanceiroCaixas\ListFinanceiroCaixasService;
 use App\Services\ServiceFinanceiroCaixas\StoreFinanceiroCaixasService;
 use Illuminate\Http\Request;
@@ -28,6 +29,19 @@ class FinanceiroCaixasController extends Controller
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->route('financeiro.caixas.novo')->with('error', $e->getMessage());
+        }
+    }
+
+    public function deletar($id) 
+    {
+        try {
+            DB::beginTransaction();
+            app(DeletarFinanceiroCaixasService::class)->execute($id);
+            DB::commit();
+            return redirect()->route('financeiro.caixas')->with('success', 'Caixa excluído com sucesso.');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('financeiro.caixas')->with('error', $e->getMessage());
         }
     }
 }
