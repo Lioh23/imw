@@ -109,7 +109,9 @@ Route::middleware(['auth'])->group(function () {
             
             //Caixas
             Route::get('/caixas', [FinanceiroCaixasController::class, 'index'])->name('caixas')->middleware(['seguranca:financeiro-caixas']);
-            Route::post('/caixas/store', [FinanceiroCaixasController::class, 'storeCaixas'])->name('caixas.store')->middleware(['seguranca:financeiro-caixas']);
+            Route::get('/caixas/novo', [FinanceiroCaixasController::class, 'novo'])->name('caixas.novo')->middleware(['seguranca:financeiro-caixas']);
+            Route::post('/caixas/store', [FinanceiroCaixasController::class, 'store'])->name('caixas.store')->middleware(['seguranca:financeiro-caixas']);
+            Route::delete('/caixas/deletar/{id}', [FinanceiroCaixasController::class, 'deletar'])->name('caixas.deletar')->middleware(['seguranca:financeiro-caixas']);
         });
 
          /* Por enquanto somente visualiações */

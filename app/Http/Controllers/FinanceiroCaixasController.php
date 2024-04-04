@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreCaixasRequest;
 use App\Services\ServiceFinanceiroCaixas\ListFinanceiroCaixasService;
+use App\Services\ServiceFinanceiroCaixas\StoreFinanceiroCaixasService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FinanceiroCaixasController extends Controller
 {
@@ -12,7 +15,19 @@ class FinanceiroCaixasController extends Controller
         return view('financeiro.caixas.index', $data);
     }
 
-    public function storeCaixas(Request $request) {
+    public function novo() {
+        return view('financeiro.caixas.novo');
+    }
 
+    public function store(StoreCaixasRequest $request) {
+        try {
+            DB::beginTransaction();
+            app(StoreFinanceiroCaixasService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('financeiro.caixas')->with('success', 'Caixa cadastrado com sucesso.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('financeiro.caixas.novo')->with('error', $e->getMessage());
+        }
     }
 }

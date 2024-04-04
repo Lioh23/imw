@@ -3,8 +3,6 @@
 namespace App\Services\ServiceFinanceiroCaixas;
 
 use App\Models\FinanceiroCaixa;
-use App\Models\FinanceiroPlanoConta;
-use App\Models\User;
 
 class ListFinanceiroCaixasService
 {
