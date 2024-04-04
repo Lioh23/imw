@@ -113,6 +113,7 @@
         <script src="{{ asset('theme/bootstrap/js/bootstrap.min.js') }}"></script>
         <script src="{{ asset('theme/plugins/perfect-scrollbar/perfect-scrollbar.min.js') }}"></script>
         <script src="{{ asset('theme/assets/js/app.js') }}"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
         <script>
             $(document).ready(function() {
                 App.init();

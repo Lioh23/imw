@@ -25,56 +25,56 @@
                     <div class="card mb-3">
                         <div class="card-body">
                             <div class="row">
-                                <div class="mb-3 col-lg-3 col-md-3 col-sm-6 grupoCpf lgpd">
-                                    <label for="cpf_cnpj">CPF/CPNJ* <small>(somente números)</small></label>
-                                    <input class="form-control" id="cpf_cnpj" name="cpf_cnpj" maxlength="20" value=""
-                                        type="text" placeholder="">
+                                <div class="mb-3 col-lg-3 col-md-3 col-sm-6">
+                                    <label for="cpf_cnpj">* CPF/CPNJ <small>(somente números)</small></label>
+                                    <input class="form-control" id="cpf_cnpj" name="cpf_cnpj" maxlength="18" type="text"
+                                        placeholder="">
                                 </div>
 
-                                <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
-                                    <label for="nome">Nome*</label>
+                                <div class="mb-3 col-lg-9 col-md-9 col-sm-6">
+                                    <label for="nome">* Nome</label>
                                     <input class="form-control " id="nome" name="nome" maxlength="100"
-                                        value="" type="text" placeholder="" required="required">
+                                        type="text" placeholder="" required="required">
                                 </div>
+                                <div class="row">
+                                    <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
+                                        <label for="email">E-mail</label>
+                                        <input class="form-control " id="email" name="email" maxlength="100"
+                                            type="email" placeholder="">
+                                    </div>
 
-                                <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
-                                    <label for="email">E-mail</label>
-                                    <input class="form-control " id="email" name="email" maxlength="100"
-                                        value="" type="text" placeholder="">
-                                </div>
-
-                                <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
-                                    <label for="sitio">Site</label>
-                                    <input class="form-control " id="sitio" name="sitio" maxlength="100"
-                                        value="" type="text" placeholder="">
+                                    <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
+                                        <label for="site">Site</label>
+                                        <input class="form-control " id="site" name="site" maxlength="100"
+                                            type="text" placeholder="">
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <div class="card mb-3 lgpd">
-                        <div class="card-header">
-                            <h5 class="mb-0">Localização</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="row">
+                        <div class="card mb-3">
+                            <div class="card-header">
+                                <h5 class="mb-0">Localização</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="mb-3 col-lg-3 col-md-3 col-sm-6">
+                                        <label for="cep">* CEP</label>
+                                        <input class="form-control cep" id="cep" name="cep" maxlength="20"
+                                            value="" type="text" placeholder="">
+                                    </div>
 
-                                <div class="mb-3 col-lg-3 col-md-3 col-sm-12">
-                                    <label for="cep">CEP*</label>
-                                    <input class="form-control cep" id="cep" name="cep" maxlength="20"
-                                        value="" type="text" placeholder="">
-                                </div>
-
-                                <div class="mb-3 col-lg-9 col-md-9 col-sm-12">
-                                    <label for="endereco">Logradouro (Rua/Av/Beco)</label>
-                                    <input class="form-control " id="endereco" name="endereco" maxlength="255"
-                                        value="" type="text" placeholder="">
+                                    <div class="mb-3 col-lg-9 col-md-9 col-sm-12">
+                                        <label for="endereco">Logradouro (Rua/Av/Beco)</label>
+                                        <input class="form-control " id="endereco" name="endereco" maxlength="255"
+                                            type="text" placeholder="">
+                                    </div>
                                 </div>
                                 <div class="row">
                                     <div class="mb-3 col-lg-3 col-md-3 col-sm-6">
                                         <label for="numero">Número</label>
                                         <input class="form-control " id="numero" name="numero" maxlength="20"
-                                            value="" type="text" placeholder="">
+                                            type="number" placeholder="">
                                     </div>
 
                                     <div class="mb-3 col-lg-3 col-md-3 col-sm-6">
@@ -131,7 +131,7 @@
                                     </div>
 
                                     <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
-                                        <label for="pais">Pais*</label>
+                                        <label for="pais">* Pais</label>
                                         <input class="form-control " id="pais" name="pais" maxlength="20"
                                             value="" type="text" placeholder="">
                                     </div>
@@ -149,13 +149,98 @@
                                 </div>
                             </div>
                         </div>
+                       
                     </div>
-                    <div class="col-12 text-center mt-3">
-                        <button class="btn btn-success mb-3" type="submit" id="btnSalvar"><i class="far fa-save"></i>Salvar</button>
-                    </div>
+                    <input type="submit" value="Salvar" class="btn btn-primary btn-lg mt-3">
+
                 </form>
                 <!-- Fim Conteúdo -->
             </div>
         </div>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('#telefone').mask('(00) 0000-0000');
+            $('#celular').mask('(00) 00000-0000');
+
+            $('#cpf_cnpj').mask('000.000.000-00', {
+                reverse: true
+            });
+
+            $('#cpf_cnpj').on('input', function() {
+                var cpfCnpj = $(this).val().replace(/\D/g, '');
+
+                if (cpfCnpj.length > 11) {
+                    $('#cpf_cnpj').mask('00.000.000/0000-00', {
+                        reverse: true
+                    });
+                } else {
+                    $('#cpf_cnpj').mask('000.000.000-00', {
+                        reverse: true
+                    });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            function limpa_formulário_cep() {
+                $("#endereco").val("");
+                $("#bairro").val("");
+                $("#cidade").val("");
+                $("#estado").val("");
+                $("#pais").val("");
+            }
+
+            $("#cep").blur(function() {
+                var cep = $(this).val().replace(/\D/g, '');
+                if (cep != "") {
+                    var validacep = /^[0-9]{8}$/;.
+                    if(validacep.test(cep)) {
+                        $("#endereco").val("...");
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#estado").val("...");
+                        $("#pais").val("...");
+
+                        //Consulta o webservice viacep.com.br/
+                        $.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?", function(
+                            dados) {
+
+                            if (!("erro" in dados)) {
+                                $("#endereco").val(dados.logradouro);
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#estado").val(dados.uf);
+                                $("#pais").val("Brasil");
+                            } else {
+                                limpa_formulário_cep();
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    }
+                    else {
+                        limpa_formulário_cep();
+                        alert("Formato de CEP inválido.");
+                    }
+                } else {
+                    limpa_formulário_cep();
+                }
+            });
+        });
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            $('#site').mask('https://www.*****************', {
+                translation: {
+                    '*': {
+                        pattern: /[a-zA-Z0-9-.]/,
+                        optional: true
+                    }
+                }
+            });
+        });
+    </script>
 @endsection
