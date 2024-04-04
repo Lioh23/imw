@@ -24,16 +24,14 @@
                 <div class="bg-holder d-none d-lg-block bg-card gb-title">
                 </div>
                 <div class="card-body">
-                    <form action="">
-                        <div class="row">
-                            <div class="form-group col-lg-10 col-md-10 col-sm-9">
-                                <label for="descricao">Nome</label>
-                                <input class="form-control " id="descricao" name="descricao" maxlength="200" value="" type="text"
-                                    placeholder="">
+                    <form>
+                        <div class="row mb-4">
+                            <div class="col-4">
+                                <input type="text" name="search" id="searchInput" class="form-control form-control-sm"
+                                    placeholder="Pesquisar...">
                             </div>
-            
-                            <div class="form-group col-lg-1 col-md-1 col-sm-6 mt-4">
-                                <button class="btn btn-primary btn-rounded"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+                            <div class="col-auto" style="margin-left: -19px;">
+                                <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
                             </div>
                         </div>
                     </form>
@@ -60,7 +58,7 @@
                                     @foreach($caixas as $caixa)
                                     <tr>
                                         <td>{{$caixa->descricao}}</td>
-                                        <td>{{$caixa->tipo}} Banco </td>
+                                        <td>{{ match($caixa->tipo) { 'S' => 'Secundário', 'B' => 'Banco', 'P' => 'Principal', 'C' => 'Caixa', default => $caixa->tipo } }}</td>
                                         <td class="table-action">
                                             <a href="#" title="editar"
                                                 class="btn btn-rounded"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg></a>
