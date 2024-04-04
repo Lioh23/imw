@@ -138,7 +138,7 @@
                                @endif
                            </li>
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('fornecedor-index'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('fornecedores-index'))
                                    <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
                                @endif
                            </li>

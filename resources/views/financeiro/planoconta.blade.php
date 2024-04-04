@@ -6,9 +6,7 @@
 ]"></x-breadcrumb>
 @endsection
 @section('content')
-<div class="container-fluid">
-    
-</div>
+
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
@@ -25,14 +23,14 @@
                     <div class="bg-holder d-none d-lg-block bg-card gb-title">
                     </div>
                     <div class="card-body">
-                        <form action="">
-                            <div class="row">
-                                <div class="form-group col-lg-10 col-md-10 col-sm-9">
-                                    <label for="nome">Nome</label>
-                                    <input class="form-control " id="nome" name="nome" maxlength="200" value="" type="text" placeholder="">
+                        <form>
+                            <div class="row mb-4">
+                                <div class="col-4">
+                                    <input type="text" name="search" id="searchInput" class="form-control form-control-sm"
+                                        placeholder="Pesquisar...">
                                 </div>
-                                <div class="form-group col-lg-1 col-md-1 col-sm-6 mt-4">
-                                    <button class="btn btn-primary btn-rounded"><i class="fa fa-search" aria-hidden="true"></i> Buscar</button>
+                                <div class="col-auto" style="margin-left: -19px;">
+                                    <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
                                 </div>
                             </div>
                         </form>
@@ -45,69 +43,24 @@
                             <thead class="thead-light">
                                 <tr>
                 
-                                    <th style="width: 60px;">Codigo</th>
+                                    <th style="width: 60px;">Código</th>
                                     <th>Nome</th>
                                     <th width="150"></th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($planocontas as $conta)
                                 <tr>
-                
-                                    <td>1</td>
-                                    <td>ENTRADAS</td>
-                                    <td class="table-action">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1.01</td>
-                                    <td>DÍZIMOS</td>
-                                    <td class="table-action">
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>1.01.01</td>
-                                    <td>Dizimo dos Membros</td>
+                                    <td>{{$conta->numeracao}}</td>
+                                    <td>{{$conta->nome}}</td>
                                     <td class="table-action"></td>
                                 </tr>
-                
-                                <tr>
-                                    <td>1.01.02</td>
-                                    <td>Dizimo dos Congregados</td>
-                                    <td class="table-action"></td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                 
                 
-                        <nav aria-label="Page navigation example">
-                            <ul class="pagination">
-                                <li class="page-item active">
-                                    <a href="#" class="page-link">
-                                        1 </a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">
-                                        2 </a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" class="page-link">
-                                        3 </a>
-                                </li>
-                
-                                <li class="page-item">
-                                    <a href="#" aria-label="Next"
-                                        class="page-link">
-                                        <span aria-hidden="true">Próximo</span>
-                                    </a>
-                                </li>
-                                <li class="page-item">
-                                    <a href="#" aria-label="Last"
-                                        class="page-link">
-                                        <span aria-hidden="true">Último</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                        {{ $planocontas->links('vendor.pagination.index') }}
                     </div>
                 </div>
             <!-- Fim conteúdo -->

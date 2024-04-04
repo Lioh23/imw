@@ -68,15 +68,6 @@ class FinanceiroController extends Controller
         }
     }
 
-    public function planoconta()
-    {
-        try{
-            return view('financeiro.planoconta');
-        } catch(\Exception $e) {
-
-        }
-    }
-
     public function caixas()
     {
         try{
