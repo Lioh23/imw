@@ -67,13 +67,4 @@ class FinanceiroController extends Controller
 
         }
     }
-
-    public function caixas()
-    {
-        try{
-            return view('financeiro.caixas');
-        } catch(\Exception $e) {
-
-        }
-    }
 }

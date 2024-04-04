@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CongregadosController;
+use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\FinanceiroPlanoContaController;
 use App\Http\Controllers\FornecedorController;
@@ -98,7 +99,6 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('financeiro')->name('financeiro.')->group(function () {
             Route::get('/movimento-caixa', [FinanceiroController::class, 'movimentocaixa'])->name('movimento.caixa')->middleware(['seguranca:financeiro-movimentocaixa-index']);
             Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa')->middleware(['seguranca:financeiro-consolidarcaixa']);
-            Route::get('/caixas', [FinanceiroController::class, 'caixas'])->name('caixas')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/entrada', [FinanceiroController::class, 'entrada'])->name('entrada')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/entrada/store', [FinanceiroController::class, 'storeEntrada'])->name('entrada.store')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/saida', [FinanceiroController::class, 'saida'])->name('saida')->middleware(['seguranca:financeiro-caixas']);
@@ -106,6 +106,10 @@ Route::middleware(['auth'])->group(function () {
             
             //Plano de Conta
             Route::get('/plano-conta', [FinanceiroPlanoContaController::class, 'index'])->name('plano.conta')->middleware(['seguranca:financeiro-planoconta']);
+            
+            //Caixas
+            Route::get('/caixas', [FinanceiroCaixasController::class, 'index'])->name('caixas')->middleware(['seguranca:financeiro-caixas']);
+            Route::post('/caixas/store', [FinanceiroCaixasController::class, 'storeCaixas'])->name('caixas.store')->middleware(['seguranca:financeiro-caixas']);
         });
 
          /* Por enquanto somente visualiações */
