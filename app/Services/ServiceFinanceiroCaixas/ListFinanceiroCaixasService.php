@@ -24,7 +24,9 @@ class ListFinanceiroCaixasService
                       ->orWhere('tipo', 'like', "%$searchTerm%");
             });
         })
+        ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
         ->orderBy('id', 'asc') 
         ->paginate(30);
+    
     }
 }

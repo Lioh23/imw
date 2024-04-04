@@ -13,6 +13,16 @@
 @endsection
 @include('extras.alerts')
 @section('content')
+        {{-- @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif --}}
+
     <div id="tableHover" class="col-lg-12 col-12 layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-header">
@@ -31,9 +41,11 @@
                             <div class="form-group">
                                 <label>* Nome completo</label>
                                 <div class="controls">
-                                    <input type="text" name="name" id="name" class="form-control" required
+                                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" required
                                         minlength="4" autocomplete="off" value="{{ old('name') }}">
-                                    <small class="form-text text-muted">Mínimo de 4 caracteres</small>
+                                        @error('name')
+                                            <small class="form-text text-danger">{{ $message }}</small>
+                                        @enderror
                                 </div>
                             </div>
                         </div>
@@ -41,9 +53,11 @@
                             <div class="form-group">
                                 <label>* E-mail</label>
                                 <div class="controls">
-                                    <input type="email" name="email" id="email" class="form-control" required
+                                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" required
                                         autocomplete="off" value="{{ old('email') }}" />
-                                    <small class="form-text text-muted">Endereço de e-mail para login</small>
+                                    @error('email')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -53,8 +67,11 @@
                             <div class="form-group">
                                 <label>* Senha</label>
                                 <div class="controls">
-                                    <input type="password" name="password" id="password" class="form-control" required
+                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" required
                                         autocomplete="new-password" />
+                                    @error('password')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -63,7 +80,10 @@
                                 <label>* Confirmar Senha</label>
                                 <div class="controls">
                                     <input type="password" name="password_confirmation" id="confirmPassword"
-                                        class="form-control" required autocomplete="new-password" />
+                                    class="form-control @error('password_confirmation') is-invalid @enderror" required autocomplete="new-password" />
+                                    @error('password_confirmation')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -90,23 +110,32 @@
                                     <tr>
                                         <td>
                                             <div class="form-group">
-                                                <select class="form-control" name="perfil_id[]">
+                                                <select class="form-control @error('perfil_id.*') is-invalid @enderror" name="perfil_id[]">
                                                     <option value="">Selecione um perfil</option>
                                                     @foreach ($perfis as $perfil)
                                                         <option value="{{ $perfil->id }}">{{ $perfil->nome }}</option>
                                                     @endforeach
                                                 </select>
+                                                
                                             </div>
+                                            @error('perfil_id.*')
+                                                <small class="form-text text-danger">{{ $message }}</small>
+                                            @enderror
+                                                
                                         </td>
                                         <td>
                                             <div class="input-group">
-                                                <input type="text" class="form-control instituicao-nome"
+                                                <input type="text" class="form-control instituicao-nome @error('instituicao_id.*') is-invalid @enderror" 
                                                     name="instituicao_nome[]" readonly>
                                                 <input type="hidden" name="instituicao_id[]">
                                                 <button type="button" class="btn btn-secondary abrirModalInstituicoes"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modalInstituicoes">Selecionar</button>
+                                                
                                             </div>
+                                            @error('instituicao_id.*')
+                                                    <small class="form-text text-danger">{{ $message }}</small>
+                                                @enderror
                                         </td>
                                         <td>
                                             <button type="button" class="btn btn-success btn-rounded btn-add"><i

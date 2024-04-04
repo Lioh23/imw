@@ -31,4 +31,23 @@ class StoreUsuarioRequest extends FormRequest
             'instituicao_id.*' => 'required',
         ];
     }
+    public function messages()
+    {
+        return [
+            'name.required' => 'O campo Nome completo é obrigatório.',
+            'name.min' => 'O campo Nome completo deve ter no mínimo :min caracteres.',
+
+            'email.required' => 'O campo E-mail é obrigatório.',
+            'email.email' => 'Por favor, insira um endereço de e-mail válido.',
+            'email.unique' => 'Este e-mail já está em uso.',
+
+            'password.required' => 'O campo Senha é obrigatório.',
+            'password.min' => 'O campo Senha deve ter no mínimo :min caracteres.',
+            'password.confirmed' => 'A confirmação da senha não corresponde.',
+
+            'perfil_id.*.required' => 'O campo Perfil é obrigatório.',
+
+            'instituicao_id.*.required' => 'O campo Instituição é obrigatório.',
+        ];
+    }
 }
