@@ -1,8 +1,7 @@
 <?php
 
-namespace App\Services\ServiceFornecedor;
+namespace App\Services\ServiceFonecedor;
 
-use App\Models\FinanceiroCaixa;
 use App\Models\FinanceiroFornecedores;
 
 class DeletarFornecedorService
