@@ -73,67 +73,69 @@
                                         <line x1="12" y1="8" x2="12" y2="16"></line>
                                         <line x1="8" y1="12" x2="16" y2="12"></line>
                                     </svg> Novo </a>
-                                <table class="table mt-4">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Descrição</th>
-                                            <th>Tipo</th>
-                                            <th width="200"></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($caixas as $index => $caixa)
-                                            <tr
-                                                style="{{ $caixa->tipo == 'P' ? 'background-color: gray; color: white !important;' : '' }}">
-                                                <td style="{{ $caixa->tipo == 'P' ? 'color: white !important;' : '' }}">
-                                                    {{ $caixa->descricao }}</td>
-                                                <td style="{{ $caixa->tipo == 'P' ? 'color: white !important;' : '' }}">
-                                                    {{ match ($caixa->tipo) {'S' => 'Secundário','B' => 'Banco','P' => 'Principal','C' => 'Caixa',default => $caixa->tipo} }}
-                                                </td>
-                                                <td class="table-action">
-                                                    @if ($caixa->tipo != 'P')
-                                                        <a href="{{ route('financeiro.caixas.editar', $caixa->id) }}"
-                                                            title="Editar" class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-edit-2">
-                                                                <path
-                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                </path>
-                                                            </svg>
-                                                        </a>
-                                                        <form action="{{ route('financeiro.caixas.deletar', $caixa->id) }}"
-                                                            method="POST" style="display: inline-block;"
-                                                            id="form_delete_caixa_{{ $index }}">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="button" title="Apagar"
-                                                                class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
-                                                                data-form-id="form_delete_caixa_{{ $index }}">
+                                <div class="table-responsive">
+                                    <table class="table mt-4">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Descrição</th>
+                                                <th>Tipo</th>
+                                                <th width="200"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($caixas as $index => $caixa)
+                                                <tr
+                                                    style="{{ $caixa->tipo == 'P' ? 'background-color: gray; color: white !important;' : '' }}">
+                                                    <td style="{{ $caixa->tipo == 'P' ? 'color: white !important;' : '' }}">
+                                                        {{ $caixa->descricao }}</td>
+                                                    <td style="{{ $caixa->tipo == 'P' ? 'color: white !important;' : '' }}">
+                                                        {{ match ($caixa->tipo) {'S' => 'Secundário','B' => 'Banco','P' => 'Principal','C' => 'Caixa',default => $caixa->tipo} }}
+                                                    </td>
+                                                    <td class="table-action">
+                                                        @if ($caixa->tipo != 'P')
+                                                            <a href="{{ route('financeiro.caixas.editar', $caixa->id) }}"
+                                                                title="Editar" class="btn btn-sm btn-dark mr-2 btn-rounded">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
                                                                     stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-trash-2">
-                                                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                                                    class="feather feather-edit-2">
                                                                     <path
-                                                                        d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                        d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
                                                                     </path>
-                                                                    <line x1="10" y1="11" x2="10"
-                                                                        y2="17"></line>
-                                                                    <line x1="14" y1="11" x2="14"
-                                                                        y2="17"></line>
                                                                 </svg>
-                                                            </button>
-                                                        </form>
-                                                    @endif
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                                                            </a>
+                                                            <form action="{{ route('financeiro.caixas.deletar', $caixa->id) }}"
+                                                                method="POST" style="display: inline-block;"
+                                                                id="form_delete_caixa_{{ $index }}">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="button" title="Apagar"
+                                                                    class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
+                                                                    data-form-id="form_delete_caixa_{{ $index }}">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="feather feather-trash-2">
+                                                                        <polyline points="3 6 5 6 21 6"></polyline>
+                                                                        <path
+                                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                        </path>
+                                                                        <line x1="10" y1="11" x2="10"
+                                                                            y2="17"></line>
+                                                                        <line x1="14" y1="11" x2="14"
+                                                                            y2="17"></line>
+                                                                    </svg>
+                                                                </button>
+                                                            </form>
+                                                        @endif
+                                                    </td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
                                 {{ $caixas->links('vendor.pagination.index') }}
                             </div>
                         </div>
