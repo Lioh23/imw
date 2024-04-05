@@ -3,7 +3,6 @@
 namespace App\Services\ServiceFonecedor;
 
 use App\Models\FinanceiroFornecedores;
-use App\Models\User;
 
 class ListFornecedorService
 {

@@ -122,6 +122,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/novo', [FornecedorController::class, 'novo'])->name('novo')->middleware(['seguranca:fornecedores-cadastrar']);
             Route::delete('/deletar/{id}', [FornecedorController::class, 'deletar'])->name('deletar')->middleware(['seguranca:fornecedores-deletar']);
             Route::get('/editar/{id}', [FornecedorController::class, 'editar'])->name('editar')->middleware(['seguranca:fornecedores-editar']);
+            Route::post('/store', [FornecedorController::class, 'store'])->name('store')->middleware(['seguranca:fornecedores-cadastrar']);
         });
 
         // Grupo de rotas para 'usuarios'
