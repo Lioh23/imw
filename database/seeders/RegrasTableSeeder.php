@@ -74,7 +74,8 @@ class RegrasTableSeeder extends Seeder
              ['nome' => 'fornecedores-cadastrar'],
              ['nome' => 'fornecedores-editar'],
              ['nome' => 'fornecedores-deletar'],
-
+             ['nome' => 'fornecedores-editar'],
+        
              //Financeiro
              ['nome' => 'financeiro-movimentocaixa-index'],
              ['nome' => 'financeiro-consolidarcaixa'],

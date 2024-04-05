@@ -2,10 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\FornecedorNotFoundException;
 use App\Http\Requests\StoreFornecedorRequest;
+use App\Http\Requests\UpdateFornecedorRequest;
+use App\Models\FinanceiroFornecedores;
 use App\Services\ServiceFonecedor\DeletarFornecedorService;
 use App\Services\ServiceFonecedor\ListFornecedorService;
 use App\Services\ServiceFonecedor\SalvarFornecedorService;
+use App\Services\ServiceFonecedor\UpdateFornecedorService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,6 +49,33 @@ class FornecedorController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
             return redirect()->route('fornecedor.index')->with('error', $e->getMessage());
+        }
+    }
+
+      
+    public function editar($id)
+    {
+        try {
+            $fornecedor = FinanceiroFornecedores::findOrFail($id);
+            return view('financeiro.fornecedores.editar', compact('fornecedor', 'id'));    
+        }  catch(FornecedorNotFoundException $e) {
+            return redirect()->route('fornecedor.index')->with('error', 'Registro não encontrado.');
+        }
+        catch (\Exception $e) {
+            return redirect()->route('fornecedor.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+        }
+    }
+
+    public function update(UpdateFornecedorRequest $request, $id)
+    {   
+        try {
+            DB::beginTransaction();
+            app(UpdateFornecedorService::class)->execute($request->all(), $id);
+            DB::commit();
+            return redirect()->route('fornecedor.index')->with('success', 'Fornecedor atualizado com sucesso.');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->action([FornecedorController::class, 'editar'], ['id' => $id])->with('error', 'Falha na atualização do registro.');
         }
     }
 }
