@@ -11,8 +11,15 @@
     <link href="{{ asset('theme/assets/css/loader.css') }}" rel="stylesheet" type="text/css" />
     <script src="{{ asset('theme/assets/js/loader.js') }}"></script>
     <script src="{{ asset('theme/assets/js/libs/jquery-3.1.1.js') }}"></script>
+
+    <!-- DATEPICKER -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
+     <!-- MASK -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <link href="{{ asset('theme/assets/css/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
+    
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -40,6 +47,7 @@
     @endphp
 
     @yield('extras-css')
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         .menu-heading {
             margin-top: -20px !important;

@@ -58,7 +58,7 @@
                                 placeholder="Pesquisar...">
                         </div>
                         <div class="col-auto" style="margin-left: -19px;">
-                            <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
+                            <button type="submit" class="btn btn-primary btn-rounded"><x-bx-search /> Pesquisar</button>
                         </div>
                     </div>
                 </form>

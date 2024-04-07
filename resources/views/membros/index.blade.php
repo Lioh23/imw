@@ -61,7 +61,7 @@
                             placeholder="Pesquisar...">
                     </div>
                     <div class="col-auto" style="margin-left: -19px;">
-                        <button id="searchButton" class="btn btn-primary btn-rounded" type="button">Pesquisar</button>
+                        <button id="searchButton" class="btn btn-primary btn-rounded" type="button"><x-bx-search /> Pesquisar</button>
                     </div>
                 </div>
                 <div class="table-responsive">

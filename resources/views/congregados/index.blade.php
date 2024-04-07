@@ -68,7 +68,7 @@
                     <input type="text" name="search" id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar...">
                 </div>
                 <div class="col-auto" style="margin-left: -19px;">
-                    <button type="submit" id="searchButton" class="btn btn-primary btn-rounded">Pesquisar</button>
+                    <button type="submit" id="searchButton" class="btn btn-primary btn-rounded"><x-bx-search /> Pesquisar</button>
                 </div>
             </form>
             <div class="table-responsive">
