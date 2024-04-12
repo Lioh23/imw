@@ -6,6 +6,7 @@ use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Models\FinanceiroPlanoConta;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
+use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use Illuminate\Http\Request;
 
 class FinanceiroController extends Controller
@@ -33,8 +34,12 @@ class FinanceiroController extends Controller
     public function storeEntrada(FinanceiroStoreEntradaRequest $request)
     {
         try {
-
+            DB::begintransaction();
+            $data = app(StoreLancamentoEntradaService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('financeiro.entrada')->with('prev_caixa', $data->caixa)->with('prev_plano_contas', $data->prev_plano_contas);
         } catch (\Exception $e) {
+            DB::rollback();
             return redirect()->back()->with('error', 'Não criar um registro de entrada');
         }
     }

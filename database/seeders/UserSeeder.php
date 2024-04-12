@@ -71,11 +71,11 @@ class UserSeeder extends Seeder
 
         // Vinculando as instituições aos usuários
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 13]); // região
-        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2275]); // distrito
+        UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 1758]); // distrito
         UserInstituicao::create(['user_id' => $admin->id, 'instituicao_id' => 2215]); // igreja
 
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 13]); // região
-        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2275]); // redistritogião
+        UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 1758]); // redistritogião
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2215]); // igreja
     }
 }

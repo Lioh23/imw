@@ -9,4 +9,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class FinanceiroLancamento extends Model
 {
     use HasFactory, SoftDeletes;
+
+    protected $table = 'financeiro_lancamentos';
+
+    public function tipoPaganteFavorecido()
+    {
+        return $this->belongsTo(FinanceiroTipoPaganteFavorecido::class, 'tipo_pagante_favorecido_id');
+    }
 }
