@@ -10,7 +10,8 @@
 @section('extras-css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-     <style>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/pt-BR.js"></script>
+    <style>
         .select2-selection__rendered {
             line-height: 50px !important;
             padding-left: 25px !important;
@@ -26,10 +27,10 @@
         .select2-selection__arrow {
             height: 50px !important;
             font-family: 'Nunito', sans-serif;
-           
+
         }
     </style>
-    @endsection
+@endsection
 
 @section('content')
     <div class="col-lg-12 col-12 layout-spacing">
@@ -143,63 +144,64 @@
     </div>
 @endsection
 @section('extras-scripts')
-<script>
-    // máscara de valor
-    $('#valor').mask('0.000.000.000,00', {
-        reverse: true
-    });
+    <script>
+        // máscara de valor
+        $('#valor').mask('0.000.000.000,00', {
+            reverse: true
+        });
 
-    // evento de exibição do descritivo do pagante/favorecido
-    $('#tipo_pagante_favorecido_id').change(function() {
-        var tipoPaganteFavorecido = this.value;
+        // definir o idioma padrão do Select2 para português
+        $.fn.select2.defaults.set("language", "pt-BR");
 
-        if (tipoPaganteFavorecido == 1) {
-            // Exibir o campo para membros
-            $('#show_pagante_favorecido').removeClass('d-none');
+        // evento de exibição do descritivo do pagante/favorecido
+        $('#tipo_pagante_favorecido_id').change(function() {
+            var tipoPaganteFavorecido = this.value;
 
-            if ($('#pagante_favorecido').data('select2')) {
+            if (tipoPaganteFavorecido == 1) {
+                // Exibir o campo para membros
+                $('#show_pagante_favorecido').removeClass('d-none');
+
+                if ($('#pagante_favorecido').data('select2')) {
+                    $('#pagante_favorecido').select2('destroy').empty();
+                }
+
+                // Criar o select2 para membros
+                $('#pagante_favorecido').select2({
+                    data: {!! json_encode($membros) !!}.map(function(membro) {
+                        return {
+                            id: membro.id,
+                            text: membro.nome
+                        };
+                    }),
+                    placeholder: 'Selecione'
+                });
+            } else if (tipoPaganteFavorecido == 2) {
+                // Exibir o campo para fornecedores
+                $('#show_pagante_favorecido').removeClass('d-none');
+
+                if ($('#pagante_favorecido').data('select2')) {
+                    $('#pagante_favorecido').select2('destroy').empty();
+                }
+
+                // Criar o select2 para fornecedores
+                $('#pagante_favorecido').select2({
+                    data: {!! json_encode($fornecedores) !!}.map(function(fornecedor) {
+                        return {
+                            id: fornecedor.id,
+                            text: fornecedor.nome
+                        };
+                    }),
+                    placeholder: 'Selecione'
+                });
+            } else {
+                $('#show_pagante_favorecido').removeClass('d-none');
                 $('#pagante_favorecido').select2('destroy').empty();
+
+                // Mostrar o campo input de texto normal
+                $('#pagante_favorecido').replaceWith(
+                    '<input type="text" class="form-control @error('pagante_favorecido') is-invalid @enderror" id="pagante_favorecido" name="pagante_favorecido" value="{{ old('pagante_favorecido') }}">'
+                    );
             }
-
-            // Criar o select2 para membros
-            $('#pagante_favorecido').select2({
-                data: {!! json_encode($membros) !!}.map(function(membro) {
-                    return {
-                        id: membro.id,
-                        text: membro.nome
-                    };
-                }),
-                placeholder: 'Selecione'
-            });
-        } 
-        else if (tipoPaganteFavorecido == 2) {
-            // Exibir o campo para fornecedores
-            $('#show_pagante_favorecido').removeClass('d-none');
-
-            if ($('#pagante_favorecido').data('select2')) {
-                $('#pagante_favorecido').select2('destroy').empty();
-            }
-
-            // Criar o select2 para fornecedores
-            $('#pagante_favorecido').select2({
-                data: {!! json_encode($fornecedores) !!}.map(function(fornecedor) {
-                    return {
-                        id: fornecedor.id,
-                        text: fornecedor.nome
-                    };
-                }),
-                placeholder: 'Selecione'
-            });
-        } 
-        else {
-            $('#show_pagante_favorecido').removeClass('d-none');
-            $('#pagante_favorecido').select2('destroy').empty();
-            
-            // Mostrar o campo input de texto normal
-            $('#pagante_favorecido').replaceWith('<input type="text" class="form-control @error('pagante_favorecido') is-invalid @enderror" id="pagante_favorecido" name="pagante_favorecido" value="{{ old('pagante_favorecido') }}">');
-        }
-    });
-</script>
-
-   
+        });
+    </script>
 @endsection
