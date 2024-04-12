@@ -155,53 +155,60 @@
 
         // evento de exibição do descritivo do pagante/favorecido
         $('#tipo_pagante_favorecido_id').change(function() {
-            var tipoPaganteFavorecido = this.value;
+    var tipoPaganteFavorecido = this.value;
 
-            if (tipoPaganteFavorecido == 1) {
-                // Exibir o campo para membros
-                $('#show_pagante_favorecido').removeClass('d-none');
+    if (tipoPaganteFavorecido == 1) {
+        // Exibir o campo para membros
+        $('#show_pagante_favorecido').removeClass('d-none');
 
-                if ($('#pagante_favorecido').data('select2')) {
-                    $('#pagante_favorecido').select2('destroy').empty();
-                }
+        if ($('#pagante_favorecido').data('select2')) {
+            $('#pagante_favorecido').select2('destroy').empty();
+        }
 
-                // Criar o select2 para membros
-                $('#pagante_favorecido').select2({
-                    data: {!! json_encode($membros) !!}.map(function(membro) {
-                        return {
-                            id: membro.id,
-                            text: membro.nome
-                        };
-                    }),
-                    placeholder: 'Selecione'
-                });
-            } else if (tipoPaganteFavorecido == 2) {
-                // Exibir o campo para fornecedores
-                $('#show_pagante_favorecido').removeClass('d-none');
-
-                if ($('#pagante_favorecido').data('select2')) {
-                    $('#pagante_favorecido').select2('destroy').empty();
-                }
-
-                // Criar o select2 para fornecedores
-                $('#pagante_favorecido').select2({
-                    data: {!! json_encode($fornecedores) !!}.map(function(fornecedor) {
-                        return {
-                            id: fornecedor.id,
-                            text: fornecedor.nome
-                        };
-                    }),
-                    placeholder: 'Selecione'
-                });
-            } else {
-                $('#show_pagante_favorecido').removeClass('d-none');
-                $('#pagante_favorecido').select2('destroy').empty();
-
-                // Mostrar o campo input de texto normal
-                $('#pagante_favorecido').replaceWith(
-                    '<input type="text" class="form-control @error('pagante_favorecido') is-invalid @enderror" id="pagante_favorecido" name="pagante_favorecido" value="{{ old('pagante_favorecido') }}">'
-                    );
-            }
+        // Criar o select2 para membros
+        $('#pagante_favorecido').select2({
+            data: {!! json_encode($membros) !!}.map(function(membro) {
+                return {
+                    id: membro.id,
+                    text: membro.nome
+                };
+            }),
+            placeholder: 'Selecione'
+        }).on('select2:select', function (e) {
+            var data = e.params.data;
+            $('#pagante_favorecido').val(data.id); // atribuir o valor selecionado ao input
         });
+    } else if (tipoPaganteFavorecido == 2) {
+        // Exibir o campo para fornecedores
+        $('#show_pagante_favorecido').removeClass('d-none');
+
+        if ($('#pagante_favorecido').data('select2')) {
+            $('#pagante_favorecido').select2('destroy').empty();
+        }
+
+        // Criar o select2 para fornecedores
+        $('#pagante_favorecido').select2({
+            data: {!! json_encode($fornecedores) !!}.map(function(fornecedor) {
+                return {
+                    id: fornecedor.id,
+                    text: fornecedor.nome
+                };
+            }),
+            placeholder: 'Selecione'
+        }).on('select2:select', function (e) {
+            var data = e.params.data;
+            $('#pagante_favorecido').val(data.id); // atribuir o valor selecionado ao input
+        });
+    } else {
+        $('#show_pagante_favorecido').removeClass('d-none');
+        $('#pagante_favorecido').select2('destroy').empty();
+
+        // Mostrar o campo input de texto normal
+        $('#pagante_favorecido').replaceWith(
+            '<input type="text" class="form-control @error('pagante_favorecido') is-invalid @enderror" id="pagante_favorecido" name="pagante_favorecido" value="{{ old('pagante_favorecido') }}">'
+        );
+    }
+});
+
     </script>
 @endsection

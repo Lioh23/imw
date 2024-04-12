@@ -33,7 +33,9 @@ class FinanceiroController extends Controller
 
     public function storeEntrada(FinanceiroStoreEntradaRequest $request)
     {
+        dd($request->all());
         try {
+           
             DB::begintransaction();
             $data = app(StoreLancamentoEntradaService::class)->execute($request->all());
             DB::commit();

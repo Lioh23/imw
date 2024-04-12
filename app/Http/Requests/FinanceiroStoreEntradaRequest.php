@@ -23,12 +23,13 @@ class FinanceiroStoreEntradaRequest extends FormRequest
      */
     public function rules()
     {
-        return [
-            'plano_conta_id' => 'required|exists:financeiro_plano_contas,id',
-            'caixa_id'       => 'required|exists:financeiro_caixas,id',
-            'valor'          => 'required|decimal',
-            'data_movimento' => 'required|date',
-            'descricao'      => 'required'
+         return [
+            'plano_conta_id' => 'required',
+            'caixa_id'       => 'required',
+            'valor'          => 'required',
+            'data_movimento' => 'required',
+            'descricao'      => 'required',
+            'tipo_pagante_favorecido_id' => 'required'
         ];
     }
 }
