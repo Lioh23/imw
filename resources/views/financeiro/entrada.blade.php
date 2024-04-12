@@ -48,7 +48,7 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label for="caixa_id">* Caixa</label>
-                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id">
+                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id" required>
                             <option value="" hidden selected disabled>Selecione</option>
                             @foreach ($caixas as $caixa)
                                 <option value="{{ $caixa->id }}">{{ $caixa->descricao }}</option>
@@ -62,7 +62,7 @@
                     <div class="col-md-6">
                         <label for="plano_conta_id">* Plano de contas</label>
                         <select class="form-control @error('plano_conta_id') is-invalid @enderror" id="plano_conta_id"
-                            name="plano_conta_id">
+                            name="plano_conta_id" required>
                             <option value="" hidden selected disabled>Selecione</option>
                             @foreach ($planoContas as $pc)
                                 <option {{ !$pc->selecionavel ? 'disabled' : '' }} value="{{ $pc->id }}">
@@ -79,7 +79,7 @@
                     <div class="col-md-4">
                         <label for="valor">* Valor</label>
                         <input type="text" class="form-control @error('valor') is-invalid @enderror" id="valor"
-                            name="valor" value="{{ old('valor') }}">
+                            name="valor" value="{{ old('valor') }}" required>
                         @error('valor')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -87,16 +87,16 @@
                     <div class="col-md-4">
                         <label for="data_movimento">* Data do Movimento</label>
                         <input type="date" class="form-control @error('data_movimento') is-invalid @enderror"
-                            id="data_movimento" name="data_movimento" value="{{ old('data_movimento', date('Y-m-d')) }}">
+                            id="data_movimento" name="data_movimento" value="{{ old('data_movimento', date('Y-m-d')) }}" required>
                         @error('data_movimento')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-4">
-                        <label for="tipo_pagante_favorecido_id">Tipo do Pagante/Beneficiário</label>
+                        <label for="tipo_pagante_favorecido_id">* Tipo do Pagante/Beneficiário</label>
                         <select class="form-control @error('tipo_pagante_favorecido_id') is-invalid @enderror"
-                            id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id">
-                            <option value="" selected>Selecione</option>
+                            id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
+                            <option value="" selected disabled hidden>Selecione</option>
                             @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
                                 <option value="{{ $tipoPaganteFavorecido->id }}"
                                     {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
@@ -126,7 +126,7 @@
                     <div class="col-12">
                         <label for="descricao">* Descrição</label>
                         <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao"
-                            value="{{ old('descricao') }}" rows="3"></textarea>
+                            value="{{ old('descricao') }}" rows="3" required></textarea>
                         @error('descricao')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
