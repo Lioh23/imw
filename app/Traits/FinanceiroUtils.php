@@ -35,4 +35,5 @@ trait FinanceiroUtils
         return FinanceiroFornecedores::where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->get();
     }
+    
 }

@@ -6,10 +6,12 @@ use App\Models\FinanceiroFornecedores;
 use App\Models\FinanceiroTipoPaganteFavorecido;
 use App\Models\MembresiaMembro;
 use App\Traits\FinanceiroUtils;
+use App\Traits\Identifiable;
 
 class IdentificaDadosNovaMovimentacaoService
 {
     use FinanceiroUtils;
+    use Identifiable;
 
     public function execute($tipo = null)
     {
@@ -19,6 +21,7 @@ class IdentificaDadosNovaMovimentacaoService
             'tiposPagantesFavorecidos' => FinanceiroTipoPaganteFavorecido::all(),
             'membros'                  => FinanceiroUtils::membros(),
             'fornecedores'             => FinanceiroUtils::fornecedores(),
+            'clerigos'                 => Identifiable::fetchPastores(),
         ];
     }
 }
