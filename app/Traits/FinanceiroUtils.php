@@ -24,17 +24,15 @@ trait FinanceiroUtils
 
     public static function membros() 
     {
-        return MembresiaMembro::select('id', 'nome')
-            ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
-            ->where('vinculo'. 'M')
-            ->where('status', 'A')
+        return MembresiaMembro::where('igreja_id', session()->get('session_perfil')->instituicao_id)
+            ->where('vinculo', MembresiaMembro::VINCULO_MEMBRO)
+            ->where('status', MembresiaMembro::STATUS_ATIVO)
             ->get();
     }
 
     public static function fornecedores() 
     {
-        return FinanceiroFornecedores::select('id', 'nome')
-            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+        return FinanceiroFornecedores::where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->get();
     }
 }
