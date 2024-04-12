@@ -2,7 +2,9 @@
 
 namespace App\Services\ServiceFinanceiro;
 
+use App\Models\FinanceiroFornecedores;
 use App\Models\FinanceiroTipoPaganteFavorecido;
+use App\Models\MembresiaMembro;
 use App\Traits\FinanceiroUtils;
 
 class IdentificaDadosNovaMovimentacaoService
@@ -14,7 +16,9 @@ class IdentificaDadosNovaMovimentacaoService
         return [
             'planoContas'              => FinanceiroUtils::planoContas($tipo),
             'caixas'                   => FinanceiroUtils::caixas(),
-            'tiposPagantesFavorecidos' => FinanceiroTipoPaganteFavorecido::all()
+            'tiposPagantesFavorecidos' => FinanceiroTipoPaganteFavorecido::all(),
+            'membros'                  => FinanceiroUtils::membros(),
+            'fornecedores'             => FinanceiroUtils::fornecedores(),
         ];
     }
 }
