@@ -8,6 +8,7 @@ use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
 use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class FinanceiroController extends Controller
 {
@@ -35,9 +36,10 @@ class FinanceiroController extends Controller
     {
         try {
             DB::begintransaction();
-            $data = app(StoreLancamentoEntradaService::class)->execute($request->all());
+            app(StoreLancamentoEntradaService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('financeiro.entrada')->with('prev_caixa', $data->caixa)->with('prev_plano_contas', $data->prev_plano_contas);
+            return redirect()->route('financeiro.entrada')->with('success', 'Lançamento de entrada realizado.');
+            //return redirect()->route('financeiro.entrada')->with('prev_caixa', $data->caixa)->with('prev_plano_contas', $data->prev_plano_contas);
         } catch (\Exception $e) {
             DB::rollback();
             return redirect()->back()->with('error', 'Não criar um registro de entrada');
