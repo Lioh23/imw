@@ -16,6 +16,15 @@ return new class extends Migration
         Schema::create('financeiro_lancamentos', function (Blueprint $table) {
             $table->id();
             $table->date('data_lancamento');
+
+            //Campos Novos *Vinicius
+            $table->foreignId('tipo_pagante_favorecido_id')->nullable()->constrained('financeiro_tipos_pagantes_favorecidos');
+            $table->foreignUuid('membro_id')->nullable()->constrained('membresia_membros', 'id');
+            $table->foreignId('pessoa_id')->nullable()->constrained('pessoas_pessoas');
+            $table->foreignId('fornecedores_id')->nullable()->constrained('financeiro_fornecedores');
+            $table->foreignId('clerigo_id')->nullable()->constrained('financeiro_fornecedores');
+            //FIm dos Campos Novos
+
             $table->decimal('valor', 12, 2);
             $table->string('pagante_favorecido', 100)->nullable();
             $table->text('descricao')->nullable();
@@ -49,6 +58,11 @@ return new class extends Migration
     public function down()
     {
         Schema::table('financeiro_lancamentos', function($table) {
+            $table->dropForeign('financeiro_lancamentos_membro_id_foreign');
+            $table->dropForeign('financeiro_lancamentos_tipo_pagante_favorecido_id_foreign');
+            $table->dropForeign('financeiro_lancamentos_pessoa_id_foreign');
+            $table->dropForeign('financeiro_lancamentos_fornecedores_id_foreign');
+            $table->dropForeign('financeiro_lancamentos_clerigo_id_foreign');
             $table->dropForeign('financeiro_lancamentos_plano_conta_id_foreign');
             $table->dropForeign('financeiro_lancamentos_constrained_foreign');
             $table->dropForeign('financeiro_lancamentos_caixa_id_foreign');
