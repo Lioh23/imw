@@ -3,16 +3,20 @@
 namespace App\Services\ServiceFinanceiro;
 
 use App\Traits\FinanceiroUtils;
+use App\Models\FinanceiroLancamento;
+use Carbon\Carbon;
 
 class IdentificaDadosMovimentacoesCaixaService
 {
-    use FinanceiroUtils;    
+    use FinanceiroUtils;
 
-    public function execute()
+    public function execute($filters = [])
     {
+
         return [
             'planoContas' => FinanceiroUtils::planoContas(),
-            'caixas'      => FinanceiroUtils::caixas()
+            'caixas'      => FinanceiroUtils::caixas(),
+            'lancamentos' => FinanceiroUtils::lancamentos($filters)
         ];
     }
 }

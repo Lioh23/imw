@@ -45,7 +45,6 @@
                 <!-- Conteúdo -->
                 <form action="">
                     <div class="row">
-
                         <div class="mb-3 col-lg-6 col-md-6 col-sm-12">
                             <label for="caixa_id">Caixa</label>
                             <select class="form-control select2" data-bs-toggle="select2" width="fit" name="caixa_id"
@@ -92,7 +91,8 @@
                         </div>
                         <div class="mb-3 col-lg-3 col-md-3 col-sm-6">
                             <div class="col-auto" style="margin-left: -19px; margin-top: 35px;">
-                                <button type="submit" class="btn btn-primary btn-rounded"><x-bx-search /> Pesquisar</button>
+                                <button type="submit" class="btn btn-primary btn-rounded"><x-bx-search />
+                                    Pesquisar</button>
                             </div>
                         </div>
 
@@ -128,22 +128,42 @@
 
                         <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                             <thead class="thead-light">
-                                <tr>
 
+                                <tr>
                                     <th>Data</th>
                                     <th>Caixa</th>
                                     <th>Entrada</th>
                                     <th>Saída</th>
                                     <th>Plano de Conta</th>
                                     <th>Pagante/Favorecido</th>
-
-
-
                                     <th width="150"></th>
                                 </tr>
+
                             </thead>
                             <tbody>
-
+                                @foreach ($lancamentos as $lancamento)
+                                    <tr>
+                                        <td>{{ \Carbon\Carbon::parse($lancamento->data_lancamento)->format('d/m/Y') }}</td>
+                                        <td>{{ $lancamento->caixa->descricao }}</td>
+                                        <td>
+                                            @if ($lancamento->tipo_lancamento == 'E')
+                                                {{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td>
+                                            @if ($lancamento->tipo_lancamento == 'S')
+                                                {{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}
+                                            @else
+                                                -
+                                            @endif
+                                        </td>
+                                        <td>{{ $lancamento->planoConta->nome }}</td>
+                                        <td>{{ $lancamento->pagante_favorecido }}</td>
+                                        <td></td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>
@@ -161,23 +181,9 @@
     </div>
     </div>
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $(".datepicker").datepicker({
-                dateFormat: 'dd/mm/yy', // Formato da data
-                dayNames: ['Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'],
-                dayNamesMin: ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'],
-                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'],
-                monthNames: ['Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho', 'Julho', 'Agosto',
-                    'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-                ],
-                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out',
-                    'Nov', 'Dez'
-                ],
-                nextText: 'Próximo',
-                prevText: 'Anterior'
-            });
-        });
-    </script>
+    <script src="{{asset('theme/assets/js/planilha/papaparse.min.js')}}"></script>
+    <script src="{{asset('theme/assets/js/planilha/FileSaver.min.js')}}"></script>
+    <script src="{{asset('theme/assets/js/planilha/xlsx.full.min.js')}}"></script>
+    <script src="{{asset('theme/assets/js/planilha/planilha.js')}}"></script>
+    <script src="{{asset('theme/assets/js/pages/movimentocaixa.js')}}"></script>
 @endsection

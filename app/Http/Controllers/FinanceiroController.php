@@ -10,12 +10,15 @@ use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
+
 class FinanceiroController extends Controller
 {
-    public function movimentocaixa()
+    public function movimentocaixa(Request $request)
     {
         try {
-            $data = app(IdentificaDadosMovimentacoesCaixaService::class)->execute();
+            $filters = $request->only(['caixa_id', 'plano_conta_id', 'd1', 'd2']);
+            $data = app(IdentificaDadosMovimentacoesCaixaService::class)->execute($filters);
+    
             return view('financeiro.movimentocaixa', $data);
         } catch(\Exception $e) {
             return redirect()->back()->with('error', 'Não foi possível abrir a página de Movimento de Caixa');
