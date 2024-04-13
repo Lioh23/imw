@@ -38,10 +38,9 @@ class FinanceiroController extends Controller
             DB::begintransaction();
             app(StoreLancamentoEntradaService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('financeiro.entrada')->with('success', 'Lançamento de entrada realizado.');
+            return redirect()->route('financeiro.entrada')->with('success', 'Lançamento de entrada realizado.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             return redirect()->back()->with('error', 'Não criar um registro de entrada');
         }
     }

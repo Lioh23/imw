@@ -33,6 +33,7 @@
 @endsection
 
 @section('content')
+    @include('extras.alerts')
     <div class="col-lg-12 col-12 layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-header">
@@ -48,17 +49,22 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label for="caixa_id">* Caixa</label>
-                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id"
-                            required>
-                            <option value="" hidden selected disabled>Selecione</option>
+                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id" required>
+                            <option value="" hidden disabled>Selecione</option>
                             @foreach ($caixas as $caixa)
-                                <option value="{{ $caixa->id }}">{{ $caixa->descricao }}</option>
+                                @if ($caixa->id == old('caixa_id'))
+                                    <option value="{{ $caixa->id }}" selected>{{ $caixa->descricao }}</option>
+                                @else
+                                    <option value="{{ $caixa->id }}">{{ $caixa->descricao }}</option>
+                                @endif
                             @endforeach
                         </select>
-                        @error('mae')
+                        @error('caixa_id')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    
+                    
 
                     <div class="col-md-6">
                         <label for="plano_conta_id">* Plano de contas</label>
@@ -80,7 +86,7 @@
                     <div class="col-md-4">
                         <label for="valor">* Valor</label>
                         <input type="text" class="form-control @error('valor') is-invalid @enderror" id="valor"
-                            name="valor" value="{{ old('valor') }}" required>
+                            name="valor" required autofocus>
                         @error('valor')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror

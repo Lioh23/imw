@@ -59,7 +59,6 @@ return new class extends Migration
         Schema::table('financeiro_lancamentos', function($table) {
             $table->dropForeign('financeiro_lancamentos_membro_id_foreign');
             $table->dropForeign('financeiro_lancamentos_tipo_pagante_favorecido_id_foreign');
-            $table->dropForeign('financeiro_lancamentos_pessoa_id_foreign');
             $table->dropForeign('financeiro_lancamentos_fornecedores_id_foreign');
             $table->dropForeign('financeiro_lancamentos_clerigo_id_foreign');
             $table->dropForeign('financeiro_lancamentos_plano_conta_id_foreign');
