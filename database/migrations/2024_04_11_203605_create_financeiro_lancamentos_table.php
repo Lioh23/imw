@@ -20,9 +20,8 @@ return new class extends Migration
             //Campos Novos *Vinicius
             $table->foreignId('tipo_pagante_favorecido_id')->nullable()->constrained('financeiro_tipos_pagantes_favorecidos');
             $table->foreignUuid('membro_id')->nullable()->constrained('membresia_membros', 'id');
-            $table->foreignId('pessoa_id')->nullable()->constrained('pessoas_pessoas');
+            $table->foreignId('clerigo_id')->nullable()->constrained('pessoas_pessoas');
             $table->foreignId('fornecedores_id')->nullable()->constrained('financeiro_fornecedores');
-            $table->foreignId('clerigo_id')->nullable()->constrained('financeiro_fornecedores');
             //FIm dos Campos Novos
 
             $table->decimal('valor', 12, 2);

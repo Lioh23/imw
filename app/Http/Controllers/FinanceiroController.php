@@ -39,9 +39,9 @@ class FinanceiroController extends Controller
             app(StoreLancamentoEntradaService::class)->execute($request->all());
             DB::commit();
             return redirect()->route('financeiro.entrada')->with('success', 'Lançamento de entrada realizado.');
-            //return redirect()->route('financeiro.entrada')->with('prev_caixa', $data->caixa)->with('prev_plano_contas', $data->prev_plano_contas);
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             return redirect()->back()->with('error', 'Não criar um registro de entrada');
         }
     }

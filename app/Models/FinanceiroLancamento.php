@@ -19,7 +19,6 @@ class FinanceiroLancamento extends Model
         'data_lancamento',
         'tipo_pagante_favorecido_id',
         'membro_id',
-        'pessoa_id',
         'fornecedores_id',
         'clerigo_id',
         'valor',
