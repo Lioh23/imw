@@ -17,9 +17,12 @@ class FinanceiroLancamento extends Model
 
     protected $fillable = [
         'data_lancamento',
-        'valor',
         'tipo_pagante_favorecido_id',
+        'membro_id',
+        'pessoa_id',
         'fornecedores_id',
+        'clerigo_id',
+        'valor',
         'pagante_favorecido',
         'descricao',
         'tipo_lancamento',
