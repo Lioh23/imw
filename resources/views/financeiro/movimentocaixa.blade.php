@@ -29,6 +29,7 @@
 @endsection
 
 @section('content')
+    @include('extras.alerts')
     <div class="container-fluid">
 
     </div>

@@ -4,11 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
+use App\Http\Requests\FinanceiroTransferenciaRequest;
 use App\Models\FinanceiroPlanoConta;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
 use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
+use App\Services\ServiceFinanceiro\StoreTransferenciaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -46,7 +48,20 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.entrada')->with('success', 'Lançamento de entrada realizado.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->back()->with('error', 'Não criar um registro de entrada');
+            return redirect()->back()->with('error', 'Não foi possível criar um registro de entrada');
+        }
+    }
+
+    public function storeTransferencia(FinanceiroTransferenciaRequest $request)
+    {
+        try {
+            DB::begintransaction();
+            app(StoreTransferenciaService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('financeiro.movimentocaixa')->with('success', 'Transferência realizada.')->withInput();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Não foi possível criar um registro de transferência');
         }
     }
 
@@ -66,11 +81,11 @@ class FinanceiroController extends Controller
             DB::begintransaction();
             app(StoreLancamentoSaidaService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('financeiro.saida')->with('success', 'Lançamento de entrada realizado.')->withInput();
+            return redirect()->route('financeiro.saida')->with('success', 'Lançamento de saída realizado.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
             dd($e);
-            return redirect()->back()->with('error', 'Não criar um registro de entrada');
+            return redirect()->back()->with('error', 'Não foi possível criar um registro de saída');
         }
     }
 
