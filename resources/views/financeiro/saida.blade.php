@@ -140,7 +140,62 @@
                         @enderror
                     </div>
                 </div>
+                <hr>
 
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                            <h4><b>Anexos</b></h4>
+                            <p>Utilize este espaço para anexar boletos, comprovantes de pagamento, contratos ou qualquer documento que julgue necessário armazenar no sistema.</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label for="anexo1">Anexo 1</label>
+                        <input type="file" class="mb-3 form-control-file @error('anexo1') is-invalid @enderror" id="anexo1" name="anexo1">
+                        <label for="descricao_anexo1">Descrição do Anexo 1</label>
+                        <textarea class="form-control @error('descricao_anexo1') is-invalid @enderror" id="descricao_anexo1" name="descricao_anexo1" rows="1"></textarea>
+                        @error('anexo1')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                        @error('descricao_anexo1')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label for="anexo2">Anexo 2</label>
+                        <input type="file" class="mb-3 form-control-file @error('anexo2') is-invalid @enderror" id="anexo2" name="anexo2">
+                        <label for="descricao_anexo2">Descrição do Anexo 2</label>
+                        <textarea class="form-control @error('descricao_anexo2') is-invalid @enderror" id="descricao_anexo2" name="descricao_anexo2" rows="1"></textarea>
+                        @error('anexo2')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                        @error('descricao_anexo2')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label for="anexo3">Anexo 3</label>
+                        <input type="file" class="mb-3 form-control-file @error('anexo3') is-invalid @enderror" id="anexo3" name="anexo3">
+                        <label for="descricao_anexo3">Descrição do Anexo 3</label>
+                        <textarea class="form-control @error('descricao_anexo3') is-invalid @enderror" id="descricao_anexo3" name="descricao_anexo3" rows="1"></textarea>
+                        @error('anexo3')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                        @error('descricao_anexo3')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                
                 <div class="row mb-4 justify-content-center">
                     <button type="submit" title="Salvar nova movimentação de entrada" class="btn btn-success btn-lg ml-4">
                         <x-bx-save /> Salvar
