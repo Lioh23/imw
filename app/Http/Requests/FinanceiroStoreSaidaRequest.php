@@ -23,13 +23,19 @@ class FinanceiroStoreSaidaRequest extends FormRequest
      */
     public function rules()
     {
-         return [
+        return [
             'plano_conta_id' => 'required',
             'caixa_id'       => 'required',
             'valor'          => 'required',
             'data_movimento' => 'required',
             'descricao'      => 'required',
-            'tipo_pagante_favorecido_id' => 'required'
+            'tipo_pagante_favorecido_id' => 'required',
+            'anexo1' => 'nullable|file|max:2048|mimes:pdf,doc,docx',
+            'descricao_anexo1' => 'nullable|string|max:255',
+            'anexo2' => 'nullable|file|max:2048|mimes:pdf,doc,docx',
+            'descricao_anexo2' => 'nullable|string|max:255',
+            'anexo3' => 'nullable|file|max:2048|mimes:pdf,doc,docx',
+            'descricao_anexo3' => 'nullable|string|max:255',
         ];
     }
 }
