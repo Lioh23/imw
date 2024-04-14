@@ -147,14 +147,14 @@
                                         <td>{{ $lancamento->caixa->descricao }}</td>
                                         <td>
                                             @if ($lancamento->tipo_lancamento == 'E')
-                                                {{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}
+                                                <div class="badge badge-success">R$ {{ number_format($lancamento->valor, 2, ',', '.') }}</div>
                                             @else
                                                 -
                                             @endif
                                         </td>
                                         <td>
                                             @if ($lancamento->tipo_lancamento == 'S')
-                                                {{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}
+                                            <div class="badge badge-danger">R$ {{ number_format($lancamento->valor, 2, ',', '.') }}</div>
                                             @else
                                                 -
                                             @endif

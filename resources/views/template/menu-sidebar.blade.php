@@ -279,7 +279,7 @@
                            <a href="{{ route('perfil.index') }} "> Meu Perfil </a>
                        </li>
                        <li>
-                           <a href="{{ route('selecionarPerfil') }}"> Trocar Perfil </a>
+                           <a href="{{ route('selecionarPerfil') }}"> Trocar Instituição </a>
                        </li>
                        <li>
                            <a href="{{ route('usuarios.index') }}"> Usuários </a>
