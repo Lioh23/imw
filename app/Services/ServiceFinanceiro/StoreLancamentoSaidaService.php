@@ -2,11 +2,13 @@
 
 namespace App\Services\ServiceFinanceiro;
 
+use App\Models\Anexo;
 use App\Models\FinanceiroFornecedores;
 use App\Models\FinanceiroLancamento;
 use App\Models\MembresiaMembro;
 use App\Models\PessoasPessoa;
 use Carbon\Carbon;
+use Ramsey\Uuid\Uuid;
 
 class StoreLancamentoSaidaService
 {
@@ -18,7 +20,7 @@ class StoreLancamentoSaidaService
             2 = FORNECEDOR
             3 = CLERIGO
         */
-       
+
         $tipoPaganteFavorecidoId = $data['tipo_pagante_favorecido_id'];
         $paganteFavorecido = $data['pagante_favorecido'];
 
@@ -27,7 +29,7 @@ class StoreLancamentoSaidaService
             'valor' => str_replace(',', '.', $data['valor']),
             'tipo_pagante_favorecido_id' => $tipoPaganteFavorecidoId,
             'descricao' => $data['descricao'],
-            'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_SAIDA, 
+            'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_SAIDA,
             'plano_conta_id' => $data['plano_conta_id'],
             'data_movimento' => $data['data_movimento'],
             'caixa_id' => $data['caixa_id'],
@@ -60,6 +62,32 @@ class StoreLancamentoSaidaService
             $lancamentos[$campoId] = $paganteFavorecido;
         }
 
-        FinanceiroLancamento::create($lancamentos);
+        $lancamento = FinanceiroLancamento::create($lancamentos);
+
+        // Upload dos anexos
+        $anexos = [];
+        for ($i = 1; $i <= 3; $i++) {
+            $campoAnexo = "anexo{$i}";
+            $campoDescricao = "descricao_anexo{$i}";
+
+            if ($data[$campoAnexo] && $data[$campoAnexo]->isValid()) {
+                $fileName = Uuid::uuid4()->toString() . '.' . $data[$campoAnexo]->getClientOriginalExtension();
+                $filePath = $data[$campoAnexo]->storeAs('anexos', $fileName, 'minio');
+
+                $anexo = [
+                    'nome' => $fileName,
+                    'caminho' => $filePath,
+                    'descricao' => $data[$campoDescricao],
+                    'lancamento_id' => $lancamento->id, // Certifique-se de ter a referência para o lançamento aqui
+                ];
+
+                $anexos[] = $anexo;
+            }
+        }
+
+        // Salvar os anexos no banco de dados
+        foreach ($anexos as $anexo) {
+            Anexo::create($anexo);
+        }
     }
-} 
+}
