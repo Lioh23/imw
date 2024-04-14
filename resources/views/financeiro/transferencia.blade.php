@@ -48,34 +48,34 @@
                 @csrf
                     <div class="row mb-4">
                         <div class="col-md-6">
-                            <label for="caixa_id">* Caixa Origem</label>
-                            <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id" required>
+                            <label for="caixa_origem_id">* Caixa Origem</label>
+                            <select class="form-control @error('caixa_origem_id') is-invalid @enderror" id="caixa_origem_id" name="caixa_origem_id" required>
                                 <option value="" hidden disabled>Selecione</option>
                                 @foreach ($caixas as $caixa)
-                                    @if ($caixa->id == old('caixa_id'))
+                                    @if ($caixa->id == old('caixa_origem_id'))
                                         <option value="{{ $caixa->id }}" selected>{{ $caixa->descricao }}</option>
                                     @else
                                         <option value="{{ $caixa->id }}">{{ $caixa->descricao }}</option>
                                     @endif
                                 @endforeach
                             </select>
-                            @error('caixa_id')
+                            @error('caixa_origem_id')
                                 <span class="help-block text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-md-6">
-                            <label for="caixa_id">* Caixa Destino</label>
-                            <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id" required>
+                            <label for="caixa_destino_id">* Caixa Destino</label>
+                            <select class="form-control @error('caixa_destino_id') is-invalid @enderror" id="caixa_destino_id" name="caixa_destino_id" required>
                                 <option value="" hidden disabled>Selecione</option>
                                 @foreach ($caixas as $caixa)
-                                    @if ($caixa->id == old('caixa_id'))
+                                    @if ($caixa->id == old('caixa_destino_id'))
                                         <option value="{{ $caixa->id }}" selected>{{ $caixa->descricao }}</option>
                                     @else
                                         <option value="{{ $caixa->id }}">{{ $caixa->descricao }}</option>
                                     @endif
                                 @endforeach
                             </select>
-                            @error('caixa_id')
+                            @error('caixa_destino_id')
                                 <span class="help-block text-danger">{{ $message }}</span>
                             @enderror
                         </div>
