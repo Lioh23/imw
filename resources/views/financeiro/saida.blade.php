@@ -101,7 +101,7 @@
                         @enderror
                     </div>
                     <div class="col-md-4">
-                        <label for="tipo_pagante_favorecido_id">* Tipo do Pagante/Beneficiário</label>
+                        <label for="tipo_pagante_favorecido_id">* Tipo de Beneficiário</label>
                         <select class="form-control @error('tipo_pagante_favorecido_id') is-invalid @enderror"
                             id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
                             <option value="" selected disabled hidden>Selecione</option>
