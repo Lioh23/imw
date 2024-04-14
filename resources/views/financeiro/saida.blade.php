@@ -44,7 +44,7 @@
                 </div>
             </div>
 
-            <form action="{{ route('financeiro.saida.store') }}" method="POST" class="widget-content widget-content-area">
+            <form action="{{ route('financeiro.saida.store') }}" method="POST" class="widget-content widget-content-area" enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-4">
                     <div class="col-md-6">

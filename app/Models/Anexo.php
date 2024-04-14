@@ -8,4 +8,11 @@ use Illuminate\Database\Eloquent\Model;
 class Anexo extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+        'nome', 
+        'caminho',
+        'descricao',
+        'lancamento_id',
+    ];
 }

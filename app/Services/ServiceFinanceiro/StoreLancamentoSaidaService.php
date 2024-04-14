@@ -70,7 +70,7 @@ class StoreLancamentoSaidaService
             $campoAnexo = "anexo{$i}";
             $campoDescricao = "descricao_anexo{$i}";
 
-            if ($data[$campoAnexo] && $data[$campoAnexo]->isValid()) {
+            if (isset($data[$campoAnexo]) && $data[$campoAnexo]->isValid() && $data[$campoAnexo]->getMimeType() === 'application/pdf') {
                 $fileName = Uuid::uuid4()->toString() . '.' . $data[$campoAnexo]->getClientOriginalExtension();
                 $filePath = $data[$campoAnexo]->storeAs('anexos', $fileName, 'minio');
 
@@ -78,10 +78,13 @@ class StoreLancamentoSaidaService
                     'nome' => $fileName,
                     'caminho' => $filePath,
                     'descricao' => $data[$campoDescricao],
-                    'lancamento_id' => $lancamento->id, // Certifique-se de ter a referência para o lançamento aqui
+                    'lancamento_id' => $lancamento->id,
                 ];
 
                 $anexos[] = $anexo;
+            } elseif (isset($data[$campoAnexo]) && !$data[$campoAnexo]->isValid()) {
+                // Tratar erro de arquivo inválido
+                // Por exemplo, retornar uma mensagem de erro ou registrar um log
             }
         }
 

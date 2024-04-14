@@ -69,6 +69,7 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.saida')->with('success', 'Lançamento de entrada realizado.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             return redirect()->back()->with('error', 'Não criar um registro de entrada');
         }
     }
