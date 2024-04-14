@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\FinanceiroStoreEntradaRequest;
+use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Models\FinanceiroPlanoConta;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
 use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
+use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -55,6 +57,19 @@ class FinanceiroController extends Controller
             return view('financeiro.saida', $data);            
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Não foi possível abrir a página de nova movimentação de saída');
+        }
+    }
+
+    public function storeSaida(FinanceiroStoreSaidaRequest $request)
+    {
+        try {
+            DB::begintransaction();
+            app(StoreLancamentoSaidaService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('financeiro.saida')->with('success', 'Lançamento de entrada realizado.')->withInput();
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Não criar um registro de entrada');
         }
     }
 
