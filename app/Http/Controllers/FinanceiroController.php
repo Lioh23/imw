@@ -58,9 +58,10 @@ class FinanceiroController extends Controller
             DB::begintransaction();
             app(StoreTransferenciaService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('financeiro.movimentocaixa')->with('success', 'Transferência realizada.')->withInput();
+            return redirect()->route('financeiro.transferencia')->with('success', 'Transferência realizada.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             return redirect()->back()->with('error', 'Não foi possível criar um registro de transferência');
         }
     }
