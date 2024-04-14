@@ -6,8 +6,10 @@ use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Http\Requests\FinanceiroTransferenciaRequest;
 use App\Models\FinanceiroPlanoConta;
+use App\Services\ServiceFinanceiro\ConsolidacaoService;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
+use App\Services\ServiceFinanceiro\SaldoService;
 use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
 use App\Services\ServiceFinanceiro\StoreTransferenciaService;
@@ -103,9 +105,22 @@ class FinanceiroController extends Controller
     public function consolidarcaixa()
     {
         try{
-            return view('financeiro.consolidarcaixa');
+            $data = app(ConsolidacaoService::class)->execute();
+            return view('financeiro.consolidarcaixa', $data);
         } catch(\Exception $e) {
-
+            return redirect()->back()->with('error', 'Não foi possível abrir a página');
         }
     }
+
+    public function saldo()
+    {
+        try{
+            $data = app(SaldoService::class)->execute();
+            return view('financeiro.saldo', $data);
+        } catch(\Exception $e) {
+            return redirect()->back()->with('error', 'Não foi possível abrir a página');
+        }
+    }
+
+    
 }

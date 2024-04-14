@@ -123,7 +123,7 @@
                             <x-bx-chevrons-right /> Transferência
                         </a>
 
-                        <a href="#" title="Saldo" class="btn btn-primary right btn-rounded">
+                        <a href="{{route('financeiro.saldo')}}" title="Saldo Atual" class="btn btn-primary right btn-rounded">
                             <x-bx-wallet /> Saldo
                         </a>
 

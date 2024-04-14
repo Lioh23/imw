@@ -14,11 +14,12 @@ trait FinanceiroUtils
     public static function planoContas($tipo = null)
     {
         return FinanceiroPlanoConta::orderBy('numeracao')
-            ->when((bool) $tipo, fn($query) => $query->where('tipo', $tipo))
+            ->when((bool) $tipo, fn ($query) => $query->where('tipo', $tipo))
             ->get();
     }
 
-    public static function lancamentos($filters) {
+    public static function lancamentos($filters)
+    {
         $query = FinanceiroLancamento::query();
 
         // Filtrar por caixa
@@ -53,7 +54,8 @@ trait FinanceiroUtils
             ->get();
     }
 
-    public static function membros() 
+
+    public static function membros()
     {
         return MembresiaMembro::where('igreja_id', session()->get('session_perfil')->instituicao_id)
             ->where('vinculo', MembresiaMembro::VINCULO_MEMBRO)
@@ -61,10 +63,33 @@ trait FinanceiroUtils
             ->get();
     }
 
-    public static function fornecedores() 
+    public static function fornecedores()
     {
         return FinanceiroFornecedores::where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->get();
+    }
+
+    public static function ultimoCaixaConciliado()
+    {
+        $caixa = FinanceiroCaixa::where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+            ->whereHas('lancamentos', function ($query) {
+                $query->where('conciliado', 1)
+                      ->orderBy('data_conciliacao', 'desc');
+            })
+            ->with(['lancamentos' => function ($query) {
+                $query->where('conciliado', 1)
+                      ->orderBy('data_conciliacao', 'desc')
+                      ->limit(1);
+            }])
+            ->first();
+    
+        if ($caixa && $caixa->lancamentos->count() > 0) {
+            setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
+            $dataConciliacao = Carbon::parse($caixa->lancamentos->first()->data_conciliacao);
+            return $dataConciliacao->isoFormat('MMMM [de] YYYY');  
+        }
+    
+        return null;
     }
     
 }

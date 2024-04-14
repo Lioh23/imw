@@ -13,4 +13,85 @@ class FinanceiroCaixa extends Model
     protected $table = 'financeiro_caixas';
 
     protected $fillable = ['descricao', 'instituicao_id', 'tipo'];
+
+    const IDS_TRANFERENCIA = [100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137];
+
+    public function lancamentos()
+    {
+        return $this->hasMany(FinanceiroLancamento::class, 'caixa_id');
+    }
+
+    public function saldoAtualNaoConciliado()
+    {
+        $totalEntrada = $this->totalLancamentosNaoConciliadosEntrada() + $this->totalLancamentosNaoConciliadosTransferenciaEntrada();
+        $totalSaida = $this->totalLancamentosNaoConciliadosSaida() + $this->totalLancamentosNaoConciliadosTransferenciaSaida();
+        $ultimoConciliado = $this->totalLancamentosUltimosConciliados();
+
+        return $totalEntrada - $totalSaida + $ultimoConciliado;
+    }
+
+    public function totalLancamentosNaoConciliados()
+    {
+        return $this->lancamentos()
+            ->where('conciliado', 0)
+            ->sum('valor');
+    }
+
+    public function totalLancamentosNaoConciliadosTransferenciaEntrada()
+    {
+        return $this->lancamentos()
+            ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->sum('valor');
+    }
+
+    public function totalLancamentosNaoConciliadosTransferenciaSaida()
+    {
+        return $this->lancamentos()
+            ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->sum('valor');
+    }
+
+    public function totalLancamentosNaoConciliadosEntrada()
+    {
+        return $this->lancamentos()
+            ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->sum('valor');
+    }
+
+    public function totalLancamentosNaoConciliadosSaida()
+    {
+        return $this->lancamentos()
+            ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->sum('valor');
+    }
+
+    public function totalLancamentosUltimosConciliados()
+    {
+        $ultimosConciliados = $this->lancamentos()
+            ->where('conciliado', 1)
+            ->orderBy('data_conciliacao', 'desc')
+            ->get();
+
+        $total = 0;
+
+        if ($ultimosConciliados->count() > 0) {
+            $dataMaisRecente = $ultimosConciliados->first()->data_conciliacao;
+
+            foreach ($ultimosConciliados as $lancamento) {
+                if ($lancamento->data_conciliacao == $dataMaisRecente) {
+                    $total += $lancamento->valor;
+                }
+            }
+        }
+
+        return $total;
+    }
 }
