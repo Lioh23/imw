@@ -38,11 +38,8 @@
         .logo {
             display: block;
             margin: 0 auto; /* Centralizar o logotipo */
-            border: 1px solid #ccc; /* Adicionar borda ao redor do logotipo */
-            padding: 10px; /* Espaçamento interno para a borda */
             max-width: 100%; /* Garantir que a imagem não ultrapasse o contêiner */
-            border-radius: 8px; /* Suavizar a borda */
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adicionar sombra para um efeito mais suave */
+    
         }
     </style>
 

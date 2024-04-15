@@ -16,10 +16,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
 
-     <!-- MASK -->
+    <!-- MASK -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <link href="{{ asset('theme/assets/css/scrollspyNav.css') }}" rel="stylesheet" type="text/css" />
-    
+
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link href="{{ asset('theme/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
@@ -52,6 +52,20 @@
         .menu-heading {
             margin-top: -20px !important;
         }
+
+        .logo {
+            margin-top: 20px;
+            margin-bottom: 20px;
+            margin-left: 40px;
+            margin-right: auto;
+            display: block;
+            /* Para garantir que o margin-left e margin-right funcionem */
+            width: 130px;
+            /* Define a largura do logotipo */
+            height: auto;
+            /* Mantém a proporção da imagem */
+        }
+
 
         .user-info {
             padding: 15px;

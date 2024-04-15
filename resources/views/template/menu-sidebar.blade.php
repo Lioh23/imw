@@ -3,9 +3,15 @@
    <div class="sidebar-wrapper sidebar-theme">
        <nav id="sidebar" style="overflow: hidden;">
            <ul class="navbar-nav theme-brand flex-row  text-center">
-               <li class="nav-item theme-text">
+               {{-- <li class="nav-item theme-text">
                    <a href="index.html" class="nav-link"> {{ config('app.sigla') }} </a>
+               </li> --}}
+               <li class="nav-item theme-text">
+                   <a href="index.html" class="nav-link">
+                       <img src="{{ asset('auth/images/logo_branco.png') }}" alt="{{ config('app.sigla') }}" class="logo">
+                   </a>
                </li>
+
                <li class="nav-item toggle-sidebar" aria-expanded="true" class="dropdown-toggle">
                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
