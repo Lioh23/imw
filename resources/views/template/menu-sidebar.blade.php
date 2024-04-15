@@ -7,7 +7,7 @@
                    <a href="index.html" class="nav-link"> {{ config('app.sigla') }} </a>
                </li> --}}
                <li class="nav-item theme-text">
-                   <a href="index.html" class="nav-link">
+                   <a href="/" class="nav-link">
                        <img src="{{ asset('auth/images/logo_branco.png') }}" alt="{{ config('app.sigla') }}" class="logo">
                    </a>
                </li>
