@@ -7,7 +7,7 @@
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h6 class="card-title">Membros</h6>
+                    <h6 class="card-title"><b>Membros</b></h6>
                     <p class="card-text">Total: 200</p>
                 </div>
             </div>
@@ -17,7 +17,7 @@
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h6 class="card-title">Contribuições</h6>
+                    <h6 class="card-title"><b>Contribuições</b></h6>
                     <p class="card-text">Total: R$ 10.000,00</p>
                 </div>
             </div>
@@ -27,7 +27,7 @@
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h6 class="card-title">Eventos</h6>
+                    <h6 class="card-title"><b>Eventos</b></h6>
                     <p class="card-text">Total: 5</p>
                 </div>
             </div>
