@@ -35,6 +35,15 @@
         .swal2-popup .swal2-styled.swal2-cancel {
             color: white !important;
         }
+        .logo {
+            display: block;
+            margin: 0 auto; /* Centralizar o logotipo */
+            border: 1px solid #ccc; /* Adicionar borda ao redor do logotipo */
+            padding: 10px; /* Espaçamento interno para a borda */
+            max-width: 100%; /* Garantir que a imagem não ultrapasse o contêiner */
+            border-radius: 8px; /* Suavizar a borda */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Adicionar sombra para um efeito mais suave */
+        }
     </style>
 
     @include('extras.alerts')
@@ -48,9 +57,10 @@
 
 <body>
     <section class="row flexbox-container justify-content-center align-items-center mt-3">
-        <div class="col-xl-8 col-md-8 col-8 ">
-            <div class="card bg-transparent shadow-none">
+        <div class="col-xl-8 col-md-8 col-8">
+            <div >
                 <div class="card-content">
+                    <img src="{{ asset('auth/images/login.png') }}" alt="Logotipo" class="logo mt-4 p-3">
                     <div class="card-body text-center">
                         <h5 class="mb-4"><b>Olá {{ $firstName }} {{ $lastName }}, você precisa selecionar um perfil de acesso:</b></h5>
                         @if (session('error'))
