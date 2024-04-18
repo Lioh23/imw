@@ -97,7 +97,7 @@
                                             {{ \Carbon\Carbon::parse($membro->ultimaExclusao->dt_exclusao)->format('d/m/Y') }}
                                         @endif
                                     </td>
-                                    <td>{{ optional($membro->ultimaAdesao ?? null)->congregacao->nome }}</td>
+                                    <td>{{ optional(optional($membro->ultimaAdesao)->congregacao)->nome }}</td>
                                     <td class="text-center">
                                         @if (!$membro->deleted_at)
                                             <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
