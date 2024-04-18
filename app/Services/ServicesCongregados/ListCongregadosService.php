@@ -3,11 +3,12 @@
 namespace App\Services\ServicesCongregados;
 
 use App\Models\MembresiaMembro;
+use App\Traits\Identifiable;
 use App\Traits\MemberCountable;
 
 class ListCongregadosService
 {
-    use MemberCountable;
+    use MemberCountable, Identifiable;
 
     public function execute($parameters = null)
     {
@@ -22,6 +23,7 @@ class ListCongregadosService
     private function handleListaCongregados($parameters = null)
     {
         return MembresiaMembro::with('congregacao')
+            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->where('vinculo', MembresiaMembro::VINCULO_CONGREGADO)
             ->when(isset($parameters['search']), function ($query) use ($parameters) {
                 $searchTerm = $parameters['search'];

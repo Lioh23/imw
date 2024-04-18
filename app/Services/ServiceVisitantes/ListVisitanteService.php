@@ -3,11 +3,12 @@
 namespace App\Services\ServiceVisitantes;
 
 use App\Models\MembresiaMembro;
+use App\Traits\Identifiable;
 use App\Traits\MemberCountable;
 
 class ListVisitanteService
 {
-    use MemberCountable;
+    use MemberCountable, Identifiable;
 
     public function execute($parameters = null)
     {
@@ -22,6 +23,7 @@ class ListVisitanteService
     private function handleListaVisitantes($parameters)
     {
         return MembresiaMembro::with('contato')
+            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->where('vinculo', MembresiaMembro::VINCULO_VISITANTE)
             ->when(isset($parameters['search']), function ($query) use ($parameters) {
                 $searchTerm = $parameters['search'];
