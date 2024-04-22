@@ -178,32 +178,7 @@
                        <ul class="collapse submenu list-unstyled" id="relatorios" data-parent="#relatorios">
                            <li>
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('relmembresia-index'))
-                                   <a href="#">Membresia</a>
-                               @endif
-                           </li>
-                           <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolatual-index'))
-                                   <a href="#">Rol Atual</a>
-                               @endif
-                           </li>
-                           <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolpermanente-index'))
-                                   <a href="#">Rol Permanente</a>
-                               @endif
-                           </li>
-                           <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relrolexcluidos-index'))
-                                   <a href="#">Rol Excluídos</a>
-                               @endif
-                           </li>
-                           <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relcongregados-index'))
-                                   <a href="#">Congregados</a>
-                               @endif
-                           </li>
-                           <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relvisitantes-index'))
-                                   <a href="#">Visitantes</a>
+                                    <a href="{{ route('relatorio.membresia') }}">Membresia</a>
                                @endif
                            </li>
                            <li>

@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VisitantesController;
 use App\Http\Middleware\VerificaInstituicao;
@@ -138,6 +139,11 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/deletar/{id}', [UsuarioController::class, 'deletar'])->name('deletar')->middleware(['seguranca:usuarios-excluir']);
             Route::get('/editar/{id}', [UsuarioController::class, 'editar'])->name('editar')->middleware(['seguranca:usuarios-editar']);
 
+        });
+
+        // Relatórios
+        Route::prefix('relatorio')->name('relatorio.')->controller(RelatorioController::class)->group(function () {
+            Route::get('/membresia', 'membresia')->name('membresia')->middleware('seguranca:relatorio-membresia');
         });
 
         // Segurança

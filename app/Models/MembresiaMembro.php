@@ -54,6 +54,10 @@ class MembresiaMembro extends Model
         'has_errors',
     ];
 
+    protected $casts = [
+        'data_nascimento' => 'date'
+    ];
+
     public function contato()
     {
         return $this->hasOne(MembresiaContato::class, 'membro_id');
@@ -97,4 +101,26 @@ class MembresiaMembro extends Model
         ->latest('dt_recepcao');
     }
 
+    public function getStatusTextAttribute()
+    {
+        switch ($this->status) {
+            case 'A':
+                return 'ATIVO';
+            
+            case 'I':
+                return 'INATIVO';
+        }
+    }
+
+    public function getVinculoTextAttribute()
+    {
+        switch ($this->vinculo) {
+            case 'M':
+                return 'MEMBRO';
+            case 'C':
+                return 'CONGREGADO';
+            case 'V':            
+                return 'VISITANTE';
+        }
+    }
 }

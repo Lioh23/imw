@@ -81,7 +81,9 @@ class RegrasTableSeeder extends Seeder
              ['nome' => 'financeiro-consolidarcaixa'],
              ['nome' => 'financeiro-planoconta'],
              ['nome' => 'financeiro-caixas'],
-           
+
+             // Relatórios
+             ['name' => 'relatorio-membresia'],
         ]);
     }
 }
