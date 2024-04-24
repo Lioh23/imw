@@ -102,6 +102,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa')->middleware(['seguranca:financeiro-consolidarcaixa']);
             Route::get('/entrada', [FinanceiroController::class, 'entrada'])->name('entrada')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/entrada/store', [FinanceiroController::class, 'storeEntrada'])->name('entrada.store')->middleware(['seguranca:financeiro-caixas']);
+            Route::put('/entrada/{id}', [FinanceiroController::class, 'updateEntrada'])->name('entrada.update')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/saida', [FinanceiroController::class, 'saida'])->name('saida')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/saida/store', [FinanceiroController::class, 'storeSaida'])->name('saida.store')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/transferencia', [FinanceiroController::class, 'transferencia'])->name('transferencia')->middleware(['seguranca:financeiro-caixas']);

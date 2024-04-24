@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\FinanceiroLancamentoNotFoundException;
 use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Http\Requests\FinanceiroTransferenciaRequest;
 use App\Models\Anexo;
+use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
 use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
@@ -141,6 +143,26 @@ class FinanceiroController extends Controller
             DB::rollback();
             return redirect()->back()->with('error', 'Erro ao excluir o movimento: ' . $e->getMessage());
         }
+    }
+
+    public function editarMovimento($id, $tipo_lancamento) {
+        
+        if($tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA) {
+            $data = app(IdentificaDadosNovaMovimentacaoService::class)->execute(FinanceiroPlanoConta::TP_ENTRADA);
+    
+            try {
+                $entrada = FinanceiroLancamento::findOrFail($id);
+                $data['entrada'] = $entrada;
+    
+                // Passar todo o array $data para a view
+                return view('financeiro.editarentrada', $data);    
+            }  catch(FinanceiroLancamentoNotFoundException $e) {
+                return redirect()->route('financeiro.editarentrada')->with('error', 'Registro não encontrado.');
+            }
+            catch (\Exception $e) {
+                return redirect()->route('financeiro.editarentrada')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+            }
+        }  
     }
     
 }
