@@ -20,7 +20,9 @@ class ListFinanceiroPlanoContaService
             $searchTerm = $parameters['search'];
             $query->where(function($query) use ($searchTerm) {
                 $query->where('nome', 'like', "%$searchTerm%")
-                      ->orWhere('id', 'like', "%$searchTerm%");
+                      ->orWhere('id', 'like', "%$searchTerm%")
+                      ->orWhere('numeracao', 'like', "%$searchTerm%")
+                      ->orWhere('posicao', 'like', "%$searchTerm%");
             });
         })
         ->orderBy('id', 'asc') 
