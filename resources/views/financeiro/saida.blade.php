@@ -163,7 +163,7 @@
                         <label for="anexo1">Anexo 1</label>
                         <input type="file" class="mb-3 form-control-file @error('anexo1') is-invalid @enderror"
                             id="anexo1" name="anexo1">
-                        <label for="descricao_anexo1">Descrição do Anexo 1</label>
+                        <label for="descricao_anexo1">Descrição do Anexo</label>
                         <textarea class="form-control @error('descricao_anexo1') is-invalid @enderror" id="descricao_anexo1"
                             name="descricao_anexo1" rows="1"></textarea>
                         @error('anexo1')
@@ -180,7 +180,7 @@
                         <label for="anexo2">Anexo 2</label>
                         <input type="file" class="mb-3 form-control-file @error('anexo2') is-invalid @enderror"
                             id="anexo2" name="anexo2">
-                        <label for="descricao_anexo2">Descrição do Anexo 2</label>
+                        <label for="descricao_anexo2">Descrição do Anexo</label>
                         <textarea class="form-control @error('descricao_anexo2') is-invalid @enderror" id="descricao_anexo2"
                             name="descricao_anexo2" rows="1"></textarea>
                         @error('anexo2')

@@ -158,8 +158,10 @@ class FinanceiroController extends Controller
                 
             } elseif ($tipo_lancamento == FinanceiroPlanoConta::TP_SAIDA) {
                 $lancamento = FinanceiroLancamento::findOrFail($id);
-                $data = $this->prepareDataForView($service->execute(FinanceiroPlanoConta::TP_SAIDA), $lancamento, 'saida');
-    
+                $data = $this->prepareDataForView($service->execute(FinanceiroPlanoConta::TP_SAIDA), $lancamento, 'saida');              
+                $anexos = app(BuscarAnexosServices::class)->execute($id); 
+                $data['anexos'] = $anexos;
+
                 return view('financeiro.editarsaida', $data);
                 
             } else {

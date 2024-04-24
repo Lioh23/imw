@@ -44,8 +44,8 @@
                 </div>
             </div>
 
-            <form action="{{ route('financeiro.saida.update', $saida->id) }}" method="POST" class="widget-content widget-content-area"
-                enctype="multipart/form-data">
+            <form action="{{ route('financeiro.saida.update', $saida->id) }}" method="POST"
+                class="widget-content widget-content-area" enctype="multipart/form-data">
                 @csrf
                 @method('PUT')
 
@@ -103,7 +103,7 @@
                     </div>
                     <div class="col-md-4">
                         <label for="tipo_pagante_favorecido_id">* Beneficiário</label>
-                        <input type="text" class="form-control" value="{{$saida->pagante_favorecido}}" readonly>
+                        <input type="text" class="form-control" value="{{ $saida->pagante_favorecido }}" readonly>
                         @error('tipo_pagante_favorecido_id')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -113,8 +113,8 @@
                 <div class="row mb-4">
                     <div class="col-12">
                         <label for="descricao">* Descrição</label>
-                        <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao"
-                            rows="3" required>{{ $saida->descricao }}</textarea>
+                        <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" rows="3"
+                            required>{{ $saida->descricao }}</textarea>
                         @error('descricao')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -122,68 +122,45 @@
                 </div>
 
                 <!-- Anexos -->
+                <!-- Anexos existentes -->
                 <div class="row mb-4">
                     <div class="col-md-12">
                         <h4><b>Anexos</b></h4>
-                        <p>Utilize este espaço para anexar boletos, comprovantes de pagamento, contratos ou qualquer
-                            documento que julgue necessário armazenar no sistema.</p>
+                        @foreach ($anexos as $index => $anexo)
+                        @php 
+                           $x = 0;
+                        @endphp
+                            <div class="mb-3">
+                                <label for="anexo1">Anexo {{++$x}}</label><br>
+                                <a href="{{ asset($anexo['url']) }}" target="_blank">{{ $anexo['nome'] }}</a>
+                                <input type="file"
+                                    class="mb-3 form-control-file @error('anexo' . $index) is-invalid @enderror"
+                                    id="anexo{{ $index }}" name="anexo{{ $index }}">
+                                <label for="descricao_anexo1">Descrição do Anexo {{$x}}</label>
+                                <textarea class="form-control mt-2" name="descricao_anexo[{{ $anexo['nome'] }}]" rows="1">{{ $anexo['nome'] }}</textarea>
+                                @error('anexo' . $index)
+                                    <span class="help-block text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endforeach
+
+                        <!-- Campos de upload adicionais, se necessário -->
+                        @for ($i = count($anexos); $i < 3; $i++)
+                            <div class="mb-3">
+                                <label for="anexo1">Anexo {{++$x}}</label><br>
+                                <input type="file"
+                                    class="mb-3 form-control-file @error('anexo' . $i) is-invalid @enderror"
+                                    id="anexo{{ $i }}" name="anexo{{ $i }}">
+                                <label for="descricao_anexo1">Descrição do Anexo {{$x}}</label>
+                                <textarea class="form-control mt-2" name="descricao_anexo[{{ $i }}]" rows="1"></textarea>
+                                @error('anexo' . $i)
+                                    <span class="help-block text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        @endfor
                     </div>
                 </div>
 
-                <hr>
-
-                
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <label for="anexo1">Anexo 1</label>
-                        <input type="file" class="mb-3 form-control-file @error('anexo1') is-invalid @enderror"
-                            id="anexo1" name="anexo1">
-                        <label for="descricao_anexo1">Descrição do Anexo 1</label>
-                        <textarea class="form-control @error('descricao_anexo1') is-invalid @enderror" id="descricao_anexo1"
-                            name="descricao_anexo1" rows="1"></textarea>
-                        @error('anexo1')
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                        @error('descricao_anexo1')
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <label for="anexo2">Anexo 2</label>
-                        <input type="file" class="mb-3 form-control-file @error('anexo2') is-invalid @enderror"
-                            id="anexo2" name="anexo2">
-                        <label for="descricao_anexo2">Descrição do Anexo 2</label>
-                        <textarea class="form-control @error('descricao_anexo2') is-invalid @enderror" id="descricao_anexo2"
-                            name="descricao_anexo2" rows="1"></textarea>
-                        @error('anexo2')
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                        @error('descricao_anexo2')
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-
-                <div class="row mb-4">
-                    <div class="col-md-12">
-                        <label for="anexo3">Anexo 3</label>
-                        <input type="file" class="mb-3 form-control-file @error('anexo3') is-invalid @enderror"
-                            id="anexo3" name="anexo3">
-                        <label for="descricao_anexo3">Descrição do Anexo 3</label>
-                        <textarea class="form-control @error('descricao_anexo3') is-invalid @enderror" id="descricao_anexo3"
-                            name="descricao_anexo3" rows="1"></textarea>
-                        @error('anexo3')
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                        @error('descricao_anexo3')
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <!-- ... -->
 
                 <div class="row mb-4 justify-content-center">
                     {{--  <button type="submit" title="Atualizar movimentação de entrada" class="btn btn-primary btn-lg ml-4">
@@ -201,6 +178,5 @@
         $('#valor').mask('0.000.000.000,00', {
             reverse: true
         });
-
     </script>
 @endsection
