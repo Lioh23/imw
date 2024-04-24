@@ -110,7 +110,7 @@
                             id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
                             <option value="" hidden>Selecione</option>
                             @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
-                                @if ($tipoPaganteFavorecido->id == 2 || $tipoPaganteFavorecido->id == 4)
+                                @if ($tipoPaganteFavorecido->id == 2 || $tipoPaganteFavorecido->id == 99)
                                     <option value="{{ $tipoPaganteFavorecido->id }}"
                                         {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
                                         {{ $tipoPaganteFavorecido->nome }}
