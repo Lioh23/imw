@@ -203,7 +203,7 @@
                                         </td>
                                         <td>{{ $lancamento->planoConta->nome }}</td>
                                         <td>{{ $lancamento->pagante_favorecido }}</td>
-                                        <td>
+                                        <td class="d-flex align-items-center">
                                             @if (in_array($lancamento->planoConta->posicao, [3, 301, 302, 303, 304, 305, 306, 311, 312, 313, 314]))
                                                 <form action="{{ route('financeiro.excluirMovimento', $lancamento->id) }}"
                                                     method="POST" style="display: inline-block;"
@@ -213,8 +213,8 @@
                                                     <button type="button" title="Apagar"
                                                         class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
                                                         data-form-id="form_delete_excluirMovimento_{{ $index }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                            height="24" viewBox="0 0 24 24" fill="none"
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                                            height="18" viewBox="0 0 24 24" fill="none"
                                                             stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                                             stroke-linejoin="round" class="feather feather-trash-2">
                                                             <polyline points="3 6 5 6 21 6"></polyline>
@@ -231,7 +231,7 @@
                                             @else
                                                 <a class="btn btn-sm btn-dark mr-2 btn-rounded" title="Editar"
                                                     href="{{ route('financeiro.editarMovimento', ['id' => $lancamento->id, 'tipo_lancamento' => $lancamento->tipo_lancamento]) }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                         class="feather feather-edit-2">
@@ -240,12 +240,12 @@
                                                     </svg>
                                                 </a>
                                             @endif
-
+                                        
                                             @if ($lancamento->tipo_lancamento == 'S')
                                                 <button type="button" title="Anexos"
                                                     class="btn btn-sm btn-info mr-2 btn-rounded btn-anexos"
                                                     data-lancamento-id="{{ $lancamento->id }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
                                                         viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                                         <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5z">
@@ -254,6 +254,7 @@
                                                 </button>
                                             @endif
                                         </td>
+                                        
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -297,27 +298,34 @@
         })
     </script>
 
-    <script>
-        $('.btn-anexos').on('click', function() {
-            console.log('Botão de anexos clicado'); // Verificar se o evento está sendo disparado
-            let lancamentoId = $(this).data('lancamento-id');
-            $.ajax({
-                url: `/financeiro/anexos/${lancamentoId}`,
-                method: 'GET',
-                success: function(response) {
-                    let anexosList = $('#anexosList');
-                    anexosList.empty();
+<script>
+    $('.btn-anexos').on('click', function() {
+        console.log('Botão de anexos clicado'); // Verificar se o evento está sendo disparado
+        let lancamentoId = $(this).data('lancamento-id');
+        $.ajax({
+            url: `/financeiro/anexos/${lancamentoId}`,
+            method: 'GET',
+            success: function(response) {
+                let anexosList = $('#anexosList');
+                anexosList.empty();
+                
+                if (response.length === 0) {
+                    anexosList.append('<li>Nenhum anexo encontrado</li>');
+                } else {
                     response.forEach(function(anexo) {
                         anexosList.append(
-                            `<li><a href="${anexo.url}" download>${anexo.nome}</a></li>`);
+                            `<li><a href="${anexo.url}" download>${anexo.nome}</a></li>`
+                        );
                     });
-                    $('#anexosModal').modal('show');
-                },
-                error: function(error) {
-                    console.log('Erro ao buscar anexos:',
-                    error); // Verificar se há erros na requisição AJAX
                 }
-            });
+
+                $('#anexosModal').modal('show');
+            },
+            error: function(error) {
+                console.log('Erro ao buscar anexos:', error); // Verificar se há erros na requisição AJAX
+            }
         });
-    </script>
+    });
+</script>
+
 @endsection
