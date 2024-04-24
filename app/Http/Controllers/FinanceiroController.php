@@ -9,6 +9,7 @@ use App\Models\Anexo;
 use App\Models\FinanceiroPlanoConta;
 use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
+use App\Services\ServiceFinanceiro\DeletarLancamentoService;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
 use App\Services\ServiceFinanceiro\SaldoService;
@@ -128,6 +129,18 @@ class FinanceiroController extends Controller
        public function buscarAnexos($id) {
         $data = app(BuscarAnexosServices::class)->execute($id);
         return response()->json($data);
+    }
+
+    public function excluirMovimento($id) {
+        try {
+            DB::beginTransaction();
+            app(DeletarLancamentoService::class)->execute($id);
+            DB::commit();
+            return redirect()->route('financeiro.movimento.caixa')->with('success', 'Movimento excluído com sucesso.'); 
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Erro ao excluir o movimento: ' . $e->getMessage());
+        }
     }
     
 }
