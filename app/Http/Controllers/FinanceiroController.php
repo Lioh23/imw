@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Http\Requests\FinanceiroTransferenciaRequest;
+use App\Models\Anexo;
 use App\Models\FinanceiroPlanoConta;
+use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
@@ -15,6 +17,7 @@ use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
 use App\Services\ServiceFinanceiro\StoreTransferenciaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 
 class FinanceiroController extends Controller
@@ -122,5 +125,9 @@ class FinanceiroController extends Controller
         }
     }
 
+       public function buscarAnexos($id) {
+        $data = app(BuscarAnexosServices::class)->execute($id);
+        return response()->json($data);
+    }
     
 }
