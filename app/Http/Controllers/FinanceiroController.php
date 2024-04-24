@@ -147,22 +147,46 @@ class FinanceiroController extends Controller
 
     public function editarMovimento($id, $tipo_lancamento) {
         
-        if($tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA) {
-            $data = app(IdentificaDadosNovaMovimentacaoService::class)->execute(FinanceiroPlanoConta::TP_ENTRADA);
+        $service = app(IdentificaDadosNovaMovimentacaoService::class);
+        
+        try {
+            if ($tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA) {
+                $lancamento = FinanceiroLancamento::findOrFail($id);
+                $data = $this->prepareDataForView($service->execute(FinanceiroPlanoConta::TP_ENTRADA), $lancamento, 'entrada');
     
-            try {
-                $entrada = FinanceiroLancamento::findOrFail($id);
-                $data['entrada'] = $entrada;
+                return view('financeiro.editarentrada', $data);
+                
+            } elseif ($tipo_lancamento == FinanceiroPlanoConta::TP_SAIDA) {
+                $lancamento = FinanceiroLancamento::findOrFail($id);
+                $data = $this->prepareDataForView($service->execute(FinanceiroPlanoConta::TP_SAIDA), $lancamento, 'saida');
     
-                // Passar todo o array $data para a view
-                return view('financeiro.editarentrada', $data);    
-            }  catch(FinanceiroLancamentoNotFoundException $e) {
-                return redirect()->route('financeiro.editarentrada')->with('error', 'Registro não encontrado.');
+                return view('financeiro.editarsaida', $data);
+                
+            } else {
+                return redirect()->back()->with('error', 'Tipo de movimentação não encontrado.');
             }
-            catch (\Exception $e) {
-                return redirect()->route('financeiro.editarentrada')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
-            }
-        }  
+            
+        } catch(FinanceiroLancamentoNotFoundException $e) {
+            $route = $tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA ? 'financeiro.editarentrada' : 'financeiro.editarsaida';
+            return redirect()->route($route)->with('error', 'Registro não encontrado.');
+            
+        } catch (\Exception $e) {
+            $route = $tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA ? 'financeiro.editarentrada' : 'financeiro.editarsaida';
+            return redirect()->route($route)->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+        }
     }
     
+    private function prepareDataForView($data, $lancamento, $key) {
+        $data[$key] = $lancamento;
+        return $data;
+    }
+    
+    
+    public function updateEntrada() {
+        
+    }
+
+    public function updateSaida() {
+
+    }
 }

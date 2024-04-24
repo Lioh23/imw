@@ -1,10 +1,9 @@
 @extends('template.layout')
-
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
         ['text' => 'Movimento de Caixa', 'url' => '/financeiro/movimento-caixa', 'active' => false],
-        ['text' => 'Editar Entrada', 'url' => '#', 'active' => true],
+        ['text' => 'Saída', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -28,6 +27,7 @@
         .select2-selection__arrow {
             height: 50px !important;
             font-family: 'Nunito', sans-serif;
+
         }
     </style>
 @endsection
@@ -39,15 +39,15 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Editar Registro de Entrada</h4>
+                        <h4>Editar Registro de Saída</h4>
                     </div>
                 </div>
             </div>
 
-            <form action="{{ route('financeiro.entrada.update', $entrada->id) }}" method="POST"
-                class="widget-content widget-content-area">
+            <form action="{{ route('financeiro.saida.update', $saida->id) }}" method="POST" class="widget-content widget-content-area"
+                enctype="multipart/form-data">
                 @csrf
-                @method('PUT') <!-- Método para atualizar o registro -->
+                @method('PUT')
 
                 <div class="row mb-4">
                     <div class="col-md-6">
@@ -56,8 +56,8 @@
                             required>
                             <option value="" hidden disabled>Selecione</option>
                             @foreach ($caixas as $caixa)
-                                <option value="{{ $caixa->id }}"
-                                    {{ $entrada->caixa_id == $caixa->id ? 'selected' : '' }}>{{ $caixa->descricao }}
+                                <option value="{{ $caixa->id }}" {{ $saida->caixa_id == $caixa->id ? 'selected' : '' }}>
+                                    {{ $caixa->descricao }}
                                 </option>
                             @endforeach
                         </select>
@@ -73,7 +73,7 @@
                             <option value="" hidden disabled>Selecione</option>
                             @foreach ($planoContas as $pc)
                                 <option {{ !$pc->selecionavel ? 'disabled' : '' }} value="{{ $pc->id }}"
-                                    {{ $entrada->plano_conta_id == $pc->id ? 'selected' : '' }}>
+                                    {{ $saida->plano_conta_id == $pc->id ? 'selected' : '' }}>
                                     {{ $pc->numeracao }} - {{ $pc->nome }}
                                 </option>
                             @endforeach
@@ -88,7 +88,7 @@
                     <div class="col-md-4">
                         <label for="valor">* Valor</label>
                         <input type="text" class="form-control @error('valor') is-invalid @enderror" id="valor"
-                            name="valor" value="{{ $entrada->valor }}" required autofocus>
+                            name="valor" value="{{ $saida->valor }}" required autofocus>
                         @error('valor')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -96,37 +96,97 @@
                     <div class="col-md-4">
                         <label for="data_movimento">* Data do Movimento</label>
                         <input type="date" class="form-control @error('data_movimento') is-invalid @enderror"
-                            id="data_movimento" name="data_movimento"
-                            value="{{ old('data_movimento', \Carbon\Carbon::parse($entrada->data_movimento)->format('Y-m-d')) }}"
-                            required>
-
+                            id="data_movimento" name="data_movimento" value="{{ $saida->data_movimento }}" required>
                         @error('data_movimento')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-4">
-                        <label for="tipo_pagante_favorecido_id">* Pagante</label>
-                        <input type="text" class="form-control" value="{{$entrada->pagante_favorecido}}" readonly>
-
+                        <label for="tipo_pagante_favorecido_id">* Beneficiário</label>
+                        <input type="text" class="form-control" value="{{$saida->pagante_favorecido}}" readonly>
                         @error('tipo_pagante_favorecido_id')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
-                
+
                 <div class="row mb-4">
                     <div class="col-12">
                         <label for="descricao">* Descrição</label>
-                        <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" rows="3"
-                            required>{{ $entrada->descricao }}</textarea>
+                        <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao"
+                            rows="3" required>{{ $saida->descricao }}</textarea>
                         @error('descricao')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                 </div>
 
+                <!-- Anexos -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <h4><b>Anexos</b></h4>
+                        <p>Utilize este espaço para anexar boletos, comprovantes de pagamento, contratos ou qualquer
+                            documento que julgue necessário armazenar no sistema.</p>
+                    </div>
+                </div>
+
+                <hr>
+
+                
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label for="anexo1">Anexo 1</label>
+                        <input type="file" class="mb-3 form-control-file @error('anexo1') is-invalid @enderror"
+                            id="anexo1" name="anexo1">
+                        <label for="descricao_anexo1">Descrição do Anexo 1</label>
+                        <textarea class="form-control @error('descricao_anexo1') is-invalid @enderror" id="descricao_anexo1"
+                            name="descricao_anexo1" rows="1"></textarea>
+                        @error('anexo1')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                        @error('descricao_anexo1')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label for="anexo2">Anexo 2</label>
+                        <input type="file" class="mb-3 form-control-file @error('anexo2') is-invalid @enderror"
+                            id="anexo2" name="anexo2">
+                        <label for="descricao_anexo2">Descrição do Anexo 2</label>
+                        <textarea class="form-control @error('descricao_anexo2') is-invalid @enderror" id="descricao_anexo2"
+                            name="descricao_anexo2" rows="1"></textarea>
+                        @error('anexo2')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                        @error('descricao_anexo2')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <label for="anexo3">Anexo 3</label>
+                        <input type="file" class="mb-3 form-control-file @error('anexo3') is-invalid @enderror"
+                            id="anexo3" name="anexo3">
+                        <label for="descricao_anexo3">Descrição do Anexo 3</label>
+                        <textarea class="form-control @error('descricao_anexo3') is-invalid @enderror" id="descricao_anexo3"
+                            name="descricao_anexo3" rows="1"></textarea>
+                        @error('anexo3')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                        @error('descricao_anexo3')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                </div>
+                <!-- ... -->
+
                 <div class="row mb-4 justify-content-center">
-                   {{--  <button type="submit" title="Atualizar movimentação de entrada" class="btn btn-primary btn-lg ml-4">
+                    {{--  <button type="submit" title="Atualizar movimentação de entrada" class="btn btn-primary btn-lg ml-4">
                         <x-bx-save /> Atualizar
                     </button> --}}
                 </div>
@@ -141,9 +201,6 @@
         $('#valor').mask('0.000.000.000,00', {
             reverse: true
         });
+
     </script>
 @endsection
-
-
-
-
