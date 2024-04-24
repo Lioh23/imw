@@ -49,7 +49,8 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label for="caixa_id">* Caixa</label>
-                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id" required>
+                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id"
+                            required>
                             <option value="" hidden disabled>Selecione</option>
                             @foreach ($caixas as $caixa)
                                 @if ($caixa->id == old('caixa_id'))
@@ -63,22 +64,25 @@
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    
-                    
+
+
 
                     <div class="col-md-6">
                         <label for="plano_conta_id">* Plano de contas</label>
                         <select class="form-control @error('plano_conta_id') is-invalid @enderror" id="plano_conta_id"
                             name="plano_conta_id" required>
-                            <option value="" hidden selected disabled>Selecione</option>
+                            <option value="" hidden disabled>Selecione</option>
                             @foreach ($planoContas as $pc)
-                                <option {{ !$pc->selecionavel ? 'disabled' : '' }} value="{{ $pc->id }}">
-                                    {{ $pc->numeracao }} - {{ $pc->nome }}</option>
+                                <option {{ !$pc->selecionavel ? 'disabled' : '' }} value="{{ $pc->id }}"
+                                    {{ old('plano_conta_id') == $pc->id ? 'selected' : '' }}>
+                                    {{ $pc->numeracao }} - {{ $pc->nome }}
+                                </option>
                             @endforeach
                         </select>
-                        @error('pai')
+                        @error('plano_conta_id')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
+
                     </div>
                 </div>
 
@@ -106,12 +110,15 @@
                             id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
                             <option value="" selected disabled hidden>Selecione</option>
                             @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
-                                <option value="{{ $tipoPaganteFavorecido->id }}"
-                                    {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
-                                    {{ $tipoPaganteFavorecido->nome }}
-                                </option>
+                                @if ($tipoPaganteFavorecido->id != 2)
+                                    <option value="{{ $tipoPaganteFavorecido->id }}"
+                                        {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
+                                        {{ $tipoPaganteFavorecido->nome }}
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
+
                         @error('tipo_pagante_favorecido_id')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror

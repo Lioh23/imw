@@ -144,7 +144,7 @@
                             <tbody>
                                 @foreach ($lancamentos as $lancamento)
                                     <tr>
-                                        <td>{{ \Carbon\Carbon::parse($lancamento->data_lancamento)->format('d/m/Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}</td>
                                         <td>{{ $lancamento->caixa->descricao }}</td>
                                         <td>
                                             @if ($lancamento->tipo_lancamento == 'E')
