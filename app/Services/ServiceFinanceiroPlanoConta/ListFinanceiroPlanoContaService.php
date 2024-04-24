@@ -25,7 +25,9 @@ class ListFinanceiroPlanoContaService
                       ->orWhere('posicao', 'like', "%$searchTerm%");
             });
         })
-        ->orderBy('id', 'asc') 
+        ->orderByRaw("CAST(SUBSTRING_INDEX(numeracao, '.', 1) AS UNSIGNED) ASC")
+        ->orderByRaw("CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(numeracao, '.', 2), '.', -1) AS UNSIGNED) ASC")
+        ->orderBy('id', 'asc')
         ->paginate(30);
     }
 }
