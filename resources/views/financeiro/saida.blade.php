@@ -108,12 +108,14 @@
                         <label for="tipo_pagante_favorecido_id">* Tipo de Beneficiário</label>
                         <select class="form-control @error('tipo_pagante_favorecido_id') is-invalid @enderror"
                             id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
-                            <option value="" selected disabled hidden>Selecione</option>
+                            <option value="" hidden>Selecione</option>
                             @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
-                                <option value="{{ $tipoPaganteFavorecido->id }}"
-                                    {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
-                                    {{ $tipoPaganteFavorecido->nome }}
-                                </option>
+                                @if ($tipoPaganteFavorecido->id == 2 || $tipoPaganteFavorecido->id == 4)
+                                    <option value="{{ $tipoPaganteFavorecido->id }}"
+                                        {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
+                                        {{ $tipoPaganteFavorecido->nome }}
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                         @error('tipo_pagante_favorecido_id')
