@@ -15,21 +15,24 @@ trait FinanceiroUtils
     public static function lancamentosPorContas()
     {
         return  DB::table('financeiro_plano_contas as pc')
-            ->select(
-                'pc.numeracao as numeracao_conta',
-                'pc.nome as nome_conta',
-                'c.descricao as descricao_caixa',
-                DB::raw('SUM(IF(l.valor IS NOT NULL AND l.valor != 0, l.valor, 0)) as total_lancamentos')
-            )
-            ->leftJoin('financeiro_lancamentos as l', 'pc.id', '=', 'l.plano_conta_id')
-            ->leftJoin('financeiro_caixas as c', 'l.caixa_id', '=', 'c.id')
-            ->where('l.conciliado', 0)
-            ->groupBy('pc.numeracao', 'pc.nome', 'c.descricao')
-            ->havingRaw('total_lancamentos > 0')
-            ->orderBy('pc.numeracao')
-            ->orderBy('pc.nome')
-            ->orderBy('c.descricao')
-            ->get();
+        ->select(
+            'pc.numeracao as numeracao_conta',
+            'pc.nome as nome_conta',
+            'c.descricao as descricao_caixa',
+            DB::raw('SUM(IF(l.valor IS NOT NULL AND l.valor != 0, l.valor, 0)) as total_lancamentos')
+        )
+        ->leftJoin('financeiro_lancamentos as l', 'pc.id', '=', 'l.plano_conta_id')
+        ->leftJoin('financeiro_caixas as c', 'l.caixa_id', '=', 'c.id')
+        ->where('l.conciliado', 0)
+        ->where('l.instituicao_id', '=', session()->get('session_perfil')->instituicao_id)
+        ->groupBy('pc.numeracao', 'pc.nome', 'c.descricao')
+        ->havingRaw('total_lancamentos > 0')
+        ->orderBy('pc.numeracao')
+        ->orderBy('pc.nome')
+        ->orderBy('c.descricao')
+        ->get();
+    
+    
     }
 
 
