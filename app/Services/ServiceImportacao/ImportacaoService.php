@@ -258,7 +258,6 @@ class ImportacaoService
                 'aux_total_saidas'           => (double) str_replace(',', '.', $item['aux_total_saidas']),
                 'aux_total_transf_entradas'  => (double) str_replace(',', '.', $item['aux_total_transf_entradas']),
                 'aux_total_transf_saidas'    => (double) str_replace(',', '.', $item['aux_total_transf_saidas']),
-
                 'created_at'                 => substr($item["cadastrado_em"], 0, 19),
                 'updated_at'                 => substr($item["modificado_em"], 0, 19),
                 'deleted_at'                 => $item["excluido"] == "true" ? "2001-01-01 00:00:00" : null

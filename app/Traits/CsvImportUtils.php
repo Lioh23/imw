@@ -26,8 +26,11 @@ trait CsvImportUtils
         $conn = DB::connection();
         $conn->beginTransaction();
         $conn->statement('SET FOREIGN_KEY_CHECKS=0;');
+        $total = $collection->count();
         try {
-            $collection->each(function ($item) use ($conn, $controle) {
+            $collection->each(function ($item, $index) use ($conn, $controle, $total) {
+                $current = $index + 1;
+                dump("$current of $total");
                 $conn->table($controle->target_table)->updateOrInsert($item);
             });
             $conn->table('controle_importacoes_csv')->where('id', $controle->id)->update(['executed' => true]);
