@@ -231,5 +231,41 @@ class ImportacaoService
 
         return CsvImportUtils::import($collection, $controle);
     }
+
+    public static function financeiroSaldoConsolidadoMensal($collectOld, $controle)
+    {
+        $collection = $collectOld->map(function ($item) {
+            return [
+                'id'                         => $item['id'],
+
+                'data_hora'                  => substr($item['data_hora'], 0, 19),
+                'total_entradas'             => (double) str_ireplace(',', '.', $item['total_entradas']),
+                'total_saidas'               => (double) str_ireplace(',', '.', $item['total_saidas']),
+                'saldo_anterior'             => (double) str_ireplace(',', '.', $item['saldo_anterior']),
+                'saldo_final'                => (double) str_ireplace(',', '.', $item['saldo_final']),
+                'estorno'                    => $item['estorno'],
+                'auditado'                   => $item['auditado'],
+                'caixa_id'                   => $item['caixa_id'],
+                'instituicao_id'             => $item['instituicao_id'],
+                'ano'                        => $item['ano'],
+                'mes'                        => $item['mes'],
+                'total_transf_entradas'      => (double) str_replace(',', '.', $item['total_transf_entradas']),
+                'total_transf_saidas'        => (double) str_replace(',', '.', $item['total_transf_saidas']),
+                'aux_data_hora'              => $item['aux_data_hora'],
+                'aux_saldo_anterior'         => (double) str_replace(',', '.', $item['aux_saldo_anterior']),
+                'aux_saldo_final'            => (double) str_replace(',', '.', $item['aux_saldo_final']),
+                'aux_total_entradas'         => (double) str_replace(',', '.', $item['aux_total_entradas']),
+                'aux_total_saidas'           => (double) str_replace(',', '.', $item['aux_total_saidas']),
+                'aux_total_transf_entradas'  => (double) str_replace(',', '.', $item['aux_total_transf_entradas']),
+                'aux_total_transf_saidas'    => (double) str_replace(',', '.', $item['aux_total_transf_saidas']),
+
+                'created_at'                 => substr($item["cadastrado_em"], 0, 19),
+                'updated_at'                 => substr($item["modificado_em"], 0, 19),
+                'deleted_at'                 => $item["excluido"] == "true" ? "2001-01-01 00:00:00" : null
+            ];
+        });
+
+        return CsvImportUtils::import($collection, $controle);
+    }
 }
 
