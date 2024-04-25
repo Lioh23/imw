@@ -24,7 +24,7 @@
                                             <th>CAIXA</th>
                                             <th width="300" style="text-align: right">
                                                 @if ($ultimoCaixa)
-                                                    ÚLTIMO SALDO CONSOLIDADO EM {{ $ultimoCaixa }}
+                                                    ÚLTIMO SALDO CONSOLIDADO EM {{ \Carbon\Carbon::parse($ultimoCaixa)->isoFormat('MMMM [de] YYYY') }}
                                                 @else
                                                     NÃO POSSUI ÚLTIMO SALDO CONSOLIDADO
                                                 @endif
@@ -180,18 +180,15 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
-                            
-                    
-
                         </div>
-
-                        {{-- <div class="col-12">
-                            <form method="post">
-                                <button class="btn btn-success p-2 btn-rounded" type="submit">CONSOLIDAR O MÊS DE MARÇO DE
-                                    2024</button>
+                        <div class="col-12 text-center">
+                            <form method="post" method="POST" {{-- action="{{route('consolidar.store')}}" --}}>
+                                @csrf
+                                <button class="btn btn-success p-2 btn-rounded" style="text-transform: uppercase;" type="submit">CONSOLIDAR {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}
+                                </button>
                             </form>
-                        </div> --}}
+                        </div>
+                        
                     </div>
                 </div>
                 <!-- Fim do Conteúdo -->

@@ -73,7 +73,7 @@ class FinanceiroCaixa extends Model
             ->sum('valor');
     }
 
-    public function totalLancamentosUltimosConciliados()
+    /*  public function totalLancamentosUltimosConciliados()
     {
         $ultimosConciliados = $this->lancamentos()
             ->where('conciliado', 1)
@@ -93,5 +93,18 @@ class FinanceiroCaixa extends Model
         }
 
         return $total;
+    } */
+
+    public function totalLancamentosUltimosConciliados()
+    {
+        $saldo = FinanceiroSaldoConsolidadoMensal::where('caixa_id', $this->id)
+            ->orderBy('data_hora', 'desc')
+            ->first();
+
+        if (!$saldo) {
+            return 0;
+        }
+
+        return $saldo->saldo_final;
     }
 }
