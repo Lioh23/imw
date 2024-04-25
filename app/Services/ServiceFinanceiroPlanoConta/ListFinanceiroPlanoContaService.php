@@ -20,10 +20,14 @@ class ListFinanceiroPlanoContaService
             $searchTerm = $parameters['search'];
             $query->where(function($query) use ($searchTerm) {
                 $query->where('nome', 'like', "%$searchTerm%")
-                      ->orWhere('id', 'like', "%$searchTerm%");
+                      ->orWhere('id', 'like', "%$searchTerm%")
+                      ->orWhere('numeracao', 'like', "%$searchTerm%")
+                      ->orWhere('posicao', 'like', "%$searchTerm%");
             });
         })
-        ->orderBy('id', 'asc') 
+        ->orderByRaw("CAST(SUBSTRING_INDEX(numeracao, '.', 1) AS UNSIGNED) ASC")
+        ->orderByRaw("CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(numeracao, '.', 2), '.', -1) AS UNSIGNED) ASC")
+        ->orderBy('id', 'asc')
         ->paginate(30);
     }
 }

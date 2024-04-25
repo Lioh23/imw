@@ -102,12 +102,16 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa')->middleware(['seguranca:financeiro-consolidarcaixa']);
             Route::get('/entrada', [FinanceiroController::class, 'entrada'])->name('entrada')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/entrada/store', [FinanceiroController::class, 'storeEntrada'])->name('entrada.store')->middleware(['seguranca:financeiro-caixas']);
+            Route::put('/entrada/{id}', [FinanceiroController::class, 'updateEntrada'])->name('entrada.update')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/saida', [FinanceiroController::class, 'saida'])->name('saida')->middleware(['seguranca:financeiro-caixas']);
+            Route::put('/saida/{id}', [FinanceiroController::class, 'updateSaida'])->name('saida.update')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/saida/store', [FinanceiroController::class, 'storeSaida'])->name('saida.store')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/transferencia', [FinanceiroController::class, 'transferencia'])->name('transferencia')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/transferencia/store', [FinanceiroController::class, 'storeTransferencia'])->name('transferencia.store')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/saldo', [FinanceiroController::class, 'saldo'])->name('saldo')->middleware(['seguranca:financeiro-caixas']);
-            
+            Route::get('/editar-movimento/{id}/{tipo_lancamento}', [FinanceiroController::class, 'editarMovimento'])->name('editarMovimento')->middleware(['seguranca:financeiro-caixas']);
+            Route::delete('/excluir-movimento/{id}', [FinanceiroController::class, 'excluirMovimento'])->name('excluirMovimento')->middleware(['seguranca:financeiro-caixas']);
+            Route::get('/anexos/{id_lancamento}', [FinanceiroController::class, 'buscarAnexos'])->name('buscarAnexos')->middleware(['seguranca:financeiro-caixas']);
             //Plano de Conta
             Route::get('/plano-conta', [FinanceiroPlanoContaController::class, 'index'])->name('plano.conta')->middleware(['seguranca:financeiro-planoconta']);
             

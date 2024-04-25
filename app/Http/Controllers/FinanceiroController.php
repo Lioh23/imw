@@ -2,11 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\FinanceiroLancamentoNotFoundException;
 use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Http\Requests\FinanceiroTransferenciaRequest;
+use App\Models\Anexo;
+use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
+use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
+use App\Services\ServiceFinanceiro\DeletarLancamentoService;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
 use App\Services\ServiceFinanceiro\SaldoService;
@@ -15,6 +20,7 @@ use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
 use App\Services\ServiceFinanceiro\StoreTransferenciaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+
 
 
 class FinanceiroController extends Controller
@@ -122,5 +128,67 @@ class FinanceiroController extends Controller
         }
     }
 
+       public function buscarAnexos($id) {
+        $data = app(BuscarAnexosServices::class)->execute($id);
+        return response()->json($data);
+    }
+
+    public function excluirMovimento($id) {
+        try {
+            DB::beginTransaction();
+            app(DeletarLancamentoService::class)->execute($id);
+            DB::commit();
+            return redirect()->route('financeiro.movimento.caixa')->with('success', 'Movimento excluído com sucesso.'); 
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->with('error', 'Erro ao excluir o movimento: ' . $e->getMessage());
+        }
+    }
+
+    public function editarMovimento($id, $tipo_lancamento) {
+        
+        $service = app(IdentificaDadosNovaMovimentacaoService::class);
+        
+        try {
+            if ($tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA) {
+                $lancamento = FinanceiroLancamento::findOrFail($id);
+                $data = $this->prepareDataForView($service->execute(FinanceiroPlanoConta::TP_ENTRADA), $lancamento, 'entrada');
     
+                return view('financeiro.editarentrada', $data);
+                
+            } elseif ($tipo_lancamento == FinanceiroPlanoConta::TP_SAIDA) {
+                $lancamento = FinanceiroLancamento::findOrFail($id);
+                $data = $this->prepareDataForView($service->execute(FinanceiroPlanoConta::TP_SAIDA), $lancamento, 'saida');              
+                $anexos = app(BuscarAnexosServices::class)->execute($id); 
+                $data['anexos'] = $anexos;
+
+                return view('financeiro.editarsaida', $data);
+                
+            } else {
+                return redirect()->back()->with('error', 'Tipo de movimentação não encontrado.');
+            }
+            
+        } catch(FinanceiroLancamentoNotFoundException $e) {
+            $route = $tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA ? 'financeiro.editarentrada' : 'financeiro.editarsaida';
+            return redirect()->route($route)->with('error', 'Registro não encontrado.');
+            
+        } catch (\Exception $e) {
+            $route = $tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA ? 'financeiro.editarentrada' : 'financeiro.editarsaida';
+            return redirect()->route($route)->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+        }
+    }
+    
+    private function prepareDataForView($data, $lancamento, $key) {
+        $data[$key] = $lancamento;
+        return $data;
+    }
+    
+    
+    public function updateEntrada() {
+        
+    }
+
+    public function updateSaida() {
+
+    }
 }

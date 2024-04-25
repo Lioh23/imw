@@ -44,12 +44,14 @@
                 </div>
             </div>
 
-            <form action="{{ route('financeiro.saida.store') }}" method="POST" class="widget-content widget-content-area" enctype="multipart/form-data">
+            <form action="{{ route('financeiro.saida.store') }}" method="POST" class="widget-content widget-content-area"
+                enctype="multipart/form-data">
                 @csrf
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label for="caixa_id">* Caixa</label>
-                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id" required>
+                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id"
+                            required>
                             <option value="" hidden disabled>Selecione</option>
                             @foreach ($caixas as $caixa)
                                 @if ($caixa->id == old('caixa_id'))
@@ -63,20 +65,22 @@
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    
-                    
+
+
 
                     <div class="col-md-6">
                         <label for="plano_conta_id">* Plano de contas</label>
                         <select class="form-control @error('plano_conta_id') is-invalid @enderror" id="plano_conta_id"
                             name="plano_conta_id" required>
-                            <option value="" hidden selected disabled>Selecione</option>
+                            <option value="" hidden disabled>Selecione</option>
                             @foreach ($planoContas as $pc)
-                                <option {{ !$pc->selecionavel ? 'disabled' : '' }} value="{{ $pc->id }}">
-                                    {{ $pc->numeracao }} - {{ $pc->nome }}</option>
+                                <option {{ !$pc->selecionavel ? 'disabled' : '' }} value="{{ $pc->id }}"
+                                    {{ old('plano_conta_id') == $pc->id ? 'selected' : '' }}>
+                                    {{ $pc->numeracao }} - {{ $pc->nome }}
+                                </option>
                             @endforeach
                         </select>
-                        @error('pai')
+                        @error('plano_conta_id')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
@@ -104,12 +108,14 @@
                         <label for="tipo_pagante_favorecido_id">* Tipo de Beneficiário</label>
                         <select class="form-control @error('tipo_pagante_favorecido_id') is-invalid @enderror"
                             id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
-                            <option value="" selected disabled hidden>Selecione</option>
+                            <option value="" hidden>Selecione</option>
                             @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
-                                <option value="{{ $tipoPaganteFavorecido->id }}"
-                                    {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
-                                    {{ $tipoPaganteFavorecido->nome }}
-                                </option>
+                                @if ($tipoPaganteFavorecido->id == 2 || $tipoPaganteFavorecido->id == 3 || $tipoPaganteFavorecido->id == 99)
+                                    <option value="{{ $tipoPaganteFavorecido->id }}"
+                                        {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
+                                        {{ $tipoPaganteFavorecido->nome }}
+                                    </option>
+                                @endif
                             @endforeach
                         </select>
                         @error('tipo_pagante_favorecido_id')
@@ -144,8 +150,9 @@
 
                 <div class="row mb-4">
                     <div class="col-md-12">
-                            <h4><b>Anexos</b></h4>
-                            <p>Utilize este espaço para anexar boletos, comprovantes de pagamento, contratos ou qualquer documento que julgue necessário armazenar no sistema.</p>
+                        <h4><b>Anexos</b></h4>
+                        <p>Utilize este espaço para anexar boletos, comprovantes de pagamento, contratos ou qualquer
+                            documento que julgue necessário armazenar no sistema.</p>
                     </div>
                 </div>
 
@@ -154,9 +161,11 @@
                 <div class="row mb-4">
                     <div class="col-md-12">
                         <label for="anexo1">Anexo 1</label>
-                        <input type="file" class="mb-3 form-control-file @error('anexo1') is-invalid @enderror" id="anexo1" name="anexo1">
-                        <label for="descricao_anexo1">Descrição do Anexo 1</label>
-                        <textarea class="form-control @error('descricao_anexo1') is-invalid @enderror" id="descricao_anexo1" name="descricao_anexo1" rows="1"></textarea>
+                        <input type="file" class="mb-3 form-control-file @error('anexo1') is-invalid @enderror"
+                            id="anexo1" name="anexo1">
+                        <label for="descricao_anexo1">Descrição do Anexo</label>
+                        <textarea class="form-control @error('descricao_anexo1') is-invalid @enderror" id="descricao_anexo1"
+                            name="descricao_anexo1" rows="1"></textarea>
                         @error('anexo1')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -165,13 +174,15 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <div class="row mb-4">
                     <div class="col-md-12">
                         <label for="anexo2">Anexo 2</label>
-                        <input type="file" class="mb-3 form-control-file @error('anexo2') is-invalid @enderror" id="anexo2" name="anexo2">
-                        <label for="descricao_anexo2">Descrição do Anexo 2</label>
-                        <textarea class="form-control @error('descricao_anexo2') is-invalid @enderror" id="descricao_anexo2" name="descricao_anexo2" rows="1"></textarea>
+                        <input type="file" class="mb-3 form-control-file @error('anexo2') is-invalid @enderror"
+                            id="anexo2" name="anexo2">
+                        <label for="descricao_anexo2">Descrição do Anexo</label>
+                        <textarea class="form-control @error('descricao_anexo2') is-invalid @enderror" id="descricao_anexo2"
+                            name="descricao_anexo2" rows="1"></textarea>
                         @error('anexo2')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -180,13 +191,15 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <div class="row mb-4">
                     <div class="col-md-12">
                         <label for="anexo3">Anexo 3</label>
-                        <input type="file" class="mb-3 form-control-file @error('anexo3') is-invalid @enderror" id="anexo3" name="anexo3">
+                        <input type="file" class="mb-3 form-control-file @error('anexo3') is-invalid @enderror"
+                            id="anexo3" name="anexo3">
                         <label for="descricao_anexo3">Descrição do Anexo 3</label>
-                        <textarea class="form-control @error('descricao_anexo3') is-invalid @enderror" id="descricao_anexo3" name="descricao_anexo3" rows="1"></textarea>
+                        <textarea class="form-control @error('descricao_anexo3') is-invalid @enderror" id="descricao_anexo3"
+                            name="descricao_anexo3" rows="1"></textarea>
                         @error('anexo3')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -195,9 +208,10 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <div class="row mb-4 justify-content-center">
-                    <button type="submit" title="Salvar nova movimentação de entrada" class="btn btn-success btn-lg ml-4">
+                    <button type="submit" title="Salvar nova movimentação de entrada"
+                        class="btn btn-success btn-lg ml-4">
                         <x-bx-save /> Salvar
                     </button>
                 </div>
