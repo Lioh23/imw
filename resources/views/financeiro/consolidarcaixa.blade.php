@@ -121,38 +121,68 @@
                                     </tbody>
                                 </table>
                             </div>
-                    {{-- <div class="col-12 mt-3">
+                            <div class="col-12 mt-3">
                                 <h5>Discriminação dos Lançamentos por Conta</h5>
                             </div>
-
+                            
                             <div class="col-12">
                                 <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                     <thead class="thead-dark">
                                         <tr>
                                             <th colspan="2">CONTA / CAIXA</th>
-                                            <th width="80">TOTAL</th>
+                                            <th width="100">TOTAL</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <th width="80">1.01.01</th>
-                                            <th>Dizimo dos Membros</th>
-                                            <th>14.050,30</th>
-                                        </tr>
-                                        <tr>
-                                            <td width="80"></td>
-                                            <td>Caixa Banco Bradesco</td>
-                                            <td>6.022,60</td>
-                                        </tr>
-                                        <tr>
-                                            <td width="80"></td>
-                                            <td>Caixa Principal</td>
-                                            <td>8.027,70</td>
-                                        </tr>
+                                        @php
+                                            $lastNumeracaoConta = null;
+                                            $totalConta = 0;
+                                        @endphp
+                            
+                                        @foreach($lancamentosPorConta as $lancamento)
+                                            @if($lastNumeracaoConta != $lancamento->numeracao_conta)
+                                                @if($lastNumeracaoConta != null)
+                                                    <tr>
+                                                        <th width="80"></th>
+                                                        <th>Total da Conta</th>
+                                                        <th>R$ {{ number_format($totalConta, 2, ',', '.') }}</th>
+                                                    </tr>
+                                                @endif
+                                                <tr>
+                                                    <th width="80">{{ $lancamento->numeracao_conta }}</th>
+                                                    <th>{{ $lancamento->nome_conta }}</th>
+                                                    <th></th>
+                                                </tr>
+                                                @php
+                                                    $totalConta = 0;
+                                                @endphp
+                                            @endif
+                            
+                                            <tr>
+                                                <td width="80"></td>
+                                                <td>{{ $lancamento->descricao_caixa }}</td>
+                                                <td>R$ {{ number_format($lancamento->total_lancamentos, 2, ',', '.') }}</td>
+                                            </tr>
+                            
+                                            @php
+                                                $totalConta += $lancamento->total_lancamentos;
+                                                $lastNumeracaoConta = $lancamento->numeracao_conta;
+                                            @endphp
+                                        @endforeach
+                            
+                                        @if(!is_null($lastNumeracaoConta))
+                                            <tr>
+                                                <th width="80"></th>
+                                                <th>Total da Conta</th>
+                                                <th>R$ {{ number_format($totalConta, 2, ',', '.') }}</th>
+                                            </tr>
+                                        @endif
                                     </tbody>
                                 </table>
                             </div>
-                    --}}
+                            
+                            
+                    
 
                         </div>
 

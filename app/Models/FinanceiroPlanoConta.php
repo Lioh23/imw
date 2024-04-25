@@ -26,4 +26,17 @@ class FinanceiroPlanoConta extends Model
         'selecionavel',
         'essencial',
     ];
+
+    public function lancamentos()
+    {
+        return $this->hasMany(FinanceiroLancamento::class, 'caixa_id');
+    }
+
+    
+    public function totalLancamentos()
+    {
+        return $this->lancamentos()
+            ->where('conciliado', 0)
+            ->sum('valor');
+    }
 }
