@@ -93,39 +93,18 @@ trait FinanceiroUtils
             ->get();
     }
 
-    /*  public static function ultimoCaixaConciliado()
-    {
-        $caixa = FinanceiroCaixa::where('instituicao_id', session()->get('session_perfil')->instituicao_id)
-            ->whereHas('lancamentos', function ($query) {
-                $query->where('conciliado', 1)
-                    ->orderBy('data_conciliacao', 'desc');
-            })
-            ->with(['lancamentos' => function ($query) {
-                $query->where('conciliado', 1)
-                    ->orderBy('data_conciliacao', 'desc')
-                    ->limit(1);
-            }])
-            ->first();
-
-        if ($caixa && $caixa->lancamentos->count() > 0) {
-            setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-            $dataConciliacao = Carbon::parse($caixa->lancamentos->first()->data_conciliacao);
-            return $dataConciliacao->isoFormat('MMMM [de] YYYY');
-        }
-
-        return null;
-    } */
     public static function ultimoCaixaConciliado()
     {
         $saldo = FinanceiroSaldoConsolidadoMensal::where('instituicao_id', session()->get('session_perfil')->instituicao_id)
-            ->orderBy('data_hora', 'desc')
+            /* ->orderBy('data_hora', 'desc') */
+            ->orderBy('ano', 'desc')
+            ->orderBy('mes', 'desc')
             ->first();
-    
-            if ($saldo) {
-                return $saldo->data_hora;
-            }
-    
+
+        if ($saldo) {
+            return $saldo->ano . '-' . str_pad($saldo->mes, 2, '0', STR_PAD_LEFT);
+        }
+
         return null;
     }
-    
 }

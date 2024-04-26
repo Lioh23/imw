@@ -5,7 +5,25 @@
         ['text' => 'Consolidação de Caixa', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
+@section('extras-css')
+    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+
+    <style>
+        .swal2-popup .swal2-styled.swal2-cancel {
+            color: white !important;
+        }
+    </style>
+@endsection
+@section('extras-scripts')
+    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+@endsection
+
 @section('content')
+    @include('extras.alerts')
     <div class="container-fluid">
 
     </div>
@@ -181,13 +199,15 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="col-12 text-center">
-                            <form method="post" method="POST" {{-- action="{{route('consolidar.store')}}" --}}>
+                        <div class="col-12 text-center mt-3">
+                            <form method="post" action="{{ route('financeiro.consolidar.store') }}" id="form_consolidacao_automatica">
                                 @csrf
-                                <button class="btn btn-success p-2 btn-rounded" style="text-transform: uppercase;" type="submit">CONSOLIDAR {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}
-                                </button>
+                                <input type="hidden" name="ano" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->year }}"/>
+                                <input type="hidden" name="mes" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->month }}"/>
+                                <button data-form-id="form_consolidacao_automatica" class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;" type="button">CONSOLIDAR {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}</button>
                             </form>
-                        </div>
+                            
+                        </div>                        
                         
                     </div>
                 </div>
@@ -195,4 +215,30 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('.btn-confirm').on('click', function() {
+            const formId = $(this).data('form-id');
+            const buttonText = $(this).text();          
+    
+            swal({
+                title: 'Atenção, deseja realmente consolidar?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Sim',
+                confirmButtonColor: "#d33",
+                cancelButtonText: "Cancelar",
+                cancelButtonColor: "#3085d6",
+                padding: '2em'
+            }).then(function(result) {
+                if (result.dismiss === 'cancel') {
+                    // O usuário clicou em "Cancelar", não faz nada
+                } else if (result.value) {
+                    // O usuário clicou em "Sim", envia o formulário
+                    document.getElementById(formId).submit();
+                }
+            });
+        });
+    </script>
+    
 @endsection

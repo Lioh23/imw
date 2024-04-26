@@ -11,6 +11,7 @@ use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
 use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
+use App\Services\ServiceFinanceiro\ConsolidacaoStoreService;
 use App\Services\ServiceFinanceiro\DeletarLancamentoService;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
@@ -69,7 +70,6 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.transferencia')->with('success', 'Transferência realizada.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             return redirect()->back()->with('error', 'Não foi possível criar um registro de transferência');
         }
     }
@@ -93,7 +93,6 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.saida')->with('success', 'Lançamento de saída realizado.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             return redirect()->back()->with('error', 'Não foi possível criar um registro de saída');
         }
     }
@@ -115,6 +114,20 @@ class FinanceiroController extends Controller
             return view('financeiro.consolidarcaixa', $data);
         } catch(\Exception $e) {
             return redirect()->back()->with('error', 'Não foi possível abrir a página');
+        }
+    }
+
+    public function consolidarstore(Request $request) {
+
+        try {
+            DB::begintransaction();
+            app(ConsolidacaoStoreService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('financeiro.consolidar.caixa')->with('success', 'Consolidação realizada.')->withInput();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return redirect()->back()->with('error', 'Não foi possível consolidar.');
         }
     }
 
@@ -191,4 +204,5 @@ class FinanceiroController extends Controller
     public function updateSaida() {
 
     }
+
 }
