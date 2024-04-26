@@ -42,7 +42,8 @@
                                             <th>CAIXA</th>
                                             <th width="300" style="text-align: right">
                                                 @if ($ultimoCaixa)
-                                                    ÚLTIMO SALDO CONSOLIDADO EM {{ \Carbon\Carbon::parse($ultimoCaixa)->isoFormat('MMMM [de] YYYY') }}
+                                                    ÚLTIMO SALDO CONSOLIDADO EM
+                                                    {{ \Carbon\Carbon::parse($ultimoCaixa)->isoFormat('MMMM [de] YYYY') }}
                                                 @else
                                                     NÃO POSSUI ÚLTIMO SALDO CONSOLIDADO
                                                 @endif
@@ -112,7 +113,8 @@
                                                 <strong>R${{ number_format($totalUltimoConciliado, 2, ',', '.') }}</strong>
                                             </td>
                                             <td style="text-align: right">
-                                                <strong>R${{ number_format($totalEntradas, 2, ',', '.') }}</strong></td>
+                                                <strong>R${{ number_format($totalEntradas, 2, ',', '.') }}</strong>
+                                            </td>
                                             <td style="text-align: right"><strong>{!! $totalSaidas > 0
                                                 ? '<span>-R$' . number_format($totalSaidas, 2, ',', '.') . '</span>'
                                                 : 'R$' . number_format($totalSaidas, 2, ',', '.') !!}</strong></td>
@@ -142,7 +144,7 @@
                             <div class="col-12 mt-3">
                                 <h5>Discriminação dos Lançamentos por Conta</h5>
                             </div>
-                            
+
                             <div class="col-12">
                                 <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                     <thead class="thead-dark">
@@ -156,10 +158,10 @@
                                             $lastNumeracaoConta = null;
                                             $totalConta = 0;
                                         @endphp
-                            
-                                        @foreach($lancamentosPorConta as $lancamento)
-                                            @if($lastNumeracaoConta != $lancamento->numeracao_conta)
-                                                @if($lastNumeracaoConta != null)
+
+                                        @foreach ($lancamentosPorConta as $lancamento)
+                                            @if ($lastNumeracaoConta != $lancamento->numeracao_conta)
+                                                @if ($lastNumeracaoConta != null)
                                                     <tr>
                                                         <th width="80"></th>
                                                         <th>Total da Conta</th>
@@ -175,20 +177,21 @@
                                                     $totalConta = 0;
                                                 @endphp
                                             @endif
-                            
+
                                             <tr>
                                                 <td width="80"></td>
                                                 <td>{{ $lancamento->descricao_caixa }}</td>
-                                                <td>R$ {{ number_format($lancamento->total_lancamentos, 2, ',', '.') }}</td>
+                                                <td>R$ {{ number_format($lancamento->total_lancamentos, 2, ',', '.') }}
+                                                </td>
                                             </tr>
-                            
+
                                             @php
                                                 $totalConta += $lancamento->total_lancamentos;
                                                 $lastNumeracaoConta = $lancamento->numeracao_conta;
                                             @endphp
                                         @endforeach
-                            
-                                        @if(!is_null($lastNumeracaoConta))
+
+                                        @if (!is_null($lastNumeracaoConta))
                                             <tr>
                                                 <th width="80"></th>
                                                 <th>Total da Conta</th>
@@ -200,43 +203,85 @@
                             </div>
                         </div>
                         <div class="col-12 text-center mt-3">
-                            <form method="post" action="{{ route('financeiro.consolidar.store') }}" id="form_consolidacao_automatica">
+                            <span id="warningMessage" class="alert alert-danger" style="display: none;"></span>
+
+                            <form class="mt-4" method="post" action="{{ route('financeiro.consolidar.store') }}"
+                                id="form_consolidacao_automatica">
                                 @csrf
-                                <input type="hidden" name="ano" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->year }}"/>
-                                <input type="hidden" name="mes" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->month }}"/>
-                                <button data-form-id="form_consolidacao_automatica" class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;" type="button">CONSOLIDAR {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}</button>
+                                <input type="hidden" name="ano"
+                                    value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->year }}" />
+                                <input type="hidden" name="mes"
+                                    value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->month }}" />
+                                <button data-form-id="form_consolidacao_automatica"
+                                    class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;"
+                                    type="button">CONSOLIDAR
+                                    {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}</button>
                             </form>
-                            
-                        </div>                        
-                        
+
+                        </div>
+
                     </div>
                 </div>
                 <!-- Fim do Conteúdo -->
             </div>
         </div>
     </div>
-
     <script>
-        $('.btn-confirm').on('click', function() {
-            const formId = $(this).data('form-id');
-            const buttonText = $(this).text();          
+        $(document).ready(function() {
+            const formId = $('.btn-confirm').data('form-id');
+            let warningMessage = '';
+            let shouldSubmit = true;
     
-            swal({
-                title: 'Atenção, deseja realmente consolidar?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Sim',
-                confirmButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
-                cancelButtonColor: "#3085d6",
-                padding: '2em'
-            }).then(function(result) {
-                if (result.dismiss === 'cancel') {
-                    // O usuário clicou em "Cancelar", não faz nada
-                } else if (result.value) {
-                    // O usuário clicou em "Sim", envia o formulário
-                    document.getElementById(formId).submit();
+            // Verificações das regras
+            if ({{ $saldoAtualNaoConciliado }} < 0) {
+                warningMessage = 'Saldo Atual não pode ser negativo!';
+                shouldSubmit = false;
+            } else if ({{ $totalEntradas }} <= 0) {
+                warningMessage = 'Total de Entradas deve ser maior que zero!';
+                shouldSubmit = false;
+            } else {
+                let negativeCaixaEntrada = @json(
+                    $caixas->firstWhere(function ($caixa) {
+                        return $caixa->totalLancamentosNaoConciliadosEntrada() < 0;
+                    }));
+    
+                let negativeCaixaSaldo = @json(
+                    $caixas->firstWhere(function ($caixa) {
+                        return $caixa->saldoAtualNaoConciliado() < 0;
+                    }));
+    
+                if (negativeCaixaEntrada) {
+                    warningMessage = `Entradas para o caixa ${negativeCaixaEntrada.descricao} não podem ser negativas!`;
+                    shouldSubmit = false;
+                } else if (negativeCaixaSaldo) {
+                    warningMessage = `O saldo do caixa ${negativeCaixaSaldo.descricao} não pode ser negativo!`;
+                    shouldSubmit = false;
                 }
+            }
+    
+            if (warningMessage) {
+                $('#warningMessage').html(warningMessage).show();
+                $('.btn-confirm').attr('disabled', true);
+            } else {
+                $('#warningMessage').html('').hide();
+                $('.btn-confirm').attr('disabled', false);
+            }
+    
+            $('.btn-confirm').on('click', function() {
+                swal({
+                    title: 'Atenção, deseja realmente consolidar?',
+                    type: 'warning',
+                    showCancelButton: true,
+                    confirmButtonText: 'Sim',
+                    confirmButtonColor: "#d33",
+                    cancelButtonText: "Cancelar",
+                    cancelButtonColor: "#3085d6",
+                    padding: '2em'
+                }).then(function(result) {
+                    if (result.value) {
+                        document.getElementById(formId).submit();
+                    }
+                });
             });
         });
     </script>
