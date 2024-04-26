@@ -34,6 +34,7 @@ class FinanceiroCaixa extends Model
     {
         return $this->lancamentos()
             ->where('conciliado', 0)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
 
@@ -43,6 +44,7 @@ class FinanceiroCaixa extends Model
             ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
 
@@ -52,6 +54,7 @@ class FinanceiroCaixa extends Model
             ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
 
@@ -61,6 +64,7 @@ class FinanceiroCaixa extends Model
             ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
 
@@ -70,34 +74,15 @@ class FinanceiroCaixa extends Model
             ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
 
-    /*  public function totalLancamentosUltimosConciliados()
-    {
-        $ultimosConciliados = $this->lancamentos()
-            ->where('conciliado', 1)
-            ->orderBy('data_conciliacao', 'desc')
-            ->get();
-
-        $total = 0;
-
-        if ($ultimosConciliados->count() > 0) {
-            $dataMaisRecente = $ultimosConciliados->first()->data_conciliacao;
-
-            foreach ($ultimosConciliados as $lancamento) {
-                if ($lancamento->data_conciliacao == $dataMaisRecente) {
-                    $total += $lancamento->valor;
-                }
-            }
-        }
-
-        return $total;
-    } */
 
     public function totalLancamentosUltimosConciliados()
     {
         $saldo = FinanceiroSaldoConsolidadoMensal::where('caixa_id', $this->id)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->orderBy('data_hora', 'desc')
             ->first();
 
