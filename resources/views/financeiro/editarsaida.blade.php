@@ -122,8 +122,8 @@
                 </div>
 
                 <div class="row mb-4" id="show_pagante_favorecido">
-                    <div class="col-12">
-                        <label for="pagante_favorecido">Pagante/Beneficiário</label>
+                    <div class="col-6">
+                        <label for="pagante_favorecido">Beneficiário</label>
                         <input type="text" class="form-control @error('pagante_favorecido') is-invalid @enderror"
                             id="pagante_favorecido" name="pagante_favorecido"
                             value="{{ $saida->pagante_favorecido ?? old('pagante_favorecido') }}">
@@ -219,8 +219,8 @@
                 var fornecedores = {!! json_encode($fornecedores) !!};
                 var selectHtml =
                     `<div class="col-12">
-                        <label for="pagante_favorecido">Pagante/Beneficiário</label>
-                        <select class="form-control" id="pagante_favorecido" name="pagante_favorecido" required><option value="" disabled>Selecione</option>
+                        <label for="pagante_favorecido">Beneficiário</label>
+                        <select class="form-control" id="   " name="pagante_favorecido" required><option value="" disabled>Selecione</option>
                             @error('pagante_favorecido')
                         <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -241,7 +241,7 @@
                 var clerigos = {!! json_encode($clerigos) !!};
                 var selectHtml =
                     `<div class="col-12">
-                        <label for="pagante_favorecido">Pagante/Beneficiário</label>
+                        <label for="pagante_favorecido">Beneficiário</label>
                         <select class="form-control" id="pagante_favorecido" name="pagante_favorecido" required><option value="" disabled>Selecione</option>
                             @error('pagante_favorecido')
                         <span class="help-block text-danger">{{ $message }}</span>
@@ -263,7 +263,7 @@
                 var fieldValue = '{{ $saida->pagante_favorecido ?? '' }}';
                 var inputHtml =
                     `<div class="col-12">
-                        <label for="pagante_favorecido">Pagante/Beneficiário</label>` +
+                        <label for="pagante_favorecido">Beneficiário</label>` +
                         '<input type="text" class="form-control" id="pagante_favorecido" name="pagante_favorecido" value="' +
                         fieldValue + '">' +
                         `@error('pagante_favorecido')

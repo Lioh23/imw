@@ -125,8 +125,8 @@
                 </div>
 
                 <div class="row mb-4 d-none" id="show_pagante_favorecido">
-                    <div class="col-12">
-                        <label for="pagante_favorecido">Pagante/Beneficiário</label>
+                    <div class="col-6">
+                        <label for="pagante_favorecido">Beneficiário</label>
                         <input type="text" class="form-control @error('pagante_favorecido') is-invalid @enderror"
                             id="pagante_favorecido" name="pagante_favorecido" value="{{ old('pagante_favorecido') }}">
 
