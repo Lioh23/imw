@@ -126,17 +126,17 @@
                 <div class="row mb-4">
                     <div class="col-md-12">
                         <h4><b>Anexos</b></h4>
-                        @foreach ($anexos as $index => $anexo)
-                        @php 
-                           $x = 0;
+                        @php
+                            $x = 0;
                         @endphp
+                        @foreach ($anexos as $index => $anexo)
                             <div class="mb-3">
-                                <label for="anexo1">Anexo {{++$x}}</label><br>
+                                <label for="anexo1">Anexo {{ ++$x }}</label><br>
                                 <a href="{{ asset($anexo['url']) }}" target="_blank">{{ $anexo['nome'] }}</a>
                                 <input type="file"
                                     class="mb-3 form-control-file @error('anexo' . $index) is-invalid @enderror"
                                     id="anexo{{ $index }}" name="anexo{{ $index }}">
-                                <label for="descricao_anexo1">Descrição do Anexo {{$x}}</label>
+                                <label for="descricao_anexo1">Descrição do Anexo {{ $x }}</label>
                                 <textarea class="form-control mt-2" name="descricao_anexo[{{ $anexo['nome'] }}]" rows="1">{{ $anexo['nome'] }}</textarea>
                                 @error('anexo' . $index)
                                     <span class="help-block text-danger">{{ $message }}</span>
@@ -145,13 +145,13 @@
                         @endforeach
 
                         <!-- Campos de upload adicionais, se necessário -->
-                        @for ($i = count($anexos); $i < 3; $i++)
+                        @for ($i = count($anexos), $x = $i; $i < 3; $i++)
                             <div class="mb-3">
-                                <label for="anexo1">Anexo {{++$x}}</label><br>
+                                <label for="anexo1">Anexo {{ ++$x }}</label><br>
                                 <input type="file"
                                     class="mb-3 form-control-file @error('anexo' . $i) is-invalid @enderror"
                                     id="anexo{{ $i }}" name="anexo{{ $i }}">
-                                <label for="descricao_anexo1">Descrição do Anexo {{$x}}</label>
+                                <label for="descricao_anexo1">Descrição do Anexo {{ $x }}</label>
                                 <textarea class="form-control mt-2" name="descricao_anexo[{{ $i }}]" rows="1"></textarea>
                                 @error('anexo' . $i)
                                     <span class="help-block text-danger">{{ $message }}</span>
