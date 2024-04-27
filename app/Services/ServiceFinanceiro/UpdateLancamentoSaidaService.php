@@ -10,21 +10,16 @@ use App\Models\PessoasPessoa;
 use Carbon\Carbon;
 use Ramsey\Uuid\Uuid;
 
-class StoreLancamentoSaidaService
+class UpdateLancamentoSaidaService
 {
-    public function execute(array $data)
+    public function execute(array $data, $id)
     {
-        /* 
-            tipo_pagante_favorecido_id 
-            1 = MEMBRO
-            2 = FORNECEDOR
-            3 = CLERIGO
-        */
+        $lancamento = FinanceiroLancamento::findOrFail($id);
 
         $tipoPaganteFavorecidoId = $data['tipo_pagante_favorecido_id'];
         $paganteFavorecido = $data['pagante_favorecido'];
 
-        $lancamentos = [
+        $lancamento->update([
             'data_lancamento' => Carbon::now()->format('Y-m-d'),
             'valor' => str_replace(',', '.', $data['valor']),
             'tipo_pagante_favorecido_id' => $tipoPaganteFavorecidoId,
@@ -34,7 +29,7 @@ class StoreLancamentoSaidaService
             'data_movimento' => $data['data_movimento'],
             'caixa_id' => $data['caixa_id'],
             'instituicao_id' => session()->get('session_perfil')->instituicao_id
-        ];
+        ]);
 
         $paganteFavorecidoModel = null;
         $campoId = null;
@@ -53,44 +48,44 @@ class StoreLancamentoSaidaService
                 $campoId = 'clerigo_id';
                 break;
             default:
-                $lancamentos['pagante_favorecido'] = $paganteFavorecido;
+                $lancamento->update(['pagante_favorecido' => $paganteFavorecido]);
                 break;
         }
 
         if ($paganteFavorecidoModel) {
-            $lancamentos['pagante_favorecido'] = $paganteFavorecidoModel->nome;
-            $lancamentos[$campoId] = $paganteFavorecido;
+            $lancamento->update([
+                'pagante_favorecido' => $paganteFavorecidoModel->nome,
+                $campoId => $paganteFavorecido,
+            ]);
         }
 
-        $lancamento = FinanceiroLancamento::create($lancamentos);
+       // Upload dos anexos
+       $anexos = [];
+       for ($i = 1; $i <= 3; $i++) {
+           $campoAnexo = "anexo{$i}";
+           $campoDescricao = "descricao_anexo{$i}";
 
-        // Upload dos anexos
-        $anexos = [];
-        for ($i = 1; $i <= 3; $i++) {
-            $campoAnexo = "anexo{$i}";
-            $campoDescricao = "descricao_anexo{$i}";
+           if (isset($data[$campoAnexo]) && $data[$campoAnexo]->isValid()) {
+               $fileName = Uuid::uuid4()->toString() . '.' . $data[$campoAnexo]->getClientOriginalExtension();
+               $filePath = $data[$campoAnexo]->storeAs('anexos', $fileName, 'minio');
 
-            if (isset($data[$campoAnexo]) && $data[$campoAnexo]->isValid()) {
-                $fileName = Uuid::uuid4()->toString() . '.' . $data[$campoAnexo]->getClientOriginalExtension();
-                $filePath = $data[$campoAnexo]->storeAs('anexos', $fileName, 'minio');
+               $anexo = [
+                   'nome' => $fileName,
+                   'caminho' => $filePath,
+                   'descricao' => $data[$campoDescricao],
+                   'lancamento_id' => $lancamento->id,
+               ];
 
-                $anexo = [
-                    'nome' => $fileName,
-                    'caminho' => $filePath,
-                    'descricao' => $data[$campoDescricao],
-                    'lancamento_id' => $lancamento->id,
-                ];
+               $anexos[] = $anexo;
+           } elseif (isset($data[$campoAnexo]) && !$data[$campoAnexo]->isValid()) {
+               // Tratar erro de arquivo inválido
+               // Por exemplo, retornar uma mensagem de erro ou registrar um log
+           }
+       }
 
-                $anexos[] = $anexo;
-            } elseif (isset($data[$campoAnexo]) && !$data[$campoAnexo]->isValid()) {
-                // Tratar erro de arquivo inválido
-                // Por exemplo, retornar uma mensagem de erro ou registrar um log
-            }
-        }
-
-        // Salvar os anexos no banco de dados
-        foreach ($anexos as $anexo) {
-            Anexo::create($anexo);
-        }
-    }
+       // Salvar os anexos no banco de dados
+       foreach ($anexos as $anexo) {
+           Anexo::create($anexo);
+       }
+   }
 }

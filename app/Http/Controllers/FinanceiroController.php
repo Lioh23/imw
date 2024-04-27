@@ -7,6 +7,7 @@ use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Http\Requests\FinanceiroTransferenciaRequest;
 use App\Http\Requests\FinanceiroUpdateEntradaRequest;
+use App\Http\Requests\FinanceiroUpdateSaidaRequest;
 use App\Models\Anexo;
 use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
@@ -21,6 +22,7 @@ use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
 use App\Services\ServiceFinanceiro\StoreTransferenciaService;
 use App\Services\ServiceFinanceiro\UpdateLancamentoEntradaService;
+use App\Services\ServiceFinanceiro\UpdateLancamentoSaidaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -211,8 +213,16 @@ class FinanceiroController extends Controller
         }
     }
 
-    public function updateSaida() {
-
+    public function updateSaida(FinanceiroUpdateSaidaRequest $request, $id) {
+        try {
+            DB::beginTransaction();
+            app(UpdateLancamentoSaidaService::class)->execute($request->all(), $id);
+            DB::commit();
+            return redirect()->route('financeiro.movimento.caixa')->with('success', 'Lançamento de entrada atualizado.'); 
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('financeiro.movimento.caixa')->with('error', $e->getMessage()); 
+        }
     }
 
 }
