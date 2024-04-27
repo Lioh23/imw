@@ -149,9 +149,9 @@
                 </div>
 
                 <div class="row mb-4 justify-content-center">
-                   {{--  <button type="submit" title="Atualizar movimentação de entrada" class="btn btn-primary btn-lg ml-4">
+                    <button type="submit" title="Atualizar movimentação de entrada" class="btn btn-primary btn-lg ml-4">
                         <x-bx-save /> Atualizar
-                    </button> --}}
+                    </button>
                 </div>
             </form>
         </div>
