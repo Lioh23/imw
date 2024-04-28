@@ -33,8 +33,8 @@ class FinanceiroCaixa extends Model
 
     public function saldoAtual($mesAno = null)
     {
-        $totalEntrada = $this->totalLancamentosNaoConciliadosEntrada($mesAno) + $this->totalLancamentosNaoConciliadosTransferenciaEntrada($mesAno);
-        $totalSaida = $this->totalLancamentosNaoConciliadosSaida($mesAno) + $this->totalLancamentosNaoConciliadosTransferenciaSaida($mesAno);
+        $totalEntrada = $this->totalLancamentosEntrada($mesAno) + $this->totalLancamentosTransferenciaEntrada($mesAno);
+        $totalSaida = $this->totalLancamentosSaida($mesAno) + $this->totalLancamentosTransferenciaSaida($mesAno);
         $ultimoConciliado = $this->totalLancamentosUltimosConciliados($mesAno);
     
         return $totalEntrada - $totalSaida + $ultimoConciliado;
