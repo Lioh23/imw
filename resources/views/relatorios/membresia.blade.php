@@ -52,7 +52,7 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox checkbox-outline-success">
-                  <input checked type="checkbox" name="vinculo[]" value="M" class="new-control-input">
+                  <input checked type="checkbox" name="vinculo[]" id="vinculo_membro" value="M" class="new-control-input">
                   <span class="new-control-indicator"></span>Membro
                 </label>
               </div>
@@ -101,7 +101,7 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input checked type="radio" name="situacao" value="rol_permanente" class="new-control-input">
+                  <input checked type="radio" name="situacao" value="rol_permanente" class="new-control-input" id="situacao_rol_permanente">
                   <span class="new-control-indicator"></span>Rol Permanente
                 </label>
               </div>
@@ -251,5 +251,15 @@
   $('#btn_relatorio').click(function () {
     $('#filter_form').attr('target', '_blank');
   })
+
+  // inibir a seleção de situação para quando o vínculo "membro for desmarcado"
+  $('#vinculo_membro').change(function () {
+    if(! $(this).is(':checked')) {
+      $('input[name="situacao"]').attr('disabled', true);
+      $('input[name="situacao"]').eq(2).prop('checked', true);
+    } else {
+      $('input[name="situacao"]').removeAttr('disabled');
+    }
+  }) 
 </script>
 @endsection
