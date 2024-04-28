@@ -6,11 +6,35 @@ use App\Models\FinanceiroCaixa;
 use App\Models\FinanceiroFornecedores;
 use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
+use App\Models\FinanceiroSaldoConsolidadoMensal;
 use App\Models\MembresiaMembro;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 trait FinanceiroUtils
 {
+    public static function lancamentosPorContas()
+    {
+        return  DB::table('financeiro_plano_contas as pc')
+            ->select(
+                'pc.numeracao as numeracao_conta',
+                'pc.nome as nome_conta',
+                'c.descricao as descricao_caixa',
+                DB::raw('SUM(IF(l.valor IS NOT NULL AND l.valor != 0, l.valor, 0)) as total_lancamentos')
+            )
+            ->leftJoin('financeiro_lancamentos as l', 'pc.id', '=', 'l.plano_conta_id')
+            ->leftJoin('financeiro_caixas as c', 'l.caixa_id', '=', 'c.id')
+            ->where('l.conciliado', 0)
+            ->where('l.instituicao_id', '=', session()->get('session_perfil')->instituicao_id)
+            ->groupBy('pc.numeracao', 'pc.nome', 'c.descricao')
+            ->havingRaw('total_lancamentos > 0')
+            ->orderBy('pc.numeracao')
+            ->orderBy('pc.nome')
+            ->orderBy('c.descricao')
+            ->get();
+    }
+
+
     public static function planoContas($tipo = null)
     {
         return FinanceiroPlanoConta::orderBy('numeracao')
@@ -69,27 +93,24 @@ trait FinanceiroUtils
             ->get();
     }
 
-    public static function ultimoCaixaConciliado()
+    public static function ultimoCaixaConciliado($mesAno = null)
     {
-        $caixa = FinanceiroCaixa::where('instituicao_id', session()->get('session_perfil')->instituicao_id)
-            ->whereHas('lancamentos', function ($query) {
-                $query->where('conciliado', 1)
-                      ->orderBy('data_conciliacao', 'desc');
-            })
-            ->with(['lancamentos' => function ($query) {
-                $query->where('conciliado', 1)
-                      ->orderBy('data_conciliacao', 'desc')
-                      ->limit(1);
-            }])
-            ->first();
-    
-        if ($caixa && $caixa->lancamentos->count() > 0) {
-            setlocale(LC_TIME, 'pt_BR', 'pt_BR.utf-8', 'pt_BR.utf-8', 'portuguese');
-            $dataConciliacao = Carbon::parse($caixa->lancamentos->first()->data_conciliacao);
-            return $dataConciliacao->isoFormat('MMMM [de] YYYY');  
+        $query = FinanceiroSaldoConsolidadoMensal::where('instituicao_id', session()->get('session_perfil')->instituicao_id);
+
+        if ($mesAno) {
+            list($mes, $ano) = explode('/', $mesAno);
+            $ultimoDiaMes = Carbon::createFromFormat('Y-m', $ano . '-' . $mes)->endOfMonth();
+            $query->where('data_hora', '<', $ultimoDiaMes);
         }
-    
+
+        $saldo = $query->orderBy('ano', 'desc')
+            ->orderBy('mes', 'desc')
+            ->first();
+
+        if ($saldo) {
+            return str_pad($saldo->mes, 2, '0', STR_PAD_LEFT) . '/' . $saldo->ano;
+        }
+
         return null;
     }
-    
 }

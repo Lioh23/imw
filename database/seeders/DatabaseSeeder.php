@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
         //Regras de Segurança
         $this->call(PerfilsTableSeeder::class);
         $this->call(RegrasTableSeeder::class);
+        $this->call(RegrasExtrasTableSeeder::class);
         $this->call(PerfilRegraTableSeeder::class);
         $this->call(UserSeeder::class);
     }

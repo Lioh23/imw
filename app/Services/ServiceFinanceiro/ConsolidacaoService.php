@@ -17,7 +17,8 @@ class ConsolidacaoService
     {
         return [
             'caixas' => FinanceiroUtils::caixas(),
-            'ultimoCaixa' => FinanceiroUtils::ultimoCaixaConciliado()
+            'ultimoCaixa' => FinanceiroUtils::ultimoCaixaConciliado(),
+            'lancamentosPorConta' => FinanceiroUtils::lancamentosPorContas()
         ];
     }
 }

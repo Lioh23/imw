@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -30,10 +31,21 @@ class FinanceiroCaixa extends Model
         return $totalEntrada - $totalSaida + $ultimoConciliado;
     }
 
+    public function saldoAtual($mesAno = null)
+    {
+        $totalEntrada = $this->totalLancamentosEntrada($mesAno) + $this->totalLancamentosTransferenciaEntrada($mesAno);
+        $totalSaida = $this->totalLancamentosSaida($mesAno) + $this->totalLancamentosTransferenciaSaida($mesAno);
+        $ultimoConciliado = $this->totalLancamentosUltimosConciliados($mesAno);
+    
+        return $totalEntrada - $totalSaida + $ultimoConciliado;
+    }
+    
+
     public function totalLancamentosNaoConciliados()
     {
         return $this->lancamentos()
             ->where('conciliado', 0)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
 
@@ -43,8 +55,30 @@ class FinanceiroCaixa extends Model
             ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
+
+    public function totalLancamentosTransferenciaEntrada($mesAno = null)
+    {
+        $query = $this->lancamentos()
+            ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id);
+
+        if ($mesAno) {
+            // Extrair o mês e o ano do formato "mm/yyyy"
+            $mes = intval(substr($mesAno, 0, 2));
+            $ano = intval(substr($mesAno, 3, 4));
+
+            // Adicionar a condição para buscar lançamentos do mês/ano fornecido
+            $query->whereYear('data_movimento', $ano)->whereMonth('data_movimento', $mes);
+        }
+
+        return $query->sum('valor');
+    }
+
 
     public function totalLancamentosNaoConciliadosTransferenciaSaida()
     {
@@ -52,8 +86,31 @@ class FinanceiroCaixa extends Model
             ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
+
+
+    public function totalLancamentosTransferenciaSaida($mesAno = null)
+    {
+        $query = $this->lancamentos()
+            ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id);
+
+        if ($mesAno) {
+            // Extrair o mês e o ano do formato "mm/yyyy"
+            $mes = intval(substr($mesAno, 0, 2));
+            $ano = intval(substr($mesAno, 3, 4));
+
+            // Adicionar a condição para buscar lançamentos do mês/ano fornecido
+            $query->whereYear('data_movimento', $ano)->whereMonth('data_movimento', $mes);
+        }
+
+        return $query->sum('valor');
+    }
+
 
     public function totalLancamentosNaoConciliadosEntrada()
     {
@@ -61,8 +118,30 @@ class FinanceiroCaixa extends Model
             ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
+
+    public function totalLancamentosEntrada($mesAno = null)
+    {
+        $query = $this->lancamentos()
+            ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id);
+
+        if ($mesAno) {
+            // Extrair o mês e o ano do formato "mm/yyyy"
+            $mes = intval(substr($mesAno, 0, 2));
+            $ano = intval(substr($mesAno, 3, 4));
+
+            // Adicionar a condição para buscar lançamentos do mês/ano fornecido
+            $query->whereYear('data_movimento', $ano)->whereMonth('data_movimento', $mes);
+        }
+
+        return $query->sum('valor');
+    }
+
+
 
     public function totalLancamentosNaoConciliadosSaida()
     {
@@ -70,28 +149,53 @@ class FinanceiroCaixa extends Model
             ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->sum('valor');
     }
 
-    public function totalLancamentosUltimosConciliados()
+    public function totalLancamentosSaida($mesAno = null)
     {
-        $ultimosConciliados = $this->lancamentos()
-            ->where('conciliado', 1)
-            ->orderBy('data_conciliacao', 'desc')
-            ->get();
+        $query = $this->lancamentos()
+            ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id);
 
-        $total = 0;
+        if ($mesAno) {
+            // Extrair o mês e o ano do formato "mm/yyyy"
+            $mes = intval(substr($mesAno, 0, 2));
+            $ano = intval(substr($mesAno, 3, 4));
 
-        if ($ultimosConciliados->count() > 0) {
-            $dataMaisRecente = $ultimosConciliados->first()->data_conciliacao;
-
-            foreach ($ultimosConciliados as $lancamento) {
-                if ($lancamento->data_conciliacao == $dataMaisRecente) {
-                    $total += $lancamento->valor;
-                }
-            }
+            // Adicionar a condição para buscar lançamentos do mês/ano fornecido
+            $query->whereYear('data_movimento', $ano)->whereMonth('data_movimento', $mes);
         }
 
-        return $total;
+        return $query->sum('valor');
+    }
+
+
+    public function totalLancamentosUltimosConciliados($mesAno = null)
+    {
+        $query = FinanceiroSaldoConsolidadoMensal::where('caixa_id', $this->id)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id);
+
+        if ($mesAno) {
+            // Extrair o mês e o ano do formato "mm/yyyy"
+            $mes = intval(substr($mesAno, 0, 2));
+            $ano = intval(substr($mesAno, 3, 4));
+
+            // Montar a data do primeiro dia do mês seguinte ao mês/ano fornecido
+            $dataInicio = Carbon::createFromFormat('Y-m-d', "$ano-$mes-01")->addMonth()->startOfMonth();
+
+            // Adicionar a condição para buscar registros anteriores à data de início do mês fornecido
+            $query->where('data_hora', '<', $dataInicio);
+        }
+
+        $saldo = $query->orderBy('data_hora', 'desc')->first();
+
+        if (!$saldo) {
+            return 0;
+        }
+
+        return $saldo->saldo_final;
     }
 }

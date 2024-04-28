@@ -5,6 +5,7 @@ use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\FinanceiroPlanoContaController;
+use App\Http\Controllers\FinanceiroRelatorioController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
@@ -100,6 +101,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('financeiro')->name('financeiro.')->group(function () {
             Route::get('/movimento-caixa', [FinanceiroController::class, 'movimentocaixa'])->name('movimento.caixa')->middleware(['seguranca:financeiro-movimentocaixa-index']);
             Route::get('/consolidar-caixa', [FinanceiroController::class, 'consolidarcaixa'])->name('consolidar.caixa')->middleware(['seguranca:financeiro-consolidarcaixa']);
+            Route::post('/consolidar/store', [FinanceiroController::class, 'consolidarstore'])->name('consolidar.store')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/entrada', [FinanceiroController::class, 'entrada'])->name('entrada')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/entrada/store', [FinanceiroController::class, 'storeEntrada'])->name('entrada.store')->middleware(['seguranca:financeiro-caixas']);
             Route::put('/entrada/{id}', [FinanceiroController::class, 'updateEntrada'])->name('entrada.update')->middleware(['seguranca:financeiro-caixas']);
@@ -122,6 +124,13 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/caixas/deletar/{id}', [FinanceiroCaixasController::class, 'deletar'])->name('caixas.deletar')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/editar/{id}', [FinanceiroCaixasController::class, 'editar'])->name('caixas.editar')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/update/{id}', [FinanceiroCaixasController::class, 'update'])->name('caixas.update')->middleware(['seguranca:financeiro-caixas']);
+        
+            //Relatorios
+            Route::get('/relatorio/movimento-diario', [FinanceiroRelatorioController::class, 'movimentodiario'])->name('relatorio-movimento-diario')->middleware(['seguranca:menu-relatorios']);
+            Route::get('/relatorio/livrorazao', [FinanceiroRelatorioController::class, 'livrorazao'])->name('relatorio-livrorazao')->middleware(['seguranca:menu-relatorios']);
+            Route::get('/relatorio/livrocaixa', [FinanceiroRelatorioController::class, 'livrocaixa'])->name('relatorio-livrocaixa')->middleware(['seguranca:menu-relatorios']);
+            Route::get('/relatorio/livrograde', [FinanceiroRelatorioController::class, 'livrograde'])->name('relatorio-livrograde')->middleware(['seguranca:menu-relatorios']);
+            Route::get('/relatorio/balancete', [FinanceiroRelatorioController::class, 'balancete'])->name('relatorio-balancete')->middleware(['seguranca:menu-relatorios']);
         });
 
          /* Por enquanto somente visualiações */

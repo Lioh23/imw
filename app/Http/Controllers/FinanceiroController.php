@@ -6,11 +6,14 @@ use App\Exceptions\FinanceiroLancamentoNotFoundException;
 use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Http\Requests\FinanceiroTransferenciaRequest;
+use App\Http\Requests\FinanceiroUpdateEntradaRequest;
+use App\Http\Requests\FinanceiroUpdateSaidaRequest;
 use App\Models\Anexo;
 use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
 use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
+use App\Services\ServiceFinanceiro\ConsolidacaoStoreService;
 use App\Services\ServiceFinanceiro\DeletarLancamentoService;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
@@ -18,6 +21,8 @@ use App\Services\ServiceFinanceiro\SaldoService;
 use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
 use App\Services\ServiceFinanceiro\StoreTransferenciaService;
+use App\Services\ServiceFinanceiro\UpdateLancamentoEntradaService;
+use App\Services\ServiceFinanceiro\UpdateLancamentoSaidaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -69,7 +74,6 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.transferencia')->with('success', 'Transferência realizada.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             return redirect()->back()->with('error', 'Não foi possível criar um registro de transferência');
         }
     }
@@ -93,7 +97,6 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.saida')->with('success', 'Lançamento de saída realizado.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
-            dd($e);
             return redirect()->back()->with('error', 'Não foi possível criar um registro de saída');
         }
     }
@@ -115,6 +118,20 @@ class FinanceiroController extends Controller
             return view('financeiro.consolidarcaixa', $data);
         } catch(\Exception $e) {
             return redirect()->back()->with('error', 'Não foi possível abrir a página');
+        }
+    }
+
+    public function consolidarstore(Request $request) {
+
+        try {
+            DB::begintransaction();
+            app(ConsolidacaoStoreService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('financeiro.consolidar.caixa')->with('success', 'Consolidação realizada.')->withInput();
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return redirect()->back()->with('error', 'Não foi possível consolidar.');
         }
     }
 
@@ -183,12 +200,29 @@ class FinanceiroController extends Controller
         return $data;
     }
     
-    
-    public function updateEntrada() {
-        
+    public function updateEntrada(FinanceiroUpdateEntradaRequest $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            app(UpdateLancamentoEntradaService::class)->execute($request->all(), $id);
+            DB::commit();
+            return redirect()->route('financeiro.movimento.caixa')->with('success', 'Lançamento de entrada atualizado.'); 
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('financeiro.movimento.caixa')->with('error', $e->getMessage()); 
+        }
     }
 
-    public function updateSaida() {
-
+    public function updateSaida(FinanceiroUpdateSaidaRequest $request, $id) {
+        try {
+            DB::beginTransaction();
+            app(UpdateLancamentoSaidaService::class)->execute($request->all(), $id);
+            DB::commit();
+            return redirect()->route('financeiro.movimento.caixa')->with('success', 'Lançamento de entrada atualizado.'); 
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('financeiro.movimento.caixa')->with('error', $e->getMessage()); 
+        }
     }
+
 }
