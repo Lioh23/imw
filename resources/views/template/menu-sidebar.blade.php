@@ -224,17 +224,17 @@
                                    <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
                                @endif
                            </li>
-                           <li>
+                           {{-- <li>
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-livrorazao') }}">Livro Razão</a>
                                @endif
-                           </li>
+                           </li> --}}
                            <li>
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
                                @endif
                            </li>
-                           <li>
+                           {{-- <li>
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
                                @endif
@@ -243,7 +243,7 @@
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
                                @endif
-                           </li>
+                           </li> --}}
                        </ul>
                    </li>
                @endif
