@@ -155,7 +155,7 @@
                    </li>
                @endif
 
-               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-secretaria'))
+               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                <li class="menu">
                    <a href="#relatorios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                        <div class="">
@@ -220,27 +220,27 @@
                        <ul class="collapse submenu list-unstyled" id="relatorios-financeiros"
                            data-parent="#relatorios-financeiros">
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-movimento-diario'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
                                @endif
                            </li>
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrorazao'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-livrorazao') }}">Livro Razão</a>
                                @endif
                            </li>
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrocaixa'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
                                @endif
                            </li>
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrograde'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
                                @endif
                            </li>
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
                                @endif
                            </li>
