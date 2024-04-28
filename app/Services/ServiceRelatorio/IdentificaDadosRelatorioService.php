@@ -5,6 +5,7 @@ namespace App\Services\ServiceRelatorio;
 use App\Models\CongregacoesCongregacao;
 use App\Models\MembresiaMembro;
 use App\Traits\Identifiable;
+use Carbon\Carbon;
 
 class IdentificaDadosRelatorioService
 {
@@ -18,10 +19,10 @@ class IdentificaDadosRelatorioService
         ];
 
         if(isset($params['action'])) {
-            $data['membros']     = $this->fetchMembrosRelatorio($params);
-            $data['vinculos']    = $this->fetchTextVinculos($params['vinculo']);
-            $data['situacao']    = $this->fetchTextSituacao($params['situacao']);
-            $data['congregacao'] = $this->fetchTextCongregacao($params['congregacao_id']);
+            $data['membros']      = $this->fetchMembrosRelatorio($params);
+            $data['vinculos']     = $this->fetchTextVinculos($params['vinculo']);
+            $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
+            $data['ondeCongrega'] = $this->fetchTextCongregacao($params['congregacao_id']);
         }
 
         return $data;
@@ -51,7 +52,6 @@ class IdentificaDadosRelatorioService
 
     private function handleFilterDtNascimento($query, $dtInicial, $dtFinal) 
     {
-        // dd($dtInicial, $dtFinal);
         if ($dtInicial) {
             $query->where('data_nascimento', '>=' , $dtInicial);
         }
@@ -66,11 +66,11 @@ class IdentificaDadosRelatorioService
     private function handleFilterDtRecepcao($query, $dtInicial, $dtFinal) 
     {
         if ($dtInicial) {
-            $query->whereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') >= $dtInicial");
+            $query->whereDate('created_at', '>=', $dtInicial);
         }
 
         if ($dtFinal) {
-            $query->whereRaw("DATE_FORMAT(created_at, '%Y-%m-%d') <= $dtFinal");
+            $query->whereDate('created_at', '<=', $dtFinal);
         }
 
         return $query;
@@ -79,12 +79,14 @@ class IdentificaDadosRelatorioService
     private function handleFilterDtExclusao($query, $dtInicial, $dtFinal) 
     {
         if ($dtInicial) {
-            $query->whereRaw("DATE_FORMAT(deleted_at, '%Y-%m-%d') >= $dtInicial");
+            $query->whereDate('deleted_at', '>=', Carbon::parse($dtInicial));
         }
 
         if ($dtFinal) {
-            $query->whereRaw("DATE_FORMAT(deleted_at, '%Y-%m-%d') <= $dtFinal");
+            $query->whereDate('deleted_at', '<=', $dtFinal);
         }
+
+        // dd($dtInicial, $dtFinal, $query->get());
 
         return $query;
     }

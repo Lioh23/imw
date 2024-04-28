@@ -167,7 +167,7 @@
           <div class="col-lg-2"></div>
           <div class="col-lg-6">
             <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
-              <x-bx-search /> Buscar
+              <x-bx-search /> Buscar 
             </button>
             <button id="btn_relatorio" type="submit" name="action" value="relatorio" title="Gerar Relatório PDF" class="btn btn-secondary btn ml-4">
               <x-bx-file /> Relatório
@@ -190,7 +190,7 @@
                   <p class="pl-3">Registros Encontrados: {{ $membros->count() }}</p>
                   <p class="pl-3">Vínculo: {{ $vinculos }}</p>
                   <p class="pl-3">Situação: {{ $situacao }}</p>
-                  <p class="pl-3">Onde Congrega: {{ $congregacao }}</p>
+                  <p class="pl-3">Onde Congrega: {{ $ondeCongrega }}</p>
               </div>
           </div>
         </div>
@@ -219,7 +219,7 @@
                             <td>{{ $membro->vinculoText }}</td>
                             <td>{{ $membro->data_nascimento->format('d/m/Y') }}</td>
                             <td>{{ $membro->created_at->format('d/m/Y') }}</td>
-                            <td>{{ $membro->updated_at->format('d/m/Y') }}</td>
+                            <td>{{ optional($membro->deleted_at)->format('d/m/Y') }}</td>
                             <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
                           </tr>
                       @endforeach
