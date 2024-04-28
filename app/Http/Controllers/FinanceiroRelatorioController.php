@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ServiceFinanceiroRelatorios\LivroCaixaService;
 use App\Services\ServiceFinanceiroRelatorios\MovimentoDiarioService;
 use Illuminate\Http\Request;
 
@@ -21,8 +22,12 @@ class FinanceiroRelatorioController extends Controller
         return view('financeiro.relatorios.livrorazao');
     }
 
-    public function  livrocaixa() {
-        return view('financeiro.relatorios.livrocaixa');
+    public function  livrocaixa(Request $request) {
+        $dt = $request->input('dt');
+        $caixaId = $request->input('caixa_id');
+    
+        $data = app(LivroCaixaService::class)->execute($dt, $caixaId);
+        return view('financeiro.relatorios.livrocaixa', $data);
     }
 
     public function  livrograde() {
