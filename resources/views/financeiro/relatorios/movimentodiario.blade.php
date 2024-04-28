@@ -80,7 +80,7 @@
     </div>
 
     <!-- TABELA -->
-    @if (isset($lancamentosPorCaixa))
+    @if (!empty(request()->input('dt_inicial')))
     <div class="col-lg-12 col-12 layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-header">
@@ -139,6 +139,17 @@
                 </div>
             </div>
         </div>
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i
+                        class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
+            </div>
+        </div>
     </div>
   @endif
+  <script src="{{asset('theme/assets/js/planilha/papaparse.min.js')}}"></script>
+    <script src="{{asset('theme/assets/js/planilha/FileSaver.min.js')}}"></script>
+    <script src="{{asset('theme/assets/js/planilha/xlsx.full.min.js')}}"></script>
+    <script src="{{asset('theme/assets/js/planilha/planilha.js')}}"></script>
+    <script src="{{asset('theme/assets/js/pages/movimentocaixa.js')}}"></script>
 @endsection
