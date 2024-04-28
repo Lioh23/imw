@@ -5,6 +5,7 @@ use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\FinanceiroPlanoContaController;
+use App\Http\Controllers\FinanceiroRelatorioController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
@@ -123,6 +124,13 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/caixas/deletar/{id}', [FinanceiroCaixasController::class, 'deletar'])->name('caixas.deletar')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/editar/{id}', [FinanceiroCaixasController::class, 'editar'])->name('caixas.editar')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/update/{id}', [FinanceiroCaixasController::class, 'update'])->name('caixas.update')->middleware(['seguranca:financeiro-caixas']);
+        
+            //Relatorios
+            Route::get('/relatorio/movimento-diario', [FinanceiroRelatorioController::class, 'movimentodiario'])->name('relatorio-movimento-diario')->middleware(['seguranca:financeiro-relatorio-movimento-diario']);
+            Route::get('/relatorio/livrorazao', [FinanceiroRelatorioController::class, 'livrorazao'])->name('relatorio-livrorazao')->middleware(['seguranca:financeiro-relatorio-livrorazao']);
+            Route::get('/relatorio/livrocaixa', [FinanceiroRelatorioController::class, 'livrocaixa'])->name('relatorio-livrocaixa')->middleware(['seguranca:financeiro-relatorio-livrocaixa']);
+            Route::get('/relatorio/livrograde', [FinanceiroRelatorioController::class, 'livrograde'])->name('relatorio-livrograde')->middleware(['seguranca:financeiro-relatorio-livrograde']);
+            Route::get('/relatorio/balancete', [FinanceiroRelatorioController::class, 'balancete'])->name('relatorio-balancete')->middleware(['seguranca:financeiro-relatorio-balancete']);
         });
 
          /* Por enquanto somente visualiações */

@@ -100,6 +100,43 @@
                        </ul>
                    </li>
                @endif
+               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-secretaria'))
+               <li class="menu">
+                   <a href="#relatorios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                       <div class="">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                               stroke-linecap="round" stroke-linejoin="round" class="feather feather-printer">
+                               <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                               <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2">
+                               </path>
+                               <rect x="6" y="14" width="12" height="8"></rect>
+                           </svg>
+                           <span>Relatórios - Secretaria</span>
+                       </div>
+                       <div>
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                               viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                               stroke-linecap="round" stroke-linejoin="round"
+                               class="feather feather-chevron-right">
+                               <polyline points="9 18 15 12 9 6"></polyline>
+                           </svg>
+                       </div>
+                   </a>
+                   <ul class="collapse submenu list-unstyled" id="relatorios" data-parent="#relatorios">
+                       <li>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relmembresia-index'))
+                                <a href="{{ route('relatorio.membresia') }}">Membresia</a>
+                           @endif
+                       </li>
+                       <li>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relaniversariantes-index'))
+                               <a href="#">Aniversariantes</a>
+                           @endif
+                       </li>
+                   </ul>
+               </li>
+           @endif
                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
                    <li class="menu">
                        <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -148,13 +185,14 @@
                                    <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
                                @endif
                            </li>
+                           
                        </ul>
                    </li>
                @endif
 
-               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-financeiro'))
                    <li class="menu">
-                       <a href="#relatorios" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                       <a href="#relatorios-financeiros" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                            <div class="">
                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -164,7 +202,7 @@
                                    </path>
                                    <rect x="6" y="14" width="12" height="8"></rect>
                                </svg>
-                               <span>Relatórios</span>
+                               <span>Relatórios - Financeiro</span>
                            </div>
                            <div>
                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -175,17 +213,32 @@
                                </svg>
                            </div>
                        </a>
-                       <ul class="collapse submenu list-unstyled" id="relatorios" data-parent="#relatorios">
+                       <ul class="collapse submenu list-unstyled" id="relatorios-financeiros" data-parent="#relatorios-financeiros">
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relmembresia-index'))
-                                    <a href="{{ route('relatorio.membresia') }}">Membresia</a>
-                               @endif
-                           </li>
-                           <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relaniversariantes-index'))
-                                   <a href="#">Aniversariantes</a>
-                               @endif
-                           </li>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-movimento-diario'))
+                               <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
+                            @endif
+                          </li>
+                          <li>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrorazao'))
+                              <a href="{{ route('financeiro.relatorio-livrorazao') }}">Livro Razão</a>
+                           @endif
+                         </li>
+                         <li>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrocaixa'))
+                              <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
+                           @endif
+                         </li>
+                         <li>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrograde'))
+                              <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
+                           @endif
+                         </li>
+                         <li>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
+                              <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
+                           @endif
+                         </li>
                        </ul>
                    </li>
                @endif
