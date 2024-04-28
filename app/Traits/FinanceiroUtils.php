@@ -93,16 +93,22 @@ trait FinanceiroUtils
             ->get();
     }
 
-    public static function ultimoCaixaConciliado()
+    public static function ultimoCaixaConciliado($mesAno = null)
     {
-        $saldo = FinanceiroSaldoConsolidadoMensal::where('instituicao_id', session()->get('session_perfil')->instituicao_id)
-            /* ->orderBy('data_hora', 'desc') */
-            ->orderBy('ano', 'desc')
+        $query = FinanceiroSaldoConsolidadoMensal::where('instituicao_id', session()->get('session_perfil')->instituicao_id);
+
+        if ($mesAno) {
+            list($mes, $ano) = explode('/', $mesAno);
+            $ultimoDiaMes = Carbon::createFromFormat('Y-m', $ano . '-' . $mes)->endOfMonth();
+            $query->where('data_hora', '<', $ultimoDiaMes);
+        }
+
+        $saldo = $query->orderBy('ano', 'desc')
             ->orderBy('mes', 'desc')
             ->first();
 
         if ($saldo) {
-            return $saldo->ano . '-' . str_pad($saldo->mes, 2, '0', STR_PAD_LEFT);
+            return str_pad($saldo->mes, 2, '0', STR_PAD_LEFT) . '/' . $saldo->ano;
         }
 
         return null;
