@@ -84,15 +84,22 @@
                                         <tr>
                                             <th>CAIXA</th>
                                             <th width="300" style="text-align: right">SALDO ANTERIOR CONSOLIDADO</th>
-                                            <th width="110" style="text-align: right">TOTAIS DE ENTRADAS</th>
-                                            <th width="110" style="text-align: right">TOTAIS DE SAÍDAS</th>
-                                            <th width="110" style="text-align: right">TRANSF. ENTRADAS</th>
-                                            <th width="110" style="text-align: right">TRANSF. SAÍDAS</th>
-                                            <th width="110" style="text-align: right">SALDO ATUAL</th>
+                                            <th width="120" style="text-align: right">TOTAIS DE ENTRADAS</th>
+                                            <th width="120" style="text-align: right">TOTAIS DE SAÍDAS</th>
+                                            <th width="120" style="text-align: right">TRANSF. ENTRADAS</th>
+                                            <th width="120" style="text-align: right">TRANSF. SAÍDAS</th>
+                                            <th width="120" style="text-align: right">SALDO ATUAL</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-
+                                        @php
+                                            $totalSaldoFinal = 0;
+                                            $totalEntradas = 0;
+                                            $totalSaidas = 0;
+                                            $totalTransferenciasEntrada = 0;
+                                            $totalTransferenciasSaida = 0;
+                                            $totalSaldoAtual = 0;
+                                        @endphp
 
                                         @foreach ($caixas as $caixa)
                                             <tr>
@@ -113,19 +120,38 @@
                                                 <td style="text-align: right">
                                                     {{ 'R$ ' . number_format($caixa->saldo_atual, 2, ',', '.') }}</td>
                                             </tr>
+                                            @php
+                                                $totalSaldoFinal += $caixa->saldo_final;
+                                                $totalEntradas += $caixa->total_entradas;
+                                                $totalSaidas += $caixa->total_saidas;
+                                                $totalTransferenciasEntrada += $caixa->total_transferencias_entrada;
+                                                $totalTransferenciasSaida += $caixa->total_transferencias_saida;
+                                                $totalSaldoAtual += $caixa->saldo_atual;
+                                            @endphp
                                         @endforeach
 
-
-
-                                        {{--  <tr>
-                                        <td style="text-align: left"><strong><b>Total dos Caixas</b></strong></td>
-                                        <td style="text-align: right"><strong>R${{ number_format($totalUltimoConciliado, 2, ',', '.') }}</strong></td>
-                                        <td style="text-align: right"><strong>R${{ number_format($totalEntradas, 2, ',', '.') }}</strong></td>
-                                        <td style="text-align: right"><strong>{!! $totalSaidas > 0 ? '<span>-R$' . number_format($totalSaidas, 2, ',', '.') . '</span>' : 'R$' . number_format($totalSaidas, 2, ',', '.') !!}</strong></td>
-                                        <td style="text-align: right"><strong>R${{ number_format($totalTransfEntradas, 2, ',', '.') }}</strong></td>
-                                        <td style="text-align: right"><strong>{!! $totalTransfSaidas > 0 ? '<span>-R$' . number_format($totalTransfSaidas, 2, ',', '.') . '</span>' : 'R$' . number_format($totalTransfSaidas, 2, ',', '.') !!}</strong></td>
-                                        <td style="text-align: right">{!! $saldoAtualNaoConciliado > 0 ? '<strong><span class="badge badge-success">R$' . number_format($saldoAtualNaoConciliado, 2, ',', '.') . '</span></strong>' : ($saldoAtualNaoConciliado < 0 ? '<strong><span class="badge badge-danger">-R$' . number_format($saldoAtualNaoConciliado, 2, ',', '.') . '</span></strong>' : ($saldoAtualNaoConciliado == 0 ? '<strong><span class="badge badge-secondary">R$' . number_format($saldoAtualNaoConciliado, 2, ',', '.') . '</span></strong>' : number_format($saldoAtualNaoConciliado, 2, ',', '.'))) !!}</td>
-                                    </tr> --}}
+                                        {{-- Total de cada caixa --}}
+                                        <tr>
+                                            <td style="text-align: left"><strong>Total dos Caixas</strong></td>
+                                            <td style="text-align: right">
+                                                <strong>{{ 'R$ ' . number_format($totalSaldoFinal, 2, ',', '.') }}</strong>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <strong>{{ 'R$ ' . number_format($totalEntradas, 2, ',', '.') }}</strong>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <strong>{{ 'R$ ' . ($totalSaidas > 0 ? '-' : '') . number_format(abs($totalSaidas), 2, ',', '.') }}</strong>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <strong>{{ 'R$ ' . number_format($totalTransferenciasEntrada, 2, ',', '.') }}</strong>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <strong>{{ 'R$ ' . ($totalTransferenciasSaida > 0 ? '-' : '') . number_format(abs($totalTransferenciasSaida), 2, ',', '.') }}</strong>
+                                            </td>
+                                            <td style="text-align: right">
+                                                <strong>{{ 'R$ ' . number_format($totalSaldoAtual, 2, ',', '.') }}</strong>
+                                            </td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
