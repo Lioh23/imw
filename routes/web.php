@@ -157,6 +157,7 @@ Route::middleware(['auth'])->group(function () {
         // Relatórios
         Route::prefix('relatorio')->name('relatorio.')->controller(RelatorioController::class)->group(function () {
             Route::get('/membresia', 'membresia')->name('membresia')->middleware('seguranca:relatorio-membresia');
+            Route::get('/aniversariantes', 'aniversariantes')->name('aniversariantes')->middleware('seguranca:relatorio-aniversariantes');
         });
 
         // Segurança

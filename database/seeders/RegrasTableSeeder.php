@@ -84,6 +84,7 @@ class RegrasTableSeeder extends Seeder
 
              // Relatórios
              ['name' => 'relatorio-membresia'],
+             ['name' => 'relatorio-aniversariantes'],
         ]);
     }
 }

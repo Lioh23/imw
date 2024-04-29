@@ -186,7 +186,7 @@
                        </li>
                        <li>
                            @if (auth()->check() && auth()->user()->hasPerfilRegra('relaniversariantes-index'))
-                               <a href="#">Aniversariantes</a>
+                               <a href="{{ route('relatorio.aniversariantes') }}">Aniversariantes</a>
                            @endif
                        </li>
                    </ul>

@@ -7,7 +7,7 @@ use App\Models\MembresiaMembro;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
 
-class IdentificaDadosRelatorioService
+class IdentificaDadosRelatorioMembresiaService
 {
     use Identifiable;
 
@@ -30,7 +30,6 @@ class IdentificaDadosRelatorioService
 
     private function fetchMembrosRelatorio($params)
     {
-        // dd($params['vinculo']);
         $data = MembresiaMembro::with('ultimaAdesao', 'ultimaExclusao')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->when($params['vinculo'], fn($query) => $query->whereIn('vinculo', $params['vinculo']))
@@ -86,8 +85,6 @@ class IdentificaDadosRelatorioService
             $query->whereDate('deleted_at', '<=', $dtFinal);
         }
 
-        // dd($dtInicial, $dtFinal, $query->get());
-
         return $query;
     }
 
@@ -134,7 +131,6 @@ class IdentificaDadosRelatorioService
         if (!$congregacaoId) 
             return 'TODOS';
 
-        dd(CongregacoesCongregacao::find($congregacaoId)->nome);
         return CongregacoesCongregacao::find($congregacaoId)->nome;
     }
 }
