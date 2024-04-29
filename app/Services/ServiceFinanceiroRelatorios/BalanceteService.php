@@ -99,7 +99,7 @@ class BalanceteService
     private function handleCaixas($dataInicial, $dataFinal, $caixaId)
     {
         // Dividindo a data em mês e ano
-        list($dia, $mes, $ano) = explode('-', $dataInicial);
+        list($ano, $mes, $dia) = explode('-', $dataInicial);
         $anoMes = $ano . str_pad($mes, 2, '0', STR_PAD_LEFT);
 
         $sql = "SELECT 
