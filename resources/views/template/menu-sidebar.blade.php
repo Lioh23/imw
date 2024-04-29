@@ -238,12 +238,12 @@
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
                                @endif
-                           </li>
+                           </li>--}}
                            <li>
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
                                @endif
-                           </li> --}}
+                           </li> 
                        </ul>
                    </li>
                @endif
