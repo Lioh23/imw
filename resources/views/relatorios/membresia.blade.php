@@ -112,7 +112,7 @@
         {{-- Seletor do tipo de data --}}
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
-            <label class="control-label">Data para Filtro:</label>
+            <label class="control-label">Filtro:</label>
           </div>
           <div class="col-lg-6">
             <div class="form-check form-check-inline">
