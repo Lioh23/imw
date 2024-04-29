@@ -167,7 +167,7 @@
                             <h5>Discriminação dos Lançamentos por Conta</h5>
                         </div>
                         <div class="col-12">
-                            <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
+                            <table class="table" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>CONTA</th>
@@ -182,7 +182,7 @@
                                             <tr>
                                                 <td rowspan="{{ count(array_filter($lancamentos, function($item) use ($lancamento) {
                                                     return $item->numeracao === $lancamento->numeracao;
-                                                })) }}">
+                                                })) }}" style="font-weight: bold">
                                                     {{ $lancamento->numeracao }} - {{ $lancamento->nome }}
                                                 </td>
                                                 <td>{{ $lancamento->caixa }}</td>
