@@ -156,11 +156,49 @@
                                 </table>
                             </div>
                         </div>
-                        <div class="row">
+                        {{-- <div class="row">
                             <div class="col-12 text-center">
                                 <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i
                                         class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
                             </div>
+                        </div> --}}
+
+                        <div class="col-12 mt-3">
+                            <h5>Discriminação dos Lançamentos por Conta</h5>
+                        </div>
+                        <div class="col-12">
+                            <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>CONTA</th>
+                                        <th>CAIXA</th>
+                                        <th width="100">TOTAL</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @php $numerosJaExibidos = []; @endphp
+                                    @foreach ($lancamentos as $index => $lancamento)
+                                        @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
+                                            <tr>
+                                                <td rowspan="{{ count(array_filter($lancamentos, function($item) use ($lancamento) {
+                                                    return $item->numeracao === $lancamento->numeracao;
+                                                })) }}">
+                                                    {{ $lancamento->numeracao }} - {{ $lancamento->nome }}
+                                                </td>
+                                                <td>{{ $lancamento->caixa }}</td>
+                                                <td>R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
+                                            </tr>
+                                            @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
+                                        @else
+                                            <tr>
+                                                <td>{{ $lancamento->caixa }}</td>
+                                                <td>R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
+                                            </tr>
+                                        @endif
+                                    @endforeach
+                                </tbody>
+                            </table>
+                            
                         </div>
                     </div>
                 </div>
@@ -215,5 +253,10 @@
             });
         });
     </script>
+    <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/xlsx.full.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/planilha.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/pages/movimentocaixa.js') }}"></script>
 @endsection
 @endsection
