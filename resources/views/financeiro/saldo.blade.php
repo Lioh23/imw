@@ -25,7 +25,8 @@
                                             <th>CAIXA</th>
                                             <th width="300" style="text-align: right">
                                                 @if ($ultimoCaixa)
-                                                    ÚLTIMO SALDO CONSOLIDADO EM {{ $ultimoCaixa }}
+                                                    ÚLTIMO SALDO CONSOLIDADO EM 
+                                                    {{ \Carbon\Carbon::parse($ultimoCaixa)->isoFormat('MMMM [de] YYYY') }}
                                                 @else
                                                     NÃO POSSUI ÚLTIMO SALDO CONSOLIDADO
                                                 @endif
