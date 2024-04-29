@@ -18,11 +18,11 @@ class BalanceteService
         
 
         if (empty($dataInicial)) {
-            $dataInicial = Carbon::now()->format('d/m/Y');
+            $dataInicial = Carbon::now()->format('Y-m-d');
         }
 
         if (empty($dataFinal)) {
-            $dataFinal = Carbon::now()->format('d/m/Y');
+            $dataFinal = Carbon::now()->format('Y-m-d');
         }
 
 
@@ -98,6 +98,7 @@ class BalanceteService
 
     private function handleCaixas($dataInicial, $dataFinal, $caixaId)
     {
+
         // Dividindo a data em mês e ano
         list($ano, $mes, $dia) = explode('-', $dataInicial);
         $anoMes = $ano . str_pad($mes, 2, '0', STR_PAD_LEFT);
