@@ -5,6 +5,7 @@ namespace App\Services\ServiceFinanceiroRelatorios;
 use App\Models\FinanceiroCaixa;
 use App\Traits\FinanceiroUtils;
 use App\Traits\Identifiable;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class LivroCaixaService
@@ -14,7 +15,10 @@ class LivroCaixaService
 
     public function execute($dt, $caixaId)
     {
-
+        if (empty($dt)) {
+            $dt = Carbon::now()->format('Y/m');
+        }
+   
         $caixasSelect  = $this->handleListaCaixas();
 
         $caixas =  $this->handleCaixas($dt, $caixaId);
