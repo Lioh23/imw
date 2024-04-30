@@ -180,13 +180,18 @@
                    </a>
                    <ul class="collapse submenu list-unstyled" id="relatorios" data-parent="#relatorios">
                        <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relmembresia-index'))
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-membresia'))
                                <a href="{{ route('relatorio.membresia') }}">Membresia</a>
                            @endif
                        </li>
                        <li>
-                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relaniversariantes-index'))
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-aniversariantes'))
                                <a href="{{ route('relatorio.aniversariantes') }}">Aniversariantes</a>
+                           @endif
+                       </li>
+                       <li>
+                           @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-historico-eclesiastico'))
+                               <a href="{{ route('relatorio.historico-eclesiastico') }}">Histórico Eclesiástico</a>
                            @endif
                        </li>
                    </ul>
