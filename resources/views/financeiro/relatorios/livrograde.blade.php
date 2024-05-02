@@ -9,6 +9,7 @@
 @endsection
 
 @section('extras-css')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
     <style>
@@ -46,6 +47,7 @@
 
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+
                         @php
                             $currentYear = \Carbon\Carbon::now()->year;
                         @endphp
@@ -73,15 +75,19 @@
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12 table-responsive">
                         <!-- Alerta de dados não encontrados -->
                         <div id="noDataAlert" class="alert alert-danger d-none" role="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16">
-                                <path d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z" />
                             </svg> Nenhum dado encontrado.
                         </div>
 
                         <!-- Alerta de erro -->
                         <div id="errorAlert" class="alert alert-danger d-none" role="alert">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16">
-                                <path d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z"/>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+                                class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16">
+                                <path
+                                    d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z" />
                             </svg> Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.
                         </div>
 
@@ -119,6 +125,7 @@
 @section('extras-scripts')
     <script>
         $(document).ready(function() {
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
             $('.year-btn').click(function() {
                 $('.year-btn').removeClass('btn-success').find('i').remove();
                 $(this).addClass('btn-success').append('<i class="fas fa-check"></i>');
@@ -128,11 +135,10 @@
 
             // Obter o ano atual ao abrir a página
             var currentYear = new Date().getFullYear();
-            fetchData(currentYear);
+            fetchData(year, csrfToken);
         });
 
-        function fetchData(year) {
-            // Exibir indicador de carregamento
+        function fetchData(year, csrfToken) {
             $('#loadingIndicator').removeClass('d-none');
             $('#errorAlert').addClass('d-none');
 
@@ -141,19 +147,16 @@
                 method: 'POST',
                 data: {
                     ano: year
-                }, // Corrigido para 'ano'
+                },
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
                 success: function(response) {
-                    // Verifica se há resultados na resposta
                     if (response.length > 0) {
-                        // Mostra a tabela
                         $('#livrograde').removeClass('d-none');
-                        // Esconde o alerta de "Nenhum dado encontrado"
                         $('#noDataAlert').addClass('d-none');
-
-                        // Limpa os dados antigos da tabela
                         $('#livrograde tbody').empty();
 
-                        // Preenche a tabela com os dados retornados
                         response.forEach(function(row) {
                             var newRow = '<tr>';
                             newRow += '<td>' + row.srol + '</td>';
@@ -177,24 +180,18 @@
                             $('#livrograde tbody').append(newRow);
                         });
                     } else {
-                        // Esconde a tabela se não houver resultados
                         $('#livrograde').addClass('d-none');
-                        // Mostra o alerta de "Nenhum dado encontrado"
                         $('#noDataAlert').removeClass('d-none');
                     }
 
-                    // Ocultar indicador de carregamento
                     $('#loadingIndicator').addClass('d-none');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
-                    // Adicione tratamento de erro, se necessário
-                    // Exibir mensagem de erro na tela
                     $('#errorAlert').html(
-                        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z"/></svg>Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.');
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z"/></svg>Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.'
+                        );
                     $('#errorAlert').removeClass('d-none');
-
-                    // Ocultar indicador de carregamento
                     $('#loadingIndicator').addClass('d-none');
                 }
             });

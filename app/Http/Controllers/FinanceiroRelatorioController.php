@@ -28,6 +28,10 @@ class FinanceiroRelatorioController extends Controller
         return view('financeiro.relatorios.livrocaixa', $data);
     }
 
+    public function livrogradepost(Request $request) {
+        dd($request->all());
+    }
+
     public function  balancete(Request $request) {
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
