@@ -93,6 +93,16 @@
             stroke: #fff;
             /* Muda a cor do ícone para branco */
         }
+
+        .submenu-fixo span{
+            padding: 0 0 0 35px!important; 
+           
+        }
+
+
+       
+
+
     </style>
 </head>
 
