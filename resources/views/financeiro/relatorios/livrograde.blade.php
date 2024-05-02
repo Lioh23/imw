@@ -65,20 +65,24 @@
                 </div>
                 <div class="row">
                     <div class="col-12 d-flex justify-content-center align-items-center">
-                        <div id="loadingIndicator" class="d-none text-center" style="font-size: 2em;">
-                            <i class="fas fa-spinner fa-spin"></i> Carregando...
+                        <div id="loadingIndicator" class="d-none text-center" style="font-size: 3em;">
+                            <i class="fas fa-spinner fa-spin"></i>
                         </div>
                     </div>
 
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12 table-responsive">
                         <!-- Alerta de dados não encontrados -->
                         <div id="noDataAlert" class="alert alert-danger d-none" role="alert">
-                            Nenhum dado encontrado.
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16">
+                                <path d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z"/>
+                            </svg> Nenhum dado encontrado.
                         </div>
 
                         <!-- Alerta de erro -->
                         <div id="errorAlert" class="alert alert-danger d-none" role="alert">
-                            Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16">
+                                <path d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z"/>
+                            </svg> Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.
                         </div>
 
                         <table id="livrograde" class="table table-striped d-none" style="font-size: 90%; margin-top: 15px;">
@@ -186,8 +190,8 @@
                     console.error(error);
                     // Adicione tratamento de erro, se necessário
                     // Exibir mensagem de erro na tela
-                    $('#errorAlert').text(
-                        'Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.');
+                    $('#errorAlert').html(
+                        '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z"/></svg>Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.');
                     $('#errorAlert').removeClass('d-none');
 
                     // Ocultar indicador de carregamento
