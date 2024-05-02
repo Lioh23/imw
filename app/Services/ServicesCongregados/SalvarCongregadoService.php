@@ -9,7 +9,7 @@ use App\Models\MembresiaFuncaoMinisterial;
 use App\Models\MembresiaMembro;
 use App\Traits\Identifiable;
 use Illuminate\Support\Facades\Storage;
-
+use Carbon\Carbon;
 
 class SalvarCongregadoService
 {
@@ -53,7 +53,7 @@ class SalvarCongregadoService
         return [
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
-            'data_nascimento' => $data['data_nascimento'],
+            'data_nascimento' => Carbon::createFromFormat('Y-m-d', $data['data_nascimento']),
             'estado_civil'  => $data['estado_civil'],
             'nacionalidade'  => $data['nacionalidade'],
             'naturalidade'  => $data['naturalidade'],

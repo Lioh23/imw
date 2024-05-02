@@ -4,6 +4,7 @@ namespace App\Services\ServiceVisitantes;
 
 use App\Models\MembresiaContato;
 use App\Models\MembresiaMembro;
+use Carbon\Carbon;
 
 class EditarVisitanteService
 {
@@ -13,7 +14,7 @@ class EditarVisitanteService
         $visitante->update([
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
-            'data_nascimento' => $data['data_nascimento'],
+            'data_nascimento' => Carbon::createFromFormat('Y-m-d', $data['data_nascimento']),
             'data_conversao'  => $data['data_conversao']
         ]);
 

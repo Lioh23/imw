@@ -14,7 +14,7 @@ use App\Models\MembresiaMembro;
 use App\Models\MembresiaSetor;
 use App\Models\MembresiaTipoAtuacao;
 use Illuminate\Support\Facades\Storage;
-
+use Carbon\Carbon;
 
 class UpdateMembroService
 {
@@ -56,7 +56,7 @@ class UpdateMembroService
             'membro_id' => $data['membro_id'],
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
-            'data_nascimento' => $data['data_nascimento'],
+            'data_nascimento' => Carbon::createFromFormat('Y-m-d', $data['data_nascimento']),
             'estado_civil'  => $data['estado_civil'],
             'nacionalidade'  => $data['nacionalidade'],
             'naturalidade'  => $data['naturalidade'],
