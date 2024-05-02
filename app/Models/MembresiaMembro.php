@@ -54,10 +54,7 @@ class MembresiaMembro extends Model
         'has_errors',
     ];
 
-    protected $casts = [
-        'data_nascimento' => 'date'
-    ];
-
+   
     public function contato()
     {
         return $this->hasOne(MembresiaContato::class, 'membro_id');

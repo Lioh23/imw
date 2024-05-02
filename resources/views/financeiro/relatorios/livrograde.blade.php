@@ -91,7 +91,7 @@
                             </svg> Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.
                         </div>
 
-                        <table id="livrograde" class="table table-striped d-none" style="font-size: 90%; margin-top: 15px;">
+                        <table id="livrograde" class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                             <thead class="thead-dark">
                                 <tr>
                                     <th>ROL</th>
@@ -125,7 +125,6 @@
 @section('extras-scripts')
     <script>
         $(document).ready(function() {
-            var csrfToken = $('meta[name="csrf-token"]').attr('content');
             $('.year-btn').click(function() {
                 $('.year-btn').removeClass('btn-success').find('i').remove();
                 $(this).addClass('btn-success').append('<i class="fas fa-check"></i>');
@@ -135,10 +134,12 @@
 
             // Obter o ano atual ao abrir a página
             var currentYear = new Date().getFullYear();
-            fetchData(year, csrfToken);
+            fetchData(currentYear);
         });
 
-        function fetchData(year, csrfToken) {
+        function fetchData(year) {
+            // Exibir indicador de carregamento
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
             $('#loadingIndicator').removeClass('d-none');
             $('#errorAlert').addClass('d-none');
 
@@ -147,19 +148,23 @@
                 method: 'POST',
                 data: {
                     ano: year
-                },
+                }, // Corrigido para 'ano'
                 headers: {
-                    'X-CSRF-TOKEN': csrfToken
+                    'X-CSRF-TOKEN': csrfToken // Adicionar o token CSRF como cabeçalho da solicitação
                 },
                 success: function(response) {
-                    if (response.length > 0) {
+                        // Mostra a tabela
                         $('#livrograde').removeClass('d-none');
+                        // Esconde o alerta de "Nenhum dado encontrado"
                         $('#noDataAlert').addClass('d-none');
+
+                        // Limpa os dados antigos da tabela
                         $('#livrograde tbody').empty();
 
+                        // Preenche a tabela com os dados retornados
                         response.forEach(function(row) {
                             var newRow = '<tr>';
-                            newRow += '<td>' + row.srol + '</td>';
+                            newRow += '<td>' + row.rol + '</td>';
                             newRow += '<td>' + row.dizimista + '</td>';
                             newRow += '<td>' + row.jan + '</td>';
                             newRow += '<td>' + row.fev + '</td>';
@@ -173,25 +178,26 @@
                             newRow += '<td>' + row.out + '</td>';
                             newRow += '<td>' + row.nov + '</td>';
                             newRow += '<td>' + row.dez + '</td>';
-                            newRow += '<td>' + row.decimoterceiro + '</td>';
+                            newRow += '<td>' + row.o13 + '</td>';
                             newRow += '<td>' + row.total + '</td>';
                             newRow += '</tr>';
 
                             $('#livrograde tbody').append(newRow);
                         });
-                    } else {
-                        $('#livrograde').addClass('d-none');
-                        $('#noDataAlert').removeClass('d-none');
-                    }
 
+                    // Ocultar indicador de carregamento
                     $('#loadingIndicator').addClass('d-none');
                 },
                 error: function(xhr, status, error) {
                     console.error(error);
+                    // Adicione tratamento de erro, se necessário
+                    // Exibir mensagem de erro na tela
                     $('#errorAlert').html(
                         '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-exclamation-triangle-fill mr-2" viewBox="0 0 16 16"><path d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z"/></svg>Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.'
                         );
                     $('#errorAlert').removeClass('d-none');
+
+                    // Ocultar indicador de carregamento
                     $('#loadingIndicator').addClass('d-none');
                 }
             });
