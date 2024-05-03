@@ -30,7 +30,14 @@ class UpdateVisitanteRequest extends FormRequest
             'sexo' => 'required',
             'data_nascimento' => 'nullable|date',
             'data_conversao' => [new RangeDateRule],
-            'email_preferencial' => 'email|nullable',
+            'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
+                if ($value) {
+                    if (!preg_match('/@.*\.\w{2,}$/', $value)) {
+                        $fail('O campo e-mail deve conter um sufixo de domínio válido com pelo menos dois caracteres após o ponto.');
+                    }
+                }
+            }],
+            
             'email_alternativo' => 'email|nullable'
         ];
     }

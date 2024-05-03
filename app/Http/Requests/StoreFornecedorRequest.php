@@ -26,7 +26,13 @@ class StoreFornecedorRequest extends FormRequest
         return [
             'cpf_cnpj' => 'required|string|max:18',
             'nome' => 'required|string|max:100',
-            'email' => 'nullable|email|string|max:100',
+            'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
+                if ($value) {
+                    if (!preg_match('/@.*\.\w{2,}$/', $value)) {
+                        $fail('O campo e-mail deve conter um sufixo de domínio válido com pelo menos dois caracteres após o ponto.');
+                    }
+                }
+            }],
             'site' => 'nullable|string|max:100',
             'cep' => 'nullable|string|max:20',
             'endereco' => 'nullable|string|max:255',

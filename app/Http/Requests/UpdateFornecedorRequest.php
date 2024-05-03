@@ -26,7 +26,13 @@ class UpdateFornecedorRequest extends FormRequest
         return [
             'cpf_cnpj' => 'required',
             'nome' => 'required|max:100',
-            'email' => 'nullable|email|max:100',
+            'email' => ['nullable', 'email', function ($attribute, $value, $fail) {
+                if ($value) {
+                    if (!preg_match('/@.*\.\w{2,}$/', $value)) {
+                        $fail('O campo e-mail deve conter um sufixo de domínio válido com pelo menos dois caracteres após o ponto.');
+                    }
+                }
+            }],
             'site' => 'nullable|max:100',
             'cep' => 'required|numeric',
             'endereco' => 'nullable|max:255',
