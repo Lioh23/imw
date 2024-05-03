@@ -61,10 +61,10 @@ class VisitantesController extends Controller
             DB::beginTransaction();
             app(StoreVisitanteService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('visitante.novo')->with('success', 'Visitante cadastrado com sucesso.');
+            return redirect()->route('visitante.index')->with('success', 'Visitante cadastrado com sucesso.');
         } catch(\Exception $e) {
             DB::rollback();
-            return redirect()->route('visitante.novo')->with('error', $e);
+            return redirect()->route('visitante.index')->with('error', $e->getMessage());
        }
     }
 }

@@ -28,7 +28,7 @@ class UpdateVisitanteRequest extends FormRequest
         return [
             'nome' => 'required',
             'sexo' => 'required',
-            'data_nascimento' => ['required', new RangeDateRule],
+            'data_nascimento' => 'nullable|date',
             'data_conversao' => [new RangeDateRule],
             'email_preferencial' => 'email|nullable',
             'email_alternativo' => 'email|nullable'

@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('status', 1);
             $table->string('nome', 100);
             $table->string('sexo', 1);
-            $table->date('data_nascimento');
+            $table->date('data_nascimento')->nullable();
             $table->string('estado_civil', 1)->nullable();
             $table->string('nacionalidade', 2)->nullable();
             $table->string('naturalidade', 50)->nullable();

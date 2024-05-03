@@ -47,7 +47,7 @@
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">* Data de Nascimento:</label>
+                        <label class="control-label">Data de Nascimento:</label>
                         <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" name="data_nascimento" value="{{ old('data_nascimento', $visitante->data_nascimento ?? '') }}">
                         @error('data_nascimento')
                             <div class="invalid-feedback">{{ $message }}</div>
