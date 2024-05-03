@@ -75,23 +75,31 @@ class SalvarCongregadoService
     }
 
     private function prepareContatoData(array $data): array
-    {
-        return [
-            'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
-            'telefone_alternativo'  => preg_replace('/[^0-9]/', '', $data['telefone_alternativo']),
-            'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
-            'email_preferencial'     => $data['email_preferencial'],
-            'email_alternativo'     => $data['email_alternativo'],
-            'cep' => preg_replace('/[^0-9]/', '', $data['cep']),
-            'endereco' => $data['endereco'],
-            'numero' => $data['numero'],
-            'complemento' => $data['complemento'],
-            'bairro' => $data['bairro'],
-            'cidade' => $data['cidade'],
-            'estado' => $data['estado'],
-            'observacoes' => $data['observacoes'],
-        ];
-    }
+        {
+            $contatoData = [
+                'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
+                'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
+                'email_preferencial'     => $data['email_preferencial'],
+                'cep' => preg_replace('/[^0-9]/', '', $data['cep']),
+                'endereco' => $data['endereco'],
+                'numero' => $data['numero'],
+                'complemento' => $data['complemento'],
+                'bairro' => $data['bairro'],
+                'cidade' => $data['cidade'],
+                'estado' => $data['estado'],
+                'observacoes' => $data['observacoes'],
+            ];
+
+            // Verifica se as chaves opcionais existem antes de tentar acessá-las
+            if (isset($data['telefone_alternativo'])) {
+                $contatoData['telefone_alternativo'] = preg_replace('/[^0-9]/', '', $data['telefone_alternativo']);
+            }
+            if (isset($data['email_alternativo'])) {
+                $contatoData['email_alternativo'] = $data['email_alternativo'];
+            }
+
+            return $contatoData;
+        }
 
     private function prepareFamiliarData(array $data): array
     {

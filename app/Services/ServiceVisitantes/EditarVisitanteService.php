@@ -20,13 +20,18 @@ class EditarVisitanteService
 
         $contato = MembresiaContato::where('membro_id', $id)->first();
         if ($contato) {
-            $contato->update([
+            $updateData = [
                 'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
-                'telefone_alternativo'  => preg_replace('/[^0-9]/', '', $data['telefone_alternativo']),
                 'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
                 'email_preferencial'    => $data['email_preferencial'],
-                'email_alternativo'     => $data['email_alternativo'],
-            ]);
+            ];
+        
+            // Verifica se a chave 'email_alternativo' existe no array $data antes de adicioná-la aos dados de atualização
+            if (array_key_exists('email_alternativo', $data)) {
+                $updateData['email_alternativo'] = $data['email_alternativo'];
+            }
+        
+            $contato->update($updateData);
         }
     }
 

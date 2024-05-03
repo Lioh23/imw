@@ -87,13 +87,13 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group mb-4 col-md-6">
+                   {{--  <div class="form-group mb-4 col-md-6">
                         <label class="control-label">E-mail Alternativo:</label>
                         <input id="email_alternativo" name="email_alternativo" type="email" class="form-control @error('email_alternativo') is-invalid @enderror" value="{{ old('email_alternativo') }}">
                         @error('email_alternativo')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> --}}
                 </div>
                 <input type="submit" value="Salvar" class="btn btn-primary btn-lg mt-3">
             </form>            

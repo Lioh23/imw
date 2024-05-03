@@ -28,8 +28,11 @@ class StoreVisitanteService
             'telefone_alternativo'  => preg_replace('/[^0-9]/', '', $data['telefone_alternativo']),
             'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
             'email_preferencial'    => $data['email_preferencial'],
-            'email_alternativo'     => $data['email_alternativo'],
         ];
+
+        if (isset($data['email_alternativo'])) {
+            $dataContato['email_alternativo'] = $data['email_alternativo'];
+        }
 
         $membroId = $this->handleStoreMembro($dataMembro);
         $this->handleStoreContato($dataContato, $membroId);

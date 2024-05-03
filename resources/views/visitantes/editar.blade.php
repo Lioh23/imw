@@ -70,10 +70,10 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    <div class="form-group mb-4 col-md-6">
+                   {{--  <div class="form-group mb-4 col-md-6">
                         <label class="control-label">E-mail Alternativo:</label>
                         <input type="email" name="email_alternativo" class="form-control" value="{{ old('email_alternativo', $visitante->email_alternativo ?? '') }}">
-                    </div>
+                    </div> --}}
                 </div>
 
                 <div class="row">
