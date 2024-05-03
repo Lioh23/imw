@@ -88,10 +88,27 @@
         </div>
         <div class="col-xl-4">
           <label for="estado">Estado</label>
-          <input type="text" class="form-control" id="estado" name="estado"  value="{{ old('estado', $pessoa->contato->estado) }}">
-          @error('estado')
+          <select class="form-control @error('estado') is-invalid @enderror" id="estado" name="estado">
+            <option value="">Selecione</option>
+            @php
+              //Colocar no banco de dados , esta estranho assim
+              $ufs = [
+                'AC' => 'Acre', 'AL' => 'Alagoas', 'AP' => 'Amapá', 'AM' => 'Amazonas',
+                'BA' => 'Bahia', 'CE' => 'Ceará', 'DF' => 'Distrito Federal', 'ES' => 'Espírito Santo',
+                'GO' => 'Goiás', 'MA' => 'Maranhão', 'MT' => 'Mato Grosso', 'MS' => 'Mato Grosso do Sul',
+                'MG' => 'Minas Gerais', 'PA' => 'Pará', 'PB' => 'Paraíba', 'PR' => 'Paraná',
+                'PE' => 'Pernambuco', 'PI' => 'Piauí', 'RJ' => 'Rio de Janeiro', 'RN' => 'Rio Grande do Norte',
+                'RS' => 'Rio Grande do Sul', 'RO' => 'Rondônia', 'RR' => 'Roraima', 'SC' => 'Santa Catarina',
+                'SP' => 'São Paulo', 'SE' => 'Sergipe', 'TO' => 'Tocantins'
+              ];
+            @endphp
+             @foreach ($ufs as $key => $value)
+             <option value="{{ $key }}" {{ (old('estado', $pessoa->contato->estado) == $key) ? 'selected' : '' }}>{{ $value }}</option>
+           @endforeach
+         </select>
+          @error('uf')
             <span class="help-block text-danger">{{ $message }}</span>
-          @enderror
+          @enderror   
         </div>
       </div>
       <div class="row mb-4">
