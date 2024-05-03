@@ -1,7 +1,7 @@
    <!--  BEGIN SIDEBAR  -->
 
-   <div class="sidebar-wrapper sidebar-theme">
-       <nav id="sidebar" style="overflow: hidden;">
+   <div class="sidebar-wrapper sidebar-theme" style="overflow-y: auto; scrollbar-width: thin;">
+       <nav id="sidebar" style="overflow: hidden;" >
            <ul class="navbar-nav theme-brand flex-row  text-center">
                {{-- <li class="nav-item theme-text">
                    <a href="index.html" class="nav-link"> {{ config('app.sigla') }} </a>
