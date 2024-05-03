@@ -77,13 +77,11 @@ class UpdateMembroService
 
     private function prepareContatoData(array $data): array
     {
-        return [
+        $contatoData = [
             'membro_id' => $data['membro_id'],
             'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
-            'telefone_alternativo'  => preg_replace('/[^0-9]/', '', $data['telefone_alternativo']),
             'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
             'email_preferencial'     => $data['email_preferencial'],
-            'email_alternativo'     => $data['email_alternativo'],
             'cep' => preg_replace('/[^0-9]/', '', $data['cep']),
             'endereco' => $data['endereco'],
             'numero' => $data['numero'],
@@ -93,7 +91,18 @@ class UpdateMembroService
             'estado' => $data['estado'],
             'observacoes' => $data['observacoes'],
         ];
+    
+        // Verifica se as chaves opcionais existem antes de tentar acessá-las
+        if (isset($data['telefone_alternativo'])) {
+            $contatoData['telefone_alternativo'] = preg_replace('/[^0-9]/', '', $data['telefone_alternativo']);
+        }
+        if (isset($data['email_alternativo'])) {
+            $contatoData['email_alternativo'] = $data['email_alternativo'];
+        }
+    
+        return $contatoData;
     }
+    
 
     private function prepareFamiliarData(array $data): array
     {

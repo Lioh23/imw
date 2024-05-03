@@ -32,7 +32,7 @@ class StoreCongregadoRequest extends FormRequest
             'foto' => 'image|nullable|max:1999',
             'nome' => 'required',
             'sexo' => 'required',
-            'data_nascimento' => ['required', new RangeDateRule],
+            'data_nascimento' => 'required|date',
             'data_conversao' => [new RangeDateRule],
             'data_batismo' => [new RangeDateRule],
             'data_batismo_espirito' => [new RangeDateRule],
@@ -42,7 +42,7 @@ class StoreCongregadoRequest extends FormRequest
             'uf' => 'required',
             'cpf' => [
                 'required',
-                Rule::unique('membresia_membros')->ignore($membroId),
+                Rule::unique('membresia_membros', 'cpf')->ignore($membroId),
                 new ValidaCPF,
             ],
             'email_preferencial' => 'email|nullable',
