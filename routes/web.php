@@ -19,7 +19,7 @@ use App\Http\Middleware\VerificaPerfil;
 use Illuminate\Support\Facades\Route;
 
 // Rotas de autenticação
-Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
+
 Route::get('/login', [AuthController::class, 'showLoginForm'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
@@ -29,6 +29,12 @@ Route::get('/esqueci-senha', [AuthController::class, 'showResetRequestForm'])->n
 
 // Rota para enviar o link de redefinição de senha
 Route::post('/esqueci-senha', [AuthController::class, 'submitResetRequest'])->name('password.email');
+
+// Rota para processar a redefinição de senha (GET)
+Route::get('/redefinir-senha', [AuthController::class, 'showResetForm'])->name('password.reset');
+
+// Rota para processar a redefinição de senha
+Route::post('/redefinir-senha', [AuthController::class, 'reset'])->name('password.reset');
 
 
 // Rotas protegidas por autenticação
