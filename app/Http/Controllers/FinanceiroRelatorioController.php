@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ServiceFinanceiroRelatorios\BalanceteService;
 use App\Services\ServiceFinanceiroRelatorios\LivroCaixaService;
+use App\Services\ServiceFinanceiroRelatorios\LivroGradeService;
 use App\Services\ServiceFinanceiroRelatorios\MovimentoDiarioService;
 use Illuminate\Http\Request;
 
@@ -29,7 +30,10 @@ class FinanceiroRelatorioController extends Controller
     }
 
     public function livrogradepost(Request $request) {
-        dd($request->all());
+          $ano = $request->input('ano');
+          
+          $data = app(LivroGradeService::class)->execute($ano);
+          return $data;
     }
 
     public function  balancete(Request $request) {
