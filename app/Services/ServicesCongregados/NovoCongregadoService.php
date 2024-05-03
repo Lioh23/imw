@@ -24,7 +24,7 @@ class NovoCongregadoService
         $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
         $funcoes = MembresiaTipoAtuacao::orderBy('descricao', 'asc')->get();
         $cursos = MembresiaCurso::orderBy('nome', 'asc')->get();
-        $formacoes = MembresiaFormacao::orderBy('descricao', 'asc')->get();
+        $formacoes = MembresiaFormacao::orderBy('id', 'asc')->get();
         $funcoesEclesiasticas = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();
 
         return [
