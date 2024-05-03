@@ -27,7 +27,8 @@
                 </div>
             </div>
             <div class="widget-content widget-content-area">
-                <form autocomplete="off" class="form-horizontal" method="POST" id="formEditarUsuario" action="{{ route('usuarios.update', $id) }}">
+                <form autocomplete="off" class="form-horizontal" method="POST" id="formEditarUsuario"
+                    action="{{ route('usuarios.update', $id) }}">
                     @csrf
                     <div class="row mb-1">
                         <div class="col-lg-5">
@@ -44,9 +45,12 @@
                             <div class="form-group">
                                 <label>* E-mail</label>
                                 <div class="controls">
-                                    <input type="email" name="email" id="email" class="form-control" required
+                                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" required
                                         autocomplete="off" value="{{ $user->email }}" />
                                     <small class="form-text text-muted">Endereço de e-mail para login</small>
+                                    @error('email')
+                                        <span class="help-block text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -56,8 +60,11 @@
                             <div class="form-group">
                                 <label>Senha</label>
                                 <div class="controls">
-                                    <input type="password" name="password" id="password" class="form-control"
+                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
                                         autocomplete="new-password" />
+                                    @error('password')
+                                        <span class="help-block text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -66,7 +73,10 @@
                                 <label>Confirmar Senha</label>
                                 <div class="controls">
                                     <input type="password" name="password_confirmation" id="confirmPassword"
-                                        class="form-control" autocomplete="new-password" />
+                                        class="form-control @error('password_confirmation') is-invalid @enderror" autocomplete="new-password" />
+                                    @error('password_confirmation')
+                                     <span class="help-block text-danger">{{ $message }}</span>
+                                    @enderror
                                 </div>
                             </div>
                         </div>
@@ -90,47 +100,49 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    
+
                                     @php
                                         $perfisInstituicao = $user->perfilUser;
                                     @endphp
-                                  
+
                                     @foreach ($perfisInstituicao as $index => $perfilUser)
-                                    <tr>
-                                        <td>
-                                            <div class="form-group">
-                                                <select class="form-control" name="perfil_id[]">
-                                                    <option value="">Selecione um perfil</option>
-                                                    @foreach ($perfis as $perfil)
-                                                        <option value="{{ $perfil->id }}"
-                                                            {{ $perfilUser->perfil_id == $perfil->id ? 'selected' : '' }}>
-                                                            {{ $perfil->nome }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control instituicao-nome"
-                                                    name="instituicao_nome[]" readonly
-                                                    value="{{ $perfilUser->instituicao->nome ?? '' }}">
-                                                <input type="hidden" name="instituicao_id[]"
-                                                    value="{{ $perfilUser->instituicao->id ?? '' }}">
-                                                <button type="button" class="btn btn-secondary abrirModalInstituicoes"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modalInstituicoes">Selecionar
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td>
-                                            @if ($index === 0)
-                                                <button type="button" class="btn btn-success btn-rounded btn-add"><i class="fas fa-plus"></i></button>
-                                            @endif
-                                            <button type="button" class="btn btn-danger btn-rounded btn-remove"><i class="fas fa-trash-alt"></i></button>
-                                        </td>
-                                    </tr>
-                                @endforeach                                
+                                        <tr>
+                                            <td>
+                                                <div class="form-group">
+                                                    <select class="form-control" name="perfil_id[]">
+                                                        <option value="">Selecione um perfil</option>
+                                                        @foreach ($perfis as $perfil)
+                                                            <option value="{{ $perfil->id }}"
+                                                                {{ $perfilUser->perfil_id == $perfil->id ? 'selected' : '' }}>
+                                                                {{ $perfil->nome }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control instituicao-nome"
+                                                        name="instituicao_nome[]" readonly
+                                                        value="{{ $perfilUser->instituicao->nome ?? '' }}">
+                                                    <input type="hidden" name="instituicao_id[]"
+                                                        value="{{ $perfilUser->instituicao->id ?? '' }}">
+                                                    <button type="button" class="btn btn-secondary abrirModalInstituicoes"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#modalInstituicoes">Selecionar
+                                                    </button>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                @if ($index === 0)
+                                                    <button type="button" class="btn btn-success btn-rounded btn-add"><i
+                                                            class="fas fa-plus"></i></button>
+                                                @endif
+                                                <button type="button" class="btn btn-danger btn-rounded btn-remove"><i
+                                                        class="fas fa-trash-alt"></i></button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -149,21 +161,21 @@
 
 @section('extras-scripts')
     <script>
-$(document).ready(function() {
-    let i = 1;
-    
-    function generatePerfilOptions() {
-        let options = '<option value="">Selecione um perfil</option>';
-        @foreach ($perfis as $perfil)
-            options += `<option value="{{ $perfil->id }}">{{ $perfil->nome }}</option>`;
-        @endforeach
-        return options;
-    }
+        $(document).ready(function() {
+            let i = 1;
 
-    function generateRow() {
-        let perfilOptions = generatePerfilOptions();
+            function generatePerfilOptions() {
+                let options = '<option value="">Selecione um perfil</option>';
+                @foreach ($perfis as $perfil)
+                    options += `<option value="{{ $perfil->id }}">{{ $perfil->nome }}</option>`;
+                @endforeach
+                return options;
+            }
 
-        let markup = `
+            function generateRow() {
+                let perfilOptions = generatePerfilOptions();
+
+                let markup = `
 <tr>
     <td>
         <div class="form-group">
@@ -186,131 +198,131 @@ $(document).ready(function() {
         <button type="button" class="btn btn-danger btn-rounded btn-remove"><i class="fas fa-trash-alt"></i></button>
     </td>
 </tr>`;
-        return markup;
-    }
+                return markup;
+            }
 
-    $(".btn-add").click(function() {
-        i++;
-        let row = generateRow();
-        $("#dynamicAddRemove").append(row);
-        
-        // Ocultar botão de remoção na primeira linha
-        $('#dynamicAddRemove tr:first-child .btn-remove').hide();
-    });
+            $(".btn-add").click(function() {
+                i++;
+                let row = generateRow();
+                $("#dynamicAddRemove").append(row);
 
-    $(document).on('click', '.btn-remove', function() {
-        if($('#dynamicAddRemove tr').length === 1) {
-            alert('Pelo menos um registro deve ser mantido!');
-            return;
-        }
+                // Ocultar botão de remoção na primeira linha
+                $('#dynamicAddRemove tr:first-child .btn-remove').hide();
+            });
 
-        let confirmation = confirm("Tem certeza que deseja remover este registro?");
-        if (confirmation) {
-            $(this).closest('tr').remove();
-            i--;
-        }
-    });
+            $(document).on('click', '.btn-remove', function() {
+                if ($('#dynamicAddRemove tr').length === 1) {
+                    alert('Pelo menos um registro deve ser mantido!');
+                    return;
+                }
 
-    $(document).on('click', '.abrirModalInstituicoes', function() {
-        currentButton = $(this).closest('tr').find('.abrirModalInstituicoes');
-        console.log(`abriu`);
-        loadInstituicoes(1); // Carrega a primeira página
-        $('#modalInstituicoes').modal('show');
-    });
+                let confirmation = confirm("Tem certeza que deseja remover este registro?");
+                if (confirmation) {
+                    $(this).closest('tr').remove();
+                    i--;
+                }
+            });
 
-    $('#searchButton').on('click', function() {
-        loadInstituicoes(1, $('#searchInstituicao').val());
-    });
+            $(document).on('click', '.abrirModalInstituicoes', function() {
+                currentButton = $(this).closest('tr').find('.abrirModalInstituicoes');
+                console.log(`abriu`);
+                loadInstituicoes(1); // Carrega a primeira página
+                $('#modalInstituicoes').modal('show');
+            });
 
-    function loadInstituicoes(page, search = '') {
-        $('#loading').show();
-        $('#instituicoesList').hide();
+            $('#searchButton').on('click', function() {
+                loadInstituicoes(1, $('#searchInstituicao').val());
+            });
 
-        $.ajax({
-            url: '/instituicoes?page=' + page + '&search=' + search,
-            type: 'get',
-            dataType: 'json',
-            success: function(response) {
-                $('#instituicoesList').html('');
-                response.data.forEach(function(instituicao) {
-                    $('#instituicoesList').append(
-                        `<div class="list-group-item list-group-item-action instituicao-item" data-id="${instituicao.id}" data-nome="${instituicao.nome}" style="cursor: pointer;">${instituicao.nome}</div>`
-                    );
+            function loadInstituicoes(page, search = '') {
+                $('#loading').show();
+                $('#instituicoesList').hide();
+
+                $.ajax({
+                    url: '/instituicoes?page=' + page + '&search=' + search,
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(response) {
+                        $('#instituicoesList').html('');
+                        response.data.forEach(function(instituicao) {
+                            $('#instituicoesList').append(
+                                `<div class="list-group-item list-group-item-action instituicao-item" data-id="${instituicao.id}" data-nome="${instituicao.nome}" style="cursor: pointer;">${instituicao.nome}</div>`
+                            );
+                        });
+
+                        $('#loading').hide();
+                        $('#instituicoesList').show();
+
+                        $('#modalInstituicoes .modal-footer .pagination').remove();
+                        let paginationLinks = generatePaginationLinks(response);
+                        $('#modalInstituicoes .modal-footer').prepend(paginationLinks);
+                    }
                 });
-
-                $('#loading').hide();
-                $('#instituicoesList').show();
-
-                $('#modalInstituicoes .modal-footer .pagination').remove();
-                let paginationLinks = generatePaginationLinks(response);
-                $('#modalInstituicoes .modal-footer').prepend(paginationLinks);
             }
+
+            function generatePaginationLinks(response) {
+                let paginationLinks = '<div class="pagination">';
+                let currentPage = response.current_page;
+                let totalPage = response.last_page;
+                let range = 2;
+
+                if (totalPage <= (range * 2) + 3) {
+                    for (let page = 1; page <= totalPage; page++) {
+                        paginationLinks += generatePageLink(page, currentPage);
+                    }
+                } else {
+                    paginationLinks += generatePageLink(1, currentPage);
+                    paginationLinks += (currentPage > range + 2) ? '...' : '';
+
+                    let start = Math.max(currentPage - range, 2);
+                    let end = Math.min(currentPage + range, totalPage - 1);
+
+                    for (let page = start; page <= end; page++) {
+                        paginationLinks += generatePageLink(page, currentPage);
+                    }
+
+                    paginationLinks += (currentPage < totalPage - range - 1) ? '...' : '';
+                    paginationLinks += generatePageLink(totalPage, currentPage);
+                }
+
+                paginationLinks += '</div>';
+                return paginationLinks;
+            }
+
+            function generatePageLink(page, currentPage) {
+                return `<a href="#" class="page-link ${page === currentPage ? 'active' : ''}" data-page="${page}">${page}</a> `;
+            }
+
+            $('#modalInstituicoes').on('click', '.page-link', function(e) {
+                e.preventDefault();
+                let page = $(this).data('page');
+                loadInstituicoes(page);
+            });
+
+            $('#modalInstituicoes').on('click', '.instituicao-item', function() {
+                var nome = $(this).data('nome');
+                var id = $(this).data('id');
+
+                if (currentButton !== null) {
+                    // Encontra a linha (tr) onde o botão "Selecionar" foi clicado
+                    var currentRow = currentButton.closest('tr');
+
+                    // Seletor do input de nome corrigido
+                    var inputNome = currentRow.find('.instituicao-nome');
+                    console.log("Elemento de input para nome:", inputNome);
+
+                    // Seletor do input de ID corrigido
+                    var inputId = currentRow.find('input[name="instituicao_id[]"]');
+                    console.log("Elemento de input para ID:", inputId);
+
+                    inputNome.val(nome);
+                    inputId.val(id);
+
+                    $('#modalInstituicoes').modal('hide');
+                } else {
+                    console.error("Botão atual não definido.");
+                }
+            });
         });
-    }
-
-    function generatePaginationLinks(response) {
-        let paginationLinks = '<div class="pagination">';
-        let currentPage = response.current_page;
-        let totalPage = response.last_page;
-        let range = 2;
-
-        if (totalPage <= (range * 2) + 3) {
-            for (let page = 1; page <= totalPage; page++) {
-                paginationLinks += generatePageLink(page, currentPage);
-            }
-        } else {
-            paginationLinks += generatePageLink(1, currentPage);
-            paginationLinks += (currentPage > range + 2) ? '...' : '';
-
-            let start = Math.max(currentPage - range, 2);
-            let end = Math.min(currentPage + range, totalPage - 1);
-
-            for (let page = start; page <= end; page++) {
-                paginationLinks += generatePageLink(page, currentPage);
-            }
-
-            paginationLinks += (currentPage < totalPage - range - 1) ? '...' : '';
-            paginationLinks += generatePageLink(totalPage, currentPage);
-        }
-
-        paginationLinks += '</div>';
-        return paginationLinks;
-    }
-
-    function generatePageLink(page, currentPage) {
-        return `<a href="#" class="page-link ${page === currentPage ? 'active' : ''}" data-page="${page}">${page}</a> `;
-    }
-
-    $('#modalInstituicoes').on('click', '.page-link', function(e) {
-        e.preventDefault();
-        let page = $(this).data('page');
-        loadInstituicoes(page);
-    });
-
-    $('#modalInstituicoes').on('click', '.instituicao-item', function() {
-        var nome = $(this).data('nome');
-        var id = $(this).data('id');
-
-        if (currentButton !== null) {
-            // Encontra a linha (tr) onde o botão "Selecionar" foi clicado
-            var currentRow = currentButton.closest('tr');
-
-            // Seletor do input de nome corrigido
-            var inputNome = currentRow.find('.instituicao-nome');
-            console.log("Elemento de input para nome:", inputNome);
-
-            // Seletor do input de ID corrigido
-            var inputId = currentRow.find('input[name="instituicao_id[]"]');
-            console.log("Elemento de input para ID:", inputId);
-
-            inputNome.val(nome);
-            inputId.val(id);
-
-            $('#modalInstituicoes').modal('hide');
-        } else {
-            console.error("Botão atual não definido.");
-        }
-    });
-});
     </script>
 @endsection
