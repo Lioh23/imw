@@ -45,7 +45,8 @@ class LivroGradeService
             \DB::raw('COALESCE(fg.dez, "0,00") as dez'),
             \DB::raw('COALESCE(fg.o13, "0,00") as o13'),
             \DB::raw('COALESCE(fg.jan, 0.00) + COALESCE(fg.fev, 0.00) + COALESCE(fg.mar, 0.00) + COALESCE(fg.abr, 0.00) + COALESCE(fg.mai, 0.00) + COALESCE(fg.jun, 0.00) + COALESCE(fg.jul, 0.00) + COALESCE(fg.ago, 0.00) + COALESCE(fg.`set`, 0.00) + COALESCE(fg.`out`, 0.00) + COALESCE(fg.nov, 0.00) + COALESCE(fg.dez, 0.00) + COALESCE(fg.o13, 0.00) as valor_total')
-        )
+            ->orderBy('membresia_membros.nome')
+            )
         ->get();
         return $grade;
     }
