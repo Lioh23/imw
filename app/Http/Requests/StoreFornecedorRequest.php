@@ -42,8 +42,8 @@ class StoreFornecedorRequest extends FormRequest
             'cidade' => 'nullable|string|max:255',
             'estado' => 'nullable|string|max:2',
             'pais' => 'required|string|max:20',
-            'telefone' => 'nullable|string|max:20',
-            'celular' => 'required|string|max:20',
+            'telefone' => 'nullable|string|min:10',
+            'celular' => 'required|string|min:10',
         ];
     }
 

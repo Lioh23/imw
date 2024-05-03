@@ -37,8 +37,10 @@ class UpdateVisitanteRequest extends FormRequest
                     }
                 }
             }],
-            
-            'email_alternativo' => 'email|nullable'
+            'email_alternativo' => 'email|nullable',
+            'telefone_preferencial' => 'nullable|string|min:10',
+            'telefone_alternativo' => 'nullable|string|min:10',
+            'telefone_whatsapp' => 'nullable|string|min:10',
         ];
     }
 }

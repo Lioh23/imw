@@ -79,18 +79,27 @@
                 <div class="row">
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">Telefone Preferencial:</label>
-                        <input type="text" id="telefone_preferencial" name="telefone_preferencial" class="form-control" value="{{ old('telefone_preferencial', $visitante->telefone_preferencial ?? '') }}">
+                        <input type="text" id="telefone_preferencial" name="telefone_preferencial" class="form-control @error('telefone_preferencial') is-invalid @enderror" value="{{ old('telefone_preferencial', $visitante->telefone_preferencial ?? '') }}">
+                        @error('telefone_preferencial')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">Telefone Alternativo:</label>
-                        <input type="text" id="telefone_alternativo" name="telefone_alternativo" class="form-control" value="{{ old('telefone_alternativo', $visitante->telefone_alternativo ?? '') }}">
+                        <input type="text" id="telefone_alternativo" name="telefone_alternativo" class="form-control @error('telefone_alternativo') is-invalid @enderror" value="{{ old('telefone_alternativo', $visitante->telefone_alternativo ?? '') }}">
+                        @error('telefone_alternativo')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
             
                 </div>
                 <div class="row">
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">Whatsapp:</label>
-                        <input type="text" id="whatsapp" name="telefone_whatsapp" class="form-control" value="{{ old('telefone_whatsapp', $visitante->telefone_whatsapp ?? '') }}">
+                        <input type="text" id="whatsapp" name="telefone_whatsapp" class="form-control @error('telefone_whatsapp') is-invalid @enderror" value="{{ old('telefone_whatsapp', $visitante->telefone_whatsapp ?? '') }}">
+                        @error('telefone_whatsapp')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
                 
