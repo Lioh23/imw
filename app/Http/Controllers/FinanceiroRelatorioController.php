@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ServiceFinanceiroRelatorios\BalanceteService;
 use App\Services\ServiceFinanceiroRelatorios\LivroCaixaService;
 use App\Services\ServiceFinanceiroRelatorios\LivroGradeService;
+use App\Services\ServiceFinanceiroRelatorios\SalvarLivroGradeService;
 use App\Services\ServiceFinanceiroRelatorios\MovimentoDiarioService;
 use Illuminate\Http\Request;
 
@@ -44,6 +45,11 @@ class FinanceiroRelatorioController extends Controller
         $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId);
 
         return view('financeiro.relatorios.balancete', $data);
+    }
+
+    public function livrogradestore(Request $request){
+        $data = app(SalvarLivroGradeService::class)->execute($request);
+        return $data;
     }
 
 

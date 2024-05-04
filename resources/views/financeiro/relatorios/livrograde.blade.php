@@ -160,7 +160,6 @@
                     'alias': 'numeric',
                     'groupSeparator': '.',
                     'radixPoint': ',',
-                    'autoGroup': true,
                     'digits': 2,
                     'digitsOptional': false,
                     'placeholder': '0'
@@ -226,10 +225,14 @@
             };
 
             // Enviar os dados para a API via POST
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
             $.ajax({
-                url: 'teste.php',
+                url: "{{route('financeiro.livrograde.store')}}",
                 method: 'POST',
                 data: postData,
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                },
                 success: function(response) {
                     console.log('Dados enviados com sucesso para a API:', postData);
                 },
