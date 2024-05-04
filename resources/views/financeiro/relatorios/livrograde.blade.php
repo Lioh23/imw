@@ -71,7 +71,7 @@
                             @php
                                 $year = $currentYear - $i;
                             @endphp
-                            <button class="btn mb-4 mr-2 btn-lg year-btn btn-primary" data-year="{{ $year }}">
+                            <button class="btn mb-4 mr-2 btn-lg year-btn btn-primary {{ $year == $currentYear ? ' btn-success' : '' }}" data-year="{{ $year }}">
                                 <span class="btn-content">{{ $year }}</span>
                                 @if ($year == $currentYear)
                                     <i class="fas fa-check"></i>
@@ -179,7 +179,7 @@
             $('#livrograde tbody').on('blur', 'td[contenteditable="true"]', function() {
                 var $this = $(this);
                 $this.inputmask('remove');
-                $this.removeClass('editing');
+               
                 // Verifica se o campo está vazio e define como "0,00" se estiver
                 if ($this.text().trim() === '') {
                     $this.text('0,00');
@@ -187,10 +187,57 @@
                 // Remove a classe 'active' da linha pai (tr) da célula ao perder o foco
                 $this.closest('tr').removeClass('active');
 
+                // Localizar a célula em edição
+                var $editingCell = $('#livrograde tbody td.editing');
+
+                $this.removeClass('editing');
+
+                // Verificar se encontrou a célula em edição
+                if ($editingCell.length > 0) {
+                    // Obter o valor da célula
+                    var cellValue = $editingCell.text().trim();
+
+                    var columnIndex = $editingCell.index();
+
+                    var columnHeader = $('#livrograde thead th').eq(columnIndex).text().trim().toUpperCase();
+
+                     // Obter o membro_id da linha
+                    var memberId = $editingCell.closest('tr').attr('id');
+
+                    // Enviar os dados para a API
+                    sendToAPI(cellValue, columnHeader, memberId);
+                } else {
+                    console.log('Nenhuma célula está em edição.');
+                }
+
                 // Atualizar o valor total da linha após editar
                 updateRowTotal($this.closest('tr'));
             });
         });
+
+
+        function sendToAPI(value, title, memberId) {
+            // Criar os dados a serem enviados para a API
+            var postData = {
+                value: value,
+                title: title,
+                ano: $('.year-btn.btn-success').data('year'),
+                membro_id: memberId,
+            };
+
+            // Enviar os dados para a API via POST
+            $.ajax({
+                url: 'teste.php',
+                method: 'POST',
+                data: postData,
+                success: function(response) {
+                    console.log('Dados enviados com sucesso para a API:', postData);
+                },
+                error: function(xhr, status, error) {
+                    console.error('Erro ao enviar dados para a API:', error);
+                }
+            });
+        }
 
 
         function fetchData(year) {
@@ -253,13 +300,13 @@
 
         // Função para atualizar o valor total da linha após a edição
         function updateRowTotal($row) {
+
             var total = 0;
             $row.find('td[contenteditable="true"]').each(function() {
                 var value = parseFloat($(this).text().replace(',', '.')) || 0;
                 total += value;
             });
 
-            console.log(total);
             $row.find('.total-column').text(total.toFixed(2));
 
             // Atualizar o valor total no servidor
@@ -268,4 +315,3 @@
         }
     </script>
 @endsection
-
