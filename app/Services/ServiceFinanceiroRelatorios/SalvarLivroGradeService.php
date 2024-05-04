@@ -66,7 +66,10 @@ class SalvarLivroGradeService
             return FinanceiroGrade::create([
                 'membro_id' => $data['membro_id'],
                 'ano' => $data['ano'],
-                $data['mes'] => $data['valor']
+                $data['mes'] => $data['valor'],
+                'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
+                'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
+                'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
             ]);
         }
     }

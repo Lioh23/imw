@@ -1,12 +1,13 @@
 <?php
 
 namespace App\Services\ServiceFinanceiroRelatorios;
-
+use App\Services\ServiceMembros\IdentificaDadosLocalidadeMembroService;
 use App\Models\MembresiaMembro;
 use App\Models\FinanceiroGrade;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+
 
 class LivroGradeService
 {
@@ -14,7 +15,7 @@ class LivroGradeService
 
     public function execute($ano)
     {
-      
+       
         $grades =  $this->handleGrades($ano);
       
         return $grades;
@@ -22,7 +23,7 @@ class LivroGradeService
 
 
     private function handleGrades($ano)
-    {
+    { 
         $resultado = MembresiaMembro::leftJoin('financeiro_grades as fg', function ($join) use ($ano) {
             $join->on('membresia_membros.id', '=', 'fg.membro_id')
                  ->where('fg.ano', '=', $ano);
@@ -46,10 +47,12 @@ class LivroGradeService
             \DB::raw('FORMAT(SUM(COALESCE(fg.o13, 0.00)), 2, "de_DE") as o13'),
             \DB::raw('FORMAT(SUM(COALESCE(fg.jan, 0.00) + COALESCE(fg.fev, 0.00) + COALESCE(fg.mar, 0.00) + COALESCE(fg.abr, 0.00) + COALESCE(fg.mai, 0.00) + COALESCE(fg.jun, 0.00) + COALESCE(fg.jul, 0.00) + COALESCE(fg.ago, 0.00) + COALESCE(fg.set, 0.00) + COALESCE(fg.out, 0.00) + COALESCE(fg.nov, 0.00) + COALESCE(fg.dez, 0.00) + COALESCE(fg.o13, 0.00)), 2, "de_DE") as valor_total')
         )
+        ->where('membresia_membros.distrito_id', session()->get('session_perfil')->instituicoes->distrito->id)
+        ->where('membresia_membros.igreja_id', session()->get('session_perfil')->instituicoes->igrejaLocal->id)
+        ->where('membresia_membros.regiao_id', session()->get('session_perfil')->instituicoes->regiao->id)
         ->groupBy('membresia_membros.id', 'rol_atual', 'membresia_membros.nome')
         ->orderBy('membresia_membros.nome')
         ->get();
-
 
             
         return $resultado;
