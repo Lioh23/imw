@@ -239,7 +239,6 @@
             });
         }
 
-
         function fetchData(year) {
             // Exibir indicador de carregamento
             $('#livrograde').addClass('d-none');
