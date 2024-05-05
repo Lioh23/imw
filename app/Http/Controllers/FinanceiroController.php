@@ -54,15 +54,15 @@ class FinanceiroController extends Controller
 
     public function storeEntrada(FinanceiroStoreEntradaRequest $request)
     {
-        try {
+        /* try { */
             DB::begintransaction();
             app(StoreLancamentoEntradaService::class)->execute($request->all());
             DB::commit();
             return redirect()->route('financeiro.entrada')->with('success', 'Lançamento de entrada realizado.')->withInput();
-        } catch (\Exception $e) {
-            DB::rollback();
+        /* } catch (\Exception $e) {
+            
             return redirect()->back()->with('error', 'Não foi possível criar um registro de entrada');
-        }
+        } */
     }
 
     public function storeTransferencia(FinanceiroTransferenciaRequest $request)
