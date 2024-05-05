@@ -7,14 +7,15 @@ use App\Models\MembresiaCurso;
 use App\Models\MembresiaFormacao;
 use App\Models\MembresiaFuncaoEclesiastica;
 use App\Models\MembresiaMembro;
-use App\Models\MembresiaRolPermanente;
 use App\Models\MembresiaSetor;
 use App\Models\MembresiaTipoAtuacao;
-use Illuminate\Support\Facades\Storage;
+use App\Traits\Identifiable;
 
 
 class EditarMembroService
 {
+    use Identifiable;
+
     public function findOne($id)
     {
         $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas'])
@@ -36,6 +37,7 @@ class EditarMembroService
             'cursos'               => $cursos,
             'formacoes'            => $formacoes,
             'funcoesEclesiasticas' => $funcoesEclesiasticas,
+            'congregacoes'         => Identifiable::fetchCongregacoes()
         ];
     }
 }

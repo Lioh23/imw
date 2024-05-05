@@ -25,15 +25,9 @@ class CongregadosController extends Controller
     public function novo() {
      
         try {
-            $pessoa = app(NovoCongregadoService::class)->execute();
+            $data = app(NovoCongregadoService::class)->execute();
             
-            return view('congregados.novo.index', [
-                'ministerios'          => $pessoa['ministerios'],
-                'funcoes'              => $pessoa['funcoes'],
-                'cursos'               => $pessoa['cursos'],
-                'formacoes'            => $pessoa['formacoes'],
-                'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
-            ]);
+            return view('congregados.novo.index', $data);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('congregado.index')->with('error', 'Registro não encontrado.');
         } catch(\Exception $e) {
@@ -73,16 +67,9 @@ class CongregadosController extends Controller
     public function editar($id) 
     {    
         try {
-            $pessoa = app(EditarMembroService::class)->findOne($id);
+            $data = app(EditarMembroService::class)->findOne($id);
             
-            return view('congregados.editar.index', [
-                'pessoa'               => $pessoa['pessoa'],
-                'ministerios'          => $pessoa['ministerios'],
-                'funcoes'              => $pessoa['funcoes'],
-                'cursos'               => $pessoa['cursos'],
-                'formacoes'            => $pessoa['formacoes'],
-                'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
-            ]);
+            return view('congregados.editar.index', $data);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('visitante.index')->with('error', 'Registro não encontrado.');
         } catch(\Exception $e) {

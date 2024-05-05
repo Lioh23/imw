@@ -2,22 +2,16 @@
 
 namespace App\Services\ServicesCongregados;
 
-use App\Exceptions\MembroNotFoundException;
-use App\Models\MembresiaContato;
 use App\Models\MembresiaCurso;
-use App\Models\MembresiaFamiliar;
 use App\Models\MembresiaFormacao;
-use App\Models\MembresiaFormacaoEclesiastica;
 use App\Models\MembresiaFuncaoEclesiastica;
-use App\Models\MembresiaFuncaoMinisterial;
-use App\Models\MembresiaMembro;
 use App\Models\MembresiaSetor;
 use App\Models\MembresiaTipoAtuacao;
-use Illuminate\Support\Facades\Storage;
-
+use App\Traits\Identifiable;
 
 class NovoCongregadoService
 {
+    use Identifiable;
 
     public function execute()
     {
@@ -33,6 +27,7 @@ class NovoCongregadoService
             'cursos'               => $cursos,
             'formacoes'            => $formacoes,
             'funcoesEclesiasticas' => $funcoesEclesiasticas,
+            'congregacoes'         => Identifiable::fetchCongregacoes()
         ];
     }
 }

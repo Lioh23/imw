@@ -52,7 +52,7 @@ class UpdateMembroService
 
     private function prepareMembroData(array $data, $vinculo): array
     {
-        return [
+        $result = [
             'membro_id' => $data['membro_id'],
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
@@ -73,6 +73,12 @@ class UpdateMembroService
             'data_batismo_espirito'  => $data['data_batismo_espirito'],
             'vinculo'         => $vinculo,
         ];
+
+        if(isset($data['congregacao_id'])) {
+            $result['conregacao_id'] = $data['congregacao_id'];
+        }
+
+        return $result;
     }
 
     private function prepareContatoData(array $data): array

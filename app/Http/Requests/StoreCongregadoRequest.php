@@ -57,6 +57,7 @@ class StoreCongregadoRequest extends FormRequest
             'telefone_alternativo' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],            
             'data_casamento' => [new RangeDateRule],
+            'congregacao_id' => 'nullable|exists:congregacoes_congregacoes,id'
         ];
     }
 

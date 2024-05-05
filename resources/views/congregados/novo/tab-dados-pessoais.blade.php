@@ -464,13 +464,26 @@
               </div>
             </div>
             <div class="row mb-4">
-              <div class="col-xl-12">
+              <div class="col-lg-6">
                 <label for="historico">Pastor Oficiante</label>
                 <input type="text" class="form-control" id="historico" name="historico" value="{{ old('historico') }}">
                 @error('historico')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
-              </div>            
+              </div>   
+              
+              <div class="col-lg-6">
+                  <label class="control-label">Congregação:</label>
+                  <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" >
+                      <option value="" {{ old('congregacao_id') == '' ? 'selected' : '' }}>Selecione</option>
+                      @foreach ($congregacoes as $congregacao)
+                          <option value="{{ $congregacao->id }}" {{ old('congregacao_id') == $congregacao->id ? 'selected' : '' }}>{{ $congregacao->nome }}</option>
+                      @endforeach
+                  </select>
+                  @error('congregacao_id')
+                      <div class="invalid-feedback">{{ $message }}</div>
+                  @enderror
+              </div>
             </div>
           </div>                       
       </div>

@@ -70,6 +70,7 @@ class SalvarCongregadoService
             'data_batismo_espirito'  => $data['data_batismo_espirito'],
             'vinculo'         => MembresiaMembro::VINCULO_CONGREGADO,
             'status' => MembresiaMembro::STATUS_ATIVO,
+            'congregacao_id' => $data['congregacao_id'],
             ...Identifiable::fetchSessionInstituicoesStoreMembresia()
         ];
     }
