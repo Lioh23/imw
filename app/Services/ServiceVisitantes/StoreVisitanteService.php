@@ -18,6 +18,7 @@ class StoreVisitanteService
             'sexo'            => $data['sexo'],
             'data_nascimento' => isset($data['data_nascimento']) ? Carbon::createFromFormat('Y-m-d', $data['data_nascimento']) : null,
             'data_conversao'  => $data['data_conversao'],
+            'congregacao_id'  => $data['congregacao_id'],
             'vinculo'         => MembresiaMembro::VINCULO_VISITANTE,
             'status'          => MembresiaMembro::STATUS_ATIVO,
             ...Identifiable::fetchSessionInstituicoesStoreMembresia()

@@ -42,6 +42,7 @@ class StoreVisitanteRequest extends FormRequest
             'telefone_preferencial' => 'nullable|string|min:10',
             'telefone_alternativo' => 'nullable|string|min:10',
             'telefone_whatsapp' => 'nullable|string|min:10',
+            'congregacao_id' => 'nullable|exists:congregacoes_congregacoes,id'
         ];
     }
 }

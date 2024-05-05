@@ -15,6 +15,7 @@ class EditarVisitanteService
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
             'data_nascimento' => isset($data['data_nascimento']) ? Carbon::createFromFormat('Y-m-d', $data['data_nascimento']) : null,
+            'congregacao_id'  => $data['congregacao_id'],
             'data_conversao'  => $data['data_conversao']
         ]);
 

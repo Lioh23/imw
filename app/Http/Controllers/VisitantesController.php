@@ -8,12 +8,13 @@ use App\Services\ServiceMembrosGeral\DeletarMembroService;
 use App\Services\ServiceVisitantes\EditarVisitanteService;
 use App\Services\ServiceVisitantes\ListVisitanteService;
 use App\Services\ServiceVisitantes\StoreVisitanteService;
+use App\Traits\Identifiable;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class VisitantesController extends Controller
 {
+    use Identifiable;
 
     public function index(Request $request)
     {
@@ -29,17 +30,17 @@ class VisitantesController extends Controller
             return redirect()->route('visitante.editar', ['id' => $id])->with('success', 'Visitante atualizado com sucesso.');
         } catch(\Exception $e) {
             DB::rollback();
-            dd($e);
             return redirect()->route('visitante.editar', ['id' => $id])->with('error', 'Falha ao atualizar o visitante.');
        }
     }
 
     public function editar($id) {
         $visitante = app(EditarVisitanteService::class)->findOne($id);
+        $congregacoes = Identifiable::fetchCongregacoes();
         if (!$visitante) {
             return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
         }
-        return view('visitantes.editar', compact('visitante'));
+        return view('visitantes.editar', compact('visitante', 'congregacoes'));
     }
 
     public function deletar($id) {
@@ -53,7 +54,11 @@ class VisitantesController extends Controller
 
     public function novo()
     {
-        return view('visitantes.create');
+        try {
+            return view('visitantes.create', ['congregacoes' => Identifiable::fetchCongregacoes()]);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Falha ao abrir a página de novo visitante');
+        }
     }
 
     public function store(StoreVisitanteRequest $request)
