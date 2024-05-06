@@ -74,7 +74,7 @@
                     <td>{{ $membro->nome }}</td>
                     <td>{{ $membro->statusText }}</td>
                     <td>{{ $membro->vinculoText }}</td>
-                    <td>{{ $membro->data_nascimento->format('d/m/Y') }}</td>
+                    <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
                     <td>{{ $membro->created_at->format('d/m/Y') }}</td>
                     <td>{{ optional($membro->deleted_at)->format('d/m/Y') }}</td>
                     <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
