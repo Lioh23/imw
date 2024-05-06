@@ -94,7 +94,8 @@
                                     </td>
                                     <td>
                                         @if (isset($membro->ultimaExclusao) && !is_null($membro->ultimaExclusao->dt_recepcao))
-                                            {{ \Carbon\Carbon::parse($membro->ultimaExclusao->dt_exclusao)->format('d/m/Y') }}
+                                            {{-- {{ \Carbon\Carbon::parse($membro->ultimaExclusao->dt_exclusao)->format('d/m/Y') }} --}}
+                                            {{ optional($membro->deleted_at)->format('d/m/Y') }}
                                         @endif
                                     </td>
                                     <td>{{ optional(optional($membro->ultimaAdesao)->congregacao)->nome }}</td>
