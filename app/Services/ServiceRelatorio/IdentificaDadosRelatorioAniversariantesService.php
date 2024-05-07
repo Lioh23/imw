@@ -31,13 +31,19 @@ class IdentificaDadosRelatorioAniversariantesService
 
     private function fetchMembrosRelatorio($params)
     {
-        $data = MembresiaMembro::with('contato', 'congregacao')
+        $data = MembresiaMembro::with('congregacao')
             ->select(
+                'membresia_membros.id',
+                'membresia_membros.congregacao_id',
                 'nome', 
                 'data_nascimento',
                 DB::raw("DATE_FORMAT(data_nascimento, '%d/%m') aniversario"),
-                DB::raw("TIMESTAMPDIFF(YEAR, data_nascimento, curdate()) idade")
+                DB::raw("TIMESTAMPDIFF(YEAR, data_nascimento, curdate()) idade"),
+                DB::raw("CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+                              WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
+                              ELSE telefone_whatsapp END contato")
             )
+            ->join('membresia_contatos', 'membresia_contatos.membro_id', 'membresia_membros.id')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->when($params['vinculo'], fn($query) => $query->whereIn('vinculo', $params['vinculo']))
             ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))

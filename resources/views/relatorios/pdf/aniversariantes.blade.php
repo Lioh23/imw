@@ -71,14 +71,9 @@
                     <tr>
                         <td>{{ $membro->nome }}</td>
                         <td>{{ $membro->aniversario }}</td>
-                        <td>{{ $membro->data_nascimento->format('d/m/Y') }}</td>
+                        <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
                         <td>{{ $membro->idade }}</td>
-                        <td>{{ 
-                              optional($membro->contato)->telefone_preferencial ??
-                              optional($membro->contato)->telefone_alternativo ??
-                              optional($membro->contato)->telefone_whatsapp
-                            }}
-                        </td>
+                        <td>{{ formatStr($membro->contato, '(##) #####-####') }}</td>
                         <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
                     </tr>
                 </tr>
