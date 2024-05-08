@@ -116,7 +116,7 @@
                             <td>{{ $membroEclesiastico->nome }}</td>
                             <td>{{ $historico->ministerio->descricao }}</td>
                             <td>{{ $historico->tipoAtuacao->descricao }}</td>
-                            <td>{{ $historico->data_entrada->format('d/m/Y') }}</td>
+                            <td>{{ optional($historico->data_entrada)->format('d/m/Y') }}</td>
                             <td>{{ optional($historico->data_saida)->format('d/m/Y') }}</td>
                         </tr>
                       @empty
