@@ -42,16 +42,16 @@ class UserSeeder extends Seeder
                 $perfil->regras()->attach($regra);
             }
         }
-        
-        $regrasComuns = [4, 5, 6, 7, 8, 9];
-        
+
+        $regrasComuns = [4, 5, 6, 7, 8, 9, 61, 62, 63, 64, 65, 66];
+
         if ($perfilAdminDistrito) {
             attachRegras($perfilAdminDistrito, $regrasComuns);
         }
-        
+
         if ($perfilAdminRegiao) {
             attachRegras($perfilAdminRegiao, $regrasComuns);
-           
+
         }
         //Fim das regras comuns
 

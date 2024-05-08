@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
@@ -39,12 +40,23 @@ Route::post('/redefinir-senha', [AuthController::class, 'reset'])->name('passwor
 
 // Rotas protegidas por autenticação
 Route::middleware(['auth'])->group(function () {
-    Route::middleware([VerificaPerfil::class])->group(function () { 
-        
+    Route::middleware([VerificaPerfil::class])->group(function () {
+
         //Estas duas rotas estão com VerificaPerfil Middleware desabilitados
         Route::get('/selecionarPerfil', [HomeController::class, 'selecionarPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('selecionarPerfil');
         Route::post('/postPerfil', [HomeController::class, 'postPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('postPerfil');
-       
+
+        Route::prefix('admin')->group(function () {
+            Route::get('/', [AdminController::class, 'index'])->name('index')->middleware(['seguranca:admin-index']);
+            Route::get('/', [UsuarioController::class, 'index'])->name('index')->middleware(['seguranca:usuarios-index']);
+            Route::get('/novo', [UsuarioController::class, 'novo'])->name('novo')->middleware(['seguranca:usuarios-cadastrar']);
+            Route::post('/update/{id}', [UsuarioController::class, 'update'])->name('update')->middleware(['seguranca:usuarios-atualizar']);
+            Route::post('/store', [UsuarioController::class, 'store'])->name('store')->middleware(['seguranca:usuarios-cadastrar']);
+            Route::delete('/deletar/{id}', [UsuarioController::class, 'deletar'])->name('deletar')->middleware(['seguranca:usuarios-excluir']);
+            Route::get('/editar/{id}', [UsuarioController::class, 'editar'])->name('editar')->middleware(['seguranca:usuarios-editar']);
+        });
+
+
         // Grupo de rotas para 'membresia'
         Route::prefix('membro')->name('membro.')->group(function () {
             Route::get('', [MembrosController::class, 'index'])->name('index')->middleware(['seguranca:membros-index']);
@@ -65,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar')->middleware(['seguranca:membros-disciplinar']);
             Route::post('disciplinar/store/{id}', [MembrosController::class, 'storeDisciplinar'])->name('disciplinar.store')->middleware(['seguranca:membros-disciplinar']);
             Route::put('disciplinar/update/{id}', [MembrosController::class, 'updateDisciplinar'])->name('disciplinar.update')->middleware(['seguranca:membros-disciplinar']);
-            
+
         });
 
         Route::controller(HomeController::class)->group(function () {
@@ -77,7 +89,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [PerfilController::class, 'index'])->name('index');
             Route::post('/perfil/{id}', [PerfilController::class, 'update'])->name('update');
         });
-        
+
         Route::prefix('instituicoes')->name('instituicoes.')->group(function () {
             Route::get('/', [InstituicaoController::class, 'index']);
         });
@@ -90,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar')->middleware(['seguranca:visitantes-atualizar']);
             Route::post('/visitante/{id}', [VisitantesController::class, 'update'])->name('update')->middleware(['seguranca:visitantes-atualizar']);
             Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar')->middleware(['seguranca:visitantes-excluir']);
-            
+
         });
 
         // Grupo de rotas para 'congregado'
@@ -122,7 +134,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/anexos/{id_lancamento}', [FinanceiroController::class, 'buscarAnexos'])->name('buscarAnexos')->middleware(['seguranca:financeiro-caixas']);
             //Plano de Conta
             Route::get('/plano-conta', [FinanceiroPlanoContaController::class, 'index'])->name('plano.conta')->middleware(['seguranca:financeiro-planoconta']);
-            
+
             //Caixas
             Route::get('/caixas', [FinanceiroCaixasController::class, 'index'])->name('caixas')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/caixas/novo', [FinanceiroCaixasController::class, 'novo'])->name('caixas.novo')->middleware(['seguranca:financeiro-caixas']);
@@ -130,7 +142,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/caixas/deletar/{id}', [FinanceiroCaixasController::class, 'deletar'])->name('caixas.deletar')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/editar/{id}', [FinanceiroCaixasController::class, 'editar'])->name('caixas.editar')->middleware(['seguranca:financeiro-caixas']);
             Route::post('/update/{id}', [FinanceiroCaixasController::class, 'update'])->name('caixas.update')->middleware(['seguranca:financeiro-caixas']);
-        
+
             //Relatorios
             Route::get('/relatorio/movimento-diario', [FinanceiroRelatorioController::class, 'movimentodiario'])->name('relatorio-movimento-diario')->middleware(['seguranca:menu-relatorios']);
             Route::get('/relatorio/livrorazao', [FinanceiroRelatorioController::class, 'livrorazao'])->name('relatorio-livrorazao')->middleware(['seguranca:menu-relatorios']);
@@ -139,7 +151,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/relatorio/livrogradepost', [FinanceiroRelatorioController::class, 'livrogradepost'])->name('livrogradepost')->middleware(['seguranca:menu-relatorios']);
                 Route::post('/relatorio/livrograde/store', [FinanceiroRelatorioController::class, 'livrogradestore'])->name('livrograde.store')->middleware(['seguranca:menu-relatorios']);
             Route::get('/relatorio/balancete', [FinanceiroRelatorioController::class, 'balancete'])->name('relatorio-balancete')->middleware(['seguranca:menu-relatorios']);
-        
+
         });
 
          /* Por enquanto somente visualiações */

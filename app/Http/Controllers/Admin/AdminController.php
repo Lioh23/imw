@@ -1,0 +1,87 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Exceptions\MembroNotFoundException;
+use App\Http\Requests\StoreUsuarioRequest;
+use App\Http\Requests\UpdateUsuarioRequest;
+use App\Models\User;
+use App\Services\ServicesUsuarios\DeletarUsuarioService;
+use App\Services\ServicesUsuarios\EditarUsuarioService;
+use App\Services\ServicesUsuarios\ListUsuariosService;
+use App\Services\ServicesUsuarios\NovoUsuarioService;
+use App\Services\ServicesUsuarios\SalvarUsuarioService;
+use Illuminate\Support\Facades\DB;
+
+class AdminController extends Controller
+{
+    public function index(Request $request)
+    {
+        $data = app(ListUsuariosService::class)->execute($request->all());
+        return view('admin.index', $data);
+    }
+
+    public function novo()
+    {
+        try {
+            $perfis = app(NovoUsuarioService::class)->execute();
+            return view('admin.novo', compact('perfis'));
+        } catch (MembroNotFoundException $e) {
+            return redirect()->route('admin.index')->with('error', 'Registro não encontrado.');
+        } catch (\Exception $e) {
+            return redirect()->route('admin.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+        }
+    }
+
+    public function store(StoreUsuarioRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            app(SalvarUsuarioService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('admin.novo')->with('success', 'Usuário cadastrado com sucesso.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('admin.novo')->with('error', $e);
+        }
+    }
+
+    public function editar($id)
+    {
+        try {
+            $user = User::findOrFail($id);
+            $perfis = app(NovoUsuarioService::class)->execute();
+            return view('admin.usuarios.editar', compact('user', 'perfis', 'id'));
+        } catch (\Exception $e) {
+            return redirect()->route('admin.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+        }
+    }
+
+    public function update(UpdateUsuarioRequest $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            app(EditarUsuarioService::class)->execute($request->all(), $id);
+            DB::commit();
+            return redirect()->route('admin.editar', $id)->with('success', 'Usuário atualizado com sucesso.');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('admin.editar', $id)->with('error', $e->getMessage());
+        }
+    }
+
+    public function deletar($id)
+    {
+        try {
+            DB::beginTransaction();
+            app(DeletarUsuarioService::class)->execute($id);
+            DB::commit();
+            return redirect()->route('admin.index')->with('success', 'Usuário excluído com sucesso.');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('admin.index')->with('error', $e->getMessage());
+        }
+    }
+}

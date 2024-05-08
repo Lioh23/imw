@@ -28,7 +28,8 @@ class RegrasTableSeeder extends Seeder
              ['nome' => 'usuarios-editar'],
              ['nome' => 'usuarios-excluir'],
              ['nome' => 'usuarios-pesquisar'],
-    
+
+
             //Visitantes
             ['nome' => 'visitantes-index'],
             ['nome' => 'visitantes-cadastrar'],
@@ -68,14 +69,14 @@ class RegrasTableSeeder extends Seeder
              ['nome' => 'relcongregados-index'],
              ['nome' => 'relvisitantes-index'],
              ['nome' => 'relaniversariantes-index'],
-             
+
              //Fornecedores
              ['nome' => 'fornecedores-index'],
              ['nome' => 'fornecedores-cadastrar'],
              ['nome' => 'fornecedores-editar'],
              ['nome' => 'fornecedores-deletar'],
              ['nome' => 'fornecedores-editar'],
-        
+
              //Financeiro
              ['nome' => 'financeiro-movimentocaixa-index'],
              ['nome' => 'financeiro-consolidarcaixa'],
