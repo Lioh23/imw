@@ -10,7 +10,7 @@ use App\Http\Requests\UpdateUsuarioRequest;
 use App\Models\User;
 use App\Services\ServicesUsuarios\AdminDeletarUsuarioService;
 use App\Services\ServicesUsuarios\AdminEditarUsuarioService;
-use App\Services\ServicesUsuarios\ListUsuariosService;
+use App\Services\ServicesUsuarios\AdminListUsuariosService;
 use App\Services\ServicesUsuarios\NovoUsuarioService;
 use App\Services\ServicesUsuarios\SalvarUsuarioService;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +19,7 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        $data = app(ListUsuariosService::class)->execute($request->all(), User::GERAL);
+        $data = app(AdminListUsuariosService::class)->execute($request->all(), User::GERAL);
         return view('admin.index', $data);
     }
 
