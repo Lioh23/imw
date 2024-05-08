@@ -9,7 +9,7 @@ use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use App\Models\User;
 use App\Services\ServicesUsuarios\DeletarUsuarioService;
-use App\Services\ServicesUsuarios\EditarUsuarioService;
+use App\Services\ServicesUsuarios\AdminEditarUsuarioService;
 use App\Services\ServicesUsuarios\ListUsuariosService;
 use App\Services\ServicesUsuarios\NovoUsuarioService;
 use App\Services\ServicesUsuarios\SalvarUsuarioService;
@@ -63,7 +63,7 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            app(EditarUsuarioService::class)->execute($request->all(), $id);
+            app(AdminEditarUsuarioService::class)->execute($request->all(), $id);
             DB::commit();
             return redirect()->route('admin.editar', $id)->with('success', 'Usuário atualizado com sucesso.');
         } catch(\Exception $e) {
