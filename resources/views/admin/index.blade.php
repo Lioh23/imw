@@ -114,7 +114,7 @@
                                         </div>
                                     </td>
             <td class="text-center">
-                <a href="{{ route('usuarios.editar', $usuario->id) }}" title="Editar"
+                <a href="{{ route('admin.editar', $usuario->id) }}" title="Editar"
                     class="btn btn-sm btn-dark mr-2 btn-rounded">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

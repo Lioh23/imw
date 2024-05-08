@@ -11,7 +11,7 @@ use App\Models\User;
 use App\Services\ServicesUsuarios\AdminDeletarUsuarioService;
 use App\Services\ServicesUsuarios\AdminEditarUsuarioService;
 use App\Services\ServicesUsuarios\AdminListUsuariosService;
-use App\Services\ServicesUsuarios\NovoUsuarioService;
+use App\Services\ServicesUsuarios\AdminNovoUsuarioService;
 use App\Services\ServicesUsuarios\SalvarUsuarioService;
 use Illuminate\Support\Facades\DB;
 
@@ -26,7 +26,7 @@ class AdminController extends Controller
     public function novo()
     {
         try {
-            $perfis = app(NovoUsuarioService::class)->execute();
+            $perfis = app(AdminNovoUsuarioService::class)->execute();
             return view('admin.novo', compact('perfis'));
         } catch (MembroNotFoundException $e) {
             return redirect()->route('admin.index')->with('error', 'Registro não encontrado.');
@@ -52,8 +52,8 @@ class AdminController extends Controller
     {
         try {
             $user = User::findOrFail($id);
-            $perfis = app(NovoUsuarioService::class)->execute();
-            return view('admin.usuarios.editar', compact('user', 'perfis', 'id'));
+            $perfis = app(AdminNovoUsuarioService::class)->execute();
+            return view('admin.editar', compact('user', 'perfis', 'id'));
         } catch (\Exception $e) {
             return redirect()->route('admin.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
