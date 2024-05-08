@@ -20,6 +20,18 @@ class PerfilRegraTableSeeder extends Seeder
         $perfilAdminIgreja = Perfil::where('nome', 'Administrador - Igreja')->first();
         $perfilPastorIgreja = Perfil::where('nome', 'Pastor - Igreja')->first();
         $perfilTesoureiroIgreja = Perfil::where('nome', 'Tesoureiro - Igreja')->first();
+        $perfilAdministradordoSistema = Perfil::where('nome', 'Administrador do Sistema')->first();
+
+        if ($perfilAdministradordoSistema) {
+            $regras = Regra::all();
+            foreach ($regras as $regra) {
+                // Insere o relacionamento na tabela pivot
+                DB::table('perfil_regra')->insert([
+                    'perfil_id' => $perfilAdministradordoSistema->id,
+                    'regra_id' => $regra->id
+                ]);
+            }
+        }
 
 
      /*    if ($perfilperfilAdminIgrejaAdmin) {
@@ -31,7 +43,8 @@ class PerfilRegraTableSeeder extends Seeder
                     'regra_id' => $regra->id
                 ]);
             }
-        } */
+        }
+
 
         if($perfilPastorIgreja) {
             $regrasIds = [1,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,51,52,53,54,68];
@@ -54,7 +67,7 @@ class PerfilRegraTableSeeder extends Seeder
                 ]);
             }
         }
-
+   */
 
 
 
