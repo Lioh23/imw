@@ -46,7 +46,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Lista de Usuários</h4>
+                        <h4>Lista de Usuários - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
                     </div>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                             <tr>
                                 <th>E-MAIL</th>
                                 <th>NOME</th>
-                                <th>NÍVEIS DE ACESSO</th>
+                                <th>NÍVEL DE ACESSO</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -78,44 +78,24 @@
                                     <td>{{ $usuario->email }}</td>
                                     <td>{{ $usuario->name }}</td>
                                     <td>
-                                        <div class="row mb-4">
-                                            <div class="col-xl-12">
-                                                <table class="table">
-                                                    <thead>
-                                                        <tr>
-                                                            <th>Instituição</th>
-                                                            <th>Perfil</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        @php
-                                                            $perfis = $usuario->perfilUser;
-                                                        @endphp
-                                                        @foreach ($perfis as $perfilUser)
-                                                            @if ($perfilUser->instituicao_id == session()->get('session_perfil')->instituicao_id)
-                                                                <tr>
-                                                                    <td>{{ $perfilUser->instituicao->nome }}</td>
-                                                                    <td>
-                                                                        <span
-                                                                            class="badge badge-pill badge-secondary">{{ $perfilUser->perfil->nome }}</span>
-                                                                    </td>
-                                                                </tr>
-                                                            @endif
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                        @php
+                                            $perfis = $usuario->perfilUser;
+                                        @endphp
+                                        @foreach ($perfis as $perfilUser)
+                                            @if ($perfilUser->instituicao_id == session()->get('session_perfil')->instituicao_id)
+                                            {{ $perfilUser->perfil->nome }}
+                                            @endif
+                                        @endforeach
                                     </td>
                                     <td class="text-center">
-                                        {{-- <a href="{{ route('usuarios.editar', $usuario->id) }}" title="Editar"
+                                        <a href="{{ route('usuarios.editar', $usuario->id) }}" title="Editar"
                                                 class="btn btn-sm btn-dark mr-2 btn-rounded">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                                                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                                                     class="feather feather-edit-2">
                                                     <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                                                 </svg>
-                                            </a> --}}
+                                            </a>
                                         <form action="{{ route('usuarios.deletar', $usuario->id) }}" method="POST"
                                             style="display: inline-block;" id="form_delete_usuario_{{ $index }}">
                                             @csrf
