@@ -66,8 +66,22 @@ class User extends Authenticatable
         return $this->belongsToMany(Perfil::class, 'perfil_user');
     }
 
-    public function hasPerfilRegra($regraNome)
+    /* public function hasPerfilRegra($regraNome)
     {
         return $this->perfis->flatMap->regras->contains('nome', $regraNome);
+    } */
+
+
+    public function hasPerfilRegra($regraNome)
+    {
+        $sessionId = session()->get('session_perfil')->instituicao_id;
+
+        return $this->perfis()
+                    ->where('instituicao_id', $sessionId)
+                    ->whereHas('regras', function ($query) use ($regraNome) {
+                        $query->where('nome', $regraNome);
+                    })
+                    ->exists();
     }
+
 }
