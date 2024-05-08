@@ -9,7 +9,7 @@ class NovoUsuarioService
 
     public function execute()
     {
-        $perfils = Perfil::orderBy('nome', 'asc')->get();
+        $perfils = Perfil::where('nivel', Perfil::NIVEL_IGREJA)->orderBy('nome', 'asc')->get();
         return $perfils;
     }
 }

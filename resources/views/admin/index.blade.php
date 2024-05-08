@@ -93,7 +93,14 @@
                                                         @endphp
                                                         @foreach ($perfis as $perfilUser)
                                                             <tr>
-                                                                <td>{{ $perfilUser->instituicao->nome }}</td>
+                                                                <td>
+                                                                    @if ($perfilUser->instituicao)
+                                                                        {{ $perfilUser->instituicao->nome }}
+                                                                    @else
+                                                                        <!-- Se a relação não estiver carregada ou não existir -->
+                                                                        Sem Instituição Associada
+                                                                    @endif
+                                                                </td>
                                                             </td>
                                                             <td>
                                                                 <span
