@@ -1,5 +1,4 @@
    <!--  BEGIN SIDEBAR  -->
-
    <div class="sidebar-wrapper sidebar-theme" style="overflow-y: auto; scrollbar-width: thin;">
        <nav id="sidebar" style="overflow: hidden;">
            <ul class="navbar-nav theme-brand flex-row  text-center">
@@ -208,8 +207,6 @@
                    </li>
                @endif
 
-
-
                <li class="menu menu-heading">
                    <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -274,20 +271,18 @@
                        </div>
                    </a>
                    <ul class="collapse submenu list-unstyled" id="segurancaLocal" data-parent="#segurancaLocal">
-                    @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
+                    @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-usuarios-instituicao'))
                        <li>
                            <a href="{{ route('usuarios.index') }}"> Usuários da Instituição</a>
                        </li>
                     @endif
-                    @if (auth()->check() && auth()->user()->hasPerfilRegra('admin-menu'))
+                    @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-todos-usuarios'))
                        <li>
                           <a href="{{ route('admin.index') }}"> Todos Usuários</a>
                        </li>
                     @endif
                    </ul>
                </li>
-
-
            </ul>
        </nav>
 
