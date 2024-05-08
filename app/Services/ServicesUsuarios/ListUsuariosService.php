@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services\ServicesUsuarios;
 
@@ -6,27 +6,29 @@ use App\Models\User;
 
 class ListUsuariosService
 {
-    public function execute($parameters = null)
+    public function execute($parameters = null, $local)
     {
         return [
-            'usuarios' => $this->handleListaMembros($parameters),
+            'usuarios' => $this->handleListaMembros($parameters, $local),
         ];
     }
 
-    private function handleListaMembros($parameters = null)
+    private function handleListaMembros($parameters = null, $local)
     {
         return User::with(['perfilUser.perfil', 'perfilUser.instituicao'])
-       /*  ->whereHas('instituicoes', function ($query) {
-            $query->where('instituicoes_instituicoes.id', session()->get('session_perfil')->instituicao_id)
-                  ->orWhere('instituicoes_instituicoes.instituicao_pai_id', session()->get('session_perfil')->instituicao_id);
-        }) */
-        ->when(isset($parameters['search']), function ($query) use ($parameters) {
+          ->when(isset($parameters['search']), function ($query) use ($parameters) {
             $searchTerm = $parameters['search'];
             $query->where(function ($query) use ($searchTerm) {
                 $query->where('name', 'like', "%$searchTerm%")
                       ->orWhere('email', 'like', "%$searchTerm%");
             });
         })
+        ->when($local === "L", function ($query) {
+            $query->whereHas('perfilUser.instituicao', function ($subquery) {
+                $subquery->where('id', session()->get('session_perfil')->instituicao_id);
+            });
+        })
         ->paginate(100);
     }
+
 }

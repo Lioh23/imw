@@ -18,7 +18,7 @@ class UsuarioController extends Controller
 {
     public function index(Request $request)
     {
-        $data = app(ListUsuariosService::class)->execute($request->all());
+        $data = app(ListUsuariosService::class)->execute($request->all(), User::LOCAL);
         return view('usuarios.index', $data);
     }
 
@@ -52,7 +52,7 @@ class UsuarioController extends Controller
         try {
             $user = User::findOrFail($id);
             $perfis = app(NovoUsuarioService::class)->execute();
-            return view('usuarios.editar', compact('user', 'perfis', 'id'));    
+            return view('usuarios.editar', compact('user', 'perfis', 'id'));
         } catch (\Exception $e) {
             return redirect()->route('usuarios.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
@@ -71,7 +71,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function deletar($id) 
+    public function deletar($id)
     {
         try {
             DB::beginTransaction();

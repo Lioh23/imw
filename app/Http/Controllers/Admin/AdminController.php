@@ -19,7 +19,7 @@ class AdminController extends Controller
 {
     public function index(Request $request)
     {
-        $data = app(ListUsuariosService::class)->execute($request->all());
+        $data = app(ListUsuariosService::class)->execute($request->all(), User::GERAL);
         return view('admin.index', $data);
     }
 
