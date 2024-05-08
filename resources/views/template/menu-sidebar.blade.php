@@ -263,7 +263,7 @@
                                </rect>
                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                            </svg>
-                           <span>Segurança Local</span>
+                           <span>Segurança</span>
                        </div>
                        <div>
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -274,39 +274,18 @@
                        </div>
                    </a>
                    <ul class="collapse submenu list-unstyled" id="segurancaLocal" data-parent="#segurancaLocal">
-
+                    @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
                        <li>
-                           <a href="{{ route('usuarios.index') }}"> Usuários Locais</a>
+                           <a href="{{ route('usuarios.index') }}"> Usuários da Instituição</a>
                        </li>
+                    @endif
+                    @if (auth()->check() && auth()->user()->hasPerfilRegra('admin-menu'))
+                       <li>
+                          <a href="{{ route('admin.index') }}"> Todos Usuários</a>
+                       </li>
+                    @endif
                    </ul>
                </li>
-               <li class="menu">
-                   <a href="#segurancaGlobal" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                       <div class="">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-lock">
-                               <rect x="3" y="11" width="18" height="11" rx="2" ry="2">
-                               </rect>
-                               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                           </svg>
-                           <span>Segurança Global</span>
-                       </div>
-                       <div>
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-chevron-right">
-                               <polyline points="9 18 15 12 9 6"></polyline>
-                           </svg>
-                       </div>
-                   </a>
-                   <ul class="collapse submenu list-unstyled" id="segurancaGlobal" data-parent="#segurancaGlobal">
-                       <li>
-                           <a href="{{ route('admin.index') }}"> Todos Usuários </a>
-                       </li>
-                   </ul>
-               </li>
-
 
 
            </ul>

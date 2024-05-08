@@ -17,7 +17,8 @@ class AdminSeeder extends Seeder
     {
         DB::table('regras')->insert([
          //Admin
-         ['nome' => 'menu-admin'],
+         ['nome' => 'menu-usuarios-instituicao'],
+         ['nome' => 'menu-todos-usuarios'],
          ['nome' => 'admin-index'],
          ['nome' => 'admin-cadastrar'],
          ['nome' => 'admin-atualizar'],
