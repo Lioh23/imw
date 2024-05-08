@@ -15,6 +15,7 @@ class User extends Authenticatable
 
     const GERAL = 'G';
     const LOCAL = 'L';
+    const ADMSISTEMA = 'S';
 
     /**
      * The attributes that are mass assignable.
