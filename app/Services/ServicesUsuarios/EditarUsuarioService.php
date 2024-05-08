@@ -23,13 +23,9 @@ class EditarUsuarioService
             ]);
         }
 
-          // Deletar todos os registros de PerfilUser para o usuário e instituição especificados
-            PerfilUser::where('user_id', $user->id)
-             ->whereIn('instituicao_id', $data['instituicao_id'])
-             ->delete();
+        PerfilUser::where('user_id', $user->id)->delete();
 
         foreach ($data['perfil_id'] as $key => $perfilId) {
-
 
             PerfilUser::create([
                 'user_id' => $user->id,
