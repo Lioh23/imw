@@ -10,7 +10,12 @@ class Perfil extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['nome'];
+    const NIVEL_IGREJA = 'I';
+    const NIVEL_DISTRITO = 'D';
+    const NIVEL_REGIAO = 'R';
+
+
+    protected $fillable = ['nome', 'nivel'];
 
     public function regras()
     {
