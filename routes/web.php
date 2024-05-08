@@ -48,12 +48,11 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('/', [AdminController::class, 'index'])->name('index')->middleware(['seguranca:admin-index']);
-            Route::get('/', [AdminController::class, 'index'])->name('index')->middleware(['seguranca:usuarios-index']);
             Route::get('/novo', [AdminController::class, 'novo'])->name('novo')->middleware(['seguranca:usuarios-cadastrar']);
             Route::post('/update/{id}', [AdminController::class, 'update'])->name('update')->middleware(['seguranca:usuarios-atualizar']);
             Route::post('/store', [AdminController::class, 'store'])->name('store')->middleware(['seguranca:usuarios-cadastrar']);
             Route::delete('/deletar/{id}', [AdminController::class, 'deletar'])->name('deletar')->middleware(['seguranca:usuarios-excluir']);
-            Route::get('/editar/{id}', [AdminController::class, 'editar'])->name('editar')->middleware(['seguranca:usuarios-editar']);
+            Route::get('/editar/{id}', [AdminController::class, 'editar'])->name('editar')->middleware(['seguranca:usuarios-editar'])/
         });
 
 
