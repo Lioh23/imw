@@ -1,7 +1,7 @@
    <!--  BEGIN SIDEBAR  -->
 
    <div class="sidebar-wrapper sidebar-theme" style="overflow-y: auto; scrollbar-width: thin;">
-       <nav id="sidebar" style="overflow: hidden;" >
+       <nav id="sidebar" style="overflow: hidden;">
            <ul class="navbar-nav theme-brand flex-row  text-center">
                {{-- <li class="nav-item theme-text">
                    <a href="index.html" class="nav-link"> {{ config('app.sigla') }} </a>
@@ -99,30 +99,31 @@
                                @endif
                            </li>
                            <li>
-                            <li class="submenu-fixo mt-3 mb-3" >
-                                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
-                                    <span>Relatórios</span>
-                                @endif
-                            </li>
-                            <li>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-membresia'))
-                                <a href="{{ route('relatorio.membresia') }}">Membresia</a>
-                            @endif
-                        </li>
-                        <li>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-aniversariantes'))
-                                <a href="{{ route('relatorio.aniversariantes') }}">Aniversariantes</a>
-                            @endif
-                        </li>
-                        <li>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-historico-eclesiastico'))
-                                <a href="{{ route('relatorio.historico-eclesiastico') }}">Histórico Eclesiástico</a>
-                            @endif
-                        </li>
+                           <li class="submenu-fixo mt-3 mb-3">
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                                   <span>Relatórios</span>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-membresia'))
+                                   <a href="{{ route('relatorio.membresia') }}">Membresia</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-aniversariantes'))
+                                   <a href="{{ route('relatorio.aniversariantes') }}">Aniversariantes</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-historico-eclesiastico'))
+                                   <a href="{{ route('relatorio.historico-eclesiastico') }}">Histórico
+                                       Eclesiástico</a>
+                               @endif
+                           </li>
                        </ul>
                    </li>
                @endif
-              
+
                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
                    <li class="menu">
                        <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
@@ -172,43 +173,43 @@
                                @endif
                            </li>
                            <li>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
-                                <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
-                            @endif
-                        </li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                                   <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
+                               @endif
+                           </li>
 
-                        <li class="submenu-fixo mt-3 mb-3">
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
-                                <span>Relatórios</span>
-                            @endif
-                        </li>
-                        {{-- <li>
+                           <li class="submenu-fixo mt-3 mb-3">
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                                   <span>Relatórios</span>
+                               @endif
+                           </li>
+                           {{-- <li>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                 <a href="{{ route('financeiro.relatorio-livrorazao') }}">Livro Razão</a>
                             @endif
                         </li> --}}
-                        <li>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
-                                <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
-                            @endif
-                        </li>
-                        <li>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
-                                <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
-                            @endif
-                        </li> 
-                        <li>
-                         @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
-                             <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
-                         @endif
-                     </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                                   <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                                   <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                                   <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
+                               @endif
+                           </li>
 
                        </ul>
                    </li>
                @endif
 
-              
-           
+
+
                <li class="menu menu-heading">
                    <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -218,18 +219,51 @@
                </li>
 
                <li class="menu">
-                   <a href="#seguranca" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                <a target="_blank" href="{{ route('perfil.index') }}" aria-expanded="false"
+                    class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-box">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span>Meu Perfil</span>
+                    </div>
+                </a>
+            </li>
+            <li class="menu">
+                <a target="_blank" href="{{ route('selecionarPerfil') }}" aria-expanded="false"
+                    class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-box">
+                            <path
+                                d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
+                            </path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        <span>Trocar Instituição</span>
+                    </div>
+                </a>
+            </li>
+
+               <li class="menu">
+                   <a href="#segurancaLocal" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                        <div class="">
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-box">
-                               <path
-                                   d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
-                               </path>
-                               <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
-                               <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                               stroke-linejoin="round" class="feather feather-lock">
+                               <rect x="3" y="11" width="18" height="11" rx="2" ry="2">
+                               </rect>
+                               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
                            </svg>
-                           <span>Segurança</span>
+                           <span>Segurança Local</span>
                        </div>
                        <div>
                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -239,33 +273,42 @@
                            </svg>
                        </div>
                    </a>
-                   <ul class="collapse submenu list-unstyled" id="seguranca" data-parent="#seguranca">
+                   <ul class="collapse submenu list-unstyled" id="segurancaLocal" data-parent="#segurancaLocal">
+
                        <li>
-                           <a href="{{ route('perfil.index') }} "> Meu Perfil </a>
+                           <a href="{{ route('usuarios.index') }}"> Usuários Locais</a>
                        </li>
+                   </ul>
+               </li>
+               <li class="menu">
+                   <a href="#segurancaGlobal" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                       <div class="">
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                               stroke-linejoin="round" class="feather feather-lock">
+                               <rect x="3" y="11" width="18" height="11" rx="2" ry="2">
+                               </rect>
+                               <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                           </svg>
+                           <span>Segurança Global</span>
+                       </div>
+                       <div>
+                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                               stroke-linejoin="round" class="feather feather-chevron-right">
+                               <polyline points="9 18 15 12 9 6"></polyline>
+                           </svg>
+                       </div>
+                   </a>
+                   <ul class="collapse submenu list-unstyled" id="segurancaGlobal" data-parent="#segurancaGlobal">
                        <li>
-                           <a href="{{ route('selecionarPerfil') }}"> Trocar Instituição </a>
-                       </li>
-                       <li>
-                           <a href="{{ route('usuarios.index') }}"> Usuários </a>
+                           <a href="{{ route('admin.index') }}"> Todos Usuários </a>
                        </li>
                    </ul>
                </li>
 
-               <li class="menu">
-                   <a target="_blank" href="https://www.brasmid.com.br/imwplus/doc" aria-expanded="false"
-                       class="dropdown-toggle">
-                       <div class="">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                               fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                               stroke-linejoin="round" class="feather feather-book">
-                               <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                               <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                           </svg>
-                           <span>Documentação</span>
-                       </div>
-                   </a>
-               </li>
+
+
            </ul>
        </nav>
 
