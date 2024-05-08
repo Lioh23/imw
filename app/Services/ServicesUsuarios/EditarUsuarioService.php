@@ -23,15 +23,18 @@ class EditarUsuarioService
             ]);
         }
 
-        PerfilUser::where('user_id', $user->id)->delete();
+        $instituicaoID = $data['instituicao_id'];
+        $perfilID = $data['perfil_id'];
 
-        foreach ($data['perfil_id'] as $key => $perfilId) {
+        PerfilUser::where('user_id', $user->id)
+            ->where('instituicao_id', '=', $instituicaoID)
+            ->delete();
 
-            PerfilUser::create([
+        PerfilUser::create([
                 'user_id' => $user->id,
-                'perfil_id' => $perfilId,
-                'instituicao_id' => $data['instituicao_id'][$key],
-            ]);
-        }
+                'perfil_id' => $perfilID,
+                'instituicao_id' => $instituicaoID,
+        ]);
+
     }
 }
