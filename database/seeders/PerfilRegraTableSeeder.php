@@ -17,13 +17,16 @@ class PerfilRegraTableSeeder extends Seeder
      */
     public function run()
     {
-        $perfilAdminIgreja = Perfil::where('nome', 'Administrador - Igreja')->first();
+       /*  $perfilAdminIgreja = Perfil::where('nome', 'Administrador - Igreja')->first();
         $perfilPastorIgreja = Perfil::where('nome', 'Pastor - Igreja')->first();
-        $perfilTesoureiroIgreja = Perfil::where('nome', 'Tesoureiro - Igreja')->first();
+        $perfilTesoureiroIgreja = Perfil::where('nome', 'Tesoureiro - Igreja')->first(); */
         $perfilAdministradordoSistema = Perfil::where('nome', 'Administrador do Sistema')->first();
 
+        $regras = Regra::all();
+
+
         if ($perfilAdministradordoSistema) {
-            $regras = Regra::all();
+
             foreach ($regras as $regra) {
                 // Insere o relacionamento na tabela pivot
                 DB::table('perfil_regra')->insert([
