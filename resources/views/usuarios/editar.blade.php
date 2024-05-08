@@ -239,7 +239,7 @@
                 $('#instituicoesList').hide();
 
                 $.ajax({
-                    url: '/instituicoes?page=' + page + '&search=' + search,
+                    url: '/instituicoesLocais?page=' + page + '&search=' + search,
                     type: 'get',
                     dataType: 'json',
                     success: function(response) {

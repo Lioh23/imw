@@ -116,22 +116,22 @@
                                                         <option value="{{ $perfil->id }}">{{ $perfil->nome }}</option>
                                                     @endforeach
                                                 </select>
-                                                
+
                                             </div>
                                             @error('perfil_id.*')
                                                 <small class="form-text text-danger">{{ $message }}</small>
                                             @enderror
-                                                
+
                                         </td>
                                         <td>
                                             <div class="input-group">
-                                                <input type="text" class="form-control instituicao-nome @error('instituicao_id.*') is-invalid @enderror" 
+                                                <input type="text" class="form-control instituicao-nome @error('instituicao_id.*') is-invalid @enderror"
                                                     name="instituicao_nome[]" readonly>
                                                 <input type="hidden" name="instituicao_id[]">
                                                 <button type="button" class="btn btn-secondary abrirModalInstituicoes"
                                                     data-bs-toggle="modal"
                                                     data-bs-target="#modalInstituicoes">Selecionar</button>
-                                                
+
                                             </div>
                                             @error('instituicao_id.*')
                                                     <small class="form-text text-danger">{{ $message }}</small>
@@ -160,7 +160,7 @@
 
 
 @section('extras-scripts')
-  
+
     <script>
         $(document).ready(function() {
             let i = 1;
@@ -224,7 +224,7 @@
                 $('#instituicoesList').hide();
 
                 $.ajax({
-                    url: '/instituicoes?page=' + page + '&search=' + search,
+                    url: '/instituicoesLocais?page=' + page + '&search=' + search,
                     type: 'get',
                     dataType: 'json',
                     success: function(response) {

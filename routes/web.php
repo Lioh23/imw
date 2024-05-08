@@ -93,6 +93,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/', [InstituicaoController::class, 'index']);
         });
 
+        Route::prefix('instituicoesLocais')->name('instituicoesLocais.')->group(function () {
+            Route::get('/', [InstituicaoController::class, 'instituicoesLocais']);
+        });
+
         // Grupo de rotas para 'visitantes'
         Route::prefix('visitante')->name('visitante.')->group(function () {
             Route::get('/', [VisitantesController::class, 'index'])->name('index')->middleware(['seguranca:visitantes-index']);
