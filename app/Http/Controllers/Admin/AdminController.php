@@ -8,7 +8,7 @@ use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreUsuarioRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use App\Models\User;
-use App\Services\ServicesUsuarios\DeletarUsuarioService;
+use App\Services\ServicesUsuarios\AdminDeletarUsuarioService;
 use App\Services\ServicesUsuarios\AdminEditarUsuarioService;
 use App\Services\ServicesUsuarios\ListUsuariosService;
 use App\Services\ServicesUsuarios\NovoUsuarioService;
@@ -76,7 +76,7 @@ class AdminController extends Controller
     {
         try {
             DB::beginTransaction();
-            app(DeletarUsuarioService::class)->execute($id);
+            app(AdminDeletarUsuarioService::class)->execute($id);
             DB::commit();
             return redirect()->route('admin.index')->with('success', 'Usuário excluído com sucesso.');
         } catch(\Exception $e) {

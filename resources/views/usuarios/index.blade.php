@@ -94,18 +94,18 @@
                                                         @foreach ($perfis as $perfilUser)
                                                             <tr>
                                                                 <td>{{ $perfilUser->instituicao->nome }}</td>
-                                                            </td>
-                                                            <td>
-                                                                <span
-                                                                    class="badge badge-pill badge-secondary">{{ $perfilUser->perfil->nome }}</span>
-                                                            </td>
-                                                        </tr>
-                                                        @endforeach
-                                                    </tbody>
-                                                </table>
-                                            </div>
-                                        </div>
                                     </td>
+                                    <td>
+                                        <span
+                                            class="badge badge-pill badge-secondary">{{ $perfilUser->perfil->nome }}</span>
+                                    </td>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </td>
             <td class="text-center">
                 {{-- <a href="{{ route('usuarios.editar', $usuario->id) }}" title="Editar"
                     class="btn btn-sm btn-dark mr-2 btn-rounded">
@@ -115,25 +115,25 @@
                         <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
                     </svg>
                 </a> --}}
-               {{--  <form action="{{ route('usuarios.deletar', $usuario->id) }}" method="POST" style="display: inline-block;"
+                <form action="{{ route('usuarios.deletar', $usuario->id) }}" method="POST" style="display: inline-block;"
                     id="form_delete_usuario_{{ $index }}">
                     @csrf
                     @method('DELETE')
-                    <button type="button" title="Apagar" class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
+                    <button type="button" title="Remover o vínculo deste usuário na {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+                        class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
                         data-form-id="form_delete_usuario_{{ $index }}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="feather feather-trash-2">
-                            <polyline points="3 6 5 6 21 6"></polyline>
-                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                            </path>
-                            <line x1="10" y1="11" x2="10" y2="17">
-                            </line>
-                            <line x1="14" y1="11" x2="14" y2="17">
-                            </line>
+                            stroke-linejoin="round" class="feather feather-unlink">
+                            <line x1="10" y1="15" x2="21" y2="4"></line>
+                            <line x1="15" y1="4" x2="21" y2="4"></line>
+                            <line x1="4" y1="15" x2="4" y2="21"></line>
+                            <line x1="4" y1="19" x2="9" y2="19"></line>
+                        </svg>
+
                         </svg>
                     </button>
-                </form> --}}
+                </form>
             </td>
             </tr>
             @endforeach
@@ -147,10 +147,10 @@
         $('.btn-confirm-delete').on('click', function() {
             const formId = $(this).data('form-id')
             swal({
-                title: 'Deseja realmente apagar os registros deste usuario?',
+                title: 'Deseja realmente remover o vínculo deste usuário nesta instituição?',
                 type: 'error',
                 showCancelButton: true,
-                confirmButtonText: "Deletar",
+                confirmButtonText: "Remover Vínculo",
                 confirmButtonColor: "#d33",
                 cancelButtonText: "Cancelar",
                 cancelButtonColor: "#3085d6",

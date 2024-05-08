@@ -77,7 +77,7 @@ class UsuarioController extends Controller
             DB::beginTransaction();
             app(DeletarUsuarioService::class)->execute($id);
             DB::commit();
-            return redirect()->route('usuarios.index')->with('success', 'Usuário excluído com sucesso.');
+            return redirect()->route('usuarios.index')->with('success', 'O vínculo deste usuário com a instituição foi removido.');
         } catch(\Exception $e) {
             DB::rollback();
             return redirect()->route('usuarios.index')->with('error', $e->getMessage());
