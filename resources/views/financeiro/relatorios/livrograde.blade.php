@@ -133,9 +133,19 @@
                     </div>
                 </div>
             </div>
-
+            <div class="row">
+                <div class="col-12 text-center">
+                    <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i
+                            class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
+                </div>
+            </div>
         </div>
     </div>
+    <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/xlsx.full.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/planilha.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/pages/movimentocaixa.js') }}"></script>
 @endsection
 @section('extras-scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
@@ -178,7 +188,7 @@
             $('#livrograde tbody').on('blur', 'td[contenteditable="true"]', function() {
                 var $this = $(this);
                 $this.inputmask('remove');
-               
+
                 // Verifica se o campo está vazio e define como "0,00" se estiver
                 if ($this.text().trim() === '') {
                     $this.text('0,00');
