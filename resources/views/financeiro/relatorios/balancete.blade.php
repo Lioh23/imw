@@ -205,8 +205,14 @@
                                         @endforeach
                                     </tbody>
                                 </table>
-                                
+
                             </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12 text-center">
+                            <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i
+                                    class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
                         </div>
                     </div>
                     <!-- Fim do Conteúdo -->
@@ -266,11 +272,11 @@
             $('#filter_form').submit(function(event) {
                 var dataInicial = $('#dt_inicial').val();
                 var dataFinal = $('#dt_final').val();
-    
+
                 // Converter as datas para objetos Date
                 var dateInicial = new Date(dataInicial);
                 var dateFinal = new Date(dataFinal);
-    
+
                 // Verificar se a data final é menor que a data inicial
                 if (dateFinal < dateInicial) {
                     // Impedir o envio do formulário
