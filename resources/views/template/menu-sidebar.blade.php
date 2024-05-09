@@ -171,15 +171,16 @@
                                    <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
                                @endif
                            </li>
-                           <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
-                                   <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
-                               @endif
-                           </li>
+
 
                            <li class="submenu-fixo mt-3 mb-3">
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
                                    <span>Relatórios</span>
+                               @endif
+                           </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                                   <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
                                @endif
                            </li>
                            {{-- <li>
