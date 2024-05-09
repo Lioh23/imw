@@ -99,7 +99,7 @@
                            </li>
                            <li>
                            <li class="submenu-fixo mt-3 mb-3">
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-secretaria'))
                                    <span>Relatórios</span>
                                @endif
                            </li>
@@ -174,32 +174,32 @@
 
 
                            <li class="submenu-fixo mt-3 mb-3">
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-financeiro'))
                                    <span>Relatórios</span>
                                @endif
                            </li>
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-movimento-diario'))
                                    <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
                                @endif
                            </li>
                            {{-- <li>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrorazao'))
                                 <a href="{{ route('financeiro.relatorio-livrorazao') }}">Livro Razão</a>
                             @endif
                         </li> --}}
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrocaixa'))
                                    <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
                                @endif
                            </li>
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
                                    <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
                                @endif
                            </li>
                            <li>
-                               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios'))
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrograde'))
                                    <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
                                @endif
                            </li>
@@ -216,15 +216,6 @@
                        </svg><span>APLICAÇÃO</span></div>
                </li>
 
-               <li class="menu">
-                <a target="_blank" href="{{ route('perfil.index') }}" aria-expanded="false"
-                    class="dropdown-toggle">
-                    <div class="">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        <span>Meu Perfil</span>
-                    </div>
-                </a>
-            </li>
             <li class="menu">
                 <a target="_blank" href="{{ route('selecionarPerfil') }}" aria-expanded="false"
                     class="dropdown-toggle">
@@ -256,6 +247,10 @@
                        </div>
                    </a>
                    <ul class="collapse submenu list-unstyled" id="segurancaLocal" data-parent="#segurancaLocal">
+                    <li>
+                        <a href="{{ route('perfil.index') }}"> Meu Perfil</a>
+                    </li>
+
                     @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-usuarios-instituicao'))
                        <li>
                            <a href="{{ route('usuarios.index') }}"> Usuários da Instituição</a>
