@@ -444,7 +444,7 @@
 
                       <div class="row mb-4">
                           <div class="col-xl-3">
-                              <label for="cpf">* CPF</label>
+                              <label for="cpf">CPF</label>
                               <input type="text" class="form-control @error('cpf') is-invalid @enderror"
                                   id="cpf" name="cpf" value="{{ old('cpf', $pessoa->cpf) }}" maxlength="100">
                               @error('cpf')

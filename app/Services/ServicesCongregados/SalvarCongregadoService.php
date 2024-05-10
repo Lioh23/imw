@@ -32,7 +32,7 @@ class SalvarCongregadoService
         if (isset($data['foto'])) {
             $this->handlePhotoUpload($data['foto'], $membroID);
         }
-        
+
         return $membroID;
     }
 
@@ -61,7 +61,7 @@ class SalvarCongregadoService
             'escolaridade_id'  => $data['escolaridade_id'],
             'profissao'  => $data['profissao'],
             'funcao_eclesiastica_id'  => $data['funcao_eclesiastica_id'],
-            'cpf'  => preg_replace('/[^0-9]/', '', $data['cpf']),
+            'cpf'  => isset($data['cpf']) && !empty($data['cpf']) ? preg_replace('/[^0-9]/', '', $data['cpf']) : null,
             'tipo_documento'  => $data['tipo_documento'],
             'documento'  => $data['documento'],
             'documento_complemento'  => $data['documento_complemento'],
@@ -205,7 +205,7 @@ class SalvarCongregadoService
                     ],
                     $ministerial
                 );
-    
+
                 $updatedMinisterialIds[] = $ministerialModel->id;
             }
         }

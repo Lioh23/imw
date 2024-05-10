@@ -27,7 +27,7 @@ class StoreCongregadoRequest extends FormRequest
     public function rules()
     {
         $membroId = $this->input('membro_id');
-        
+
         return [
             'foto' => 'image|nullable|max:1999',
             'nome' => 'required',
@@ -41,7 +41,7 @@ class StoreCongregadoRequest extends FormRequest
             'naturalidade' => 'required',
             'uf' => 'required',
             'cpf' => [
-                'required',
+                'nullable',
                 Rule::unique('membresia_membros', 'cpf')->ignore($membroId),
                 new ValidaCPF,
             ],
@@ -55,7 +55,7 @@ class StoreCongregadoRequest extends FormRequest
             'email_alternativo' => 'email|nullable',
             'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'telefone_alternativo' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],            
+            'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'data_casamento' => [new RangeDateRule],
             'congregacao_id' => 'nullable|exists:congregacoes_congregacoes,id'
         ];
