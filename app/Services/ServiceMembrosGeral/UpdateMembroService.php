@@ -34,19 +34,29 @@ class UpdateMembroService
         $this->handleUpdateMinisteriais($dataMinisteriais, $membroID);
 
         if (isset($data['foto'])) {
-            $this->handlePhotoUpload($data['foto'], $membroID);
+            $this->handlePhotoUpload($data['foto'], $membroID, 'I');
+        } else {
+            $this->handlePhotoUpload(NULL, $membroID, 'E');
         }
     }
 
-    private function handlePhotoUpload($photo, $membroId)
+    private function handlePhotoUpload($photo, $membroId, $acao)
     {
-        $filePath = $photo->store('fotos', 'minio');
-        Storage::disk('minio')->setVisibility($filePath, 'public');
+        if($acao == 'I'){
+            $filePath = $photo->store('fotos', 'minio');
+            Storage::disk('minio')->setVisibility($filePath, 'public');
 
-        $membro = MembresiaMembro::find($membroId);
-        if ($membro) {
-            $membro->foto = Storage::disk('minio')->url($filePath);
-            $membro->save();
+            $membro = MembresiaMembro::find($membroId);
+            if ($membro) {
+                $membro->foto = Storage::disk('minio')->url($filePath);
+                $membro->save();
+            }
+        } else {
+            $membro = MembresiaMembro::find($membroId);
+            if ($membro) {
+                $membro->foto = '';
+                $membro->save();
+            }
         }
     }
 
@@ -97,7 +107,7 @@ class UpdateMembroService
             'estado' => $data['estado'],
             'observacoes' => $data['observacoes'],
         ];
-    
+
         // Verifica se as chaves opcionais existem antes de tentar acessá-las
         if (isset($data['telefone_alternativo'])) {
             $contatoData['telefone_alternativo'] = preg_replace('/[^0-9]/', '', $data['telefone_alternativo']);
@@ -105,10 +115,10 @@ class UpdateMembroService
         if (isset($data['email_alternativo'])) {
             $contatoData['email_alternativo'] = $data['email_alternativo'];
         }
-    
+
         return $contatoData;
     }
-    
+
 
     private function prepareFamiliarData(array $data): array
     {

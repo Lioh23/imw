@@ -22,10 +22,11 @@
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
-              
+
+
               <div class="col-xl-3">
                 <label for="nascimento">* Data de Nascimento</label>
-                <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento', $pessoa->data_nascimento) }}" min="1900-01-01">
+                <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento', $pessoa->data_nascimento->format('Y-m-d')) }}" min="1900-01-01">
                 @error('data_nascimento')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -43,9 +44,9 @@
                 @enderror
               </div>
             </div>
-            
+
             <div class="row mb-4">
-    
+
               <div class="col-xl-3">
                 <label for="estado_civil">* Estado Civíl</label>
                 <select class="form-control @error('estado_civil') is-invalid @enderror" id="estado_civil" name="estado_civil">
@@ -59,13 +60,13 @@
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
-              
+
               <div class="col-xl-3">
                 <label for="nacionalidade">* Nacionalidade</label>
                 <select class="form-control @error('estado_civil') is-invalid @enderror" id="nacionalidade" name="nacionalidade">
                   <option value="">Selecione</option>
                   @php
-                    //Colocar no banco de dados 
+                    //Colocar no banco de dados
                     $paises = [
                                           'BR' => 'Brasil',
                                           'AF' => 'Afeganistão',
@@ -356,10 +357,10 @@
                 </select>
                 @error('uf')
                 <span class="help-block text-danger">{{ $message }}</span>
-                @enderror                
+                @enderror
               </div>
             </div>
-            
+
             <div class="row mb-4">
               <div class="col-xl-3">
                 <label for="escolaridade_id">Escolaridade</label>
@@ -416,7 +417,7 @@
                 <select class="form-control" name="tipo_documento" id="tipo_documento">
                   <option value="">Selecione</option>
                   <option value="RG">RG</option>
-                  <option value="CNH">CNH</option>    
+                  <option value="CNH">CNH</option>
                 </select>
                 @error('tipo_documento')
                   <span class="help-block text-danger">{{ $message }}</span>
@@ -471,9 +472,9 @@
                 @error('historico')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
-              </div>            
+              </div>
             </div>
-          </div>                       
+          </div>
       </div>
     </div>
   </blockquote>
