@@ -27,7 +27,7 @@
                 <div class="row">
                     <div class="form-group mb-4 col-12">
                         <label class="control-label">* Nome:</label>
-                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror" minlength="4" value="{{ old('nome', $visitante->nome ?? '') }}">
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror" minlength="4" value="{{ old('nome', $visitante->nome ?? '') }}" maxlength="100">
                         @error('nome')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -65,7 +65,7 @@
                 <div class="row">
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">E-mail Preferencial:</label>
-                        <input type="email" name="email_preferencial" class="form-control @error('email_preferencial') is-invalid @enderror" value="{{ old('email_preferencial', $visitante->email_preferencial ?? '') }}">
+                        <input type="email" name="email_preferencial" class="form-control @error('email_preferencial') is-invalid @enderror" value="{{ old('email_preferencial', $visitante->email_preferencial ?? '') }}" maxlength="100">
                         @error('email_preferencial')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -91,7 +91,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-            
+
                 </div>
                 <div class="row">
                     <div class="form-group mb-4 col-md-6">
@@ -115,7 +115,7 @@
                         @enderror
                     </div>
                 </div>
-                
+
                 <input type="submit" value="Atualizar" class="btn btn-primary ml-3 mt-3">
             </form>
             @else

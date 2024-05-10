@@ -23,7 +23,7 @@
                 <div class="row">
                     <div class="form-group mb-4 col-12">
                         <label class="control-label">* Nome:</label>
-                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror"  minlength="4" value="{{ old('nome') }}">
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror"  minlength="4" value="{{ old('nome') }}" maxlength="100">
                         @error('nome')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -82,12 +82,12 @@
                 <div class="row">
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">E-mail Preferencial:</label>
-                        <input id="email_preferencial" name="email_preferencial" type="email" class="form-control @error('email_preferencial') is-invalid @enderror" value="{{ old('email_preferencial') }}">
+                        <input id="email_preferencial" name="email_preferencial" type="email" class="form-control @error('email_preferencial') is-invalid @enderror" value="{{ old('email_preferencial') }}" maxlength="100">
                         @error('email_preferencial')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                    
+
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">Congregação:</label>
                         <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" >
@@ -102,7 +102,7 @@
                     </div>
                 </div>
                 <input type="submit" value="Salvar" class="btn btn-primary btn-lg mt-3">
-            </form>            
+            </form>
         </div>
     </div>
 </div>
