@@ -13,7 +13,7 @@
                  </tr>
              </thead>
              <tbody id="historico-tbody">
-                  <tr>
+                  {{-- <tr>
                      <td class="text-success">27/06/2004</td>
                      <td class="text-success">Recebimento</td>
                      <td class="text-success">Adesão</td>
@@ -28,7 +28,7 @@
                      <td class="text-danger">IMW Gardênia Azul( Rio de Janeiro - RJ)</td>
                      <td class="text-danger">-</td>
                      <td class="text-danger">-</td>
-                  <tr>
+                  <tr> --}}
              </tbody>
          </table>
       </div>
