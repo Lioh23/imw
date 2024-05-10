@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Services\ServiceMembros;
 
@@ -19,10 +19,11 @@ class IdentificaDadosTransferenciaPorExclusaoService
         ];
     }
 
-    private function fetchIgrejas() 
+    private function fetchIgrejas()
     {
         return InstituicoesInstituicao::where('tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
             ->where('id', '<>', Identifiable::fetchSessionIgrejaLocal()->id)
+            ->orderBy('nome')
             ->get();
     }
 }
