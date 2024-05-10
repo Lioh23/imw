@@ -8,7 +8,7 @@
                         <th>INICIO</th>
                         <th>CONCLUSÂO</th>
                         <th>OBSERVAÇÃO</th>
-                        <th>APAGAR</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody id="formacao-tbody">
@@ -20,7 +20,7 @@
                                     <option value="{{ $curso->id }}">{{ $curso->nome }}</option>
                                 @endforeach
                             </select>
-                            
+
                         </td>
                         <td>
                             <input type="date" class="form-control" name="curso-data-inicio[]" value="">
