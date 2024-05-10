@@ -44,7 +44,7 @@
       <div class="row mb-4">
         <div class="col-xl-2">
           <label for="cep">CEP</label>
-          <input type="text" class="form-control @error('cep') is-invalid @enderror" id="cep" name="cep"  value="{{ old('cep', $pessoa->contato->cep) }}" maxlength="8">
+          <input type="text" id="cep" class="form-control @error('cep') is-invalid @enderror" id="cep" name="cep"  value="{{ old('cep', $pessoa->contato->cep) }}" maxlength="8">
           @error('cep')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
