@@ -45,13 +45,13 @@ class MembrosController extends Controller
         $data = app(ListMembrosService::class)->execute($request->all());
         return view('membros.index', $data);
     }
-  
+
     public function editar($id)
     {
         try {
             $pessoa = app(EditarMembroService::class)->findOne($id);
             $disciplinas = app(ListDisciplinasMembroService::class)->execute($id);
-            
+
             return view('membros.editar.index', [
                 'pessoa'               => $pessoa['pessoa'],
                 'ministerios'          => $pessoa['ministerios'],
@@ -69,7 +69,7 @@ class MembrosController extends Controller
     }
 
     public function update(UpdateMembroRequest $request, $id)
-    {   
+    {
         try {
             DB::beginTransaction();
             app(UpdateMembroService::class)->execute($request->all(), MembresiaMembro::VINCULO_MEMBRO);
@@ -78,7 +78,7 @@ class MembrosController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
-       
+
         }
     }
 
@@ -121,7 +121,7 @@ class MembrosController extends Controller
             $sugestaoRol  = $data['sugestao_rol'];
             $pastores     = $data['pastores'];
             $modos        = $data['modos'];
-    
+
             return view('membros.exclusao', compact('pessoa', 'sugestaoRol', 'pastores', 'modos'));
         } catch(IdentificaDadosExcluirMembroException $e) {
             return redirect()->back()->with('error', 'Erro ao tentar abrir a tela de exclusão de membro');
@@ -151,7 +151,7 @@ class MembrosController extends Controller
             $pastores     = $data['pastores'];
             $modos        = $data['modos'];
             $congregacoes = $data['congregacoes'];
-            
+
             return view('membros.reintegrar', compact('pessoa', 'sugestaoRol', 'pastores', 'modos', 'congregacoes'));
         } catch (ReintegrarMembroException $e) {
             return redirect()->back()->with('error', 'Membro não identificado ou é um membro excluído');
