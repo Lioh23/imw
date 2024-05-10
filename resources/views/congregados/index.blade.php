@@ -133,25 +133,5 @@
         })
     })
 </script>
-<script>
-    $(document).ready(function(){
-        $('#cep').blur(function(){
-            var cep = $(this).val().replace(/\D/g, '');
-            if(cep.length != 8){
-                return;
-            }
-            $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data){
-                if(!("erro" in data)){
-                    $('#endereco').val(data.logradouro);
-                    // Preencha os outros campos de endereço aqui, se necessário
-                    $('#bairro').val(data.bairro);
-                    $('#cidade').val(data.localidade);
-                    $('#estado').val(data.uf);
-                }else{
-                    alert('CEP não encontrado.');
-                }
-            });
-        });
-    });
-    </script>
+
 @endsection
