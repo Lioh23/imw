@@ -37,10 +37,10 @@
         <span class="badge badge-danger counter">{{ $countExcluidos }}</span>
     </a>
 
-    {{-- <a href="{{ route('congregado.index') }}?has_errors=1" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
+    <a href="{{ route('congregado.index') }}?has_errors=1" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
         <span>ERROS DE CADASTRO</span>
         <span class="badge badge-warning counter">{{ $countHasErrors }}</span>
-    </a> --}}
+    </a>
 
     <a href="{{ route('congregado.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
@@ -101,7 +101,7 @@
                                     <form action="{{ route('congregado.deletar', $congregado->id) }}" method="POST" style="display: none;" id="form_delete_congregado_{{ $index }}">
                                         @csrf
                                         @method('DELETE')
-                                    </form>   
+                                    </form>
                                     <button title="Apagar" class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete" data-form-id="form_delete_congregado_{{ $index }}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><line x1="10" y1="11" x2="10" y2="17"></line><line x1="14" y1="11" x2="14" y2="17"></line></svg>
                                     </button>
