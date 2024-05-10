@@ -27,7 +27,7 @@
       <div class="row mb-4">
         <div class="col-xl-3">
           <label for="sexo">E-mail Preferencial</label>
-          <input type="email" class="form-control @error('email_preferencial') is-invalid @enderror" id="email_preferencial" name="email_preferencial" value="{{ old('email_preferencial', $pessoa->contato->email_preferencial) }}">
+          <input type="email" class="form-control @error('email_preferencial') is-invalid @enderror" id="email_preferencial" name="email_preferencial" value="{{ old('email_preferencial', $pessoa->contato->email_preferencial) }}" maxlength="100">
           @error('email_preferencial')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
@@ -44,28 +44,28 @@
       <div class="row mb-4">
         <div class="col-xl-2">
           <label for="cep">CEP</label>
-          <input type="text" class="form-control @error('cep') is-invalid @enderror" id="cep" name="cep"  value="{{ old('cep', $pessoa->contato->cep) }}">
+          <input type="text" class="form-control @error('cep') is-invalid @enderror" id="cep" name="cep"  value="{{ old('cep', $pessoa->contato->cep) }}" maxlength="8">
           @error('cep')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
         <div class="col-xl-4">
           <label for="endereco">Endereço</label>
-          <input type="text" class="form-control" id="endereco" name="endereco"  value="{{ old('endereco', $pessoa->contato->endereco) }}">
+          <input type="text" class="form-control" id="endereco" name="endereco"  value="{{ old('endereco', $pessoa->contato->endereco) }}" maxlength="100">
           @error('endereco')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
         <div class="col-xl-2">
           <label for="numero">Número</label>
-          <input type="number" class="form-control" id="numero" name="numero"  value="{{ old('numero', $pessoa->contato->numero) }}">
+          <input type="number" class="form-control" id="numero" name="numero"  value="{{ old('numero', $pessoa->contato->numero) }}" maxlength="20">
           @error('numero')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
         <div class="col-xl-4">
           <label for="complemento">Complemento</label>
-          <input type="text" class="form-control" id="complemento" name="complemento"  value="{{ old('complemento', $pessoa->contato->complemento) }}">
+          <input type="text" class="form-control" id="complemento" name="complemento"  value="{{ old('complemento', $pessoa->contato->complemento) }}" maxlength="100">
           @error('complemento')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
@@ -74,14 +74,14 @@
       <div class="row mb-4">
         <div class="col-xl-4">
           <label for="bairro">Bairro</label>
-          <input type="text" class="form-control" id="bairro" name="bairro"  value="{{ old('bairro', $pessoa->contato->bairro) }}">
+          <input type="text" class="form-control" id="bairro" name="bairro"  value="{{ old('bairro', $pessoa->contato->bairro) }}" maxlength="100">
           @error('bairro')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
         <div class="col-xl-4">
           <label for="cidade">Cidade</label>
-          <input type="text" class="form-control" id="cidade" name="cidade"  value="{{ old('cidade', $pessoa->contato->cidade) }}">
+          <input type="text" class="form-control" id="cidade" name="cidade"  value="{{ old('cidade', $pessoa->contato->cidade) }}" maxlength="100">
           @error('cidade')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
@@ -111,7 +111,7 @@
       <div class="row mb-4">
         <div class="col-xl-12">
           <label for="observacoes">Observações</label>
-          <input type="text" class="form-control" id="observacoes" name="observacoes"  value="{{ old('observacoes', $pessoa->contato->observacoes) }}">
+          <input type="text" class="form-control" id="observacoes" name="observacoes"  value="{{ old('observacoes', $pessoa->contato->observacoes) }}" maxlength="1000">
           @error('observacoes')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror

@@ -21,7 +21,7 @@
                           <div class="col-xl-6">
                               <label for="nome">* Nome</label>
                               <input type="text" class="form-control @error('nome') is-invalid @enderror"
-                                  id="nome" name="nome" value="{{ old('nome', $pessoa->nome) }}">
+                                  id="nome" name="nome" value="{{ old('nome', $pessoa->nome) }}" maxlength="100">
                               @error('nome')
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
@@ -344,7 +344,7 @@
                               <label for="naturalidade">* Naturalidade</label>
                               <input type="text" class="form-control @error('naturalidade') is-invalid @enderror"
                                   id="naturalidade" name="naturalidade"
-                                  value="{{ old('naturalidade', $pessoa->naturalidade) }}">
+                                  value="{{ old('naturalidade', $pessoa->naturalidade) }}" maxlength="50">
                               @error('naturalidade')
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
@@ -419,7 +419,7 @@
                           <div class="col-xl-3">
                               <label for="profissao">Profissão</label>
                               <input type="text" class="form-control" id="profissao" name="profissao"
-                                  value="{{ old('profissao', $pessoa->profissao) }}">
+                                  value="{{ old('profissao', $pessoa->profissao) }}" maxlength="100">
                               @error('profissao')
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
@@ -446,7 +446,7 @@
                           <div class="col-xl-3">
                               <label for="cpf">* CPF</label>
                               <input type="text" class="form-control @error('cpf') is-invalid @enderror"
-                                  id="cpf" name="cpf" value="{{ old('cpf', $pessoa->cpf) }}">
+                                  id="cpf" name="cpf" value="{{ old('cpf', $pessoa->cpf) }}" maxlength="100">
                               @error('cpf')
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
@@ -467,7 +467,7 @@
                           <div class="col-xl-3">
                               <label for="documento">Documento</label>
                               <input type="text" class="form-control" id="documento" name="documento"
-                                  value="{{ old('documento', $pessoa->documento) }}">
+                                  value="{{ old('documento', $pessoa->documento) }}" maxlength="30">
                               @error('documento')
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
@@ -477,7 +477,7 @@
                               <label for="documento_complemento">Complemento Documento</label>
                               <input type="text" class="form-control" id="documento_complemento"
                                   name="documento_complemento"
-                                  value="{{ old('documento_complemento', $pessoa->documento_complemento) }}">
+                                  value="{{ old('documento_complemento', $pessoa->documento_complemento) }}" maxlength="50">
                               @error('documento_complemento')
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
@@ -519,7 +519,7 @@
                           <div class="col-lg-6">
                               <label for="historico">Pastor Oficiante</label>
                               <input type="text" class="form-control" id="historico" name="historico"
-                                  value="{{ old('historico', $pessoa->historico) }}">
+                                  value="{{ old('historico', $pessoa->historico) }}" maxlength="100">
                               @error('historico')
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
