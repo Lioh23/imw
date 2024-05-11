@@ -76,9 +76,11 @@ class User extends Authenticatable
     public function hasPerfilRegra($regraNome)
     {
         $sessionId = session()->get('session_perfil')->instituicao_id;
+        $perfilId = session()->get('session_perfil')->perfil_id;
 
         return $this->perfis()
                     ->where('instituicao_id', $sessionId)
+                    ->where('perfil_id', $perfilId)
                     ->whereHas('regras', function ($query) use ($regraNome) {
                         $query->where('nome', $regraNome);
                     })
