@@ -253,12 +253,12 @@
 
                     @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-usuarios-instituicao'))
                        <li>
-                           <a href="{{ route('usuarios.index') }}"> Usuários da Instituição</a>
+                           <a href="{{ route('usuarios.index') }}"> Usuários desta Instituição</a>
                        </li>
                     @endif
                     @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-todos-usuarios'))
                        <li>
-                          <a href="{{ route('admin.index') }}"> Todos Usuários</a>
+                          <a href="{{ route('admin.index') }}"> Usuários de todas Instituições</a>
                        </li>
                     @endif
                    </ul>
