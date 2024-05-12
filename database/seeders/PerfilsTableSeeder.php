@@ -16,9 +16,13 @@ class PerfilsTableSeeder extends Seeder
     public function run()
     {
         DB::table('perfils')->insert([
-            ['nome' => 'Administrador - Igreja'],
-            ['nome' => 'Administrador - Distrito'],
-            ['nome' => 'Administrador - Região']
+            ['nome' => 'Administrador', 'nivel' => 'I'],
+            ['nome' => 'Administrador Distrito', 'nivel' => 'D'],
+            ['nome' => 'Administrador Região' , 'nivel' => 'R'],
+            ['nome' => 'Secretario' , 'nivel' => 'I'],
+            ['nome' => 'Tesoureiro' , 'nivel' => 'I'],
+            ['nome' => 'Administrador do Sistema' , 'nivel' => 'S'],
+            ['nome' => 'Pastor' , 'nivel' => 'I'],
         ]);
     }
 }
