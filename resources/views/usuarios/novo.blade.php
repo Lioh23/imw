@@ -111,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-
+                    <input type="text" name="tipo" id="tipo" hidden/>
                     <br><br>
                     <button type="button" id="btn-reset" class="btn btn-secondary btn-rounded mr-2">Resetar</button>
                     <button type="submit" id="btn-salvar" disabled class="btn btn-primary btn-rounded">Salvar</button>
@@ -152,6 +152,7 @@
                 // Desabilitar o botão "Salvar"
                 $('#btn-salvar').prop('disabled', true);
                 $('#btn-salvar').text('Salvar').prop('disabled', false);
+                $('#tipo').val('');
             });
 
             function toggleSaveButton() {
@@ -190,6 +191,7 @@
                             $('#loadingModal').modal('hide');
                             $('#email').prop('disabled', true);
                             if (response.exists) {
+                                $('#tipo').val('vinculo');
                                 $('#name').val(response.user.name).prop('disabled', true);
                                 $('#password').prop('hidden', true);
                                 $('#confirmPassword').prop('hidden', true);
@@ -198,6 +200,7 @@
                                 $('#col-confirmar-senha').prop('hidden', true);
                                 $('#btn-salvar').text('Vincular Usuário').prop('disabled', false);
                             } else {
+                                $('#tipo').val('cadastro');
                                 $('#name').val('').prop('disabled', false);
                                 $('#password').prop('hidden', false);
                                 $('#confirmPassword').prop('hidden', false);
