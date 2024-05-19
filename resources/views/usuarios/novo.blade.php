@@ -182,6 +182,7 @@
                         backdrop: 'static', // Impedir que o modal seja fechado clicando fora dele
                         keyboard: false // Impedir que o modal seja fechado pressionando a tecla 'Esc'
                     });
+                    $('#loadingModal').modal('hide');
                     $.ajax({
                         url: '{{ route('usuarios.checkEmail') }}',
                         type: 'GET',
