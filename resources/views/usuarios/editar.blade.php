@@ -31,17 +31,7 @@
                     action="{{ route('usuarios.update', $id) }}">
                     @csrf
                     <div class="row mb-1">
-                        <div class="col-lg-5">
-                            <div class="form-group">
-                                <label>* Nome completo</label>
-                                <div class="controls">
-                                    <input type="text" name="name" id="name" class="form-control" required
-                                        minlength="4" autocomplete="off" value="{{ $user->name }}">
-                                    <small class="form-text text-muted">Mínimo de 4 caracteres</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>* E-mail</label>
                                 <div class="controls">
@@ -54,9 +44,44 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-lg-8">
+                            <div class="form-group">
+                                <label>* Nome completo</label>
+                                <div class="controls">
+                                    <input type="text" name="name" id="name" class="form-control" required
+                                        minlength="4" autocomplete="off" value="{{ $user->name }}">
+                                    <small class="form-text text-muted">Mínimo de 4 caracteres</small>
+                                </div>
+                            </div>
+                        </div>
                     </div>
+
                     <div class="row mt-4">
-                        <div class="col-lg-5">
+                        <div class="col-lg-4" id="col-perfil">
+                            <div class="form-group">
+                                <label>* Perfil de Acesso</label>
+                                <select class="form-control @error('perfil_id') is-invalid @enderror" name="perfil_id"
+                                    >
+                                    <option value="">Selecione um perfil</option>
+
+                                    @php
+                                    $perfisInstituicao = $user->perfilUser;
+                                    @endphp
+
+                                    @foreach ($perfisInstituicao as $index => $perfilUser)
+                                        @if ($perfilUser->instituicao_id == session()->get('session_perfil')->instituicao_id)
+                                            @foreach ($perfis as $perfil)
+                                                <option value="{{ $perfil->id }}"
+                                                    {{ $perfilUser->perfil_id == $perfil->id ? 'selected' : '' }}>
+                                                    {{ $perfil->nome }}
+                                                </option>
+                                            @endforeach
+                                        @endif
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Senha</label>
                                 <div class="controls">
@@ -68,7 +93,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Confirmar Senha</label>
                                 <div class="controls">
@@ -80,63 +105,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 d-flex align-items-center">
-                            <div class="password-strength-meter-container text-center">
-                                <div id="password-strength-meter" class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0;"></div>
-                                </div>
-                                <div id="password-strength-text"></div>
-                            </div>
-                        </div>
                     </div>
+
+
                     <div class="row mt-4">
-                        <div class="col-12">
-                            <table class="table table-bordered" id="dynamicAddRemove">
-                                <thead>
-                                    <tr>
-                                        <th>Instituição</th>
-                                        <th>* Perfil</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
 
-                                    @php
-                                        $perfisInstituicao = $user->perfilUser;
-                                    @endphp
-
-                                    @foreach ($perfisInstituicao as $index => $perfilUser)
-                                        @if ($perfilUser->instituicao_id == session()->get('session_perfil')->instituicao_id)
-                                            <tr>
-                                                <td>
-                                                    <div class="input-group">
-                                                        <input type="text" class="form-control instituicao-nome"
-                                                            name="instituicao_nome" readonly
-                                                            value="{{ $perfilUser->instituicao->nome ?? '' }}">
-                                                        <input type="hidden" name="instituicao_id"
-                                                            value="{{ $perfilUser->instituicao->id ?? '' }}">
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="form-group">
-                                                        <select class="form-control" name="perfil_id">
-                                                            <option value="">Selecione um perfil</option>
-                                                            @foreach ($perfis as $perfil)
-                                                                <option value="{{ $perfil->id }}"
-                                                                    {{ $perfilUser->perfil_id == $perfil->id ? 'selected' : '' }}>
-                                                                    {{ $perfil->nome }}
-                                                                </option>
-                                                            @endforeach
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
                     </div>
-
                     <br><br>
                     <button type="submit" class="btn btn-primary btn-rounded" id="atualizar">Atualizar</button>
                 </form>
@@ -145,6 +119,4 @@
     </div>
 @endsection
 
-@section('extras-scripts')
 
-@endsection

@@ -103,14 +103,6 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-2 d-flex align-items-center">
-                            <div class="password-strength-meter-container text-center">
-                                <div id="password-strength-meter" class="progress">
-                                    <div class="progress-bar" role="progressbar" style="width: 0;"></div>
-                                </div>
-                                <div id="password-strength-text"></div>
-                            </div>
-                        </div>
                     </div>
                     <input type="text" name="tipo" id="tipo" hidden />
                     <br><br>

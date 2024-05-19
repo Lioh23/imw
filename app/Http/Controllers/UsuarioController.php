@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreUsuarioLocalRequest;
-use App\Http\Requests\UpdateUsuarioRequest;
+use App\Http\Requests\UpdateUsuarioLocalRequest;
 use App\Models\User;
 use App\Services\ServicesUsuarios\DeletarUsuarioService;
-use App\Services\ServicesUsuarios\EditarUsuarioService;
+use App\Services\ServicesUsuarios\EditarUsuarioLocalService;
 use App\Services\ServicesUsuarios\ListUsuariosService;
 use App\Services\ServicesUsuarios\NovoUsuarioService;
 use App\Services\ServicesUsuarios\SalvarUsuarioLocalService;
@@ -69,11 +69,13 @@ class UsuarioController extends Controller
         }
     }
 
-    public function update(UpdateUsuarioRequest $request, $id)
+    public function update(UpdateUsuarioLocalRequest $request, $id)
     {
+
         try {
+
             DB::beginTransaction();
-            app(EditarUsuarioService::class)->execute($request->all(), $id);
+            app(EditarUsuarioLocalService::class)->execute($request->all(), $id);
             DB::commit();
             return redirect()->route('usuarios.editar', $id)->with('success', 'Usuário atualizado com sucesso.');
         } catch(\Exception $e) {
