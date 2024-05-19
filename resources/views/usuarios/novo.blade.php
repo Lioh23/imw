@@ -52,7 +52,7 @@
                                 <label>* Nome Completo</label>
                                 <div class="controls">
                                     <input type="text" name="name" id="name"
-                                        class="form-control @error('name') is-invalid @enderror" minlength="4"
+                                        class="form-control @error('name') is-invalid @enderror" minlength="8"
                                         autocomplete="off" value="{{ old('name') }}" disabled>
                                     @error('name')
                                         <small class="form-text text-danger">{{ $message }}</small>
