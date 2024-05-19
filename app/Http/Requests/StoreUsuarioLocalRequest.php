@@ -25,7 +25,7 @@ class StoreUsuarioLocalRequest extends FormRequest
     {
         return [
             'name' => 'nullable|string|min:4',
-            'email' => 'required|email',
+            'email_hidden' => 'required|email',
             'password' => 'nullable|string|min:8|confirmed',
             'perfil_id' => 'required',
         ];
@@ -34,8 +34,8 @@ class StoreUsuarioLocalRequest extends FormRequest
             'name.required' => 'O campo Nome completo é obrigatório.',
             'name.min' => 'O campo Nome completo deve ter no mínimo :min caracteres.',
 
-            'email.required' => 'O campo E-mail é obrigatório.',
-            'email.email' => 'Por favor, insira um endereço de e-mail válido.',
+            'email_hidden.required' => 'O campo E-mail é obrigatório.',
+            'email_hidden.email' => 'Por favor, insira um endereço de e-mail válido.',
 
             'password.required' => 'O campo Senha é obrigatório.',
             'password.min' => 'O campo Senha deve ter no mínimo :min caracteres.',

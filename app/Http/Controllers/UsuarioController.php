@@ -53,8 +53,9 @@ class UsuarioController extends Controller
             DB::commit();
             return redirect()->route('usuarios.novo')->with('success', 'Usuário cadastrado com sucesso.');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollback();
-            return redirect()->route('usuarios.novo')->with('error', $e);
+            return redirect()->route('usuarios.novo')->with('error', 'Ocorreu um erro ao cadastrar o usuário. Por favor, tente novamente.');
         }
     }
 

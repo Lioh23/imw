@@ -12,11 +12,11 @@ class SalvarUsuarioLocalService
     public function execute($data)
     {
 
-        dd($data);
+
         if($data['tipo'] == 'cadastro'){
             $user = User::create([
                 'name' => $data['name'],
-                'email' => $data['email'],
+                'email' => $data['email_hidden'],
                 'password' => Hash::make($data['password']),
             ]);
 
@@ -26,10 +26,18 @@ class SalvarUsuarioLocalService
                 'instituicao_id' => session()->get('session_perfil')->instituicao_id,
             ]);
         } else if($data['tipo'] == 'vinculo'){
-            $user = User::where('email', $data['email'])->first();
+            $user = User::where('email', $data['email_hidden'])->first();
             if ($user) {
-                $user->perfil_id = $data['perfil_id'];
-                $user->save();
+                PerfilUser::where('user_id', $user->id)
+                    ->where('instituicao_id', '=', session()->get('session_perfil')->instituicao_id)
+                    ->delete();
+
+                PerfilUser::create([
+                        'user_id' => $user->id,
+                        'perfil_id' => $data['perfil_id'],
+                        'instituicao_id' => session()->get('session_perfil')->instituicao_id,
+                ]);
+
             } else {
                 throw new \Exception('Usuário não encontrado para vincular perfil');
             }
