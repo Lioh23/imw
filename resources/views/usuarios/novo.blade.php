@@ -111,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <input type="text" name="tipo" id="tipo" hidden/>
+                    <input type="text" name="tipo" id="tipo" hidden />
                     <br><br>
                     <button type="button" id="btn-reset" class="btn btn-secondary btn-rounded mr-2">Resetar</button>
                     <button type="submit" id="btn-salvar" disabled class="btn btn-primary btn-rounded">Salvar</button>
@@ -172,6 +172,11 @@
                 $('#confirmPassword').prop('hidden', false);
             }
 
+            function validateEmail(email) {
+                var re = /\S+@\S+\.\S+/;
+                return re.test(email);
+            }
+
             function analyzeEmail() {
                 var email = $('#email').val();
                 if (email) {
@@ -221,8 +226,15 @@
 
 
             $('#checkEmailButton').on('click', function() {
-                analyzeEmail();
-                enableAllFields();
+                var email = $('#email').val();
+                // Verificar se o email possui pelo menos 4 caracteres e está no padrão de email
+                if (email.length >= 4 && validateEmail(email)) {
+                    analyzeEmail();
+                    enableAllFields();
+                } else {
+                    // Exibir mensagem de erro ou tomar outra ação apropriada
+                    alert('Formato de e-mail inválido.');
+                }
             });
 
             $('#name').on('input', function() {

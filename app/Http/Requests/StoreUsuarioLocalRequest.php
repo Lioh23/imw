@@ -25,10 +25,23 @@ class StoreUsuarioLocalRequest extends FormRequest
     {
         return [
             'name' => 'required|string|min:4',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required|email',
             'password' => 'required|string|min:8|confirmed',
-            'perfil_id.*' => 'required',
-            'instituicao_id.*' => 'required',
+            'perfil_id' => 'required',
+        ];
+
+        return [
+            'name.required' => 'O campo Nome completo é obrigatório.',
+            'name.min' => 'O campo Nome completo deve ter no mínimo :min caracteres.',
+
+            'email.required' => 'O campo E-mail é obrigatório.',
+            'email.email' => 'Por favor, insira um endereço de e-mail válido.',
+
+            'password.required' => 'O campo Senha é obrigatório.',
+            'password.min' => 'O campo Senha deve ter no mínimo :min caracteres.',
+            'password.confirmed' => 'A confirmação da senha não corresponde.',
+
+            'perfil_id.required' => 'O campo Perfil é obrigatório.',
         ];
     }
 }
