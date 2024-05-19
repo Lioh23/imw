@@ -200,6 +200,7 @@
                             $('#loadingModal').modal('hide');
                             $('#email').prop('disabled', true);
                             if (response.exists) {
+                                alert('Este usuário já foi cadastrado no sistema. Se deseja vinculá-lo a esta instituição, selecione um perfil e clique no botão "Vincular Usuário".');
                                 $('#tipo').val('vinculo');
                                 $('#name').val(response.user.name).prop('disabled', true);
                                 $('#password').prop('hidden', true);
