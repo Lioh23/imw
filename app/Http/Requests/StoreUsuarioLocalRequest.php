@@ -23,10 +23,11 @@ class StoreUsuarioLocalRequest extends FormRequest
      */
     public function rules()
     {
+        dd($this->all());
         return [
             'name' => 'required|string|min:4',
             'email' => 'required|email',
-            'password' => 'required|string|min:8|confirmed',
+            'password' => 'nullable|string|min:8|confirmed',
             'perfil_id' => 'required',
         ];
 

@@ -32,8 +32,9 @@
                                 <label>* E-mail</label>
                                 <div class="input-group">
                                     <input type="email" name="email" id="email"
-                                        class="form-control @error('email') is-invalid @enderror" autocomplete="off"
-                                        value="{{ old('email') }}" />
+                                    class="form-control @error('email') is-invalid @enderror" autocomplete="off"
+                                    value="{{ old('email') }}" />
+                                    <input type="hidden" name="email_hidden" id="email_hidden" value="{{ old('email') }}" />
                                     <button type="button" id="checkEmailButton" class="btn btn-secondary">
                                         <i class="fa fa-search"></i> Analisar
                                     </button>
@@ -138,19 +139,23 @@
 @section('extras-scripts')
     <script>
         $(document).ready(function() {
+            $('#email').on('input', function() {
+                $('#email_hidden').val($(this).val());
+            });
+
             $('#btn-reset').on('click', function() {
                 // Habilitar o campo de e-mail e limpar seu valor
                 $('#email').prop('disabled', false).val('');
-                // Limpar o valor dos outros campos e redefinir o estado
                 $('#name').val('').prop('disabled', true);
+                // Limpar o valor dos outros campos e redefinir o estado
+                $('#email_hidden').val('');
                 $('[name="perfil_id"]').val('').prop('disabled', true);
                 $('#password').val('').prop('hidden', true);
                 $('#confirmPassword').val('').prop('hidden', true);
                 $('#col-senha').prop('hidden', true);
                 $('#col-confirmar-senha').prop('hidden', true);
                 // Desabilitar o botão "Salvar"
-                $('#btn-salvar').prop('disabled', true);
-                $('#btn-salvar').text('Salvar').prop('disabled', false);
+                $('#btn-salvar').text('Salvar').prop('disabled', true);
                 $('#tipo').val('');
             });
 
@@ -213,6 +218,7 @@
                                 $('#col-confirmar-senha').prop('hidden', false);
                                 $('#btn-salvar').text('Salvar');
                                 toggleSaveButton();
+                                $('#email').prop('disabled', true);
                             }
                             $('[name="perfil_id"]').prop('disabled', false);
                         },
@@ -231,6 +237,7 @@
                 if (email.length >= 4 && validateEmail(email)) {
                     analyzeEmail();
                     enableAllFields();
+                    $('#email').prop('disabled', true);
                 } else {
                     // Exibir mensagem de erro ou tomar outra ação apropriada
                     alert('Formato de e-mail inválido.');

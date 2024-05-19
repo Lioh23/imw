@@ -10,7 +10,7 @@ use App\Services\ServicesUsuarios\DeletarUsuarioService;
 use App\Services\ServicesUsuarios\EditarUsuarioService;
 use App\Services\ServicesUsuarios\ListUsuariosService;
 use App\Services\ServicesUsuarios\NovoUsuarioService;
-use App\Services\ServicesUsuarios\SalvarUsuarioService;
+use App\Services\ServicesUsuarios\SalvarUsuarioLocalService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -49,7 +49,7 @@ class UsuarioController extends Controller
     {
         try {
             DB::beginTransaction();
-            app(SalvarUsuarioService::class)->execute($request->all());
+            app(SalvarUsuarioLocalService::class)->execute($request->all());
             DB::commit();
             return redirect()->route('usuarios.novo')->with('success', 'Usuário cadastrado com sucesso.');
         } catch (\Exception $e) {
