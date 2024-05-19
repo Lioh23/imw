@@ -114,7 +114,7 @@
                     </div>
                     <input type="text" name="tipo" id="tipo" hidden />
                     <br><br>
-                    <button type="button" id="btn-reset" class="btn btn-secondary btn-rounded mr-2">Resetar</button>
+                    <button type="button" id="btn-reset" class="btn btn-secondary btn-rounded mr-2">Limpar</button>
                     <button type="submit" id="btn-salvar" disabled class="btn btn-primary btn-rounded">Salvar</button>
                 </form>
                 <!-- Modal de carregamento -->
