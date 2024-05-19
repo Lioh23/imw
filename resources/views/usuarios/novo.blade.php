@@ -146,7 +146,6 @@
                 $('[name="perfil_id"]').val('').prop('disabled', true);
                 $('#password').val('').prop('hidden', true);
                 $('#confirmPassword').val('').prop('hidden', true);
-                $('#col-nome').prop('hidden', true);
                 $('#col-senha').prop('hidden', true);
                 $('#col-confirmar-senha').prop('hidden', true);
                 // Desabilitar o botão "Salvar"

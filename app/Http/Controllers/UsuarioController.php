@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\MembroNotFoundException;
-use App\Http\Requests\StoreUsuarioRequest;
+use App\Http\Requests\StoreUsuarioLocalRequest;
 use App\Http\Requests\UpdateUsuarioRequest;
 use App\Models\User;
 use App\Services\ServicesUsuarios\DeletarUsuarioService;
@@ -45,7 +45,7 @@ class UsuarioController extends Controller
         }
     }
 
-    public function store(StoreUsuarioRequest $request)
+    public function store(StoreUsuarioLocalRequest $request)
     {
         try {
             DB::beginTransaction();
