@@ -7,28 +7,18 @@
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Segurança', 'url' => '/', 'active' => false],
         ['text' => 'Usuarios', 'url' => '/usuarios/', 'active' => false],
-        ['text' => 'Novo', 'url' => '/usuarios/novo', 'active' => true],
+        ['text' => 'Incluir', 'url' => '/usuarios/novo', 'active' => true],
     ]">
     </x-breadcrumb>
 @endsection
 @include('extras.alerts')
 @section('content')
-        {{-- @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif --}}
-
     <div id="tableHover" class="col-lg-12 col-12 layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Novo Usuário</h4>
+                        <h4>Incluir Usuário</h4>
                     </div>
                 </div>
             </div>
@@ -37,37 +27,61 @@
                     action="{{ route('usuarios.store') }}">
                     @csrf
                     <div class="row mb-1">
-                        <div class="col-lg-5">
-                            <div class="form-group">
-                                <label>* Nome completo</label>
-                                <div class="controls">
-                                    <input type="text" name="name" id="name" class="form-control @error('name') is-invalid @enderror" required
-                                        minlength="4" autocomplete="off" value="{{ old('name') }}">
-                                        @error('name')
-                                            <small class="form-text text-danger">{{ $message }}</small>
-                                        @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-5">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>* E-mail</label>
+                                <div class="input-group">
+                                    <input type="email" name="email" id="email"
+                                        class="form-control @error('email') is-invalid @enderror" autocomplete="off"
+                                        value="{{ old('email') }}" />
+                                    <button type="button" id="checkEmailButton" class="btn btn-secondary">
+                                        <i class="fa fa-search"></i> Analisar
+                                    </button>
+                                </div>
+                                @error('email')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row mt-4">
+                        <div class="col-lg-6" id="col-nome">
+                            <div class="form-group">
+                                <label>* Nome Completo</label>
                                 <div class="controls">
-                                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" required
-                                        autocomplete="off" value="{{ old('email') }}" />
-                                    @error('email')
+                                    <input type="text" name="name" id="name"
+                                        class="form-control @error('name') is-invalid @enderror" minlength="4"
+                                        autocomplete="off" value="{{ old('name') }}" disabled>
+                                    @error('name')
                                         <small class="form-text text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="row mt-4">
-                        <div class="col-lg-5">
+                        <div class="col-lg-6" id="col-perfil">
+                            <div class="form-group">
+                                <label>* Perfil de Acesso</label>
+                                <select class="form-control @error('perfil_id') is-invalid @enderror" name="perfil_id"
+                                    disabled>
+                                    <option value="">Selecione um perfil</option>
+                                    @foreach ($perfis as $perfil)
+                                        <option value="{{ $perfil->id }}">{{ $perfil->nome }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+
+                        @error('perfil_id')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
+
+                        <div class="col-lg-4" id="col-senha" hidden>
                             <div class="form-group">
                                 <label>* Senha</label>
                                 <div class="controls">
-                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" required
+                                    <input type="password" name="password" id="password"
+                                        class="form-control @error('password') is-invalid @enderror"
                                         autocomplete="new-password" />
                                     @error('password')
                                         <small class="form-text text-danger">{{ $message }}</small>
@@ -75,12 +89,13 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-5">
-                            <div class="form-group">
+                        <div class="col-lg-4">
+                            <div class="form-group" id="col-confirmar-senha" hidden>
                                 <label>* Confirmar Senha</label>
                                 <div class="controls">
                                     <input type="password" name="password_confirmation" id="confirmPassword"
-                                    class="form-control @error('password_confirmation') is-invalid @enderror" required autocomplete="new-password" />
+                                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                                        autocomplete="new-password" />
                                     @error('password_confirmation')
                                         <small class="form-text text-danger">{{ $message }}</small>
                                     @enderror
@@ -96,222 +111,124 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-4">
-                        <div class="col-12">
-                            <table class="table table-bordered" id="dynamicAddRemove">
-                                <thead>
-                                    <tr>
-                                        <th>* Perfil</th>
-                                        <th>* Instituição</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <div class="form-group">
-                                                <select class="form-control @error('perfil_id.*') is-invalid @enderror" name="perfil_id[]">
-                                                    <option value="">Selecione um perfil</option>
-                                                    @foreach ($perfis as $perfil)
-                                                        <option value="{{ $perfil->id }}">{{ $perfil->nome }}</option>
-                                                    @endforeach
-                                                </select>
-
-                                            </div>
-                                            @error('perfil_id.*')
-                                                <small class="form-text text-danger">{{ $message }}</small>
-                                            @enderror
-
-                                        </td>
-                                        <td>
-                                            <div class="input-group">
-                                                <input type="text" class="form-control instituicao-nome @error('instituicao_id.*') is-invalid @enderror"
-                                                    name="instituicao_nome[]" readonly>
-                                                <input type="hidden" name="instituicao_id[]">
-                                                <button type="button" class="btn btn-secondary abrirModalInstituicoes"
-                                                    data-bs-toggle="modal"
-                                                    data-bs-target="#modalInstituicoes">Selecionar</button>
-
-                                            </div>
-                                            @error('instituicao_id.*')
-                                                    <small class="form-text text-danger">{{ $message }}</small>
-                                                @enderror
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-success btn-rounded btn-add"><i
-                                                    class="fas fa-plus"></i></button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-
-                    {{-- modal instituicoes --}}
-                    @include('usuarios.modal-instituicoes')
 
                     <br><br>
-                    <button type="submit" class="btn btn-primary btn-rounded" id="cadastrar">Salvar</button>
+                    <button type="button" id="btn-reset" class="btn btn-secondary btn-rounded mr-2">Resetar</button>
+                    <button type="submit" id="btn-salvar" disabled class="btn btn-primary btn-rounded">Salvar</button>
                 </form>
+                <!-- Modal de carregamento -->
+                <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-body text-center">
+                                <div class="spinner-border" role="status">
+                                    <span class="sr-only">Carregando...</span>
+                                </div>
+                                <p class="mt-2">Aguarde...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 @endsection
 
-
 @section('extras-scripts')
-
     <script>
         $(document).ready(function() {
-            let i = 1;
-            let currentButton = null;
-
-            function generatePerfilOptions() {
-                let options = '<option value="">Selecione um perfil</option>';
-                @foreach ($perfis as $perfil)
-                    options += `<option value="{{ $perfil->id }}">{{ $perfil->nome }}</option>`;
-                @endforeach
-                return options;
-            }
-
-            $(".btn-add").click(function() {
-                i++;
-                let perfilOptions = generatePerfilOptions();
-
-                let markup = `
-    <tr>
-        <td>
-            <div class="form-group">
-                <select class="form-control" name="perfil_id[]">
-                    ${perfilOptions}
-                </select>
-            </div>
-        </td>
-        <td>
-            <div class="input-group">
-                <input type="text" class="form-control instituicao-nome" name="instituicao_nome[]"
-                    readonly>
-                <input type="hidden" name="instituicao_id[]">
-                <button type="button" class="btn btn-secondary abrirModalInstituicoes"
-                    data-bs-toggle="modal" data-bs-target="#modalInstituicoes">Selecionar</button>
-            </div>
-        </td>
-        <td>
-            <button type="button" class="btn btn-danger btn-rounded btn-remove"><i class="fas fa-trash-alt"></i></button>
-        </td>
-    </tr>`;
-                $("#dynamicAddRemove").append(markup);
+            $('#btn-reset').on('click', function() {
+                // Habilitar o campo de e-mail e limpar seu valor
+                $('#email').prop('disabled', false).val('');
+                // Limpar o valor dos outros campos e redefinir o estado
+                $('#name').val('').prop('disabled', true);
+                $('[name="perfil_id"]').val('').prop('disabled', true);
+                $('#password').val('').prop('hidden', true);
+                $('#confirmPassword').val('').prop('hidden', true);
+                $('#col-nome').prop('hidden', true);
+                $('#col-senha').prop('hidden', true);
+                $('#col-confirmar-senha').prop('hidden', true);
+                // Desabilitar o botão "Salvar"
+                $('#btn-salvar').prop('disabled', true);
+                $('#btn-salvar').text('Salvar').prop('disabled', false);
             });
 
-            $(document).on('click', '.btn-remove', function() {
-                $(this).closest('tr').remove();
-                i--;
-            });
-
-            $(document).on('click', '.abrirModalInstituicoes', function() {
-                currentButton = $(this).closest('tr').find('.abrirModalInstituicoes');
-                console.log(`abriu`);
-                loadInstituicoes(1); // Carrega a primeira página
-                $('#modalInstituicoes').modal('show');
-            });
-
-            $('#searchButton').on('click', function() {
-                loadInstituicoes(1, $('#searchInstituicao').val());
-            });
-
-            function loadInstituicoes(page, search = '') {
-                $('#loading').show();
-                $('#instituicoesList').hide();
-
-                $.ajax({
-                    url: '/instituicoesLocais?page=' + page + '&search=' + search,
-                    type: 'get',
-                    dataType: 'json',
-                    success: function(response) {
-                        $('#instituicoesList').html('');
-                        response.data.forEach(function(instituicao) {
-                            $('#instituicoesList').append(
-                                `<div class="list-group-item list-group-item-action instituicao-item" data-id="${instituicao.id}" data-nome="${instituicao.nome}" style="cursor: pointer;">${instituicao.nome}</div>`
-                            );
-                        });
-
-                        $('#loading').hide();
-                        $('#instituicoesList').show();
-
-                        $('#modalInstituicoes .modal-footer .pagination').remove();
-                        let paginationLinks = generatePaginationLinks(response);
-                        $('#modalInstituicoes .modal-footer').prepend(paginationLinks);
-                    }
-                });
-            }
-
-            function generatePaginationLinks(response) {
-                let paginationLinks = '<div class="pagination">';
-                let currentPage = response.current_page;
-                let totalPage = response.last_page;
-                let range = 2;
-
-                if (totalPage <= (range * 2) + 3) {
-                    for (let page = 1; page <= totalPage; page++) {
-                        paginationLinks += generatePageLink(page, currentPage);
-                    }
+            function toggleSaveButton() {
+                var email = $('#email').val();
+                var name = $('#name').val();
+                var perfil = $('[name="perfil_id"]').val();
+                if (email && name && perfil) {
+                    $('#btn-salvar').prop('disabled', false);
                 } else {
-                    paginationLinks += generatePageLink(1, currentPage);
-                    paginationLinks += (currentPage > range + 2) ? '...' : '';
-
-                    let start = Math.max(currentPage - range, 2);
-                    let end = Math.min(currentPage + range, totalPage - 1);
-
-                    for (let page = start; page <= end; page++) {
-                        paginationLinks += generatePageLink(page, currentPage);
-                    }
-
-                    paginationLinks += (currentPage < totalPage - range - 1) ? '...' : '';
-                    paginationLinks += generatePageLink(totalPage, currentPage);
+                    $('#btn-salvar').prop('disabled', true);
                 }
-
-                paginationLinks += '</div>';
-                return paginationLinks;
             }
 
-            function generatePageLink(page, currentPage) {
-                return `<a href="#" class="page-link ${page === currentPage ? 'active' : ''}" data-page="${page}">${page}</a> `;
+            function enableAllFields() {
+                $('#name').prop('disabled', false);
+                $('[name="perfil_id"]').prop('disabled', false);
+                $('#password').prop('hidden', false);
+                $('#confirmPassword').prop('hidden', false);
             }
 
-            $('#modalInstituicoes').on('click', '.page-link', function(e) {
-                e.preventDefault();
-                let page = $(this).data('page');
-                loadInstituicoes(page);
+            function analyzeEmail() {
+                var email = $('#email').val();
+                if (email) {
+                    // Exibir o modal de carregamento
+                    $('#loadingModal').modal({
+                        backdrop: 'static', // Impedir que o modal seja fechado clicando fora dele
+                        keyboard: false // Impedir que o modal seja fechado pressionando a tecla 'Esc'
+                    });
+                    $.ajax({
+                        url: '{{ route('usuarios.checkEmail') }}',
+                        type: 'GET',
+                        data: {
+                            email: email
+                        },
+                        success: function(response) {
+                            $('#loadingModal').modal('hide');
+                            $('#email').prop('disabled', true);
+                            if (response.exists) {
+                                $('#name').val(response.user.name).prop('disabled', true);
+                                $('#password').prop('hidden', true);
+                                $('#confirmPassword').prop('hidden', true);
+                                $('#col-nome').prop('hidden', true);
+                                $('#col-senha').prop('hidden', true);
+                                $('#col-confirmar-senha').prop('hidden', true);
+                                $('#btn-salvar').text('Vincular Usuário').prop('disabled', false);
+                            } else {
+                                $('#name').val('').prop('disabled', false);
+                                $('#password').prop('hidden', false);
+                                $('#confirmPassword').prop('hidden', false);
+                                $('#col-nome').prop('hidden', false);
+                                $('#col-senha').prop('hidden', false);
+                                $('#col-confirmar-senha').prop('hidden', false);
+                                $('#btn-salvar').text('Salvar');
+                                toggleSaveButton();
+                            }
+                            $('[name="perfil_id"]').prop('disabled', false);
+                        },
+                        error: function(xhr) {
+                            console.error(xhr.responseText);
+                            $('#loadingModal').modal('hide');
+                        }
+                    });
+                }
+            }
+
+
+            $('#checkEmailButton').on('click', function() {
+                analyzeEmail();
+                enableAllFields();
             });
 
-            $('#modalInstituicoes').on('click', '.instituicao-item', function() {
-                console.log("Item de instituição clicado!");
+            $('#name').on('input', function() {
+                toggleSaveButton();
+            });
 
-                var nome = $(this).data('nome');
-                var id = $(this).data('id');
-
-                console.log("Nome da instituição:", nome);
-                console.log("ID da instituição:", id);
-
-                if (currentButton !== null) {
-                    // Encontra a linha (tr) onde o botão "Selecionar" foi clicado
-                    var currentRow = currentButton.closest('tr');
-
-                    // Seletor do input de nome corrigido
-                    var inputNome = currentRow.find('.instituicao-nome');
-                    console.log("Elemento de input para nome:", inputNome);
-
-                    // Seletor do input de ID corrigido
-                    var inputId = currentRow.find('input[name="instituicao_id[]"]');
-                    console.log("Elemento de input para ID:", inputId);
-
-                    inputNome.val(nome);
-                    inputId.val(id);
-
-                    $('#modalInstituicoes').modal('hide');
-                } else {
-                    console.error("Botão atual não definido.");
-                }
+            $('[name="perfil_id"]').on('change', function() {
+                toggleSaveButton();
             });
         });
     </script>

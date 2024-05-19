@@ -34,6 +34,17 @@ class UsuarioController extends Controller
         }
     }
 
+    public function checkEmail(Request $request) {
+        $email = $request->query('email');
+        $user = User::where('email', $email)->first();
+
+        if ($user) {
+            return response()->json(['exists' => true, 'user' => $user]);
+        } else {
+            return response()->json(['exists' => false]);
+        }
+    }
+
     public function store(StoreUsuarioRequest $request)
     {
         try {

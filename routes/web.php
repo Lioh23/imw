@@ -175,7 +175,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store', [UsuarioController::class, 'store'])->name('store')->middleware(['seguranca:usuarios-cadastrar']);
             Route::delete('/deletar/{id}', [UsuarioController::class, 'deletar'])->name('deletar')->middleware(['seguranca:usuarios-excluir']);
             Route::get('/editar/{id}', [UsuarioController::class, 'editar'])->name('editar')->middleware(['seguranca:usuarios-editar']);
-
+            Route::get('/check-email', [UsuarioController::class, 'checkEmail'])->name('checkEmail')->middleware(['seguranca:usuarios-cadastrar']);
         });
 
         // Relatórios
