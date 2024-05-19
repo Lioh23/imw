@@ -109,20 +109,7 @@
                     <button type="button" id="btn-reset" class="btn btn-secondary btn-rounded mr-2">Limpar</button>
                     <button type="submit" id="btn-salvar" disabled class="btn btn-primary btn-rounded">Salvar</button>
                 </form>
-                <!-- Modal de carregamento -->
-                <div class="modal fade" id="loadingModal" tabindex="-1" role="dialog" aria-labelledby="loadingModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-body text-center">
-                                <div class="spinner-border" role="status">
-                                    <span class="sr-only">Carregando...</span>
-                                </div>
-                                <p class="mt-2">Aguarde...</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+
             </div>
         </div>
     </div>
@@ -178,11 +165,6 @@
                 var email = $('#email').val();
                 if (email) {
                     // Exibir o modal de carregamento
-                    $('#loadingModal').modal({
-                        backdrop: 'static', // Impedir que o modal seja fechado clicando fora dele
-                        keyboard: false // Impedir que o modal seja fechado pressionando a tecla 'Esc'
-                    });
-                    $('#loadingModal').modal('hide');
                     $.ajax({
                         url: '{{ route('usuarios.checkEmail') }}',
                         type: 'GET',
@@ -190,7 +172,6 @@
                             email: email
                         },
                         success: function(response) {
-                            $('#loadingModal').modal('hide');
                             $('#email').prop('disabled', true);
                             if (response.exists) {
                                 alert('Este usuário já foi cadastrado no sistema. Se deseja vinculá-lo a esta instituição, selecione um perfil e clique no botão "Vincular Usuário".');
@@ -218,7 +199,6 @@
                         },
                         error: function(xhr) {
                             console.error(xhr.responseText);
-                            $('#loadingModal').modal('hide');
                         }
                     });
                 }
