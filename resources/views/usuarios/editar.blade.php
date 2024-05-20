@@ -35,9 +35,11 @@
                             <div class="form-group">
                                 <label>* E-mail</label>
                                 <div class="controls">
-                                    <input type="email" name="email" id="email" class="form-control @error('email') is-invalid @enderror" required
-                                        autocomplete="off" value="{{ $user->email }}" />
-                                    <small class="form-text text-muted">Endereço de e-mail para login</small>
+                                    <input type="email" name="email_hidden" id="email_hidden" class="form-control @error('email') is-invalid @enderror"
+                                        autocomplete="off" value="{{ $user->email }}" disabled/>
+
+                                    <input type="hidden" name="email" id="email" value="{{ $user->email }}"/>
+
                                     @error('email')
                                         <span class="help-block text-danger">{{ $message }}</span>
                                     @enderror
@@ -48,9 +50,9 @@
                             <div class="form-group">
                                 <label>* Nome completo</label>
                                 <div class="controls">
-                                    <input type="text" name="name" id="name" class="form-control" required
-                                        minlength="4" autocomplete="off" value="{{ $user->name }}">
-                                    <small class="form-text text-muted">Mínimo de 4 caracteres</small>
+                                    <input type="text" name="name_hidden" id="name" class="form-control"  value="{{ $user->name }}" disabled>
+                                    <input type="hidden" name="name" id="name" class="form-control" value="{{ $user->name }}">
+
                                 </div>
                             </div>
                         </div>
@@ -81,7 +83,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                        {{-- <div class="col-lg-4">
                             <div class="form-group">
                                 <label>Senha</label>
                                 <div class="controls">
@@ -104,7 +106,7 @@
                                     @enderror
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     </div>
 
 
