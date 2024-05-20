@@ -32,9 +32,10 @@
                                 <label>* E-mail</label>
                                 <div class="input-group">
                                     <input type="email" name="email" id="email"
-                                    class="form-control @error('email') is-invalid @enderror" autocomplete="off"
-                                    value="{{ old('email') }}" />
-                                    <input type="hidden" name="email_hidden" id="email_hidden" value="{{ old('email') }}" />
+                                        class="form-control @error('email') is-invalid @enderror" autocomplete="off"
+                                        value="{{ old('email') }}" />
+                                    <input type="hidden" name="email_hidden" id="email_hidden"
+                                        value="{{ old('email') }}" />
                                     <button type="button" id="checkEmailButton" class="btn btn-secondary">
                                         <i class="fa fa-search"></i> Analisar
                                     </button>
@@ -174,15 +175,33 @@
                         success: function(response) {
                             $('#email').prop('disabled', true);
                             if (response.exists) {
-                                alert('Este usuário já foi cadastrado no sistema. Se deseja vinculá-lo a esta instituição, selecione um perfil e clique no botão "Vincular Usuário".');
-                                $('#tipo').val('vinculo');
-                                $('#name').val(response.user.name).prop('disabled', true);
-                                $('#password').prop('hidden', true);
-                                $('#confirmPassword').prop('hidden', true);
-                                $('#col-nome').prop('hidden', true);
-                                $('#col-senha').prop('hidden', true);
-                                $('#col-confirmar-senha').prop('hidden', true);
-                                $('#btn-salvar').text('Vincular Usuário').prop('disabled', false);
+                                if (response.context === 'institution') {
+                                    alert('Este usuário já está vinculado a esta instituição, você pode alterar o perfil pela edição do usuário.');
+                                    $('#email').prop('disabled', false).val('');
+                                    $('#name').val('').prop('disabled', true);
+                                    $('#email_hidden').val('');
+                                    $('[name="perfil_id"]').val('').prop('disabled', true);
+                                    $('#password').val('').prop('hidden', true);
+                                    $('#confirmPassword').val('').prop('hidden', true);
+                                    $('#col-senha').prop('hidden', true);
+                                    $('#col-confirmar-senha').prop('hidden', true);
+                                    // Desabilitar o botão "Salvar"
+                                    $('#btn-salvar').text('Salvar').prop('disabled', true);
+                                    $('#tipo').val('');
+                                } else if (response.context === 'general') {
+                                    alert(
+                                        'Este usuário já foi cadastrado no sistema. Se deseja vinculá-lo a esta instituição, selecione um perfil e clique no botão "Vincular Usuário".'
+                                        );
+                                    $('#tipo').val('vinculo');
+                                    $('#name').val(response.user.name).prop('disabled', true);
+                                    $('#password').prop('hidden', true);
+                                    $('#confirmPassword').prop('hidden', true);
+                                    $('#col-nome').prop('hidden', true);
+                                    $('#col-senha').prop('hidden', true);
+                                    $('#col-confirmar-senha').prop('hidden', true);
+                                    $('#btn-salvar').text('Vincular Usuário').prop('disabled', false);
+                                    $('[name="perfil_id"]').prop('disabled', false);
+                                }
                             } else {
                                 $('#tipo').val('cadastro');
                                 $('#name').val('').prop('disabled', false);
@@ -194,13 +213,15 @@
                                 $('#btn-salvar').text('Salvar');
                                 toggleSaveButton();
                                 $('#email').prop('disabled', true);
+                                $('[name="perfil_id"]').prop('disabled', false);
                             }
-                            $('[name="perfil_id"]').prop('disabled', false);
+
                         },
                         error: function(xhr) {
                             console.error(xhr.responseText);
                         }
                     });
+
                 }
             }
 

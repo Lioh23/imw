@@ -6,6 +6,7 @@ use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreUsuarioLocalRequest;
 use App\Http\Requests\UpdateUsuarioLocalRequest;
 use App\Models\User;
+use App\Models\PerfilUser;
 use App\Services\ServicesUsuarios\DeletarUsuarioService;
 use App\Services\ServicesUsuarios\EditarUsuarioLocalService;
 use App\Services\ServicesUsuarios\ListUsuariosService;
@@ -36,12 +37,22 @@ class UsuarioController extends Controller
 
     public function checkEmail(Request $request) {
         $email = $request->query('email');
+        $instituicao_id = session()->get('session_perfil')->instituicao_id;
         $user = User::where('email', $email)->first();
 
-        if ($user) {
-            return response()->json(['exists' => true, 'user' => $user]);
-        } else {
-            return response()->json(['exists' => false]);
+        if ($instituicao_id) {
+            if ($user) {
+                $userInInstitution =   PerfilUser::where('user_id', $user->id)
+                    ->where('instituicao_id', '=', $instituicao_id)->first();
+
+                if ($userInInstitution) {
+                    return response()->json(['exists' => true, 'context' => 'institution', 'user' => $userInInstitution]);
+                } else {
+                    return response()->json(['exists' => true, 'context' => 'general', 'user' => $user]);
+                }
+            }else {
+                return response()->json(['exists' => false]);
+            }
         }
     }
 
