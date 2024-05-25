@@ -23,10 +23,10 @@ class CongregadosController extends Controller
     }
 
     public function novo() {
-     
+
         try {
             $data = app(NovoCongregadoService::class)->execute();
-            
+
             return view('congregados.novo.index', $data);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('congregado.index')->with('error', 'Registro não encontrado.');
@@ -63,12 +63,12 @@ class CongregadosController extends Controller
             return redirect()->action([CongregadosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
         }
     }
-    
-    public function editar($id) 
-    {    
+
+    public function editar($id)
+    {
         try {
             $data = app(EditarMembroService::class)->findOne($id);
-            
+
             return view('congregados.editar.index', $data);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('visitante.index')->with('error', 'Registro não encontrado.');

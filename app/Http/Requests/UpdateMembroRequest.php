@@ -25,14 +25,59 @@ class UpdateMembroRequest extends FormRequest
      */
     public function rules()
     {
+        $dataNascimento = $this->input('data_nascimento');
+        $minDate = '1910-01-01';
+        $currentDate = date('Y-m-d');
+
         return [
             'foto' => 'image|nullable|max:1999',
             'nome' => 'required',
             'sexo' => 'required',
-            'data_nascimento' => ['required', new RangeDateRule],
-            'data_conversao' => [new RangeDateRule],
-            'data_batismo' => [new RangeDateRule],
-            'data_batismo_espirito' => [new RangeDateRule],
+            'data_nascimento' => [
+                'required',
+                'date',
+                function ($attribute, $value, $fail) use ($minDate, $currentDate) {
+                    if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
+                        $fail('A data de nascimento deve estar entre 01/01/1910 e a data atual.');
+                    }
+                },
+            ],
+            'data_conversao' => [
+                'nullable',
+                'date',
+                function ($attribute, $value, $fail) use ($dataNascimento, $minDate, $currentDate) {
+                    if (strtotime($value) <= strtotime($dataNascimento)) {
+                        $fail('A data de conversão deve ser após a data de nascimento.');
+                    }
+                    if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
+                        $fail('A data de conversão deve ser após a data de nascimento e a data atual.');
+                    }
+                },
+            ],
+            'data_batismo' => [
+                'nullable',
+                'date',
+                function ($attribute, $value, $fail) use ($dataNascimento, $minDate, $currentDate) {
+                    if (strtotime($value) <= strtotime($dataNascimento)) {
+                        $fail('A data de batismo deve ser após a data de nascimento.');
+                    }
+                    if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
+                        $fail('A data de batismo deve ser após a data de nascimento e a data atual.');
+                    }
+                },
+            ],
+            'data_batismo_espirito' => [
+                'nullable',
+                'date',
+                function ($attribute, $value, $fail) use ($dataNascimento, $minDate, $currentDate) {
+                    if (strtotime($value) <= strtotime($dataNascimento)) {
+                        $fail('A data de batismo no Espírito deve ser após a data de nascimento.');
+                    }
+                    if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
+                        $fail('A data de batismo no Espírito deve ser após a data de nascimento e a data atual.');
+                    }
+                },
+            ],
             'estado_civil' => 'required',
             'nacionalidade' => 'required',
             'naturalidade' => 'required',
@@ -48,8 +93,16 @@ class UpdateMembroRequest extends FormRequest
             'email_alternativo' => 'email|nullable',
             'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'telefone_alternativo' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],  
-            'data_casamento' => [new RangeDateRule],
+            'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'data_casamento' => [
+                'nullable',
+                'date',
+                function ($attribute, $value, $fail) use ($dataNascimento) {
+                    if (strtotime($value) <= strtotime($dataNascimento)) {
+                        $fail('A data de casamento deve ser após a data de nascimento.');
+                    }
+                },
+            ],
         ];
     }
 }
