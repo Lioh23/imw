@@ -168,7 +168,7 @@
             });
 
             $('#btn-reset').on('click', function() {
-                $('#btn-salvar').text('Salvar').prop('disabled', true);
+              alert('resetando');
             });
 
             function validateEmail(email) {
@@ -201,18 +201,16 @@
                                 } else if (response.context === 'general') {
                                     Swal.fire({
                                         title: 'Este usuário esta cadastrado em outra instituição',
-                                        text: 'Se deseja vinculá-lo a esta instituição, selecione um perfil e clique no botão "Vincular Usuário".',
+                                        text: 'Se deseja vinculá-lo a esta instituição, selecione um perfil e clique no botão "Salvar".',
                                         icon: 'info',
                                         confirmButtonText: 'OK'
                                     });
-                                    $('#telefone').prop('disabled', true);
-                                    $('#cpf').prop('disabled', true);
-                                    $('#name').prop('disabled', true);
+                                    $('#telefone').val(response.user.telefone).prop('disabled', true);
+                                    $('#cpf').val(response.user.cpf).prop('disabled', true);
+                                    $('#name').val(response.user.name).prop('disabled', true);
                                     $('#password').prop('disabled', true);
                                     $('#confirmPassword').prop('disabled', true);
                                     $('#tipo').val('vinculo');
-                                    $('#btn-salvar').text('Vincular Usuário').prop('disabled', false);
-
                                 }
                             } else {
                                 $('#tipo').val('cadastro');
@@ -238,6 +236,12 @@
                     alert('Formato de e-mail inválido.');
                 }
             });
+
+            // Chamando analyzeEmail() novamente em caso de erro de validação
+            @if ($errors->any())
+                analyzeEmail();
+            @endif
+
         });
     </script>
 @endsection
