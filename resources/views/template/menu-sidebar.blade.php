@@ -122,8 +122,7 @@
                        </ul>
                    </li>
                @endif
-
-               @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
+             {{--   @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
                    <li class="menu">
                        <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                            <div class="">
@@ -206,7 +205,7 @@
 
                        </ul>
                    </li>
-               @endif
+               @endif --}}
 
                <li class="menu menu-heading">
                    <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
