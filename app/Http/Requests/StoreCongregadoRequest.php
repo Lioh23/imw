@@ -100,7 +100,18 @@ class StoreCongregadoRequest extends FormRequest
             'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'telefone_alternativo' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'data_casamento' => [new RangeDateRule],
+            'data_casamento' => [
+                'nullable',
+                'date',
+                function ($attribute, $value, $fail) use ($dataNascimento, $minDate, $currentDate) {
+                    if (strtotime($value) <= strtotime($dataNascimento)) {
+                        $fail('A data de casamento deve ser após a data de nascimento.');
+                    }
+                    if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
+                        $fail('A data de casamento deve ser após a data de nascimento e a data atual.');
+                    }
+                },
+            ],
             'congregacao_id' => 'nullable|exists:congregacoes_congregacoes,id'
         ];
     }
