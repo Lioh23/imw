@@ -32,7 +32,7 @@ class StoreUsuarioLocalRequest extends FormRequest
             'password' => 'nullable|string|min:8|confirmed',
             'perfil_id' => 'required',
             'cpf' => [
-                'required',
+                'nullable',
                 function ($attribute, $value, $fail) {
                     $cpfSemMascara = $this->removeMascaraCPF($value); // Use $this para chamar métodos dentro da classe
                     if (User::where('cpf', $cpfSemMascara)->exists()) {
@@ -42,7 +42,7 @@ class StoreUsuarioLocalRequest extends FormRequest
                 new ValidaCPF,
             ],
             'telefone' => [
-                'required',
+                'nullable',
                 function ($attribute, $value, $fail) {
                     $telefoneSemMascara = $this->removeMascaraTelefone($value); // Use $this para chamar métodos dentro da classe
                     if (User::where('telefone', $telefoneSemMascara)->exists()) {
