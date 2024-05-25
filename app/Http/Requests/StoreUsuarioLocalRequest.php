@@ -9,51 +9,57 @@ use App\Models\User;
 
 class StoreUsuarioLocalRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     *
-     * @return bool
-     */
-    public function authorize()
-    {
-        return true;
-    }
+    // Métodos de autorização e outras funções...
 
-    /**
-     * Get the validation rules that apply to the request.
-     *
-     * @return array<string, mixed>
-     */
     public function rules()
     {
-        return [
-            'name' => 'nullable|string|min:4',
-            'email_hidden' => 'required|email',
-            'password' => 'nullable|string|min:8|confirmed',
-            'perfil_id' => 'required',
-            'cpf' => [
-                'nullable',
-                function ($attribute, $value, $fail) {
-                    $cpfSemMascara = $this->removeMascaraCPF($value); // Use $this para chamar métodos dentro da classe
-                    if (User::where('cpf', $cpfSemMascara)->exists()) {
-                        $fail('O CPF já está sendo utilizado por outra pessoa.');
-                    }
-                },
-                new ValidaCPF,
-            ],
-            'telefone' => [
-                'nullable',
-                function ($attribute, $value, $fail) {
-                    $telefoneSemMascara = $this->removeMascaraTelefone($value); // Use $this para chamar métodos dentro da classe
-                    if (User::where('telefone', $telefoneSemMascara)->exists()) {
-                        $fail('O telefone já está sendo utilizado por outra pessoa.');
-                    }
-                },
-                'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/',
-                'min:10',
-            ],
-        ];
+        // Verificar se o tipo é 'cadastro' ou 'vinculo'
+        $tipo = $this->input('tipo');
 
+        // Definir as regras para o CPF
+        $cpfRules = $tipo === 'cadastro' ? [
+            'required',
+            function ($attribute, $value, $fail) {
+                $cpfSemMascara = $this->removeMascaraCPF($value);
+                if (User::where('cpf', $cpfSemMascara)->exists()) {
+                    $fail('O CPF já está sendo utilizado por outra pessoa.');
+                }
+            },
+            new ValidaCPF,
+        ] : ['nullable'];
+
+        // Definir as regras para o telefone
+        $telefoneRules = $tipo === 'cadastro' ? [
+            'required',
+            function ($attribute, $value, $fail) {
+                $telefoneSemMascara = $this->removeMascaraTelefone($value);
+                if (User::where('telefone', $telefoneSemMascara)->exists()) {
+                    $fail('O telefone já está sendo utilizado por outra pessoa.');
+                }
+            },
+            'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/',
+            'min:10',
+        ] : ['nullable'];
+
+        // Definir as regras para a senha
+        $passwordRules = $tipo === 'cadastro' ? ['required', 'string', 'min:6', 'confirmed'] : ['nullable'];
+
+        // Definir as regras para o nome
+        $nameRules = $tipo === 'cadastro' ? 'nullable|string|min:4' : 'nullable';
+
+        return [
+            'name' => $nameRules,
+            'email_hidden' => 'required|email',
+            'password' => $passwordRules,
+            'perfil_id' => 'required',
+            'cpf' => $cpfRules,
+            'telefone' => $telefoneRules,
+        ];
+    }
+
+
+    public function messages()
+    {
         return [
             'name.required' => 'O campo nome completo é obrigatório.',
             'name.min' => 'O campo nome completo deve ter no mínimo :min caracteres.',
@@ -78,4 +84,7 @@ class StoreUsuarioLocalRequest extends FormRequest
     {
         return preg_replace('/\D/', '', $telefone);
     }
+
+
 }
+
