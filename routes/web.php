@@ -35,7 +35,7 @@ Route::post('/esqueci-senha', [AuthController::class, 'submitResetRequest'])->na
 Route::get('/redefinir-senha', [AuthController::class, 'showResetForm'])->name('password.reset');
 
 // Rota para processar a redefinição de senha
-Route::post('/redefinir-senha', [AuthController::class, 'reset'])->name('password.reset');
+Route::post('/redefinir-senha', [AuthController::class, 'reset'])->name('password.reset-post');
 
 
 // Rotas protegidas por autenticação

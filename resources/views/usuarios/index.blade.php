@@ -27,9 +27,39 @@
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
 @endsection
 
+@php
+    function formatarCpf($cpf)
+    {
+        // Remover todos os caracteres não numéricos do CPF
+        $cpf = preg_replace('/\D/', '', $cpf);
+
+        // Formatar o CPF com a máscara padrão ###.###.###-##
+        return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $cpf);
+    }
+
+    function formatarTelefone($telefone)
+    {
+        // Remover todos os caracteres não numéricos do número de telefone
+        $telefone = preg_replace('/\D/', '', $telefone);
+
+        // Formatar o telefone com a máscara padrão
+        if (strlen($telefone) == 11) {
+            // Formatar telefone com DDD e 9 dígitos
+            return preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $telefone);
+        } elseif (strlen($telefone) == 10) {
+            // Formatar telefone com DDD e 8 dígitos
+            return preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1) $2-$3', $telefone);
+        } else {
+            // Se não corresponder a nenhum dos formatos esperados, retornar o telefone original
+            return $telefone;
+        }
+    }
+@endphp
+
+
 @section('content')
     <div class="container-fluid">
-         <a href="{{ route('usuarios.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
+        <a href="{{ route('usuarios.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                 class="feather feather-plus-circle">
@@ -68,6 +98,8 @@
                             <tr>
                                 <th>E-MAIL</th>
                                 <th>NOME</th>
+                                <th>TELEFONE</th>
+                                <th>CPF</th>
                                 <th>NÍVEL DE ACESSO</th>
                                 <th></th>
                             </tr>
@@ -78,24 +110,34 @@
                                     <td>{{ $usuario->email }}</td>
                                     <td>{{ $usuario->name }}</td>
                                     <td>
+                                        @if (!empty($usuario->telefone))
+                                            <a href="https://api.whatsapp.com/send?phone={{ $usuario->telefone }}"
+                                                target="_blank">
+                                                <i class="fab fa-whatsapp"></i> {{ formatarTelefone($usuario->telefone) }}
+                                            </a>
+                                        @endif
+                                    </td>
+                                    <td>{{ formatarCpf($usuario->cpf) }}</td>
+                                    <td>
                                         @php
                                             $perfis = $usuario->perfilUser;
                                         @endphp
                                         @foreach ($perfis as $perfilUser)
                                             @if ($perfilUser->instituicao_id == session()->get('session_perfil')->instituicao_id)
-                                            {{ $perfilUser->perfil->nome }}
+                                                {{ $perfilUser->perfil->nome }}
                                             @endif
                                         @endforeach
                                     </td>
                                     <td class="text-center">
                                         <a href="{{ route('usuarios.editar', $usuario->id) }}" title="Editar"
-                                                class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-edit-2">
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                                </svg>
-                                            </a>
+                                            class="btn btn-sm btn-dark mr-2 btn-rounded">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                stroke-linecap="round" stroke-linejoin="round"
+                                                class="feather feather-edit-2">
+                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                            </svg>
+                                        </a>
                                         <form action="{{ route('usuarios.deletar', $usuario->id) }}" method="POST"
                                             style="display: inline-block;" id="form_delete_usuario_{{ $index }}">
                                             @csrf

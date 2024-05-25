@@ -31,7 +31,7 @@
                     action="{{ route('usuarios.update', $id) }}">
                     @csrf
                     <div class="row mb-1">
-                        <div class="col-lg-4">
+                        <div class="col-lg-6">
                             <div class="form-group">
                                 <label>* E-mail</label>
                                 <div class="controls">
@@ -41,18 +41,8 @@
                                     <input type="hidden" name="email" id="email" value="{{ $user->email }}"/>
 
                                     @error('email')
-                                        <span class="help-block text-danger">{{ $message }}</span>
+                                         <small class="form-text text-danger">{{ $message }}</small>
                                     @enderror
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-8">
-                            <div class="form-group">
-                                <label>* Nome completo</label>
-                                <div class="controls">
-                                    <input type="text" name="name_hidden" id="name" class="form-control"  value="{{ $user->name }}" disabled>
-                                    <input type="hidden" name="name" id="name" class="form-control" value="{{ $user->name }}">
-
                                 </div>
                             </div>
                         </div>
@@ -62,8 +52,7 @@
                         <div class="col-lg-4" id="col-perfil">
                             <div class="form-group">
                                 <label>* Perfil de Acesso</label>
-                                <select class="form-control @error('perfil_id') is-invalid @enderror" name="perfil_id"
-                                    >
+                                <select class="form-control @error('perfil_id') is-invalid @enderror" name="perfil_id">
                                     <option value="">Selecione um perfil</option>
 
                                     @php
@@ -81,44 +70,69 @@
                                         @endif
                                     @endforeach
                                 </select>
+                                @error('perfil_id')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
                         </div>
-                        {{-- <div class="col-lg-4">
+
+                        <div class="col-lg-6">
                             <div class="form-group">
-                                <label>Senha</label>
+                                <label>* Nome completo</label>
                                 <div class="controls">
-                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror"
-                                        autocomplete="new-password" />
-                                    @error('password')
-                                        <span class="help-block text-danger">{{ $message }}</span>
-                                    @enderror
+                                    <input type="text" name="name_hidden" id="name" class="form-control"  value="{{ $user->name }}" disabled>
+                                    <input type="hidden" name="name" id="name" class="form-control" value="{{ $user->name }}">
+
                                 </div>
                             </div>
                         </div>
-                        <div class="col-lg-4">
+                     </div>
+
+                     <div class="row">
+                        <div class="col-lg-5" id="col-perfil">
                             <div class="form-group">
-                                <label>Confirmar Senha</label>
-                                <div class="controls">
-                                    <input type="password" name="password_confirmation" id="confirmPassword"
-                                        class="form-control @error('password_confirmation') is-invalid @enderror" autocomplete="new-password" />
-                                    @error('password_confirmation')
-                                     <span class="help-block text-danger">{{ $message }}</span>
-                                    @enderror
+                                <label>* CPF</label>
+                                <div class="input-group">
+                                    <input type="text" name="cpf" id="cpf"
+                                        class="form-control @error('cpf') is-invalid @enderror" autocomplete="off"
+                                        value="{{ $user->cpf }}" />
                                 </div>
+                                @error('cpf')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
                             </div>
-                        </div> --}}
+                        </div>
+
+                        <div class="col-lg-5" id="col-perfil">
+                            <div class="form-group">
+                                <label>* Telefone</label>
+                                <div class="input-group">
+                                    <input type="text" name="telefone" id="telefone"
+                                        class="form-control @error('telefone') is-invalid @enderror" autocomplete="off"
+                                        value="{{ $user->telefone }}" />
+                                </div>
+                                @error('telefone')
+                                    <small class="form-text text-danger">{{ $message }}</small>
+                                @enderror
+                            </div>
+                        </div>
                     </div>
 
-
-                    <div class="row mt-4">
-
-                    </div>
                     <br><br>
                     <button type="submit" class="btn btn-primary btn-rounded" id="atualizar">Atualizar</button>
                 </form>
             </div>
         </div>
     </div>
+@endsection
+
+@section('extras-scripts')
+    <script>
+        $(document).ready(function() {
+            $('#telefone').mask('(00) 00000-0000');
+            $('#cpf').mask('000.000.000-00');
+        });
+    </script>
 @endsection
 
 

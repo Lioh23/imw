@@ -20,10 +20,10 @@
     <div class="form-signin text-center">
         <img src="{{ asset('auth/images/login.png') }}" alt="Logotipo" class="logo">
         <h4 class="mb-4">Redefinir Senha</h4>
-        <form method="POST" action="{{ route('password.reset') }}">
+        <form method="POST" action="{{ route('password.reset-post') }}">
             @csrf
             <input type="hidden" name="token" value="{{ $token }}">
-            
+
             <div class="form-group row">
                 <label for="email" class="col-md-12 col-form-label">Endereço de E-mail</label>
                 <div class="col-md-12">
@@ -35,7 +35,7 @@
                     @enderror
                 </div>
             </div>
-        
+
             <div class="form-group row">
                 <label for="password" class="col-md-12 col-form-label">Nova Senha</label>
                 <div class="col-md-12">
@@ -47,20 +47,20 @@
                     @enderror
                 </div>
             </div>
-        
+
             <div class="form-group row">
                 <label for="password-confirm" class="col-md-12 col-form-label">Confirme a Nova Senha</label>
                 <div class="col-md-12">
                     <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                 </div>
             </div>
-        
+
             <div class="form-group row mb-0 mt-4">
                 <div class="col-md-12 text-center">
                     <button type="submit" class="w-100 btn btn-lg btn-primary">Redefinir Senha</button>
                 </div>
             </div>
-            
+
 
             @if (session('status'))
                 <div class="alert alert-success mt-4">
@@ -79,7 +79,7 @@
             @endif
 
         </form>
-        
+
     </div>
 
     <!-- Bootstrap Bundle with Popper -->

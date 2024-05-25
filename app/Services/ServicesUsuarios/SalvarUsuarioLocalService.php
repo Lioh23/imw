@@ -18,6 +18,8 @@ class SalvarUsuarioLocalService
                 'name' => $data['name'],
                 'email' => $data['email_hidden'],
                 'password' => Hash::make($data['password']),
+                'cpf'  => preg_replace('/[^0-9]/', '', $data['cpf']),
+                'telefone' => preg_replace('/[^0-9]/', '', $data['telefone']),
             ]);
 
             PerfilUser::create([
