@@ -45,7 +45,7 @@ class StoreUsuarioLocalRequest extends FormRequest
         $passwordRules = $tipo === 'cadastro' ? ['required', 'string', 'min:6', 'confirmed'] : ['nullable'];
 
         // Definir as regras para o nome
-        $nameRules = $tipo === 'cadastro' ? 'nullable|string|min:4' : 'nullable';
+        $nameRules = $tipo === 'cadastro' ? 'required|string|min:4' : 'nullable';
 
         return [
             'name' => $nameRules,

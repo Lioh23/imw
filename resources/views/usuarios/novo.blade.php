@@ -58,15 +58,15 @@
                             </div>
                         </div>
                     </div>
+                 <div class="ocultar" hidden>
                     <div class="row mt-4">
                         <div class="col-lg-4" id="col-perfil">
                             <div class="form-group">
                                 <label>* Perfil de Acesso</label>
-                                <select class="form-control @error('perfil_id') is-invalid @enderror" name="perfil_id"
-                                    >
+                                <select class="form-control @error('perfil_id') is-invalid @enderror" name="perfil_id" required>
                                     <option value="">Selecione um perfil</option>
                                     @foreach ($perfis as $perfil)
-                                        <option value="{{ $perfil->id }}">{{ $perfil->nome }}</option>
+                                        <option value="{{ $perfil->id }}" @if(old('perfil_id') == $perfil->id) selected @endif>{{ $perfil->nome }}</option>
                                     @endforeach
                                 </select>
                                 @error('perfil_id')
@@ -97,7 +97,7 @@
                             <div class="form-group">
                                 <label>* CPF</label>
                                 <div class="input-group">
-                                    <input type="text" name="cpf" id="cpf" class="form-control @error('cpf') is-invalid @enderror" autocomplete="off" value="{{ old('cpf') }}" @error('cpf') disabled @enderror />
+                                    <input type="text" name="cpf" id="cpf" class="form-control @error('cpf') is-invalid @enderror" autocomplete="off" value="{{ old('cpf') }}"/>
                                 </div>
                                 @error('cpf')
                                     <small class="form-text text-danger">{{ $message }}</small>
@@ -109,7 +109,7 @@
                             <div class="form-group">
                                 <label>* Telefone</label>
                                 <div class="input-group">
-                                    <input type="text" name="telefone" id="telefone" class="form-control @error('telefone') is-invalid @enderror" autocomplete="off" value="{{ old('telefone') }}" @error('telefone') disabled @enderror />
+                                    <input type="text" name="telefone" id="telefone" class="form-control @error('telefone') is-invalid @enderror" autocomplete="off" value="{{ old('telefone') }}" />
                                 </div>
                                 @error('telefone')
                                     <small class="form-text text-danger">{{ $message }}</small>
@@ -123,7 +123,7 @@
                             <div class="form-group">
                                 <label>* Senha</label>
                                 <div class="controls">
-                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password" @error('password') disabled @enderror />
+                                    <input type="password" name="password" id="password" class="form-control @error('password') is-invalid @enderror" autocomplete="new-password"/>
                                     @error('password')
                                         <small class="form-text text-danger">{{ $message }}</small>
                                     @enderror
@@ -134,7 +134,7 @@
                             <div class="form-group" id="col-confirmar-senha">
                                 <label>* Confirmar Senha</label>
                                 <div class="controls">
-                                    <input type="password" name="password_confirmation" id="confirmPassword" class="form-control @error('password_confirmation') is-invalid @enderror" autocomplete="new-password" @error('password_confirmation') disabled @enderror />
+                                    <input type="password" name="password_confirmation" id="confirmPassword" class="form-control @error('password_confirmation') is-invalid @enderror" autocomplete="new-password" />
                                     @error('password_confirmation')
                                         <small class="form-text text-danger">{{ $message }}</small>
                                     @enderror
@@ -142,11 +142,14 @@
                             </div>
                         </div>
                     </div>
+                 </div>
             </div>
             <input type="text" name="tipo" id="tipo" hidden />
             <br><br>
-            <button type="button" id="btn-reset" class="btn btn-secondary btn-rounded mr-2">Limpar</button>
-            <button type="submit" id="btn-salvar" disabled class="btn btn-primary btn-rounded">Salvar</button>
+            <div class="ocultar" hidden>
+                <button type="button" id="btn-reset" class="btn btn-secondary btn-rounded mr-2">Resetar</button>
+                <button type="submit" id="btn-salvar" class="btn btn-primary btn-rounded">Salvar</button>
+            </div>
             </form>
 
         </div>
@@ -168,7 +171,7 @@
             });
 
             $('#btn-reset').on('click', function() {
-              alert('resetando');
+                location.reload();
             });
 
             function validateEmail(email) {
@@ -188,6 +191,7 @@
                         },
                         success: function(response) {
                             $('#email').prop('disabled', true);
+                            $('.ocultar').removeAttr('hidden');
                             if (response.exists) {
                                 if (response.context === 'institution') {
                                     Swal.fire({
@@ -240,6 +244,7 @@
             // Chamando analyzeEmail() novamente em caso de erro de validação
             @if ($errors->any())
                 analyzeEmail();
+                $('.ocultar').removeAttr('hidden');
             @endif
 
         });
