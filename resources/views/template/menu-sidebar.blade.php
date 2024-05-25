@@ -122,7 +122,8 @@
                        </ul>
                    </li>
                @endif
-             {{--   @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
+
+{{--                @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-financeiro'))
                    <li class="menu">
                        <a href="#financeiro" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                            <div class="">
@@ -182,12 +183,7 @@
                                    <a href="{{ route('financeiro.relatorio-movimento-diario') }}">Movimento Diário</a>
                                @endif
                            </li>
-                           {{-- <li>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrorazao'))
-                                <a href="{{ route('financeiro.relatorio-livrorazao') }}">Livro Razão</a>
-                            @endif
-                        </li> --}}
-                           <li>
+                            <li>
                                @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrocaixa'))
                                    <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
                                @endif
