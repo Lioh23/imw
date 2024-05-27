@@ -13,7 +13,8 @@ class DeletarMembroService
         try {
             DB::beginTransaction();
             $membro = MembresiaMembro::findOrFail($membroId);
-            $membro->delete();          
+            $membro->update('status', MembresiaMembro::STATUS_INATIVO);
+            $membro->delete(); 
             DB::commit();
         } catch(\Exception $e) {
             throw new DeleteMembroException();

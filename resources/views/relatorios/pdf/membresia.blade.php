@@ -72,11 +72,29 @@
                 <tr>
                     <td>{{ $membro->rol_atual ?? 0 }}</td>
                     <td>{{ $membro->nome }}</td>
-                    <td>{{ $membro->statusText }}</td>
+                    <td>
+                        @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
+                            {{ $membro->rolAtual->statusText }}
+                        @else
+                            {{ $membro->statusText }}
+                        @endif
+                    </td>
                     <td>{{ $membro->vinculoText }}</td>
                     <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
-                    <td>{{ $membro->created_at->format('d/m/Y') }}</td>
-                    <td>{{ optional($membro->deleted_at)->format('d/m/Y') }}</td>
+                    <td>
+                        @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
+                            {{ $membro->rolAtual->dt_recepcao->format('d/m/Y') }}
+                        @else
+                            {{ $membro->created_at->format('d/m/Y') }}
+                        @endif
+                    </td>
+                    <td>
+                        @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
+                            {{ optional($membro->rolAtual->dt_exclusao)->format('d/m/Y') }}
+                        @else
+                            {{ optional($membro->deleted_at)->format('d/m/Y') }}
+                        @endif
+                    </td>
                     <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
                 </tr>
             @endforeach

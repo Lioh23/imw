@@ -26,6 +26,7 @@ class DeletarMembroService
                 'status'           => MembresiaRolPermanente::STATUS_EXCLUSAO
             ]);
 
+            $membro->update('status', MembresiaMembro::STATUS_INATIVO);
             $membro->delete();
             
             DB::commit();

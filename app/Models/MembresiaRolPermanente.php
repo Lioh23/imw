@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MembresiaRolPermanente extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Compoships;
 
     const STATUS_RECEBIMENTO = 'A';
     const STATUS_EXCLUSAO = 'I';
@@ -59,5 +60,18 @@ class MembresiaRolPermanente extends Model
     public function congregacao() {
         return $this->belongsTo(CongregacoesCongregacao::class, 'congregacao_id');
     }
-    
+
+    public function getStatusTextAttribute()
+    {
+        switch ($this->status) {
+            case 'A':
+                return 'ATIVO';
+            
+            case 'I':
+                return 'INATIVO';
+
+            case 'T':
+                return 'TRANSFERÊNCIA';
+        }
+    }
 }

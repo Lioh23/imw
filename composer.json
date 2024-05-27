@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.0.2",
+        "awobaz/compoships": "^2.3",
         "aws/aws-sdk-php-laravel": "^3.9",
         "barryvdh/laravel-snappy": "^1.0",
         "doctrine/dbal": "^4.0",

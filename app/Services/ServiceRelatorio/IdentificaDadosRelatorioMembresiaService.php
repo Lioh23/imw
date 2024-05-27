@@ -30,11 +30,31 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchMembrosRelatorio($params)
     {
-        $data = MembresiaMembro::with('ultimaAdesao', 'ultimaExclusao')
+        $data = MembresiaMembro::with('ultimaAdesao', 'ultimaExclusao', 'rolAtual')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->when($params['vinculo'], fn($query) => $query->whereIn('vinculo', $params['vinculo']))
             ->when($params['situacao'] == 'rol_permanente', fn ($query) => $query->withTrashed())
-            ->when($params['situacao'] == 'desligados', fn ($query) => $query->onlyTrashed())
+
+            // desligados
+            ->when(($params['situacao'] == 'desligados'), function ($query) {
+                $query->where(function ($query) {
+                    $query->orWhereHas('rolAtual', function ($subQuery) {
+                        $subQuery->whereNotNull('dt_exclusao');
+                    });
+                    $query->orWhereNotNull('deleted_at');
+                });
+            })
+
+            // ativos
+            ->when(($params['situacao'] != 'desligados' && $params['situacao'] != 'rol_permanente'), function ($query) {
+                $query->where(function ($query) {
+                    $query->orWhereHas('rolAtual', function ($subQuery) {
+                        $subQuery->whereNull('dt_exclusao');
+                    });
+                    $query->orWhereNull('deleted_at');
+                });
+            })
+            
             ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
             ->when($params['dt_filtro'], function ($query) use ($params) {
                 if ($params['dt_filtro'] == 'data_nascimento') {
@@ -44,7 +64,9 @@ class IdentificaDadosRelatorioMembresiaService
                 } else if ($params['dt_filtro'] == 'dt_exclusao') {
                     return $this->handleFilterDtExclusao($query, $params['dt_inicial'], $params['dt_final']);
                 }
-            })->get();
+            })
+            ->withTrashed()
+            ->get();
         
         return $data;
     }
@@ -64,26 +86,34 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function handleFilterDtRecepcao($query, $dtInicial, $dtFinal) 
     {
-        if ($dtInicial) {
-            $query->whereDate('created_at', '>=', $dtInicial);
-        }
-
-        if ($dtFinal) {
-            $query->whereDate('created_at', '<=', $dtFinal);
-        }
+        $query->where(function ($query) use ($dtInicial, $dtFinal) {
+            if ($dtInicial) {
+                $query->whereDate('created_at', '>=', $dtInicial);
+                $query->orWhereRelation('rolAtual', 'dt_recepcao', '>=', $dtInicial);
+            }
+    
+            if ($dtFinal) {
+                $query->whereDate('created_at', '<=', $dtFinal);
+                $query->orWhereRelation('rolAtual', 'dt_recepcao', '<=', $dtFinal);
+            }
+        });
 
         return $query;
     }
 
     private function handleFilterDtExclusao($query, $dtInicial, $dtFinal) 
     {
-        if ($dtInicial) {
-            $query->whereDate('deleted_at', '>=', Carbon::parse($dtInicial));
-        }
-
-        if ($dtFinal) {
-            $query->whereDate('deleted_at', '<=', $dtFinal);
-        }
+        $query->where(function ($query) use ($dtInicial, $dtFinal) {
+            if ($dtInicial) {
+                $query->whereDate('deleted_at', '>=', $dtInicial);
+                $query->orWhereRelation('rolAtual', 'dt_exclusao', '>=', $dtInicial);
+            }
+    
+            if ($dtFinal) {
+                $query->whereDate('deleted_at', '<=', $dtFinal);
+                $query->orWhereRelation('rolAtual', 'dt_exclusao', '<=', $dtFinal);
+            }
+        });
 
         return $query;
     }
