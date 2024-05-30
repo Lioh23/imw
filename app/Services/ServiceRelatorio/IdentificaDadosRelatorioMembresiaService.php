@@ -51,8 +51,7 @@ class IdentificaDadosRelatorioMembresiaService
                     $query->orWhere('status', 'A');
                 });
             })
-            ->dd()
-
+            
             ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
             ->when($params['dt_filtro'], function ($query) use ($params) {
                 if ($params['dt_filtro'] == 'data_nascimento') {
