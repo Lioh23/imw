@@ -86,7 +86,7 @@
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                   <input type="radio" name="situacao" value="rol_atual" class="new-control-input">
-                  <span class="new-control-indicator"></span>Rol Atual
+                  <span class="new-control-indicator"></span>Ativos
                 </label>
               </div>
             </div>
@@ -94,7 +94,7 @@
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                   <input type="radio" name="situacao" value="desligados" class="new-control-input">
-                  <span class="new-control-indicator"></span>Desligados
+                  <span class="new-control-indicator"></span>Inativos
                 </label>
               </div>
             </div>
@@ -102,7 +102,7 @@
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                   <input checked type="radio" name="situacao" value="rol_permanente" class="new-control-input" id="situacao_rol_permanente">
-                  <span class="new-control-indicator"></span>Rol Permanente
+                  <span class="new-control-indicator"></span>Todos
                 </label>
               </div>
             </div>
