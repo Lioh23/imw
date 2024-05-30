@@ -30,7 +30,7 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchMembrosRelatorio($params)
     {
-        $data = MembresiaMembro::with('ultimaAdesao', 'ultimaExclusao', 'rolAtual')
+        $data = MembresiaMembro::with('rolAtual')
             ->withTrashed()
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->when($params['vinculo'], fn($query) => $query->whereIn('vinculo', $params['vinculo']))
@@ -51,6 +51,7 @@ class IdentificaDadosRelatorioMembresiaService
                     $query->orWhere('status', 'A');
                 });
             })
+            ->dd()
 
             ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
             ->when($params['dt_filtro'], function ($query) use ($params) {

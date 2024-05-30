@@ -88,19 +88,10 @@ class MembresiaMembro extends Model
     {
         return $this->hasMany(MembresiaRolPermanente::class, 'membro_id');
     }
-
-    public function ultimaAdesao()
+    
+    public function rolAtual()
     {
-        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id')
-                    ->where(fn($query) => $query->where('status', MembresiaRolPermanente::STATUS_RECEBIMENTO)->orWhere('status', MembresiaRolPermanente::STATUS_TRANSFERENCIA))
-                    ->latest('dt_recepcao');
-    }
-
-    public function ultimaExclusao()
-    {
-        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id')
-        ->where(fn($query) => $query->where('status', MembresiaRolPermanente::STATUS_RECEBIMENTO)->orWhere('status', MembresiaRolPermanente::STATUS_TRANSFERENCIA))
-        ->latest('dt_recepcao');
+        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->latestOfMany('updated_at');
     }
 
     public function getStatusTextAttribute()
@@ -124,10 +115,5 @@ class MembresiaMembro extends Model
             case 'V':            
                 return 'VISITANTE';
         }
-    }
-
-    public function rolAtual()
-    {
-        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->latestOfMany('updated_at');
     }
 }

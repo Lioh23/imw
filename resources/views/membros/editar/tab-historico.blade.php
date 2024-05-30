@@ -20,7 +20,7 @@
                                 $data = [
                                     'date' => optional($rolPermanente->dt_exclusao)->format('d/m/Y'),
                                     'status' => 'Exclusão',
-                                    'mode' => $rolPermanente->modoExclusao->nome,
+                                    'mode' => optional($rolPermanente->modoExclusao)->nome,
                                     'church' => $rolPermanente->igreja->nome,
                                     'congregation' => optional($rolPermanente->congregacao)->nome,
                                     'cleric' => $rolPermanente->clerigo->nome,
@@ -30,7 +30,7 @@
                                 $data = [
                                     'date' => optional($rolPermanente->dt_recepcao)->format('d/m/Y'),
                                     'status' => 'Recebimento',
-                                    'mode' => $rolPermanente->modoRecepcao->nome,
+                                    'mode' => optional($rolPermanente->modoRecepcao)->nome,
                                     'church' => $rolPermanente->igreja->nome,
                                     'congregation' => optional($rolPermanente->congregacao)->nome,
                                     'cleric' => $rolPermanente->clerigo->nome,
@@ -40,7 +40,7 @@
                                 $data = [
                                     'date' => optional($rolPermanente->dt_recepcao)->format('d/m/Y'),
                                     'status' => 'Transferência',
-                                    'mode' => $rolPermanente->modoRecepcao->nome,
+                                    'mode' => optional($rolPermanente->modoRecepcao)->nome,
                                     'church' => $rolPermanente->igreja->nome,
                                     'congregation' => optional($rolPermanente->congregacao)->nome,
                                     'cleric' => $rolPermanente->clerigo->nome,

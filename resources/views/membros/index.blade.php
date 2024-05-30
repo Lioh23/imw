@@ -78,28 +78,19 @@
                         <tbody>
                             @foreach ($membros as $index => $membro)
                                 <tr>
-                                    <td>{{ optional($membro->ultimaAdesao ?? null)->numero_rol }}</td>
+                                    <td>{{ optional($membro->rolAtual)->numero_rol }}</td>
                                     <td>
-                                        @if(!$membro->has_errors)
-                                            {{ $membro->nome }}
-                                        @else
+                                        @if($membro->has_errors)
                                             <span class="badge badge-warning"> {{ $membro->nome }} </span>
+                                        @else
+                                            {{ $membro->nome }}
                                         @endif
                                     </td>
-                                    <td>
-                                        @if (isset($membro->ultimaAdesao) && !is_null($membro->ultimaAdesao->dt_recepcao))
-                                            {{ \Carbon\Carbon::parse($membro->ultimaAdesao->dt_recepcao)->format('d/m/Y') }}
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if (isset($membro->ultimaExclusao) && !is_null($membro->ultimaExclusao->dt_recepcao))
-                                            {{-- {{ \Carbon\Carbon::parse($membro->ultimaExclusao->dt_exclusao)->format('d/m/Y') }} --}}
-                                            {{ optional($membro->deleted_at)->format('d/m/Y') }}
-                                        @endif
-                                    </td>
-                                    <td>{{ optional(optional($membro->ultimaAdesao)->congregacao)->nome }}</td>
+                                    <td>{{ optional($membro->rolAtual->dt_recepcao)->format('d/m/Y') }}</td>
+                                    <td> {{ optional($membro->rolAtual->dt_exclusao)->format('d/m/Y') }}</td>
+                                    <td>{{ optional(optional($membro->rolAtual)->congregacao)->nome }}</td>
                                     <td class="text-center">
-                                        @if (!$membro->deleted_at)
+                                        @if (!optional($membro->rolAtual->dt_exclusao))
                                             <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
                                                 class="btn btn-sm btn-dark mr-2 btn-rounded">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -110,10 +101,10 @@
                                                 </svg>
                                             </a>
                                         @endif
-                                        @if ($membro->deleted_at)
-                                        <a href="{{ route('membro.reintegrar', $membro->id) }}" title="Reintegrar membro" class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                            <x-bx-log-in-circle />
-                                        </a>
+                                        @if (optional($membro->rolAtual->dt_exclusao))
+                                            <a href="{{ route('membro.reintegrar', $membro->id) }}" title="Reintegrar membro" class="btn btn-sm btn-dark mr-2 btn-rounded">
+                                                <x-bx-log-in-circle />
+                                            </a>
                                         @endif
                                     </td>
                                 </tr>
