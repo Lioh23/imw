@@ -13,7 +13,7 @@ trait MemberCountable
         return MembresiaMembro::where('vinculo', $vinculo)
             ->when($vinculo == 'M', function ($query) {
                 $query->whereHas('rolAtual', function ($sub) {
-                    $sub->where('status', 'A');
+                    $sub->withTrashed()->where('status', 'A');
                 });
             }, function ($query) {
                 $query->where('status', 'A');
