@@ -50,24 +50,24 @@ class UserSeeder extends Seeder
 
 
         if ($perfilAdmin) {
-            attachRegras($perfilAdmin, $regrasAdmin);
+            $this->attachRegras($perfilAdmin, $regrasAdmin);
         }
 
         if ($perfilSecretario) {
-            attachRegras($perfilSecretario, $regrasSecretario);
+            $this->attachRegras($perfilSecretario, $regrasSecretario);
         }
 
         if ($perfilTesoureiro) {
-            attachRegras($perfilTesoureiro, $regrasTesoureiro);
+            $this->attachRegras($perfilTesoureiro, $regrasTesoureiro);
         }
 
 
         if ($perfilAdminSistema) {
-            attachRegras($perfilAdminSistema, $regrasAdminSistema);
+            $this->attachRegras($perfilAdminSistema, $regrasAdminSistema);
         }
 
         if ($perfilPastor) {
-            attachRegras($perfilPastor, $regrasPastor);
+            $this->attachRegras($perfilPastor, $regrasPastor);
         }
 
 
@@ -89,10 +89,11 @@ class UserSeeder extends Seeder
         UserInstituicao::create(['user_id' => $marcos->id, 'instituicao_id' => 2215]); // igreja
 
 
-        function attachRegras($perfil, $regras) {
-            foreach ($regras as $regra) {
-                $perfil->regras()->attach($regra);
-            }
+    }
+
+    private function attachRegras($perfil, $regras) {
+        foreach ($regras as $regra) {
+            $perfil->regras()->attach($regra);
         }
     }
 }

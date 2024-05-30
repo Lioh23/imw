@@ -36,6 +36,7 @@ class ListMembrosService
             ->when(isset($parameters['has_errors']), function ($query) {
                 $query->where('has_errors', 1);
             })
+            ->orderBy('nome')
             ->paginate(50);
     }
 }

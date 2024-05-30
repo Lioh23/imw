@@ -21,7 +21,7 @@ class IdentificaDadosRelatorioMembresiaService
         if(isset($params['action'])) {
             $data['membros']      = $this->fetchMembrosRelatorio($params);
             $data['vinculos']     = $this->fetchTextVinculos($params['vinculo']);
-            $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
+            $data['situacao']     = $this->fetchTextSituacao(isset($params['situacao']) ? $params['situacao'] : 'rol_permanente');
             $data['ondeCongrega'] = $this->fetchTextCongregacao($params['congregacao_id']);
         }
 
@@ -33,28 +33,28 @@ class IdentificaDadosRelatorioMembresiaService
         $data = MembresiaMembro::with('ultimaAdesao', 'ultimaExclusao', 'rolAtual')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->when($params['vinculo'], fn($query) => $query->whereIn('vinculo', $params['vinculo']))
-            ->when($params['situacao'] == 'rol_permanente', fn ($query) => $query->withTrashed())
+            ->when(!isset($params['situacao']) || $params['situacao'] == 'rol_permanente', fn ($query) => $query->withTrashed())
 
             // desligados
-            ->when(($params['situacao'] == 'desligados'), function ($query) {
+            ->when(isset($params['situacao']) && ($params['situacao'] == 'desligados'), function ($query) {
                 $query->where(function ($query) {
                     $query->orWhereHas('rolAtual', function ($subQuery) {
-                        $subQuery->whereNotNull('dt_exclusao');
+                        $subQuery->where('status', 'I');
                     });
-                    $query->orWhereNotNull('deleted_at');
+                    $query->where('status', 'I');
                 });
             })
 
             // ativos
-            ->when(($params['situacao'] != 'desligados' && $params['situacao'] != 'rol_permanente'), function ($query) {
+            ->when((isset($params['situacao']) && $params['situacao'] == 'rol_atual'), function ($query) {
                 $query->where(function ($query) {
                     $query->orWhereHas('rolAtual', function ($subQuery) {
-                        $subQuery->whereNull('dt_exclusao');
+                        $subQuery->where('status', 'A');
                     });
-                    $query->orWhereNull('deleted_at');
+                    $query->where('status', 'A');
                 });
             })
-            
+
             ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
             ->when($params['dt_filtro'], function ($query) use ($params) {
                 if ($params['dt_filtro'] == 'data_nascimento') {
@@ -140,7 +140,8 @@ class IdentificaDadosRelatorioMembresiaService
         return implode(', ', $result);
     }
 
-    private function fetchTextSituacao($situacao) {
+    private function fetchTextSituacao($situacao) 
+    {
         switch ($situacao) {
             case 'rol_atual':
                 return 'ROL ATUAL';

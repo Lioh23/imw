@@ -17,7 +17,12 @@ trait MemberCountable
     
     public static function countRolPermanente($vinculo)
     {
-        return MembresiaMembro::where('vinculo', $vinculo)->onlyTrashed()
+        return MembresiaMembro::where('vinculo', $vinculo)
+            ->when($vinculo == 'M', function ($query) {
+                $query->withTrashed();
+            }, function ($query) {
+                $query->onlyTrashed();
+            })
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->count();
     }
