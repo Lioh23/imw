@@ -39,7 +39,7 @@ class IdentificaDadosRelatorioMembresiaService
             ->when(isset($params['situacao']) && ($params['situacao'] == 'desligados'), function ($query) {
                 $query->where(function ($query) {
                     $query->orWhereHas('rolAtual', function ($subQuery) {
-                        $subQuery->where('status', 'I');
+                        $subQuery->withTrashed()->where('status', 'I');
                     });
                     $query->where('status', 'I');
                 });
@@ -49,7 +49,7 @@ class IdentificaDadosRelatorioMembresiaService
             ->when((isset($params['situacao']) && $params['situacao'] == 'rol_atual'), function ($query) {
                 $query->where(function ($query) {
                     $query->orWhereHas('rolAtual', function ($subQuery) {
-                        $subQuery->where('status', 'A');
+                        $subQuery->withTrashed()->where('status', 'A');
                     });
                     $query->where('status', 'A');
                 });
