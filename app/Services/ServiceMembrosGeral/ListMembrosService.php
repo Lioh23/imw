@@ -31,11 +31,11 @@ class ListMembrosService
                     ->orWhereHas('congregacao', function ($subQuery) use ($searchTerm) { $subQuery->where('nome', 'like', "%$searchTerm%"); });
             })
             ->when(isset($parameters['rol_permanente']), function ($query) {
-                $query->onlyTrashed();
+                $query->withTrashed();
             })
             ->when(isset($parameters['has_errors']), function ($query) {
                 $query->where('has_errors', 1);
             })
-            ->paginate(100);
+            ->paginate(50);
     }
 }

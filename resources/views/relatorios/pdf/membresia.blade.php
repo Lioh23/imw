@@ -83,7 +83,7 @@
                     <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
                     <td>
                         @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
-                            {{ $membro->rolAtual->dt_recepcao->format('d/m/Y') }}
+                            {{ optional($membro->rolAtual->dt_recepcao)->format('d/m/Y') }}
                         @else
                             {{ $membro->created_at->format('d/m/Y') }}
                         @endif

@@ -120,6 +120,7 @@
                             @endforeach
                         </tbody>
                     </table>
+                    {{ $membros->links('vendor.pagination.index') }}
                 </div>
             </div>
         </div>
