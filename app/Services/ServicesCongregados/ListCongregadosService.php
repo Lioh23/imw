@@ -16,7 +16,7 @@ class ListCongregadosService
             'congregados'    => $this->handleListaCongregados($parameters),
             'countHasErrors' => MemberCountable::countHasErrors(MembresiaMembro::VINCULO_CONGREGADO),
             'countAtivos'    => MemberCountable::countRolAtual(MembresiaMembro::VINCULO_CONGREGADO),
-            'countExcluidos' => MemberCountable::countRolPermanente(MembresiaMembro::VINCULO_CONGREGADO)
+            'countExcluidos' => MemberCountable::countExcluidos(MembresiaMembro::VINCULO_CONGREGADO)
         ];
     }
 

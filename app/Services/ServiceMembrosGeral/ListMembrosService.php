@@ -22,7 +22,7 @@ class ListMembrosService
 
     private function handleListaMembros($parameters = null)
     {
-        return MembresiaMembro::with('congregacao')
+        return MembresiaMembro::with('congregacao', 'rolAtual')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->where('vinculo', MembresiaMembro::VINCULO_MEMBRO)
             ->when(isset($parameters['search']), function ($query) use ($parameters) {
@@ -31,11 +31,18 @@ class ListMembrosService
                     ->orWhereHas('congregacao', function ($subQuery) use ($searchTerm) { $subQuery->where('nome', 'like', "%$searchTerm%"); });
             })
             ->when(isset($parameters['rol_permanente']), function ($query) {
-                $query->withTrashed();
+                $query->whereHas('rolAtual', function ($sub) {
+                    $sub->whereIn('status', ['A', 'I']);
+                });
+            }, function ($query) {
+                $query->whereHas('rolAtual', function ($sub) {
+                    $sub->where('status', 'A');
+                });
             })
             ->when(isset($parameters['has_errors']), function ($query) {
                 $query->where('has_errors', 1);
             })
+            ->withTrashed()
             ->orderBy('nome')
             ->paginate(50);
     }

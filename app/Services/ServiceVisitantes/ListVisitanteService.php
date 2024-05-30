@@ -15,7 +15,7 @@ class ListVisitanteService
         return [
             'visitantes'     => $this->handleListaVisitantes($parameters),
             'countAtivos'    => MemberCountable::countRolAtual(MembresiaMembro::VINCULO_VISITANTE),
-            'countExcluidos' => MemberCountable::countRolPermanente(MembresiaMembro::VINCULO_VISITANTE),
+            'countExcluidos' => MemberCountable::countExcluidos(MembresiaMembro::VINCULO_VISITANTE),
             'countHasErrors' => MemberCountable::countHasErrors(MembresiaMembro::VINCULO_VISITANTE)
         ];
     }
