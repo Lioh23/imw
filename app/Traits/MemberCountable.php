@@ -12,9 +12,7 @@ trait MemberCountable
     {
         return MembresiaMembro::where('vinculo', $vinculo)
             ->when($vinculo == 'M', function ($query) {
-                $query->whereHas('rolAtual', function ($sub) {
-                    $sub->withTrashed()->where('status', 'A');
-                });
+                $query->whereRelation('rolAtual', 'status', 'A');
             }, function ($query) {
                 $query->where('status', 'A');
             })
@@ -27,9 +25,7 @@ trait MemberCountable
     {
         return MembresiaMembro::with('rolAtual')
             ->where('vinculo', $vinculo)
-            ->whereHas('rolAtual', function ($query) {
-                $query->withTrashed()->whereIn('status', ['A', 'I']);
-            })
+            ->has('rolAtual')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->withTrashed()
             ->count();

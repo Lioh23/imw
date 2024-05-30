@@ -128,6 +128,6 @@ class MembresiaMembro extends Model
 
     public function rolAtual()
     {
-        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->latestOfMany('updated_at');
+        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->latestOfMany('updated_at');
     }
 }

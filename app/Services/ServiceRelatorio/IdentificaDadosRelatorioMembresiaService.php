@@ -31,27 +31,24 @@ class IdentificaDadosRelatorioMembresiaService
     private function fetchMembrosRelatorio($params)
     {
         $data = MembresiaMembro::with('ultimaAdesao', 'ultimaExclusao', 'rolAtual')
+            ->withTrashed()
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->when($params['vinculo'], fn($query) => $query->whereIn('vinculo', $params['vinculo']))
-            ->when(!isset($params['situacao']) || $params['situacao'] == 'rol_permanente', fn ($query) => $query->withTrashed())
-
             // desligados
             ->when(isset($params['situacao']) && ($params['situacao'] == 'desligados'), function ($query) {
                 $query->where(function ($query) {
-                    $query->orWhereHas('rolAtual', function ($subQuery) {
-                        $subQuery->withTrashed()->where('status', 'I');
-                    });
-                    $query->where('status', 'I');
+                    $query->withoutGlobalScopes();
+                    $query->orWhereRelation('rolAtual', 'status', 'I');
+                    $query->orWhere('status', 'I');
                 });
             })
 
             // ativos
             ->when((isset($params['situacao']) && $params['situacao'] == 'rol_atual'), function ($query) {
                 $query->where(function ($query) {
-                    $query->orWhereHas('rolAtual', function ($subQuery) {
-                        $subQuery->withTrashed()->where('status', 'A');
-                    });
-                    $query->where('status', 'A');
+                    $query->withoutGlobalScopes();
+                    $query->orWhereRelation('rolAtual', 'status', 'A');
+                    $query->orWhere('status', 'A');
                 });
             })
 
@@ -65,7 +62,6 @@ class IdentificaDadosRelatorioMembresiaService
                     return $this->handleFilterDtExclusao($query, $params['dt_inicial'], $params['dt_final']);
                 }
             })
-            ->withTrashed()
             ->get();
         
         return $data;
@@ -87,6 +83,7 @@ class IdentificaDadosRelatorioMembresiaService
     private function handleFilterDtRecepcao($query, $dtInicial, $dtFinal) 
     {
         $query->where(function ($query) use ($dtInicial, $dtFinal) {
+            $query->withoutGlobalScopes();
             if ($dtInicial) {
                 $query->whereDate('created_at', '>=', $dtInicial);
                 $query->orWhereRelation('rolAtual', 'dt_recepcao', '>=', $dtInicial);
@@ -104,6 +101,7 @@ class IdentificaDadosRelatorioMembresiaService
     private function handleFilterDtExclusao($query, $dtInicial, $dtFinal) 
     {
         $query->where(function ($query) use ($dtInicial, $dtFinal) {
+            $query->withoutGlobalScopes();
             if ($dtInicial) {
                 $query->whereDate('deleted_at', '>=', $dtInicial);
                 $query->orWhereRelation('rolAtual', 'dt_exclusao', '>=', $dtInicial);
