@@ -128,6 +128,6 @@ class MembresiaMembro extends Model
 
     public function rolAtual()
     {
-        return $this->hasOne(MembresiaRolPermanente::class, ['numero_rol', 'igreja_id'], ['rol_atual', 'igreja_id']);
+        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->latestOfMany('updated_at');
     }
 }
