@@ -31,6 +31,16 @@ class FinanceiroCaixa extends Model
         return $totalEntrada - $totalSaida + $ultimoConciliado;
     }
 
+
+    public function saldoAtualNaoConciliadoPorData($ano, $mes) 
+    {
+        $totalEntrada = $this->totalLancamentosNaoConciliadosEntradaPorData($ano, $mes) + $this->totalLancamentosNaoConciliadosTransferenciaEntradaPorData($ano, $mes);
+        $totalSaida = $this->totalLancamentosNaoConciliadosSaidaPorData($ano, $mes) + $this->totalLancamentosNaoConciliadosTransferenciaSaidaPorData($ano, $mes);
+        $ultimoConciliado = $this->totalLancamentosUltimosConciliados();
+
+        return $totalEntrada - $totalSaida + $ultimoConciliado;
+    }
+
     public function saldoAtual($mesAno = null)
     {
         $totalEntrada = $this->totalLancamentosEntrada($mesAno) + $this->totalLancamentosTransferenciaEntrada($mesAno);
@@ -49,6 +59,7 @@ class FinanceiroCaixa extends Model
             ->sum('valor');
     }
 
+
     public function totalLancamentosNaoConciliadosTransferenciaEntrada()
     {
         return $this->lancamentos()
@@ -56,6 +67,18 @@ class FinanceiroCaixa extends Model
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
             ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+            ->sum('valor');
+    }
+
+    public function totalLancamentosNaoConciliadosTransferenciaEntradaPorData($ano, $mes)
+    {
+        return $this->lancamentos()
+            ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)    
+            ->whereYear('data_movimento', $ano)
+            ->whereMonth('data_movimento', $mes)
             ->sum('valor');
     }
 
@@ -87,6 +110,18 @@ class FinanceiroCaixa extends Model
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
             ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+            ->sum('valor');
+    }
+
+    public function totalLancamentosNaoConciliadosTransferenciaSaidaPorData($ano, $mes)
+    {
+        return $this->lancamentos()
+            ->whereIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+            ->whereYear('data_movimento', $ano)
+            ->whereMonth('data_movimento', $mes)
             ->sum('valor');
     }
 
@@ -122,6 +157,18 @@ class FinanceiroCaixa extends Model
             ->sum('valor');
     }
 
+    public function totalLancamentosNaoConciliadosEntradaPorData($ano, $mes)
+    {
+        return $this->lancamentos()
+            ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_ENTRADA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+            ->whereYear('data_movimento', $ano)
+            ->whereMonth('data_movimento', $mes)
+            ->sum('valor');
+    }
+
     public function totalLancamentosEntrada($mesAno = null)
     {
         $query = $this->lancamentos()
@@ -150,6 +197,18 @@ class FinanceiroCaixa extends Model
             ->where('conciliado', 0)
             ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
             ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+            ->sum('valor');
+    }
+
+    public function totalLancamentosNaoConciliadosSaidaPorData($ano, $mes)
+    {
+        return $this->lancamentos()
+            ->whereNotIn('plano_conta_id', self::IDS_TRANFERENCIA)
+            ->where('conciliado', 0)
+            ->where('tipo_lancamento', FinanceiroLancamento::TP_LANCAMENTO_SAIDA)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+            ->whereYear('data_movimento', $ano)
+            ->whereMonth('data_movimento', $mes)
             ->sum('valor');
     }
 

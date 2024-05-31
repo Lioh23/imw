@@ -28,16 +28,16 @@ class ConsolidacaoStoreService
         foreach ($caixas as $caixa) {
             $lancamento = [
                 'data_hora' => Carbon::now()->format('Y-m-d H:i:s'),
-                'total_entradas' => $caixa->totalLancamentosNaoConciliadosEntrada(),
-                'total_saidas' => $caixa->totalLancamentosNaoConciliadosSaida(),
+                'total_entradas' => $caixa->totalLancamentosNaoConciliadosEntradaPorData($data['ano'], $data['mes']),
+                'total_saidas' => $caixa->totalLancamentosNaoConciliadosSaidaPorData($data['ano'], $data['mes']),
                 'saldo_anterior' => $caixa->totalLancamentosUltimosConciliados(),
-                'saldo_final' => $caixa->saldoAtualNaoConciliado(),
+                'saldo_final' => $caixa->saldoAtualNaoConciliadoPorData($data['ano'], $data['mes']),
                 'caixa_id' => $caixa->id,
                 'instituicao_id' => session()->get('session_perfil')->instituicao_id,
                 'ano' => $data['ano'],
                 'mes' => $data['mes'],
-                'total_transf_entradas' => $caixa->totalLancamentosNaoConciliadosTransferenciaEntrada(),
-                'total_transf_saidas' => $caixa->totalLancamentosNaoConciliadosTransferenciaSaida()
+                'total_transf_entradas' => $caixa->totalLancamentosNaoConciliadosTransferenciaEntradaPorData($data['ano'], $data['mes']),
+                'total_transf_saidas' => $caixa->totalLancamentosNaoConciliadosTransferenciaSaidaPorData($data['ano'], $data['mes'])
             ];
             
             // Usar o método updateOrCreate
