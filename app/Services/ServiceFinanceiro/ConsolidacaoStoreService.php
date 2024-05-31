@@ -41,23 +41,24 @@ class ConsolidacaoStoreService
             ];
             
             // Usar o método updateOrCreate
-            FinanceiroSaldoConsolidadoMensal::updateOrCreate(
+           /*  FinanceiroSaldoConsolidadoMensal::updateOrCreate(
                 [
                     'caixa_id' => $caixa->id,
                     'ano' => $data['ano'],
                     'mes' => $data['mes']
                 ],
                 $lancamento
-            );
+            ); */
         } 
 
+        dd($lancamento);
         $dataConciliacao = Carbon::now()->format('Y-m-d');
         
-        FinanceiroLancamento::where('conciliado', 0)
+       /*  FinanceiroLancamento::where('conciliado', 0)
         ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
         ->update([
             'conciliado' => 1,
             'data_conciliacao' => $dataConciliacao
-        ]);
+        ]); */
     }
 }
