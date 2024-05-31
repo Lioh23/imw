@@ -25,6 +25,8 @@ class ConsolidacaoStoreService
 
         $caixas = FinanceiroUtils::caixas();
         
+        $todosLancamentos = [];
+
         foreach ($caixas as $caixa) {
             $lancamento = [
                 'data_hora' => Carbon::now()->format('Y-m-d H:i:s'),
@@ -40,6 +42,7 @@ class ConsolidacaoStoreService
                 'total_transf_saidas' => $caixa->totalLancamentosNaoConciliadosTransferenciaSaidaPorData($data['ano'], $data['mes'])
             ];
             
+            $todosLancamentos[] = $lancamento;
             // Usar o método updateOrCreate
            /*  FinanceiroSaldoConsolidadoMensal::updateOrCreate(
                 [
@@ -51,7 +54,7 @@ class ConsolidacaoStoreService
             ); */
         } 
 
-        dd($lancamento);
+        dd($todosLancamentos);
         $dataConciliacao = Carbon::now()->format('Y-m-d');
         
        /*  FinanceiroLancamento::where('conciliado', 0)
