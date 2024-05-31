@@ -90,7 +90,7 @@
                                     <td> {{ optional($membro->rolAtual->dt_exclusao)->format('d/m/Y') }}</td>
                                     <td>{{ optional(optional($membro->rolAtual)->congregacao)->nome }}</td>
                                     <td class="text-center">
-                                        @if (!optional($membro->rolAtual->dt_exclusao))
+                                        @if (!$membro->rolAtual->dt_exclusao)
                                             <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
                                                 class="btn btn-sm btn-dark mr-2 btn-rounded">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
@@ -101,7 +101,7 @@
                                                 </svg>
                                             </a>
                                         @endif
-                                        @if (optional($membro->rolAtual->dt_exclusao))
+                                        @if ($membro->rolAtual->dt_exclusao)
                                             <a href="{{ route('membro.reintegrar', $membro->id) }}" title="Reintegrar membro" class="btn btn-sm btn-dark mr-2 btn-rounded">
                                                 <x-bx-log-in-circle />
                                             </a>
