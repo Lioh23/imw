@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MembresiaMembro;
 use App\Models\PerfilUser;
 use App\Services\ServicePerfil\IdentificaPerfilService;
 use Illuminate\Support\Facades\Auth;
@@ -12,9 +13,25 @@ class HomeController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard');
+        $igrejaId = session()->get('session_perfil')->instituicao_id;
+        $statusAtivo = 'A';
+    
+        $counts = MembresiaMembro::selectRaw("
+                SUM(CASE WHEN vinculo = 'M' THEN 1 ELSE 0 END) as activeMembrosCount,
+                SUM(CASE WHEN vinculo = 'C' THEN 1 ELSE 0 END) as activeCongregadosCount,
+                SUM(CASE WHEN vinculo = 'V' THEN 1 ELSE 0 END) as activeVisitantesCount
+            ")
+            ->where('status', $statusAtivo)
+            ->where('igreja_id', $igrejaId)
+            ->first();
+    
+        return view('dashboard', [
+            'activeMembrosCount' => $counts->activeMembrosCount,
+            'activeCongregadosCount' => $counts->activeCongregadosCount,
+            'activeVisitantesCount' => $counts->activeVisitantesCount,
+        ]);
     }
-
+    
     public function selecionarPerfil()
     {
         // Obter o ID do usuário autenticado

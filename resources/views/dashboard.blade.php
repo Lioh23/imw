@@ -3,32 +3,29 @@
 @section('content')
 <div class="container-fluid h-100">
      <div class="row flex-fill mt-4">
-        <!-- Card de Membros -->
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body">
                     <h6 class="card-title"><b>Membros</b></h6>
-                    <p class="card-text">Total: 200</p>
+                    <p class="card-text">Total: {{ $activeMembrosCount }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Card de Contribuições -->
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h6 class="card-title"><b>Contribuições</b></h6>
-                    <p class="card-text">Total: R$ 10.000,00</p>
+                    <h6 class="card-title"><b>Congregados</b></h6>
+                    <p class="card-text">Total: {{ $activeCongregadosCount }}</p>
                 </div>
             </div>
         </div>
 
-        <!-- Card de Eventos -->
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body">
-                    <h6 class="card-title"><b>Eventos</b></h6>
-                    <p class="card-text">Total: 5</p>
+                    <h6 class="card-title"><b>Visitantes</b></h6>
+                    <p class="card-text">Total: {{ $activeVisitantesCount }}</p>
                 </div>
             </div>
         </div>
