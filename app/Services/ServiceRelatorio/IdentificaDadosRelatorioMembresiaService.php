@@ -19,10 +19,12 @@ class IdentificaDadosRelatorioMembresiaService
         ];
 
         if(isset($params['action'])) {
-            $data['membros']      = $this->fetchMembrosRelatorio($params);
-            $data['vinculos']     = $this->fetchTextVinculos($params['vinculo']);
-            $data['situacao']     = $this->fetchTextSituacao(isset($params['situacao']) ? $params['situacao'] : 'rol_permanente');
+            $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
+            $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
             $data['ondeCongrega'] = $this->fetchTextCongregacao($params['congregacao_id']);
+            $data['membros']      = $params['vinculo'] == 'M' 
+                ? $this->fetchMembrosRelatorio($params)
+                : $this->fetchCongregadosVisitantesRelatorio($params);
         }
 
         return $data;
@@ -30,54 +32,74 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchMembrosRelatorio($params)
     {
-        $data = MembresiaMembro::with('rolAtual')
-            ->withTrashed()
+        return MembresiaMembro::with('rolAtual')
+            ->where('vinculo', $params['vinculo'])
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
-            ->when($params['vinculo'], fn($query) => $query->whereIn('vinculo', $params['vinculo']))
-            // desligados
-            ->when(isset($params['situacao']) && ($params['situacao'] == 'desligados'), function ($query) {
-                $query->where(function ($query) {
-                    $query->withoutGlobalScopes();
-                    $query->orWhereRelation('rolAtual', 'status', 'I');
-                    $query->orWhere('status', 'I');
-                });
-            })
-
-            // ativos
-            ->when((isset($params['situacao']) && $params['situacao'] == 'rol_atual'), function ($query) {
+            ->withTrashed()
+            ->when($params['situacao'] == 'ativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
                     $query->orWhereRelation('rolAtual', 'status', 'A');
                     $query->orWhere('status', 'A');
                 });
             })
-            
+            ->when($params['situacao'] == 'inativos', function ($query) {
+                $query->where(function ($query) {
+                    $query->withoutGlobalScopes();
+                    $query->orWhereRelation('rolAtual', 'status', 'I');
+                    $query->orWhere('status', 'I');
+                });
+            })
             ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
             ->when($params['dt_filtro'], function ($query) use ($params) {
                 if ($params['dt_filtro'] == 'data_nascimento') {
                     return $this->handleFilterDtNascimento($query, $params['dt_inicial'], $params['dt_final']);
-                } else if ($params['dt_filtro'] == 'dt_recepcao') {
-                    return $this->handleFilterDtRecepcao($query, $params['dt_inicial'], $params['dt_final']);
-                } else if ($params['dt_filtro'] == 'dt_exclusao') {
-                    return $this->handleFilterDtExclusao($query, $params['dt_inicial'], $params['dt_final']);
+                } else {   
+                    return $this->handleRolDates($query, $params['dt_filtro'], $params['dt_inicial'], $params['dt_final']);
                 }
             })
             ->get();
-        
-        return $data;
+    }
+
+    private function fetchCongregadosVisitantesRelatorio($params)
+    {
+        return MembresiaMembro::where('vinculo', $params['vinculo'])
+            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
+            ->withTrashed()
+            ->when($params['situacao'] == 'ativos', fn ($query) => $query->where('status', 'A')) 
+            ->when($params['situacao'] == 'inativos', fn ($query) => $query->where('status', 'I')) 
+            ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
+            ->when($params['dt_filtro'], function ($query) use ($params) {
+                if ($params['dt_filtro'] == 'data_nascimento') {
+                    return $this->handleFilterDtNascimento($query, $params['dt_inicial'], $params['dt_final']);
+                } else { 
+                    return $this->handleDates($query, $params['dt_filtro'], $params['dt_inicial'], $params['dt_final']);
+                }
+            })
+            ->get();
+    }
+
+    private function handleRolDates($query, $field, $dtInicial, $dtFinal)
+    {
+        return $query->whereHas('rolAtual', function ($query) use ($field, $dtInicial, $dtFinal) {
+            $query->withoutGlobalScopes();
+            $query->when($dtInicial, fn ($query) => $query->where($field, '>=', $dtInicial));
+            $query->when($dtFinal, fn ($query) => $query->where($field, '<=', $dtFinal));
+        });
+    }
+
+    private function handleDates($query, $field, $dtInicial, $dtFinal)
+    {
+        $fieldName = $field == 'dt_recepcao' ? 'created_at' : 'deleted_at';
+
+        return $query->when($dtInicial, fn($query) => $query->where($fieldName, '>=' , $dtInicial))
+                     ->when($dtFinal, fn($query) => $query->where($fieldName, '<=' , $dtFinal));
     }
 
     private function handleFilterDtNascimento($query, $dtInicial, $dtFinal) 
     {
-        if ($dtInicial) {
-            $query->where('data_nascimento', '>=' , $dtInicial);
-        }
-
-        if ($dtFinal) {
-            $query->where('data_nascimento', '<=' , $dtFinal);
-        }
-
-        return $query;
+        return $query->when($dtInicial, fn ($query) => $query->where('data_nascimento', '>=' , $dtInicial))
+                     ->when($dtFinal, fn ($query) => $query->where('data_nascimento', '<=' , $dtFinal));
     }
 
     private function handleFilterDtRecepcao($query, $dtInicial, $dtFinal) 
@@ -116,42 +138,31 @@ class IdentificaDadosRelatorioMembresiaService
         return $query;
     }
 
-    private function fetchTextVinculos($vinculos)
+    private function fetchTextVinculo($vinculo)
     {
-        if (!$vinculos) 
-            return 'MEMBROS, CONGREGADOS, VISITANTES';
-
-        $result = [];
-
-        if(in_array('M', $vinculos)) {
-            $result[] = 'MEMBROS';
-        }
-
-        if(in_array('C', $vinculos)) {
-            $result[] = 'CONGREGADOS';
-        }
-
-        if(in_array('V', $vinculos)) {
-            $result[] = 'VISITANTES';
-        }
-
-        return implode(', ', $result);
+        $textVinculos = [
+            'M' => 'MEMBROS',
+            'C' => 'CONGREGADOS',
+            'V' => 'VISITANTES'
+        ];
+        
+        return $textVinculos[$vinculo];
     }
 
     private function fetchTextSituacao($situacao) 
     {
         switch ($situacao) {
-            case 'rol_atual':
-                return 'ROL ATUAL';
+            case 'ativos':
+                return 'ATIVOS';
 
-            case 'rol_permanente':
-                return 'ROL PERMANENTE';
+            case 'inativos':
+                return 'INATIVOS';
 
-            case 'desligados':
-                return 'DESLIGADOS';   
+            case 'todos':
+                return 'TODOS';
 
             default:
-                return 'ROL ATUAL';
+                return 'ATIVOS';
         }
     }
 
