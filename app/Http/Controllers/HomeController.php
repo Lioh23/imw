@@ -2,18 +2,78 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\MembresiaMembro;
 use App\Models\PerfilUser;
 use App\Services\ServicePerfil\IdentificaPerfilService;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class HomeController extends Controller
 {
     public function dashboard()
     {
-        return view('dashboard');
+        $igrejaId = session()->get('session_perfil')->instituicao_id;
+        $statusAtivo = 'A';
+        $statusInativo = 'I';
+
+        $activeMembrosCount = MembresiaMembro::where('status', $statusAtivo)
+            ->where('vinculo', 'M')
+            ->where('igreja_id', $igrejaId)
+            ->count();
+
+        $activeCongregadosCount = MembresiaMembro::where('status', $statusAtivo)
+            ->where('vinculo', 'C')
+            ->where('igreja_id', $igrejaId)
+            ->count();
+
+        $activeVisitantesCount = MembresiaMembro::where('status', $statusAtivo)
+            ->where('vinculo', 'V')
+            ->where('igreja_id', $igrejaId)
+            ->count();
+
+        $totalAtivos = MembresiaMembro::where('status', $statusAtivo)
+            ->where('vinculo', 'M')
+            ->where('igreja_id', $igrejaId)
+            ->count();
+
+        $totalInativos = MembresiaMembro::where('status', $statusInativo)
+            ->where('vinculo', 'M')
+            ->where('igreja_id', $igrejaId)
+            ->count();
+
+        $visitantesPorMes = MembresiaMembro::select(
+                DB::raw('MONTH(created_at) as month'),
+                DB::raw('COUNT(*) as count')
+            )
+            ->where('vinculo', 'V')
+            ->where('status', $statusAtivo)
+            ->where('igreja_id', $igrejaId)
+            ->whereYear('created_at', Carbon::now()->year)
+            ->groupBy(DB::raw('MONTH(created_at)'))
+            ->orderBy(DB::raw('MONTH(created_at)'))
+            ->get()
+            ->pluck('count', 'month')
+            ->toArray();
+    
+     
+        $visitantesPorMesCompleto = array_fill(1, 12, 0);
+        foreach ($visitantesPorMes as $month => $count) {
+            $visitantesPorMesCompleto[$month] = $count;
+        }
+
+        return view('dashboard', [
+            'activeMembrosCount' => $activeMembrosCount,
+            'activeCongregadosCount' => $activeCongregadosCount,
+            'activeVisitantesCount' => $activeVisitantesCount,
+            'totalAtivos' => $totalAtivos,
+            'totalInativos' => $totalInativos,
+            'visitantesPorMes' => $visitantesPorMesCompleto,
+        ]);
     }
+
 
     public function selecionarPerfil()
     {
