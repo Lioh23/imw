@@ -18,6 +18,7 @@ class MembresiaRolPermanente extends Model
     protected $table = 'membresia_rolpermanente';
 
     protected $fillable = [
+        'lastrec',
         'status',
         'numero_rol',
         'codigo_host',

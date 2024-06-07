@@ -61,13 +61,13 @@ class StoreReceberMembroExternoService
         $updateParams = [
             'status'           => MembresiaRolPermanente::STATUS_EXCLUSAO,
             'modo_exclusao_id' => 10,  // transferencia para outra igreja Wesleyana
-            'dt_exclusao'      => $dtExclusao
+            'dt_exclusao'      => $dtExclusao,
+            'lastrec'          => 0
         ];
 
         $rolAtual = MembresiaRolPermanente::where('membro_id', $membro->id)
-            ->where('numero_rol', $membro->rol_atual)
             ->where('igreja_id', $membro->igreja_id)
-            ->orderByDesc('id')
+            ->where('lastrec', 1)
             ->firstOr(fn () => throw new MembresiaRolPermanenteNotFoundException());
         
         $rolAtual->update($updateParams);

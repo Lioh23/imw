@@ -25,6 +25,10 @@ class StoreReintegracaoService
                 'rol_atual'      => $params['numero_rol'], 
                 'congregacao_id' => $params['congregacao_id'],
             ]);
+
+            // atualiza o rol atual
+            optional($pessoa->rolAtual())->update(['lastrec' => 0]);
+
             $pessoa->rolPermanente()->create($params);
             DB::commit();
         } catch (\Exception $e) {

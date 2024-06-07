@@ -19,30 +19,42 @@ class HomeController extends Controller
         $statusAtivo = 'A';
         $statusInativo = 'I';
 
-        $activeMembrosCount = MembresiaMembro::where('status', $statusAtivo)
-            ->where('vinculo', 'M')
-            ->where('igreja_id', $igrejaId)
+        $activeMembrosCount = MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
+        ->where('membresia_membros.vinculo', 'M')
+        ->where('membresia_membros.igreja_id', $igrejaId)
+        ->where('mr.status', 'A')
+        ->where('mr.lastrec', 1)
+        ->count();
+
+        $activeCongregadosCount =  MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
+            ->where('membresia_membros.vinculo', 'C')
+            ->where('membresia_membros.igreja_id', $igrejaId)
+            ->where('mr.status', 'A')
+            ->where('mr.lastrec', 1)
             ->count();
 
-        $activeCongregadosCount = MembresiaMembro::where('status', $statusAtivo)
-            ->where('vinculo', 'C')
-            ->where('igreja_id', $igrejaId)
+        $activeVisitantesCount =  MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
+            ->where('membresia_membros.vinculo', 'V')
+            ->where('membresia_membros.igreja_id', $igrejaId)
+            ->where('mr.status', 'A')
+            ->where('mr.lastrec', 1)
+            ->count();
+        
+
+        $totalAtivos = MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
+            ->where('membresia_membros.vinculo', 'M')
+            ->where('membresia_membros.igreja_id', $igrejaId)
+            ->where('mr.status', 'A')
+            ->where('mr.lastrec', 1)
             ->count();
 
-        $activeVisitantesCount = MembresiaMembro::where('status', $statusAtivo)
-            ->where('vinculo', 'V')
-            ->where('igreja_id', $igrejaId)
+        $totalInativos = MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
+            ->where('membresia_membros.vinculo', 'M')
+            ->where('membresia_membros.igreja_id', $igrejaId)
+            ->where('mr.status', 'I')
+            ->where('mr.lastrec', 1)
             ->count();
 
-        $totalAtivos = MembresiaMembro::where('status', $statusAtivo)
-            ->where('vinculo', 'M')
-            ->where('igreja_id', $igrejaId)
-            ->count();
-
-        $totalInativos = MembresiaMembro::where('status', $statusInativo)
-            ->where('vinculo', 'M')
-            ->where('igreja_id', $igrejaId)
-            ->count();
 
         $visitantesPorMes = MembresiaMembro::select(
                 DB::raw('MONTH(created_at) as month'),

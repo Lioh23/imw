@@ -82,6 +82,7 @@ class UpdateMembroService
             'data_batismo'  => $data['data_batismo'],
             'data_batismo_espirito'  => $data['data_batismo_espirito'],
             'vinculo'         => $vinculo,
+            'has_errors'      => 0
         ];
 
         if(isset($data['congregacao_id'])) {
