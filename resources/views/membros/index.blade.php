@@ -11,6 +11,7 @@
 <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/plugins/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
 
 <style>
     .swal2-popup .swal2-styled.swal2-cancel {
@@ -20,12 +21,6 @@
 @endsection
 
 @include('extras.alerts')
-
-@section('extras-scripts')
-<script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-@endsection
 
 @section('content')
     <div class="container-fluid">
@@ -64,7 +59,7 @@
                     </div>
                 </form>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover mb-4">
+                    <table class="table table-bordered table-striped table-hover mb-4" id="datatable" data-url="{{ route('membro.list') }}">
                         <thead>
                             <tr>
                                 <th>ROL</th>
@@ -76,46 +71,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($membros as $index => $membro)
-                                <tr>
-                                    <td>{{ optional($membro->rolAtual)->numero_rol }}</td>
-                                    <td>
-                                        @if($membro->has_errors)
-                                            <span class="badge badge-warning"> {{ $membro->nome }} </span>
-                                        @else
-                                            {{ $membro->nome }}
-                                        @endif
-                                    </td>
-                                    <td>{{ optional($membro->rolAtual->dt_recepcao)->format('d/m/Y') }}</td>
-                                    <td> {{ optional($membro->rolAtual->dt_exclusao)->format('d/m/Y') }}</td>
-                                    <td>{{ optional(optional($membro->rolAtual)->congregacao)->nome }}</td>
-                                    <td class="text-center">
-                                        @if (!$membro->rolAtual->dt_exclusao)
-                                            <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
-                                                class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-edit-2">
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                                </svg>
-                                            </a>
-                                        @endif
-                                        @if ($membro->rolAtual->dt_exclusao)
-                                            <a href="{{ route('membro.reintegrar', $membro->id) }}" title="Reintegrar membro" class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                                <x-bx-log-in-circle />
-                                            </a>
-                                        @endif
-                                    </td>
-                                </tr>
-                            @endforeach
+                         
                         </tbody>
                     </table>
-                    {{ $membros->links('vendor.pagination.index') }}
                 </div>
             </div>
         </div>
     </div>
+@endsection
+
+@section('extras-scripts')
+    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
     <script>
         $('.btn-confirm-delete').on('click', function () {
             const formId = $(this).data('form-id')
@@ -131,6 +100,24 @@
             }).then(function(result) {
                 if(result.value) document.getElementById(formId).submit()
             })
-        })
+        })    
+        $('#datatable').DataTable({
+            processing: true,
+            serverSide: true,
+            ajax: $('#datatable').data('url'),
+            columns: [
+                {data: 'id', name: 'id'},
+                {data: 'nome', name: 'nome'},
+                {data: 'created_at', name: 'created_at'},
+                {data: 'deleted_at', name: 'deleted_at'},
+                {data: 'congregacao_id', name: 'congregacao_id'},
+                {
+                    data: 'action', 
+                    name: 'action', 
+                    orderable: true, 
+                    searchable: true
+                },
+            ]
+        });
     </script>
 @endsection

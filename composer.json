@@ -15,7 +15,8 @@
         "laravel/sanctum": "^3.0",
         "laravel/tinker": "^2.7",
         "league/flysystem-aws-s3-v3": "3.0",
-        "mallardduck/blade-boxicons": "^2.4"
+        "mallardduck/blade-boxicons": "^2.4",
+        "yajra/laravel-datatables": "^9.0"
     },
     "require-dev": {
         "barryvdh/laravel-debugbar": "^3.10",

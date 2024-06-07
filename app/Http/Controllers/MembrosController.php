@@ -41,9 +41,21 @@ use Illuminate\Support\Facades\DB;
 
 class MembrosController extends Controller
 {
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $data = app(ListMembrosService::class)->execute($request->all());
         return view('membros.index', $data);
+    }
+
+    public function list(Request $request) 
+    {
+        try {
+            $data = app(ListMembrosService::class)->query($request->all());
+            // return DataTables::of($data)->make(true);
+        } catch (\Exception $e) {
+            dd($e);
+            return response()->json(['message' => 'erro ao carregar os dados dos membros'], 500);
+        }
     }
 
     public function editar($id)

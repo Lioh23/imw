@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
         // Grupo de rotas para 'membresia'
         Route::prefix('membro')->name('membro.')->group(function () {
             Route::get('', [MembrosController::class, 'index'])->name('index')->middleware(['seguranca:membros-index']);
+            Route::get('list', [MembrosController::class, 'list'])->name('list')->middleware(['seguranca:membros-index']);
             Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar')->middleware(['seguranca:membros-editar']);
             Route::get('receber-novo/{id}', [MembrosController::class, 'receberNovo'])->name('receber_novo')->middleware(['seguranca:membros-recebernovo']);
             Route::post('receber-novo-store/{id}', [MembrosController::class, 'storeReceberNovo'])->name('receber_novo.store')->middleware(['seguranca:membros-recebernovo']);
