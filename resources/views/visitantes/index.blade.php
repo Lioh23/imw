@@ -78,7 +78,8 @@
                         <div class="form-check form-check-inline">
                                 <div class="n-chk">
                                     <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                                        <input type="radio" name="excluido" value="0" class="new-control-input" checked>
+                                        <input type="radio" name="excluido" value="0" class="new-control-input" 
+                                               {{ request()->input('excluido') == '0'  || request()->input('excluido') == null ? 'checked' : '' }}>
                                         <span class="new-control-indicator"></span>Ativos
                                     </label>
                                 </div>
@@ -86,7 +87,8 @@
                           <div class="form-check form-check-inline">
                                 <div class="n-chk">
                                     <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                                        <input type="radio" name="excluido" value="1" class="new-control-input">
+                                        <input type="radio" name="excluido" value="1" class="new-control-input"
+                                               {{ request()->input('excluido') == '1' ? 'checked' : '' }}>
                                         <span class="new-control-indicator"></span>Excluídos
                                     </label>
                                 </div>
