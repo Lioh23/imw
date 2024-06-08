@@ -26,11 +26,8 @@ class HomeController extends Controller
         ->where('mr.lastrec', 1)
         ->count();
 
-        $activeCongregadosCount =  MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
-            ->where('membresia_membros.vinculo', 'C')
+        $activeCongregadosCount =  MembresiaMembro::where('membresia_membros.vinculo', 'C')
             ->where('membresia_membros.igreja_id', $igrejaId)
-            ->where('mr.status', 'A')
-            ->where('mr.lastrec', 1)
             ->count();
 
         $activeVisitantesCount =  MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
@@ -41,20 +38,20 @@ class HomeController extends Controller
             ->count();
         
 
-        $totalAtivos = MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
-            ->where('membresia_membros.vinculo', 'M')
-            ->where('membresia_membros.igreja_id', $igrejaId)
+        $totalAtivos = DB::table('membresia_membros as mm')
+            ->join('membresia_rolpermanente as mr', 'mm.id', '=', 'mr.membro_id')
+            ->where('mm.vinculo', 'M')
+            ->where('mm.igreja_id', $igrejaId)
             ->where('mr.status', 'A')
-            ->where('mr.lastrec', 1)
             ->count();
 
-        $totalInativos = MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
-            ->where('membresia_membros.vinculo', 'M')
-            ->where('membresia_membros.igreja_id', $igrejaId)
+
+        $totalInativos = DB::table('membresia_membros as mm')
+            ->join('membresia_rolpermanente as mr', 'mm.id', '=', 'mr.membro_id')
+            ->where('mm.vinculo', 'M')
+            ->where('mm.igreja_id', $igrejaId)
             ->where('mr.status', 'I')
-            ->where('mr.lastrec', 1)
             ->count();
-
 
         $visitantesPorMes = MembresiaMembro::select(
                 DB::raw('MONTH(created_at) as month'),
