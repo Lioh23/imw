@@ -30,13 +30,11 @@ class HomeController extends Controller
             ->where('membresia_membros.igreja_id', $igrejaId)
             ->count();
 
-        $activeVisitantesCount =  MembresiaMembro::join('membresia_rolpermanente as mr', 'membresia_membros.id', '=', 'mr.membro_id')
-            ->where('membresia_membros.vinculo', 'V')
-            ->where('membresia_membros.igreja_id', $igrejaId)
-            ->where('mr.status', 'A')
-            ->where('mr.lastrec', 1)
-            ->count();
         
+        $activeVisitantesCount = DB::table('membresia_membros as mm')
+            ->where('mm.vinculo', 'V')
+            ->where('mm.igreja_id', $igrejaId)
+            ->count();
 
         $totalAtivos = DB::table('membresia_membros as mm')
             ->join('membresia_rolpermanente as mr', 'mm.id', '=', 'mr.membro_id')
