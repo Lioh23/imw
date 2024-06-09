@@ -15,6 +15,8 @@ class ValidaCPF implements Rule
 
     public function passes($attribute, $value)
     {
+        if (empty($value)) return true;
+        
         $cpf = preg_replace('/[^0-9]/', '', $value);
 
         if (strlen($cpf) != 11) {

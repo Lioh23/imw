@@ -86,7 +86,6 @@ class StoreCongregadoRequest extends FormRequest
             'uf' => 'required',
             'cpf' => [
                 'nullable',
-                Rule::unique('membresia_membros', 'cpf')->ignore($membroId),
                 new ValidaCPF,
             ],
             'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
