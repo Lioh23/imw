@@ -86,4 +86,5 @@
 @endsection
 @section('extras-scripts')
     <script src="{{ asset('congregados/js/editar.js') }}"></script>
+    @stack('tab-scripts')
 @endsection

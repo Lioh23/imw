@@ -81,7 +81,7 @@ class UpdateMembroRequest extends FormRequest
             'estado_civil' => 'required',
             'nacionalidade' => 'required',
             'naturalidade' => 'required',
-            'uf' => 'required',
+            'uf' => 'sometimes|required',
             'cpf' => ['required', 'unique:membresia_membros', new ValidaCPF],
             'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if ($value) {

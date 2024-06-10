@@ -479,3 +479,15 @@
     </div>
   </blockquote>
   </div>
+
+@push('tab-scripts')
+<script>
+    $('#nacionalidade').change(function () {
+      if ($(this).val() != 'BR') {
+        $('#uf').attr('disabled', true);
+      } else {
+        $('#uf').attr('disabled', false);
+      }
+    });
+</script>
+@endpush
