@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\DatePreviousToRecebimentoRule;
 use App\Rules\RangeDateRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,9 +25,29 @@ class StoreDisciplinarRequest extends FormRequest
      */
     public function rules()
     {
+        $membroId = $this->route('id');
+
         return [
-            'dt_inicio' => [new RangeDateRule],
-            'modo_exclusao_id'=> 'required',
+            'dt_inicio' => [
+                'required',
+                'date',
+                new RangeDateRule, 
+                new DatePreviousToRecebimentoRule($membroId)
+            ],
+            'dt_termino' => [
+                'nullable',
+                'date',
+                function ($attribute, $value, $fail) {
+                    if ($value && $this->input('dt_inicio')) {
+                        $dtInicio = strtotime($this->input('dt_inicio'));
+                        $dtTermino = strtotime($value);
+                        if ($dtTermino < $dtInicio) {
+                            $fail('A data de término não pode ser anterior à data de início.');
+                        }
+                    }
+                }
+            ],
+            'modo_exclusao_id' => 'required',
             'clerigo_id' => 'required',
         ];
     }
