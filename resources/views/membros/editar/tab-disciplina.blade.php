@@ -8,7 +8,6 @@
                         <th>DATA TERMINO</th>
                         <th>IGREJA</th>
                         <th>PASTOR</th>
-                        <th>REGIAO</th>
                         <th>AÇÕES</th>
                     </tr>
                 </thead>
@@ -25,7 +24,6 @@
                             </td>
                             <td>{{ optional($disciplina->igrejaLocal)->nome }}</td>
                             <td>{{ optional($disciplina->pastor)->nome }}</td>
-                            <td>{{ optional($disciplina->regiao)->nome }}</td>
                             @if ($disciplina->dt_termino == null)
                                 <td class="td_btn_encerrar">
                                     <button type="button" class="btn btn-warning dt_termino_button" onclick="encerrarDisciplina(event, {{ $disciplina->id }})">
