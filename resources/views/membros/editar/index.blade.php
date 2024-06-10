@@ -151,7 +151,7 @@
           $('form').on('submit', function (event) {
               if (!validateFormacaoEclesiastica()) {
                   event.preventDefault();
-                  alert('Por favor, corrija os erros no formulário antes de enviar.');
+                  alert('Por favor, corrija os erros de data na formação eclesiática antes de enviar.');
               }
           });
 
