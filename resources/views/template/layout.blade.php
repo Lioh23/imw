@@ -155,6 +155,9 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script src="{{ asset('theme/assets/js/elements/tooltip.js') }}"></script>
 
+        <script src="{{ asset('theme/plugins/blockui/jquery.blockUI.min.js') }}"></script>
+        <script src="{{ asset('theme/plugins/blockui/custom-blockui.js') }}"></script>
+
         <!-- END GLOBAL MANDATORY SCRIPTS -->
         @yield('extras-scripts')
         {{--  <script>

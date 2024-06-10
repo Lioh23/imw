@@ -16,17 +16,11 @@
 <style>
     .swal2-popup .swal2-styled.swal2-cancel {
         color: white!important;
-    }
+    },
 </style>
 @endsection
 
 @include('extras.alerts')
-
-@section('extras-scripts')
-<script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-@endsection
 
 @section('content')
     <div class="container-fluid d-flex justify-content-end">
@@ -144,6 +138,10 @@
                                                 <x-bx-log-in-circle />
                                             </a>
                                         @endif
+
+                                        <button class="btn btn-sm btn-info mr-2 btn-rounded btn-visualizar" data-membro-id="{{ $membro->id }}">
+                                            <x-bx-show />
+                                        </button>
                                     </td>
                                 </tr>
                             @endforeach
@@ -154,21 +152,76 @@
             </div>
         </div>
     </div>
-    <script>
-        $('.btn-confirm-delete').on('click', function () {
-            const formId = $(this).data('form-id')
-            swal({
-                title: 'Deseja realmente apagar os registros deste membro?',
-                type: 'error',
-                showCancelButton: true,
-                confirmButtonText: "Deletar",
-                confirmButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
-                cancelButtonColor: "#3085d6",
-                padding: '2em'
-            }).then(function(result) {
-                if(result.value) document.getElementById(formId).submit()
-            })
+
+    {{-- modal de visualizar membro --}}
+    <div class="modal fade" tabindex="-1" id="visualizarMembroModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" >
+          <div class="modal-content loadable">
+            <div class="modal-body" style="min-height: 200px"></div>
+          </div>
+        </div>
+    </div>
+@endsection
+
+@section('extras-scripts')
+<script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+<script>
+    $('.btn-confirm-delete').on('click', function () {
+        const formId = $(this).data('form-id')
+        swal({
+            title: 'Deseja realmente apagar os registros deste membro?',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonText: "Deletar",
+            confirmButtonColor: "#d33",
+            cancelButtonText: "Cancelar",
+            cancelButtonColor: "#3085d6",
+            padding: '2em'
+        }).then(function(result) {
+            if(result.value) document.getElementById(formId).submit()
         })
-    </script>
+    })
+
+    $('.btn-visualizar').click(function () {
+        $('#visualizarMembroModal').modal('show')
+
+        $.ajax({
+            type: "get",
+            url: "membro/visualizar-html/" + $(this).data('membro-id'),
+            beforeSend: function () {
+                $('#visualizarMembroModal .modal-content').html('<div class="modal-body" style="min-height: 200px"></div>');
+
+                $('.loadable').block({
+                    message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
+                    // timeout: 2000, //unblock after 2 seconds
+                    overlayCSS: {
+                        backgroundColor: '#fff',
+                        opacity: 0.8,
+                        cursor: 'wait'
+                    },
+                    css: {
+                        border: 0,
+                        padding: 0,
+                        width: '100%',
+                        height: '100%',
+                        padding: '80px',
+                        backgroundColor: 'transparent',
+                    }
+                });
+            },
+            success: function (html) {
+                $('#visualizarMembroModal .modal-content').html(html);
+            },
+            error: function (error) {
+                $('#visualizarMembroModal').modal('hide');
+                toastr.error('Erro ao visualizar dados desta pessoa.');
+            },
+            complete: function () {
+                $('.loadable').unblock();
+            }
+        });        
+    })
+</script>
 @endsection
