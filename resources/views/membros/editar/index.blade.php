@@ -149,10 +149,50 @@
               return valid;
           }
 
+          // Validação das datas ministeriais
+          function validateMinisterialDates() {
+              let valid = true;
+              const dataNascimento = new Date($('input[name="data_nascimento"]').val());
+
+              $('#ministerial-tbody tr').each(function() {
+                  const $row = $(this);
+                  const dataNomeacaoInput = $row.find('input[name="ministerial-nomeacao[]"]');
+                  const dataExoneracaoInput = $row.find('input[name="ministerial-exoneracao[]"]');
+
+                  const dataNomeacao = dataNomeacaoInput.val() ? new Date(dataNomeacaoInput.val()) : null;
+                  const dataExoneracao = dataExoneracaoInput.val() ? new Date(dataExoneracaoInput.val()) : null;
+
+                  // Limpar mensagens de erro anteriores
+                  $row.find('.invalid-feedback').remove();
+                  dataNomeacaoInput.removeClass('is-invalid');
+                  dataExoneracaoInput.removeClass('is-invalid');
+
+                  if (dataExoneracao && dataExoneracao < dataNomeacao) {
+                      valid = false;
+                      const errorMsg = $('<div class="invalid-feedback">A data de exoneração não pode ser anterior à data de nomeação.</div>');
+                      dataExoneracaoInput.addClass('is-invalid').after(errorMsg);
+                  }
+
+                  if (dataExoneracao && dataExoneracao < dataNascimento) {
+                      valid = false;
+                      const errorMsg = $('<div class="invalid-feedback">A data de exoneração não pode ser anterior à data de nascimento.</div>');
+                      dataExoneracaoInput.addClass('is-invalid').after(errorMsg);
+                  }
+
+                  if (dataNomeacao && dataNomeacao < dataNascimento) {
+                      valid = false;
+                      const errorMsg = $('<div class="invalid-feedback">A data de nomeação não pode ser anterior à data de nascimento.</div>');
+                      dataNomeacaoInput.addClass('is-invalid').after(errorMsg);
+                  }
+              });
+
+              return valid;
+          }
+
           $('form').on('submit', function (event) {
-              if (!validateFormacaoEclesiastica()) {
+              if (!validateFormacaoEclesiastica() || !validateMinisterialDates()) {
                   event.preventDefault();
-                  toastr.warning('Por favor, corrija os erros de data na formação eclesiática antes de enviar.');
+                  toastr.warning('Por favor, corrija os erros de data antes de enviar.');
               }
           });
 
