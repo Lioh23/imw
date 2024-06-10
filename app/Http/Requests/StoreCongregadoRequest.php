@@ -87,6 +87,7 @@ class StoreCongregadoRequest extends FormRequest
             'cpf' => [
                 'nullable',
                 new ValidaCPF,
+                Rule::unique('membresia_membros')->ignore($membroId),
             ],
             'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if ($value) {
@@ -121,4 +122,14 @@ class StoreCongregadoRequest extends FormRequest
             'cpf.unique' => 'Este CPF já está sendo utilizado por outra pessoa'
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        if ($this->has('cpf') && $this->input('cpf') === '') {
+            $this->merge([
+                'cpf' => null,
+            ]);
+        }
+    }
+    
 }

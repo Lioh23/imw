@@ -62,6 +62,7 @@ class UpdateMembroService
 
     private function prepareMembroData(array $data, $vinculo): array
     {
+        $cpf = preg_replace('/[^0-9]/', '', $data['cpf']);
         $result = [
             'membro_id' => $data['membro_id'],
             'nome'            => $data['nome'],
@@ -74,7 +75,7 @@ class UpdateMembroService
             'escolaridade_id'  => $data['escolaridade_id'],
             'profissao'  => $data['profissao'],
             'funcao_eclesiastica_id'  => $data['funcao_eclesiastica_id'],
-            'cpf'  => preg_replace('/[^0-9]/', '', $data['cpf']),
+            'cpf'  => $cpf !== '' ? $cpf : null,
             'tipo_documento'  => $data['tipo_documento'],
             'documento'  => $data['documento'],
             'documento_complemento'  => $data['documento_complemento'],
