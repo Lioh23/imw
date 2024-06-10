@@ -27,11 +27,13 @@
     <div class="widget-content widget-content-area">
       <form class="form-vertical" method="POST" action="{{ route('membro.receber_novo.store', ['id' => $pessoa->id]) }}" enctype="multipart/form-data">
         @csrf
+          <input type="hidden" name="cpf" value="{{ $pessoa->cpf }}">
+
         <div class="row">
           <div class="col-md-12">
             <div class="alert alert-warning border-0 mb-4" role="alert">
               <strong>Esta ação não pode ser revertida. Após receber este congregado como membro, o mesmo estará listado no menu de membros e não mais em congregados</strong>
-            </div> 
+            </div>
           </div>
         </div>
 
@@ -42,6 +44,9 @@
           <div class="col-lg-6">
             <input type="number" class="form-control @error('numero_rol') is-invalid @enderror" id="numero_rol" name="numero_rol" value="{{ old('numero_rol', $sugestaoRol) }}">
             @error('numero_rol')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+            @error('cpf')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
@@ -74,7 +79,7 @@
                   <div class="invalid-feedback">{{ $message }}</div>
               @enderror
           </div>
-        </div> 
+        </div>
 
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
@@ -91,7 +96,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
-        </div> 
+        </div>
 
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
@@ -108,7 +113,7 @@
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>
-        </div> 
+        </div>
 
         <div class="form-group mt-4">
           <a href="{{ route('congregado.editar', ['id' => $pessoa->id]) }}" class="btn btn-secondary">

@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use App\Rules\RangeDateRule;
+use App\Rules\UniqueCPFInIgrejaRule;
 use App\Rules\UniqueRolIgrejaRule;
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -31,6 +32,7 @@ class StoreReceberNovoMembroRequest extends FormRequest
             "modo_recepcao_id" => 'required|exists:membresia_situacoes,id',
             "clerigo_id"       => 'required|exists:pessoas_pessoas,id',
             "congregacao_id"   => 'nullable|exists:congregacoes_congregacoes,id',
+            "cpf"              => [new UniqueCPFInIgrejaRule],
         ];
     }
 
