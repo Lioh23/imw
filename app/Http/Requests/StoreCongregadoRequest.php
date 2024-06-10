@@ -6,6 +6,7 @@ use App\Rules\RangeDateRule;
 use App\Rules\ValidaCPF;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class StoreCongregadoRequest extends FormRequest
 {
@@ -87,7 +88,21 @@ class StoreCongregadoRequest extends FormRequest
             'cpf' => [
                 'nullable',
                 new ValidaCPF,
-                Rule::unique('membresia_membros')->ignore($membroId),
+                function ($attribute, $value, $fail) use ($membroId) {
+                    // Remove todos os caracteres que não são números
+                    $cpf = preg_replace('/[^0-9]/', '', $value);
+
+                    // Verifica se o CPF já existe na tabela membresia_membros, ignorando o membro atual
+                    $query = DB::table('membresia_membros')->where('cpf', $cpf);
+
+                    if ($membroId) {
+                        $query->where('id', '!=', $membroId);
+                    }
+
+                    if ($query->exists()) {
+                        $fail('Este CPF já está sendo utilizado por outra pessoa');
+                    }
+                }
             ],
             'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if ($value) {
