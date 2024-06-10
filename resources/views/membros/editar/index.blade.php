@@ -113,6 +113,7 @@
     <script src="{{ asset('theme/plugins/fullcalendar/moment.min.js') }}"></script>
     <script src="{{ asset('membros/js/editar.js') }}"></script>
     <script>
+      
       $(document).ready(function(){
           // Validação das datas de formação eclesiástica
           function validateFormacaoEclesiastica() {
@@ -151,7 +152,7 @@
           $('form').on('submit', function (event) {
               if (!validateFormacaoEclesiastica()) {
                   event.preventDefault();
-                  alert('Por favor, corrija os erros de data na formação eclesiática antes de enviar.');
+                  toastr.warning('Por favor, corrija os erros de data na formação eclesiática antes de enviar.');
               }
           });
 
@@ -169,7 +170,7 @@
                       $('#cidade').val(data.localidade);
                       $('#estado').val(data.uf);
                   }else{
-                      alert('CEP não encontrado.');
+                    toastr.warning('CEP não encontrado.');
                   }
               });
           });
