@@ -98,7 +98,6 @@ class UpdateMembroService
         $contatoData = [
             'membro_id' => $data['membro_id'],
             'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
-            'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
             'email_preferencial'     => $data['email_preferencial'],
             'cep' => preg_replace('/[^0-9]/', '', $data['cep']),
             'endereco' => $data['endereco'],

@@ -1,6 +1,14 @@
 <div class="tab-pane fade" id="border-top-contato" role="tabpanel" aria-labelledby="border-top-contatos">
     <blockquote class="blockquote">
+
       <div class="row mb-4">
+        <div class="col-xl-3">
+          <label for="sexo">E-mail</label>
+          <input type="email" class="form-control @error('email_preferencial') is-invalid @enderror" id="email_preferencial" name="email_preferencial" value="{{ old('email_preferencial', $pessoa->contato->email_preferencial) }}" maxlength="100">
+          @error('email_preferencial')
+            <span class="help-block text-danger">{{ $message }}</span>
+          @enderror
+        </div>
         <div class="col-xl-3">
           <label for="sexo">Telefone</label>
           <input type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" id="telefone_preferencial" name="telefone_preferencial" value="{{ old('telefone_preferencial', $pessoa->contato->telefone_preferencial) }}">
@@ -8,37 +16,6 @@
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
-        <div class="col-xl-3">
-          <label for="sexo">Telefone Alternativo</label>
-          <input type="text" class="form-control @error('telefone_alternativo') is-invalid @enderror" id="telefone_alternativo" name="telefone_alternativo" value="{{ old('telefone_alternativo', $pessoa->contato->telefone_alternativo) }}">
-          @error('telefone_alternativo')
-            <span class="help-block text-danger">{{ $message }}</span>
-          @enderror
-        </div>
-        <div class="col-xl-3">
-          <label for="sexo">Telefone Whatsapp</label>
-          <input type="text" class="form-control @error('telefone_whatsapp') is-invalid @enderror" id="telefone_whatsapp" name="telefone_whatsapp" value="{{ old('telefone_whatsapp', $pessoa->contato->telefone_whatsapp) }}">
-          @error('telefone_whatsapp')
-            <span class="help-block text-danger">{{ $message }}</span>
-          @enderror
-        </div>
-      </div>
-
-      <div class="row mb-4">
-        <div class="col-xl-3">
-          <label for="sexo">E-mail Preferencial</label>
-          <input type="email" class="form-control @error('email_preferencial') is-invalid @enderror" id="email_preferencial" name="email_preferencial" value="{{ old('email_preferencial', $pessoa->contato->email_preferencial) }}" maxlength="100">
-          @error('email_preferencial')
-            <span class="help-block text-danger">{{ $message }}</span>
-          @enderror
-        </div>
-       {{--  <div class="col-xl-3">
-          <label for="sexo">E-mail Alternativo</label>
-          <input type="email" class="form-control @error('email_alternativo') is-invalid @enderror" id="email_alternativo" name="email_alternativo"  value="{{ old('email_alternativo', $pessoa->contato->email_alternativo) }}">
-          @error('email_alternativo')
-            <span class="help-block text-danger">{{ $message }}</span>
-          @enderror
-        </div>--}}
       </div>
 
       <div class="row mb-4">
@@ -106,7 +83,7 @@
              <option value="{{ $key }}" {{ (old('estado', $pessoa->contato->estado) == $key) ? 'selected' : '' }}>{{ $value }}</option>
            @endforeach
          </select>
-          @error('uf')
+          @error('estado')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
         </div>
