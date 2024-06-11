@@ -106,8 +106,7 @@ class UpdateMembroRequest extends FormRequest
                     }
                 },
             ],
+            'congregacao_id'=> 'exists:congregacoes_congregacoes,id'
         ];
     }
 }
-
-

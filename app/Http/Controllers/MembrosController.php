@@ -59,6 +59,7 @@ class MembrosController extends Controller
                 'cursos'               => $pessoa['cursos'],
                 'formacoes'            => $pessoa['formacoes'],
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
+                'congregacoes'         => $pessoa['congregacoes'],
                 'disciplinas'          => $disciplinas,
             ]);
         } catch(MembroNotFoundException $e) {
