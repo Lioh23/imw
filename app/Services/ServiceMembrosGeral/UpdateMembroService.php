@@ -87,7 +87,7 @@ class UpdateMembroService
         ];
 
         if(isset($data['congregacao_id'])) {
-            $result['conregacao_id'] = $data['congregacao_id'];
+            $result['congregacao_id'] = $data['congregacao_id'];
         }
 
         return $result;
