@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\RangeDateRule;
 use App\Rules\ValidaCPF;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class UpdateMembroRequest extends FormRequest
 {
@@ -25,6 +26,7 @@ class UpdateMembroRequest extends FormRequest
      */
     public function rules()
     {
+        $membroId = $this->input('membro_id');
         $dataNascimento = $this->input('data_nascimento');
         $minDate = '1910-01-01';
         $currentDate = date('Y-m-d');
@@ -82,7 +84,25 @@ class UpdateMembroRequest extends FormRequest
             'nacionalidade' => 'required',
             'naturalidade' => 'required',
             'uf' => 'sometimes|required',
-            'cpf' => ['required', 'unique:membresia_membros', new ValidaCPF],
+            'cpf' => [
+                'nullable',
+                new ValidaCPF,
+                function ($attribute, $value, $fail) use ($membroId) {
+                    // Remove todos os caracteres que não são números
+                    $cpf = preg_replace('/[^0-9]/', '', $value);
+
+                    // Verifica se o CPF já existe na tabela membresia_membros, ignorando o membro atual
+                    $query = DB::table('membresia_membros')->where('cpf', $cpf);
+
+                    if ($membroId) {
+                        $query->where('id', '!=', $membroId);
+                    }
+
+                    if ($query->exists()) {
+                        $fail('Este CPF já está sendo utilizado por outra pessoa');
+                    }
+                }
+            ],
             'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if ($value) {
                     if (!preg_match('/@.*\.\w{2,}$/', $value)) {
@@ -91,9 +111,9 @@ class UpdateMembroRequest extends FormRequest
                 }
             }],
             'email_alternativo' => 'email|nullable',
-            'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_alternativo' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'telefone_preferencial' => ['nullable',  'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'telefone_alternativo' => ['nullable',  'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'telefone_whatsapp' => ['nullable',  'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'data_casamento' => [
                 'nullable',
                 'date',
@@ -106,7 +126,7 @@ class UpdateMembroRequest extends FormRequest
                     }
                 },
             ],
-            'congregacao_id'=> 'exists:congregacoes_congregacoes,id'
+            'congregacao_id' => 'nullable',
         ];
     }
 }
