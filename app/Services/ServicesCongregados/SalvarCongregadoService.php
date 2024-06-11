@@ -57,7 +57,7 @@ class SalvarCongregadoService
             'estado_civil'  => $data['estado_civil'],
             'nacionalidade'  => $data['nacionalidade'],
             'naturalidade'  => $data['naturalidade'],
-            'uf'  => $data['uf'],
+            'uf'  => $data['uf'] ?? null,
             'escolaridade_id'  => $data['escolaridade_id'],
             'profissao'  => $data['profissao'],
             'funcao_eclesiastica_id'  => $data['funcao_eclesiastica_id'],

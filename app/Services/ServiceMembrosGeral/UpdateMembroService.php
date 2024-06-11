@@ -71,7 +71,7 @@ class UpdateMembroService
             'estado_civil'  => $data['estado_civil'],
             'nacionalidade'  => $data['nacionalidade'],
             'naturalidade'  => $data['naturalidade'],
-            'uf'  => $data['uf'],
+            'uf'  => $data['uf'] ?? null,
             'escolaridade_id'  => $data['escolaridade_id'],
             'profissao'  => $data['profissao'],
             'funcao_eclesiastica_id'  => $data['funcao_eclesiastica_id'],
@@ -87,7 +87,7 @@ class UpdateMembroService
         ];
 
         if(isset($data['congregacao_id'])) {
-            $result['conregacao_id'] = $data['congregacao_id'];
+            $result['congregacao_id'] = $data['congregacao_id'];
         }
 
         return $result;

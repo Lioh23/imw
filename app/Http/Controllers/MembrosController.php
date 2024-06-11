@@ -59,6 +59,7 @@ class MembrosController extends Controller
                 'cursos'               => $pessoa['cursos'],
                 'formacoes'            => $pessoa['formacoes'],
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
+                'congregacoes'         => $pessoa['congregacoes'],
                 'disciplinas'          => $disciplinas,
             ]);
         } catch(MembroNotFoundException $e) {
@@ -78,7 +79,6 @@ class MembrosController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
-
         }
     }
 

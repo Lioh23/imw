@@ -107,4 +107,5 @@
             });
         });
         </script>
+    @stack('tab-scripts')
 @endsection
