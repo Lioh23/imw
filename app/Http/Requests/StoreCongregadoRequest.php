@@ -112,9 +112,7 @@ class StoreCongregadoRequest extends FormRequest
                 }
             }],
             'email_alternativo' => 'email|nullable',
-            'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_alternativo' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'telefone_preferencial' => ['nullable',  'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'data_casamento' => [
                 'nullable',
                 'date',
