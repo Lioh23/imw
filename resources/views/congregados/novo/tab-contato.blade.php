@@ -10,7 +10,7 @@
         </div>
         <div class="col-xl-3">
           <label for="sexo">Telefone</label>
-          <input type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" id="telefone_preferencial" name="telefone_preferencial" value="{{ old('telefone_preferencial') }}">
+          <input type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" id="telefone_preferencial" placeholder="ex: +55 (00) 0000-0000" name="telefone_preferencial" value="{{ old('telefone_preferencial') }}">
           @error('telefone_preferencial')
             <span class="help-block text-danger">{{ $message }}</span>
           @enderror
