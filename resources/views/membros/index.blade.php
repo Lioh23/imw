@@ -189,7 +189,7 @@
 
         $.ajax({
             type: "get",
-            url: "membro/visualizar-html/" + $(this).data('membro-id'),
+            url: "/membro/visualizar-html/" + $(this).data('membro-id'),
             beforeSend: function () {
                 $('#visualizarMembroModal .modal-content').html('<div class="modal-body" style="min-height: 200px"></div>');
 
