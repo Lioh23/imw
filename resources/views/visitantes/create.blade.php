@@ -57,37 +57,39 @@
                     </div>
                 </div>
                 <div class="row">
-                    <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Telefone</label>
-                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="ex: (00) 0000-0000" value="{{ old('telefone_preferencial') }}">
-                        @error('telefone_preferencial')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group mb-4 col-md-4">
+                    <!-- <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Telefone Alternativo</label>
                         <input id="telefone_alternativo" name="telefone_alternativo" type="text" class="form-control @error('telefone_alternativo') is-invalid @enderror" placeholder="ex: (00) 0000-0000" value="{{ old('telefone_alternativo') }}">
                         @error('telefone_alternativo')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                    </div>
-                    <div class="form-group mb-4 col-md-4">
+                    </div> -->
+                    <!-- div class="form-group mb-4 col-md-4">
                         <label class="control-label">Whatsapp</label>
                         <input id="telefone_whatsapp" name="telefone_whatsapp" type="text" class="form-control @error('telefone_whatsapp') is-invalid @enderror" placeholder="ex: (00) 00000-0000" value="{{ old('telefone_whatsapp') }}">
                         @error('telefone_whatsapp')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row">
                     <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">E-mail Preferencial</label>
+                        <label class="control-label">E-mail</label>
                         <input id="email_preferencial" name="email_preferencial" type="email" class="form-control @error('email_preferencial') is-invalid @enderror" value="{{ old('email_preferencial') }}" maxlength="100">
                         @error('email_preferencial')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
+                    <div class="form-group mb-4 col-md-6">
+                        <label class="control-label">Telefone</label>
+                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="ex: +55 (00) 0000-0000" value="{{ old('telefone_preferencial') }}">
+                        @error('telefone_preferencial')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
+                <div class="row">
                     <div class="form-group mb-4 col-md-6">
                         <label class="control-label">Congregação</label>
                         <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" >
