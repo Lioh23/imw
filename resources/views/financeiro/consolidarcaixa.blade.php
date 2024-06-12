@@ -40,7 +40,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>CAIXA</th>
-                                        <th width="300" style="text-align: right">SALDO ANTERIOR CONSOLIDADO</th>
+                                        <th width="300" style="text-align: right">ÚLTIMO SALDO CONSOLIDADO EM {{ \Carbon\Carbon::parse($ultimoCaixa)->isoFormat('MMMM [de] YYYY') }}</th>
                                         <th width="120" style="text-align: right">TOTAIS DE ENTRADAS</th>
                                         <th width="120" style="text-align: right">TOTAIS DE SAÍDAS</th>
                                         <th width="120" style="text-align: right">TRANSF. ENTRADAS</th>

@@ -18,7 +18,9 @@ class ConsolidacaoService
     public function execute()
     {
         $oldCaixa = FinanceiroUtils::ultimoCaixaConciliado();
-        $formattedDate = $oldCaixa instanceof Carbon ? $oldCaixa->format('m/Y') : null;
+        
+         // Clone a instância de Carbon para preservar $oldCaixa
+        $formattedDate = $oldCaixa instanceof Carbon ? $oldCaixa->copy()->addMonth()->format('m/Y') : null;
 
         // Capture o array retornado por LivroCaixaService
         $data = app(LivroCaixaService::class)->execute($formattedDate, 'all');
