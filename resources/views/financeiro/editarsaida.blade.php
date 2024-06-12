@@ -201,6 +201,16 @@
         });
         // definir o idioma padrão do Select2 para português
         $.fn.select2.defaults.set("language", "pt-BR");
+        $('#caixa_id').select2({
+           placeholder: 'Selecione',
+            allowClear: true
+        }); 
+
+    
+        $('#plano_conta_id').select2({
+           placeholder: 'Selecione',
+            allowClear: true
+        }); 
 
         $(document).ready(function() {
             $('#tipo_pagante_favorecido_id').trigger('change'); // disparar o evento change ao carregar a página
