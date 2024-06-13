@@ -496,6 +496,8 @@
     $('#nacionalidade').change(function () {
       if ($(this).val() != 'BR') {
         $('#uf').attr('disabled', true);
+        $('#uf').val('');
+        $('#naturalidade').val('');
       } else {
         $('#uf').attr('disabled', false);
       }
