@@ -23,7 +23,7 @@
                                     'mode' => optional($rolPermanente->modoExclusao)->nome,
                                     'church' => $rolPermanente->igreja->nome,
                                     'congregation' => optional($rolPermanente->congregacao)->nome,
-                                    'cleric' => $rolPermanente->clerigo->nome,
+                                    'cleric' => optional($rolPermanente->clerigo)->nome,
                                 ];
                             } elseif ($rolPermanente->status == 'A') {
                                 $class = 'tr-green';
@@ -33,7 +33,7 @@
                                     'mode' => optional($rolPermanente->modoRecepcao)->nome,
                                     'church' => $rolPermanente->igreja->nome,
                                     'congregation' => optional($rolPermanente->congregacao)->nome,
-                                    'cleric' => $rolPermanente->clerigo->nome,
+                                    'cleric' => optional($rolPermanente->clerigo)->nome,
                                 ];
                             } elseif ($rolPermanente->status == 'T') {
                                 $class = 'tr-green';
@@ -43,7 +43,7 @@
                                     'mode' => optional($rolPermanente->modoRecepcao)->nome,
                                     'church' => $rolPermanente->igreja->nome,
                                     'congregation' => optional($rolPermanente->congregacao)->nome,
-                                    'cleric' => $rolPermanente->clerigo->nome,
+                                    'cleric' => optional($rolPermanente->clerigo)->nome,
                                 ];
                             }
                         @endphp

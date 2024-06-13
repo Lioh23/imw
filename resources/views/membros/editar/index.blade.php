@@ -113,42 +113,126 @@
     <script src="{{ asset('theme/plugins/fullcalendar/moment.min.js') }}"></script>
     <script src="{{ asset('membros/js/editar.js') }}"></script>
     <script>
-      $('.btn-confirm-delete').on('click', function () {
-          const formId = $(this).data('form-id')
-          swal({
-              title: 'Deseja realmente apagar os registros deste congregado?',
-              type: 'error',
-              showCancelButton: true,
-              confirmButtonText: "Deletar",
-              confirmButtonColor: "#d33",
-              cancelButtonText: "Cancelar",
-              cancelButtonColor: "#3085d6",
-              padding: '2em'
-          }).then(function(result) {
-              if(result.value) document.getElementById(formId).submit()
-          })
-      })
-  </script>
-<script>
-    $(document).ready(function(){
-        $('#cep').blur(function(){
-            var cep = $(this).val().replace(/\D/g, '');
-            if(cep.length != 8){
-                return;
-            }
-            $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data){
-                if(!("erro" in data)){
-                    $('#endereco').val(data.logradouro);
-                    // Preencha os outros campos de endereço aqui, se necessário
-                    $('#bairro').val(data.bairro);
-                    $('#cidade').val(data.localidade);
-                    $('#estado').val(data.uf);
-                }else{
-                    alert('CEP não encontrado.');
-                }
-            });
-        });
-    });
+      
+      $(document).ready(function(){
+          // Validação das datas de formação eclesiástica
+          function validateFormacaoEclesiastica() {
+              let valid = true;
+              const dataNascimento = new Date($('input[name="data_nascimento"]').val());
+
+              
+              $('#formacao-tbody tr').each(function() {
+                  const $row = $(this);
+                  const dataInicioInput = $row.find('input[name="curso-data-inicio[]"]');
+                  const dataConclusaoInput = $row.find('input[name="curso-data-conclusao[]"]');
+
+                  const dataInicio = dataInicioInput.val() ? new Date(dataInicioInput.val()) : null;
+                  const dataConclusao = dataConclusaoInput.val() ? new Date(dataConclusaoInput.val()) : null;
+
+                  // Limpar mensagens de erro anteriores
+                  $row.find('.invalid-feedback').remove();
+                  dataInicioInput.removeClass('is-invalid');
+                  dataConclusaoInput.removeClass('is-invalid');
+
+                  if (dataInicio && dataInicio < dataNascimento) {
+                      valid = false;
+                      const errorMsg = $('<div class="invalid-feedback">A data de início não pode ser anterior à data de nascimento.</div>');
+                      dataInicioInput.addClass('is-invalid').after(errorMsg);
+                  }
+
+                  if (dataConclusao && dataConclusao < dataInicio) {
+                      valid = false;
+                      const errorMsg = $('<div class="invalid-feedback">A data de conclusão não pode ser anterior à data de início.</div>');
+                      dataConclusaoInput.addClass('is-invalid').after(errorMsg);
+                  }
+              });
+
+              return valid;
+          }
+
+          // Validação das datas ministeriais
+          function validateMinisterialDates() {
+              let valid = true;
+              const dataNascimento = new Date($('input[name="data_nascimento"]').val());
+
+              $('#ministerial-tbody tr').each(function() {
+                  const $row = $(this);
+                  const dataNomeacaoInput = $row.find('input[name="ministerial-nomeacao[]"]');
+                  const dataExoneracaoInput = $row.find('input[name="ministerial-exoneracao[]"]');
+
+                  const dataNomeacao = dataNomeacaoInput.val() ? new Date(dataNomeacaoInput.val()) : null;
+                  const dataExoneracao = dataExoneracaoInput.val() ? new Date(dataExoneracaoInput.val()) : null;
+
+                  // Limpar mensagens de erro anteriores
+                  $row.find('.invalid-feedback').remove();
+                  dataNomeacaoInput.removeClass('is-invalid');
+                  dataExoneracaoInput.removeClass('is-invalid');
+
+                  if (dataExoneracao && dataExoneracao < dataNomeacao) {
+                      valid = false;
+                      const errorMsg = $('<div class="invalid-feedback">A data de exoneração não pode ser anterior à data de nomeação.</div>');
+                      dataExoneracaoInput.addClass('is-invalid').after(errorMsg);
+                  }
+
+                  if (dataExoneracao && dataExoneracao < dataNascimento) {
+                      valid = false;
+                      const errorMsg = $('<div class="invalid-feedback">A data de exoneração não pode ser anterior à data de nascimento.</div>');
+                      dataExoneracaoInput.addClass('is-invalid').after(errorMsg);
+                  }
+
+                  if (dataNomeacao && dataNomeacao < dataNascimento) {
+                      valid = false;
+                      const errorMsg = $('<div class="invalid-feedback">A data de nomeação não pode ser anterior à data de nascimento.</div>');
+                      dataNomeacaoInput.addClass('is-invalid').after(errorMsg);
+                  }
+              });
+
+              return valid;
+          }
+
+          $('form').on('submit', function (event) {
+              if (!validateFormacaoEclesiastica() || !validateMinisterialDates()) {
+                  event.preventDefault();
+                  toastr.warning('Por favor, corrija os erros de data antes de enviar.');
+              }
+          });
+
+          // Funcionalidade de preenchimento automático de endereço pelo CEP
+          $('#cep').blur(function(){
+              var cep = $(this).val().replace(/\D/g, '');
+              if(cep.length != 8){
+                  return;
+              }
+              $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data){
+                  if(!("erro" in data)){
+                      $('#endereco').val(data.logradouro);
+                      // Preencha os outros campos de endereço aqui, se necessário
+                      $('#bairro').val(data.bairro);
+                      $('#cidade').val(data.localidade);
+                      $('#estado').val(data.uf);
+                  }else{
+                    toastr.warning('CEP não encontrado.');
+                  }
+              });
+          });
+
+          // Funcionalidade de confirmação de deleção
+          $('.btn-confirm-delete').on('click', function () {
+              const formId = $(this).data('form-id')
+              swal({
+                  title: 'Deseja realmente apagar os registros deste congregado?',
+                  type: 'error',
+                  showCancelButton: true,
+                  confirmButtonText: "Deletar",
+                  confirmButtonColor: "#d33",
+                  cancelButtonText: "Cancelar",
+                  cancelButtonColor: "#3085d6",
+                  padding: '2em'
+              }).then(function(result) {
+                  if(result.value) document.getElementById(formId).submit()
+              })
+          });
+      });
     </script>
   @stack('tab-scripts')
 @endsection

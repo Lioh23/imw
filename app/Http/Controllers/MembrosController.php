@@ -71,6 +71,7 @@ class MembrosController extends Controller
                 'cursos'               => $pessoa['cursos'],
                 'formacoes'            => $pessoa['formacoes'],
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
+                'congregacoes'         => $pessoa['congregacoes'],
                 'disciplinas'          => $disciplinas,
             ]);
         } catch(MembroNotFoundException $e) {
@@ -90,7 +91,6 @@ class MembrosController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
-
         }
     }
 
@@ -231,6 +231,19 @@ class MembrosController extends Controller
             return redirect()->route('membro.editar', ['id' => $id])->with('success', 'Exclusão por transferência registrada com sucesso!');
         } catch (\Exception $e) {
             return redirect()->route('membro.exclusao_transferencia', ['id' => $id])->with('error', 'Erro ao registrar a transferência.');
+        }
+    }
+
+    public function cancelExclusaoPorTransferencia(NotificacaoTransferencia $notificacaoTransferencia)
+    {
+        try {
+            DB::beginTransaction();
+            $notificacaoTransferencia->delete();
+            DB::commit();
+            return redirect()->route('membro.index')->with('success', 'Transferência cancelada com sucesso!');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('membro.index')->with('error', 'Erro ao cancelar a transferência.');
         }
     }
 

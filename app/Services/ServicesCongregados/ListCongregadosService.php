@@ -10,7 +10,7 @@ class ListCongregadosService
 {
     use MemberCountable, Identifiable;
 
-    public function execute($parameters = null)
+    public function execute($parameters = [])
     {
         return [
             'congregados'    => $this->handleListaCongregados($parameters),
@@ -20,7 +20,7 @@ class ListCongregadosService
         ];
     }
 
-    private function handleListaCongregados($parameters = null)
+    private function handleListaCongregados($parameters = [])
     {
         return MembresiaMembro::with('congregacao')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
@@ -30,10 +30,10 @@ class ListCongregadosService
                 $query->where('nome', 'like', "%$searchTerm%")
                     ->orWhereHas('congregacao', function ($subQuery) use ($searchTerm) { $subQuery->where('nome', 'like', "%$searchTerm%"); });
             })
-            ->when(isset($parameters['has_errors']), function ($query) {
+            ->when(isset($parameters['status']) && $parameters['status'] == 'has_errors', function ($query) {
                 $query->where('has_errors', 1);
             })
-            ->when(isset($parameters['excluido']), function ($query) {
+            ->when(isset($parameters['status']) && $parameters['status'] == 'inativo', function ($query) {
                 $query->onlyTrashed();
             })
             ->paginate(100);

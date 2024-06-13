@@ -32,4 +32,34 @@ class NotificacaoTransferencia extends Model
     {
         return $this->belongsTo(MembresiaMembro::class, 'membro_id', 'id');
     }
+
+    public function regiaoOrigem()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'regiao_origem_id', 'id');
+    }
+
+    public function distritoOrigem()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'distrito_origem_id', 'id');
+    }
+
+    public function igrejaOrigem()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'igreja_origem_id', 'id');
+    }
+
+    public function regiaoDestino()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'regiao_destino_id', 'id');
+    }
+
+    public function distritoDestino()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'distrito_destino_id', 'id');
+    }
+
+    public function igrejaDestino()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'igreja_destino_id', 'id');
+    }
 }

@@ -62,6 +62,7 @@ class UpdateMembroService
 
     private function prepareMembroData(array $data, $vinculo): array
     {
+        $cpf = preg_replace('/[^0-9]/', '', $data['cpf']);
         $result = [
             'membro_id' => $data['membro_id'],
             'nome'            => $data['nome'],
@@ -70,11 +71,11 @@ class UpdateMembroService
             'estado_civil'  => $data['estado_civil'],
             'nacionalidade'  => $data['nacionalidade'],
             'naturalidade'  => $data['naturalidade'],
-            'uf'  => $data['uf'],
+            'uf'  => $data['uf'] ?? null,
             'escolaridade_id'  => $data['escolaridade_id'],
             'profissao'  => $data['profissao'],
             'funcao_eclesiastica_id'  => $data['funcao_eclesiastica_id'],
-            'cpf'  => preg_replace('/[^0-9]/', '', $data['cpf']),
+            'cpf'  => $cpf !== '' ? $cpf : null,
             'tipo_documento'  => $data['tipo_documento'],
             'documento'  => $data['documento'],
             'documento_complemento'  => $data['documento_complemento'],
@@ -86,7 +87,7 @@ class UpdateMembroService
         ];
 
         if(isset($data['congregacao_id'])) {
-            $result['conregacao_id'] = $data['congregacao_id'];
+            $result['congregacao_id'] = $data['congregacao_id'];
         }
 
         return $result;
@@ -97,7 +98,6 @@ class UpdateMembroService
         $contatoData = [
             'membro_id' => $data['membro_id'],
             'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
-            'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
             'email_preferencial'     => $data['email_preferencial'],
             'cep' => preg_replace('/[^0-9]/', '', $data['cep']),
             'endereco' => $data['endereco'],

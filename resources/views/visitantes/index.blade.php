@@ -15,7 +15,7 @@
 
 <style>
     .swal2-popup .swal2-styled.swal2-cancel {
-        color: white!important;
+        color: white !important;
     }
 </style>
 @endsection
@@ -46,19 +46,19 @@
         <span class="badge badge-info position-relative mt-3 mb-3 ml-2">
             <span>VISITANTES ATIVOS: {{ $countAtivos }}</span>
         </span>
-    
+
         <span class="badge badge-danger position-relative mt-3 mb-3 ml-2">
             <span>VISITANTES EXCLUÍDOS: {{ $countExcluidos }}</span>
         </span>
     </div>
- 
 
-   {{--  <a href="{{ route('visitante.index') }}?has_errors=1" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
-        <span>ERROS DE CADASTRO</span>
-        <span class="badge badge-warning counter">{{ $countHasErrors }}</span>
+
+    {{-- <a href="{{ route('visitante.index') }}?has_errors=1" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
+    <span>ERROS DE CADASTRO</span>
+    <span class="badge badge-warning counter">{{ $countHasErrors }}</span>
     </a> --}}
 
-    
+
 
 </div>
 <!-- TABELA -->
@@ -76,21 +76,21 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="form-check form-check-inline">
-                                <div class="n-chk">
-                                    <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                                        <input type="radio" name="excluido" value="0" class="new-control-input" checked>
-                                        <span class="new-control-indicator"></span>Ativos
-                                    </label>
-                                </div>
-                          </div>
-                          <div class="form-check form-check-inline">
-                                <div class="n-chk">
-                                    <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                                        <input type="radio" name="excluido" value="1" class="new-control-input">
-                                        <span class="new-control-indicator"></span>Excluídos
-                                    </label>
-                                </div>
-                          </div>
+                            <div class="n-chk">
+                                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                    <input type="radio" name="excluido" value="0" class="new-control-input" {{ request()->input('excluido') == '0'  || request()->input('excluido') == null ? 'checked' : '' }}>
+                                    <span class="new-control-indicator"></span>Ativos
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <div class="n-chk">
+                                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                    <input type="radio" name="excluido" value="1" class="new-control-input" {{ request()->input('excluido') == '1' ? 'checked' : '' }}>
+                                    <span class="new-control-indicator"></span>Excluídos
+                                </label>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row mb-4">
@@ -102,65 +102,70 @@
                     </div>
                 </div>
             </form>
-            
+
             <div class="table-responsive">
                 @if($visitantes->isEmpty())
-                    <p>Não há visitantes cadastrados.</p>
+                <p>Não há visitantes cadastrados.</p>
                 @else
-                    <table class="table table-bordered table-striped table-hover mb-4">
-                        <thead>
-                            <tr>
-                                <th>NOME</th>
-                                <th>TELEFONE</th>
-                                <th>E-MAIL</th>
-                                <th>ATUALIZADO EM</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($visitantes as $index => $visitante)
-                            <tr>
-                                <td>
-                                    @if(!$visitante->has_errors)
-                                        {{ $visitante->nome }}
-                                    @else
-                                        <span class="badge badge-warning"> {{ $visitante->nome }} </span>
-                                    @endif
-                                </td>
-                                <td>
-                                    {{ '(' . substr($visitante->contato->telefone_preferencial, 0, 2) . ') ' . substr($visitante->contato->telefone_preferencial, 2, 5) . '-' . substr($visitante->contato->telefone_preferencial, 7) }}
-                                </td>
-                                
-                                <td>{{ $visitante->contato->email_preferencial }}</td>
-                                <td>{{ $visitante->updated_at->format('d/m/Y H:i:s') }}</td>
-                                <td class="text-center">
-                                    @if (!$visitante->deleted_at)
-                                        <a href="{{ route('congregado.editar', $visitante->id) }}" title="Tornar Congregado" class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
-                                        </a>
-                                        <a href="{{ route('visitante.editar', $visitante->id) }}" title="Editar" class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
-                                                <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                            </svg>
-                                        </a>
-                                        <form action="{{ route('visitante.deletar', $visitante->id) }}" method="POST" style="display: inline-block;" id="form_delete_visitante_{{ $index }}">
-                                            @csrf
-                                            <button type="button" title="Apagar" class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete" data-form-id="form_delete_visitante_{{ $index }}">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
-                                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
-                                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                                </svg>
-                                            </button>
-                                        </form>
-                                    @endif
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-                    {{ $visitantes->links('vendor.pagination.index') }}
+                <table class="table table-bordered table-striped table-hover mb-4">
+                    <thead>
+                        <tr>
+                            <th>NOME</th>
+                            <th>TELEFONE</th>
+                            <th>E-MAIL</th>
+                            <th>ATUALIZADO EM</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($visitantes as $index => $visitante)
+                        <tr>
+                            <td>
+                                @if(!$visitante->has_errors)
+                                {{ $visitante->nome }}
+                                @else
+                                <span class="badge badge-warning"> {{ $visitante->nome }} </span>
+                                @endif
+                            </td>
+                            <td>
+                                {{ formatarTelefone($visitante->contato->telefone_preferencial) }}
+                            </td>
+
+                            <td>{{ $visitante->contato->email_preferencial }}</td>
+                            <td>{{ $visitante->updated_at->format('d/m/Y H:i:s') }}</td>
+                            <td class="text-center">
+                                @if (!$visitante->deleted_at)
+                                <a href="{{ route('congregado.editar', $visitante->id) }}" title="Tornar Congregado" class="btn btn-sm btn-dark mr-2 btn-rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user-plus">
+                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="8.5" cy="7" r="4"></circle>
+                                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                                    </svg>
+                                </a>
+                                <a href="{{ route('visitante.editar', $visitante->id) }}" title="Editar" class="btn btn-sm btn-dark mr-2 btn-rounded">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
+                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                    </svg>
+                                </a>
+                                <form action="{{ route('visitante.deletar', $visitante->id) }}" method="POST" style="display: inline-block;" id="form_delete_visitante_{{ $index }}">
+                                    @csrf
+                                    <button type="button" title="Apagar" class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete" data-form-id="form_delete_visitante_{{ $index }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>
+                                    </button>
+                                </form>
+                                @endif
+                            </td>
+                        </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+                {{ $visitantes->links('vendor.pagination.index') }}
                 @endif
             </div>
         </div>
@@ -168,7 +173,7 @@
 </div>
 
 <script>
-    $('.btn-confirm-delete').on('click', function () {
+    $('.btn-confirm-delete').on('click', function() {
         const formId = $(this).data('form-id')
         swal({
             title: 'Deseja realmente apagar os registros deste visitante?',
@@ -180,7 +185,7 @@
             cancelButtonColor: "#3085d6",
             padding: '2em'
         }).then(function(result) {
-            if(result.value) document.getElementById(formId).submit()
+            if (result.value) document.getElementById(formId).submit()
         })
     })
 </script>

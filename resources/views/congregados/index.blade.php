@@ -10,6 +10,7 @@
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
 
     <style>
         .swal2-popup .swal2-styled.swal2-cancel {
@@ -26,30 +27,35 @@
 
 @section('content')
 @include('extras.alerts')
-<div class="container-fluid">
-    <a href="{{ route('congregado.index') }}" class="btn btn-info position-relative mt-3 mb-3 ml-2">
-        <span>CONGREGADOS ATIVOS</span>
-        <span class="badge badge-info counter">{{ $countAtivos }}</span>
-    </a>
+<div class="container-fluid d-flex justify-content-between">
+    {{-- esquerda --}}
+    <div>
+        <a href="{{ route('congregado.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
+                <circle cx="12" cy="12" r="10"></circle>
+                <line x1="12" y1="8" x2="12" y2="16"></line>
+                <line x1="8" y1="12" x2="16" y2="12"></line>
+            </svg>
+            <span class="ml-2">INCLUIR CONGREGADO</span>
+        </a>
+    </div>
 
-    <a href="{{ route('congregado.index') }}?excluido=1" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
-        <span>CONGREGADOS EXCLUÍDOS</span>
-        <span class="badge badge-danger counter">{{ $countExcluidos }}</span>
-    </a>
+    {{-- direita --}}
+    <div>
+        <span class="badge badge-info position-relative mt-3 mb-3 ml-2">
+            <span>CONGREGADOS ATIVOS: {{ $countAtivos }}</span>
+        </span>
+    
+        <span class="badge badge-danger position-relative mt-3 mb-3 ml-2">
+            <span>CONGREGADOS EXCLUÍDOS: {{ $countExcluidos }}</span>
+        </span>
+    
+        <span class="badge badge-warning position-relative mt-3 mb-3 ml-2">
+            <span>ERROS DE CADASTRO: {{ $countHasErrors }}</span>
+        </span>
+    </div>
 
-    <a href="{{ route('congregado.index') }}?has_errors=1" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
-        <span>ERROS DE CADASTRO</span>
-        <span class="badge badge-warning counter">{{ $countHasErrors }}</span>
-    </a>
-
-    <a href="{{ route('congregado.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
-        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
-            <circle cx="12" cy="12" r="10"></circle>
-            <line x1="12" y1="8" x2="12" y2="16"></line>
-            <line x1="8" y1="12" x2="16" y2="12"></line>
-        </svg>
-        <span class="ml-2">INCLUIR CONGREGADO</span>
-    </a>
+    
 
 </div>
 <!-- TABELA -->
@@ -64,8 +70,38 @@
         </div>
         <div class="widget-content widget-content-area">
             <form class="row mb-4">
+                <div class="col-12">
+                    <div class="form-check form-check-inline">
+                        <div class="n-chk">
+                            <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                <input type="radio" name="status" value="ativo" class="new-control-input" 
+                                       {{ request()->input('status') == 'ativo' || request()->input('status') == null ? 'checked' : '' }}>
+                                <span class="new-control-indicator"></span>Ativos
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <div class="n-chk">
+                            <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                <input type="radio" name="status" value="inativo" class="new-control-input"
+                                       {{ request()->input('status') == 'inativo' ? 'checked' : '' }}>
+                                <span class="new-control-indicator"></span>Inativos
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <div class="n-chk">
+                            <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                <input type="radio" name="status" value="has_errors" class="new-control-input"
+                                       {{ request()->input('status') == 'has_errors' ? 'checked' : '' }}>
+                                <span class="new-control-indicator"></span>Erros de Cadastro
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div class="col-4">
-                    <input type="text" name="search" id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar...">
+                    <input type="text" name="search" id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar..."
+                           value="{{ request()->input('search') }}">
                 </div>
                 <div class="col-auto" style="margin-left: -19px;">
                     <button type="submit" id="searchButton" class="btn btn-primary btn-rounded"><x-bx-search /> Pesquisar</button>

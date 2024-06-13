@@ -12,6 +12,7 @@
 <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/plugins/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
 
 <style>
     .swal2-popup .swal2-styled.swal2-cancel {
@@ -23,21 +24,18 @@
 @include('extras.alerts')
 
 @section('content')
-    <div class="container-fluid">
-        <a href="{{ route('membro.index') }}" class="btn btn-info position-relative mt-3 mb-3 ml-2">
-            <span>ROL ATUAL</span>
-            <span class="badge badge-info counter">{{ $countAtual }}</span>
-        </a>
+    <div class="container-fluid d-flex justify-content-end">
+        <span class="badge badge-info position-relative mt-3 mb-3 ml-2">
+            <span>ROL ATUAL: {{ $countAtual }}</span>
+        </span>
 
-        <a href="{{ route('membro.index') }}?rol_permanente=1" class="btn btn-danger position-relative mt-3 mb-3 ml-2">
-            <span>ROL PERMANENTE</span>
-            <span class="badge badge-danger counter">{{ $countPermanente }}</span>
-        </a>
+        <span class="badge badge-danger position-relative mt-3 mb-3 ml-2">
+            <span>ROL PERMANENTE: {{ $countPermanente }}</span>
+        </span>
 
-        <a href="{{ route('membro.index') }}?has_errors=1" class="btn btn-warning position-relative mt-3 mb-3 ml-2">
-            <span>ERROS DE CADASTRO</span>
-            <span class="badge badge-warning counter">{{ $countHasErrors }}</span>
-        </a>
+        <span class="badge badge-warning position-relative mt-3 mb-3 ml-2">
+            <span>ERROS DE CADASTRO: {{ $countHasErrors }}</span>
+        </span>
     </div>
     <!-- TABELA -->
     <div class="col-lg-12 col-12 layout-spacing">
@@ -51,8 +49,47 @@
             </div>
             <div class="widget-content widget-content-area">
                 <form class="row mb-4">
+                    <div class="col-12">
+                        <div class="form-check form-check-inline">
+                            <div class="n-chk">
+                                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                    <input type="radio" name="status" value="rol_atual" class="new-control-input" 
+                                           {{ request()->input('status') == 'rol_atual' || request()->input('status') == null ? 'checked' : '' }}>
+                                    <span class="new-control-indicator"></span>Ativos
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <div class="n-chk">
+                                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                    <input type="radio" name="status" value="inativo" class="new-control-input"
+                                           {{ request()->input('status') == 'inativo' ? 'checked' : '' }}>
+                                    <span class="new-control-indicator"></span>Inativos
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <div class="n-chk">
+                                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                    <input type="radio" name="status" value="rol_permanente" class="new-control-input"
+                                           {{ request()->input('status') == 'rol_permanente' ? 'checked' : '' }}>
+                                    <span class="new-control-indicator"></span>Rol Permanente
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <div class="n-chk">
+                                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                                    <input type="radio" name="status" value="has_errors" class="new-control-input"
+                                           {{ request()->input('status') == 'has_errors' ? 'checked' : '' }}>
+                                    <span class="new-control-indicator"></span>Erros de Cadastro
+                                </label>
+                            </div>
+                        </div>
+                    </div>
                     <div class="col-4">
-                        <input type="text" name="search" id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar...">
+                        <input type="text" name="search" id="searchInput" class="form-control form-control-sm" placeholder="Pesquisar..."
+                               value="{{ request()->input('search') }}">
                     </div>
                     <div class="col-auto" style="margin-left: -19px;">
                         <button type="submit" id="searchButton" class="btn btn-primary btn-rounded"><x-bx-search /> Pesquisar</button>
@@ -71,7 +108,54 @@
                             </tr>
                         </thead>
                         <tbody>
-                         
+                            @foreach ($membros as $index => $membro)
+                                <tr>
+                                    <td>{{ optional($membro->rolAtual)->numero_rol }}</td>
+                                    <td>
+                                        @if($membro->has_errors)
+                                            <span class="badge badge-warning"> {{ $membro->nome }} </span>
+                                        @elseif($membro->notificacaoTransferencia)
+                                            <span class="font-italic text-secondary">{{ $membro->nome }} (Em transferência para {{ $membro->notificacaoTransferencia->igrejaDestino->nome }})</span>
+                                        @else
+                                            {{ $membro->nome }}
+                                        @endif
+                                    </td>
+                                    <td>{{ optional($membro->rolAtual->dt_recepcao)->format('d/m/Y') }}</td>
+                                    <td> {{ optional($membro->rolAtual->dt_exclusao)->format('d/m/Y') }}</td>
+                                    <td>{{ optional(optional($membro->rolAtual)->congregacao)->nome }}</td>
+                                    <td class="text-center">
+                                        @if ($membro->rolAtual->status == \App\Models\MembresiaMembro::STATUS_ATIVO)
+                                            @if($membro->notificacaoTransferencia)
+                                                <form action="{{ route('membro.exclusao_transferencia.cancel', $membro->notificacaoTransferencia->id) }}" method="POST" style="display: none;" id="form_cancel_notificacao_transferencia_{{ $index }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                                <button title="Cancelar Transferência" 
+                                                        class="btn btn-sm btn-danger mr-2 btn-rounded btn-cancel-notificacao-transferencia bs-tooltip" 
+                                                        data-form-id="form_cancel_notificacao_transferencia_{{ $index }}">
+                                                    <x-bx-transfer-alt />
+                                                </button>
+                                            @else
+                                                <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
+                                                    class="btn btn-sm btn-dark mr-2 btn-rounded bs-tooltip">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-edit-2">
+                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                                    </svg>
+                                                </a>
+                                            @endif
+                                        @endif
+
+                                        @if ($membro->rolAtual->status == \App\Models\MembresiaMembro::STATUS_INATIVO)
+                                            <a href="{{ route('membro.reintegrar', $membro->id) }}" title="Reintegrar membro" class="btn btn-sm btn-dark mr-2 btn-rounded">
+                                                <x-bx-log-in-circle />
+                                            </a>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -86,15 +170,15 @@
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
     <script>
-        $('.btn-confirm-delete').on('click', function () {
+        $('.btn-cancel-notificacao-transferencia').on('click', function () {
             const formId = $(this).data('form-id')
             swal({
-                title: 'Deseja realmente apagar os registros deste membro?',
+                title: 'Deseja realmente cancelar a transferência deste membro?',
                 type: 'error',
                 showCancelButton: true,
-                confirmButtonText: "Deletar",
+                confirmButtonText: "Sim",
                 confirmButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
+                cancelButtonText: "Não",
                 cancelButtonColor: "#3085d6",
                 padding: '2em'
             }).then(function(result) {
