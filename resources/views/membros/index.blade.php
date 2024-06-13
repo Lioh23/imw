@@ -119,6 +119,8 @@
                                     <td>
                                         @if($membro->has_errors)
                                             <span class="badge badge-warning"> {{ $membro->nome }} </span>
+                                        @elseif($membro->notificacaoTransferencia)
+                                            <span class="font-italic text-secondary">{{ $membro->nome }} (Em transferência para {{ $membro->notificacaoTransferencia->igrejaDestino->nome }})</span>
                                         @else
                                             {{ $membro->nome }}
                                         @endif
@@ -128,15 +130,27 @@
                                     <td>{{ optional(optional($membro->rolAtual)->congregacao)->nome }}</td>
                                     <td class="text-center">
                                         @if ($membro->rolAtual->status == \App\Models\MembresiaMembro::STATUS_ATIVO)
-                                            <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
-                                                class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-edit-2">
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                                </svg>
-                                            </a>
+                                            @if($membro->notificacaoTransferencia)
+                                                <form action="{{ route('membro.exclusao_transferencia.cancel', $membro->notificacaoTransferencia->id) }}" method="POST" style="display: none;" id="form_cancel_notificacao_transferencia_{{ $index }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                </form>
+                                                <button title="Cancelar Transferência" 
+                                                        class="btn btn-sm btn-danger mr-2 btn-rounded btn-cancel-notificacao-transferencia bs-tooltip" 
+                                                        data-form-id="form_cancel_notificacao_transferencia_{{ $index }}">
+                                                    <x-bx-transfer-alt />
+                                                </button>
+                                            @else
+                                                <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
+                                                    class="btn btn-sm btn-dark mr-2 btn-rounded bs-tooltip">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                        class="feather feather-edit-2">
+                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                                    </svg>
+                                                </a>
+                                            @endif
                                         @endif
 
                                         @if ($membro->rolAtual->status == \App\Models\MembresiaMembro::STATUS_INATIVO)
@@ -155,15 +169,15 @@
         </div>
     </div>
     <script>
-        $('.btn-confirm-delete').on('click', function () {
+        $('.btn-cancel-notificacao-transferencia').on('click', function () {
             const formId = $(this).data('form-id')
             swal({
-                title: 'Deseja realmente apagar os registros deste membro?',
+                title: 'Deseja realmente cancelar a transferência deste membro?',
                 type: 'error',
                 showCancelButton: true,
-                confirmButtonText: "Deletar",
+                confirmButtonText: "Sim",
                 confirmButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
+                cancelButtonText: "Não",
                 cancelButtonColor: "#3085d6",
                 padding: '2em'
             }).then(function(result) {

@@ -222,6 +222,19 @@ class MembrosController extends Controller
         }
     }
 
+    public function cancelExclusaoPorTransferencia(NotificacaoTransferencia $notificacaoTransferencia)
+    {
+        try {
+            DB::beginTransaction();
+            $notificacaoTransferencia->delete();
+            DB::commit();
+            return redirect()->route('membro.index')->with('success', 'Transferência cancelada com sucesso!');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('membro.index')->with('error', 'Erro ao cancelar a transferência.');
+        }
+    }
+
     public function disciplinar($id)
     {
         try {
