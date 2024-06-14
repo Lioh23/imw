@@ -207,7 +207,7 @@
     </div>
 </div>
 <script>
-   $(document).ready(function() {
+$(document).ready(function() {
     // Adiciona badges conforme o saldo atual
     $('.saldo-atual').each(function() {
         var saldoText = $(this).text().replace('R$ ', '').replace('.', '').replace(',', '.');
@@ -224,20 +224,17 @@
 
     // Verificações das regras
     let shouldSubmit = true;
-    let entradasNegativasOuZero = [];
+    let totalEntradasZero = false;
     let saldosNegativos = [];
 
-    // Verifica totais de entradas
-    $('.total-entradas').each(function() {
-        var entradaText = $(this).text().replace('R$ ', '').replace('.', '').replace(',', '.');
-        var entrada = parseFloat(entradaText);
-        var caixa = $(this).closest('tr').find('td:first').text();
+    // Verifica o total de entradas de todos os caixas
+    let totalEntradasGeralText = $('tr:contains("Total dos Caixas")').find('td:eq(2)').text().replace('R$ ', '').replace('.', '').replace(',', '.');
+    let totalEntradasGeral = parseFloat(totalEntradasGeralText);
 
-        if (entrada <= 0) {
-            entradasNegativasOuZero.push(caixa);
-            shouldSubmit = false;
-        }
-    });
+    if (totalEntradasGeral === 0) {
+        totalEntradasZero = true;
+        shouldSubmit = false;
+    }
 
     // Verifica saldo atual
     $('.saldo-atual').each(function() {
@@ -251,15 +248,15 @@
         }
     });
 
-    if (!shouldSubmit) {
+    if (totalEntradasZero || saldosNegativos.length > 0) {
         let alertList = '';
 
-        if (entradasNegativasOuZero.length > 0) {
-            alertList += `<li><h3 class="badge badge-danger">OS SEGUINTES CAIXAS NÃO PODEM TER ENTRADAS NEGATIVAS OU ZERO:</h3><ul>${entradasNegativasOuZero.map(caixa => `<li>${caixa}</li>`).join('')}</ul></li>`;
+        if (totalEntradasZero) {
+            alertList += `<li><h3 class="badge badge-danger">TOTAL DE ENTRADAS DOS CAIXAS É ZERO</h3></li>`;
         }
 
         if (saldosNegativos.length > 0) {
-            alertList += `<li><h3 class="badge badge-danger">OS SEGUINTES CAIXAS NÃO PODEM TER SALDO NEGATIVO:</h3><ul>${saldosNegativos.map(caixa => `<li>${caixa}</li>`).join('')}</ul></li>`;
+            alertList += `<li><h3 class="badge badge-danger">OS SEGUINTES CAIXAS NÃO PODEM TER SALDO NEGATIVO: </h3><ul>${saldosNegativos.map(caixa => `<li>${caixa}</li>`).join('')}</ul></li>`;
         }
 
         $('#alertMessages').html(`<ul>${alertList}</ul>`);
@@ -290,6 +287,7 @@
         });
     });
 });
+
 
 </script>
 

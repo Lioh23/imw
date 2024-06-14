@@ -59,8 +59,8 @@ class ConsolidacaoStoreService
         
         FinanceiroLancamento::where('conciliado', 0)
             ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
-            ->whereYear('data_lancamento', $data['ano'])
-            ->whereMonth('data_lancamento', $data['mes'])
+            ->whereYear('data_movimento', $data['ano'])
+            ->whereMonth('data_movimento', $data['mes'])
             ->update([
                 'conciliado' => 1,
                 'data_conciliacao' => $dataConciliacao
