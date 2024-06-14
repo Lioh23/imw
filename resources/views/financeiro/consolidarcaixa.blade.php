@@ -14,6 +14,27 @@
     .swal2-popup .swal2-styled.swal2-cancel {
         color: white !important;
     }
+
+    .badge {
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .danger {
+        background-color: red;
+        color: white;
+    }
+
+    .gray {
+        background-color: gray;
+        color: white;
+    }
+
+    .green {
+        background-color: green;
+        color: white;
+    }
 </style>
 @endsection
 @section('extras-scripts')
@@ -76,7 +97,7 @@
                                         <td style="text-align: right">
                                             {{ 'R$ ' . ($caixa->total_transferencias_saida > 0 ? '-' : '') . number_format(abs($caixa->total_transferencias_saida), 2, ',', '.') }}
                                         </td>
-                                        <td style="text-align: right">
+                                        <td class="saldo-atual" style="text-align: right">
                                             {{ 'R$ ' . number_format($caixa->saldo_atual, 2, ',', '.') }}
                                         </td>
                                     </tr>
@@ -108,7 +129,7 @@
                                         <td style="text-align: right">
                                             <strong>{{ 'R$ ' . ($totalTransferenciasSaida > 0 ? '-' : '') . number_format(abs($totalTransferenciasSaida), 2, ',', '.') }}</strong>
                                         </td>
-                                        <td style="text-align: right">
+                                        <td class="saldo-atual" style="text-align: right">
                                             <strong>{{ 'R$ ' . number_format($totalSaldoAtual, 2, ',', '.') }}</strong>
                                         </td>
                                     </tr>
@@ -160,7 +181,7 @@
                             @csrf
                             <input type="hidden" name="ano" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->year }}" />
                             <input type="hidden" name="mes" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->month }}" />
-                            <button data-form-id="form_consolidacao_automatica" class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;" type="button">CONSOLIDAR
+                            <button data-form-id="form_consolidacao_automatica" class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;" type="submit">CONSOLIDAR
                                 {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}</button>
                         </form>
 
@@ -172,6 +193,21 @@
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function() {
+        $('.saldo-atual').each(function() {
+            var saldoText = $(this).text().replace('R$ ', '').replace('.', '').replace(',', '.');
+            var saldo = parseFloat(saldoText);
 
+            if (saldo < 0) {
+                $(this).html('<span class="badge badge-danger">' + $(this).html() + '</span>');
+            } else if (saldo === 0) {
+                $(this).html('<span class="badge badge-secondary">' + $(this).html() + '</span>');
+            } else {
+                $(this).html('<span class="badge badge-success">' + $(this).html() + '</span>');
+            }
+        });
+    });
+</script>
 
 @endsection

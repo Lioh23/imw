@@ -6,6 +6,30 @@
         ['text' => 'Saldo', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
+@section('extras-css')
+<style>
+    .badge {
+        padding: 10px;
+        border-radius: 5px;
+        font-weight: bold;
+    }
+
+    .danger {
+        background-color: red;
+        color: white;
+    }
+
+    .gray {
+        background-color: gray;
+        color: white;
+    }
+
+    .green {
+        background-color: green;
+        color: white;
+    }
+</style>
+@endsection
 @section('content')
 <div class="container-fluid">
 
@@ -59,7 +83,7 @@
                                         <td style="text-align: right">
                                             {{ 'R$ ' . ($caixa->total_transferencias_saida > 0 ? '-' : '') . number_format(abs($caixa->total_transferencias_saida), 2, ',', '.') }}
                                         </td>
-                                        <td style="text-align: right">
+                                        <td class="saldo-atual" style="text-align: right">
                                             {{ 'R$ ' . number_format($caixa->saldo_atual, 2, ',', '.') }}
                                         </td>
                                     </tr>
@@ -91,7 +115,7 @@
                                         <td style="text-align: right">
                                             <strong>{{ 'R$ ' . ($totalTransferenciasSaida > 0 ? '-' : '') . number_format(abs($totalTransferenciasSaida), 2, ',', '.') }}</strong>
                                         </td>
-                                        <td style="text-align: right">
+                                        <td class="saldo-atual" style="text-align: right">
                                             <strong>{{ 'R$ ' . number_format($totalSaldoAtual, 2, ',', '.') }}</strong>
                                         </td>
                                     </tr>
@@ -115,4 +139,20 @@
 <script src="{{asset('theme/assets/js/planilha/xlsx.full.min.js')}}"></script>
 <script src="{{asset('theme/assets/js/planilha/planilha.js')}}"></script>
 <script src="{{asset('theme/assets/js/pages/movimentocaixa.js')}}"></script>
+<script>
+    $(document).ready(function() {
+        $('.saldo-atual').each(function() {
+            var saldoText = $(this).text().replace('R$ ', '').replace('.', '').replace(',', '.');
+            var saldo = parseFloat(saldoText);
+
+            if (saldo < 0) {
+                $(this).html('<span class="badge badge-danger">' + $(this).html() + '</span>');
+            } else if (saldo === 0) {
+                $(this).html('<span class="badge badge-secondary">' + $(this).html() + '</span>');
+            } else {
+                $(this).html('<span class="badge badge-success">' + $(this).html() + '</span>');
+            }
+        });
+    });
+</script>
 @endsection
