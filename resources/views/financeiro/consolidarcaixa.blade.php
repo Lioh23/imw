@@ -195,7 +195,7 @@
                             @csrf
                             <input type="hidden" name="ano" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->year }}" />
                             <input type="hidden" name="mes" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->month }}" />
-                            <button data-form-id="form_consolidacao_automatica" class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;" type="button" disabled>CONSOLIDAR {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}</button>
+                            <button data-form-id="form_consolidacao_automatica" class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;" type="button">CONSOLIDAR {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}</button>
                         </form>
 
                     </div>
@@ -255,11 +255,11 @@
         let alertList = '';
 
         if (entradasNegativasOuZero.length > 0) {
-            alertList += `<li><h3 class="badge badge-default">OS SEGUINTES CAIXAS NÃO PODEM TER ENTRADAS NEGATIVAS OU ZERO:</h3><ul>${entradasNegativasOuZero.map(caixa => `<li>${caixa}</li>`).join('')}</ul></li>`;
+            alertList += `<li><h3 class="badge badge-danger">OS SEGUINTES CAIXAS NÃO PODEM TER ENTRADAS NEGATIVAS OU ZERO:</h3><ul>${entradasNegativasOuZero.map(caixa => `<li>${caixa}</li>`).join('')}</ul></li>`;
         }
 
         if (saldosNegativos.length > 0) {
-            alertList += `<li><h3 class="badge badge-default">OS SEGUINTES CAIXAS NÃO PODEM TER SALDO NEGATIVO:</h3><ul>${saldosNegativos.map(caixa => `<li>${caixa}</li>`).join('')}</ul></li>`;
+            alertList += `<li><h3 class="badge badge-danger">OS SEGUINTES CAIXAS NÃO PODEM TER SALDO NEGATIVO:</h3><ul>${saldosNegativos.map(caixa => `<li>${caixa}</li>`).join('')}</ul></li>`;
         }
 
         $('#alertMessages').html(`<ul>${alertList}</ul>`);
@@ -274,8 +274,8 @@
 
     $('.btn-confirm').on('click', function() {
         swal({
-            title: 'Atenção, deseja realmente consolidar?',
-            text: 'Por favor, corrija os problemas listados antes de consolidar.',
+            title: 'Atenção!',
+            text: 'Deseja realmente consolidar? Esta ação é irreversível.',
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Sim',
