@@ -26,7 +26,7 @@
 
               <div class="col-xl-3">
                 <label for="nascimento">* Data de Nascimento</label>
-                <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento', optional($pessoa->data_nascimento)->format('Y-m-d')) }}" min="1900-01-01">
+                  
                 @error('data_nascimento')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
