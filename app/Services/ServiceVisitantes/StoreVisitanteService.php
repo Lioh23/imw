@@ -16,7 +16,7 @@ class StoreVisitanteService
         $dataMembro = [
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
-            'data_nascimento' => isset($data['data_nascimento']) ? Carbon::createFromFormat('Y-m-d', $data['data_nascimento']) : null,
+            'data_nascimento' => $data['data_nascimento'],
             'data_conversao'  => $data['data_conversao'],
             'congregacao_id'  => $data['congregacao_id'],
             'vinculo'         => MembresiaMembro::VINCULO_VISITANTE,
@@ -40,7 +40,7 @@ class StoreVisitanteService
     private function handleStoreMembro($data): string
     {
         $membro = MembresiaMembro::create($data);
-        
+
         return $membro->id;
     }
 
