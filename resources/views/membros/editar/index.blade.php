@@ -120,6 +120,7 @@
               let valid = true;
               const dataNascimento = new Date($('input[name="data_nascimento"]').val());
 
+              
               $('#formacao-tbody tr').each(function() {
                   const $row = $(this);
                   const dataInicioInput = $row.find('input[name="curso-data-inicio[]"]');

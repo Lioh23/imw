@@ -94,7 +94,7 @@ class MembresiaMembro extends Model
         return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->where('lastrec', 1);
     }
 
-    public function notificacaoTransferenciaAtiva()
+    public function notificacaoTransferencia()
     {
         return $this->hasOne(NotificacaoTransferencia::class, 'membro_id')->whereNull('dt_aceite')->whereNull('dt_rejeicao');
     }

@@ -37,23 +37,7 @@
         return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $cpf);
     }
 
-    function formatarTelefone($telefone)
-    {
-        // Remover todos os caracteres não numéricos do número de telefone
-        $telefone = preg_replace('/\D/', '', $telefone);
-
-        // Formatar o telefone com a máscara padrão
-        if (strlen($telefone) == 11) {
-            // Formatar telefone com DDD e 9 dígitos
-            return preg_replace('/(\d{2})(\d{5})(\d{4})/', '($1) $2-$3', $telefone);
-        } elseif (strlen($telefone) == 10) {
-            // Formatar telefone com DDD e 8 dígitos
-            return preg_replace('/(\d{2})(\d{4})(\d{4})/', '($1) $2-$3', $telefone);
-        } else {
-            // Se não corresponder a nenhum dos formatos esperados, retornar o telefone original
-            return $telefone;
-        }
-    }
+    
 @endphp
 
 
