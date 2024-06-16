@@ -25,8 +25,6 @@ function initDataTable(selector = '#datatable', userOptions = {}, fnDrawCallback
     }
     const options = $.extend(true, {}, defaultOptions, userOptions);
 
-    console.log(options);
-
     return $(selector).DataTable(options);
 }
 

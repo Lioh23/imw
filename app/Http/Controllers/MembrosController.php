@@ -42,9 +42,9 @@ use Illuminate\Support\Facades\DB;
 
 class MembrosController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
-        $data = app(IdentificaDadosIndexService::class)->execute($request->all());
+        $data = app(IdentificaDadosIndexService::class)->execute();
         return view('membros.index', $data);
     }
 

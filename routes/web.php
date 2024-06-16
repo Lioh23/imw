@@ -113,6 +113,7 @@ Route::middleware(['auth'])->group(function () {
         // Grupo de rotas para 'congregado'
         Route::prefix('congregado')->name('congregado.')->group(function () {
             Route::get('/', [CongregadosController::class, 'index'])->name('index')->middleware(['seguranca:congregados-index']);
+            Route::get('list', [CongregadosController::class, 'list'])->name('list')->middleware(['seguranca:congregados-index']);
             Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo')->middleware(['seguranca:congregados-cadastrar']);
             Route::post('/update', [CongregadosController::class, 'update'])->name('update')->middleware(['seguranca:congregados-atualizar']);
             Route::post('/store', [CongregadosController::class, 'store'])->name('store')->middleware(['seguranca:congregados-cadastrar']);

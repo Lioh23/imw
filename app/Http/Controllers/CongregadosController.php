@@ -5,10 +5,10 @@ namespace App\Http\Controllers;
 use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreCongregadoRequest;
 use App\Models\MembresiaMembro;
+use App\Services\ServiceDatatable\CongregadosDatatable;
 use App\Services\ServiceMembrosGeral\DeletarMembroService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;
-use App\Services\ServicesCongregados\EditarCongregadoService;
 use App\Services\ServicesCongregados\ListCongregadosService;
 use App\Services\ServicesCongregados\NovoCongregadoService;
 use App\Services\ServicesCongregados\SalvarCongregadoService;
@@ -17,9 +17,17 @@ use Illuminate\Support\Facades\DB;
 
 class CongregadosController extends Controller
 {
-    public function index(Request $request) {
-        $data = app(ListCongregadosService::class)->execute($request->all());
+    public function index() {
+        $data = app(ListCongregadosService::class)->execute();
         return view('congregados.index', $data);
+    }
+
+    public function list(Request $request) {
+        try {
+            return app(CongregadosDatatable::class)->execute($request->all());
+        } catch(\Exception $e) {
+            return response()->json(['error' => 'erro ao carregar os dados dos congregados'], 500);
+        }
     }
 
     public function novo() {
