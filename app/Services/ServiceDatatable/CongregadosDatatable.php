@@ -26,7 +26,7 @@ class CongregadosDatatable
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->where('vinculo', MembresiaMembro::VINCULO_CONGREGADO)
             ->when($parameters['search'], function ($query) use ($parameters) {
-                $query->where('nome', 'like', "%{$parameters['search']}%");
+                $query->where('membresia_membros.nome', 'like', "%{$parameters['search']}%");
             })
             ->when($parameters['status'] == 'has_errors', function ($query) {
                 $query->where('has_errors', 1);
