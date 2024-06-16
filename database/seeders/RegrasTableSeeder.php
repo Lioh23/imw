@@ -87,6 +87,13 @@ class RegrasTableSeeder extends Seeder
              ['name' => 'relatorio-membresia'],
              ['name' => 'relatorio-aniversariantes'],
              ['name' => 'relatorio-historico-eclesiastico'],
+
+             // Congregações
+             ['nome' => 'congregacao-index'],
+             ['nome' => 'congregacao-cadastrar'],
+             ['nome' => 'congregacao-atualizar'],
+             ['nome' => 'congregacao-editar'],
+             ['nome' => 'congregacao-excluir'],
         ]);
     }
 }

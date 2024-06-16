@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CongregacoesController;
 use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
@@ -160,6 +161,19 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/balancete', [FinanceiroRelatorioController::class, 'balancete'])->name('relatorio-balancete')->middleware(['seguranca:menu-relatorios']);
 
         });
+
+        // Crud congregações
+        Route::prefix('congregacao')->name('congregacao.')->group(function () { 
+            Route::get('/', [CongregacoesController::class, 'index'])->name('index')->middleware(['seguranca:congregacao-index']);
+            Route::get('/list', [CongregacoesController::class, 'list'])->name('list')->middleware(['seguranca:congregacao-index']);
+            Route::get('/novo', [CongregacoesController::class, 'novo'])->name('novo')->middleware(['seguranca:congregacao-cadastrar']);
+            Route::post('/update', [CongregacoesController::class, 'update'])->name('update')->middleware(['seguranca:congregacao-atualizar']);
+            Route::post('/store', [CongregacoesController::class, 'store'])->name('store')->middleware(['seguranca:congregacao-cadastrar']);
+            Route::delete('/desativar/{id}', [CongregacoesController::class, 'desativar'])->name('desativar')->middleware(['seguranca:congregacao-excluir']);
+            Route::get('/editar/{id}', [CongregacoesController::class, 'editar'])->name('editar')->middleware(['seguranca:congregacao-editar']);
+            Route::put('/restaurar/{id}', [CongregacoesController::class, 'restaurar'])->name('restaurar')->middleware(['seguranca:congregacao-editar']);
+        });
+
 
          /* Por enquanto somente visualiações */
          Route::prefix('fornecedor')->name('fornecedor.')->group(function () {
