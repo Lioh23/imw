@@ -42,7 +42,7 @@ class ConsolidacaoStoreService
                 'total_transf_saidas' => $caixa->totalLancamentosNaoConciliadosTransferenciaSaidaPorData($data['ano'], $data['mes'])
             ];
             
-            /* $todosLancamentos[] = $lancamento; */
+         /*    $todosLancamentos[] = $lancamento; */
             // Usar o método updateOrCreate
              FinanceiroSaldoConsolidadoMensal::updateOrCreate(
                 [
@@ -51,17 +51,19 @@ class ConsolidacaoStoreService
                     'mes' => $data['mes']
                 ],
                 $lancamento
-            ); 
+            );  
         } 
 
-       /*  dd($todosLancamentos); */
+      /*   dd($todosLancamentos); */
         $dataConciliacao = Carbon::now()->format('Y-m-d');
         
-         FinanceiroLancamento::where('conciliado', 0)
-        ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
-        ->update([
-            'conciliado' => 1,
-            'data_conciliacao' => $dataConciliacao
-        ]); 
+        FinanceiroLancamento::where('conciliado', 0)
+            ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
+            ->whereYear('data_movimento', $data['ano'])
+            ->whereMonth('data_movimento', $data['mes'])
+            ->update([
+                'conciliado' => 1,
+                'data_conciliacao' => $dataConciliacao
+            ]);
     }
 }

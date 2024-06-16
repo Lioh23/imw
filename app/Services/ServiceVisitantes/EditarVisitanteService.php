@@ -14,7 +14,7 @@ class EditarVisitanteService
         $visitante->update([
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
-            'data_nascimento' => isset($data['data_nascimento']) ? Carbon::createFromFormat('Y-m-d', $data['data_nascimento']) : null,
+            'data_nascimento' => $data['data_nascimento'],
             'congregacao_id'  => $data['congregacao_id'],
             'data_conversao'  => $data['data_conversao']
         ]);
@@ -26,12 +26,12 @@ class EditarVisitanteService
                 'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
                 'email_preferencial'    => $data['email_preferencial'],
             ];
-        
+
             // Verifica se a chave 'email_alternativo' existe no array $data antes de adicioná-la aos dados de atualização
             if (array_key_exists('email_alternativo', $data)) {
                 $updateData['email_alternativo'] = $data['email_alternativo'];
             }
-        
+
             $contato->update($updateData);
         }
     }

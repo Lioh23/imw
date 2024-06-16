@@ -18,7 +18,7 @@ class EditarMembroService
 
     public function findOne($id)
     {
-        $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas'])
+        $pessoa = MembresiaMembro::with(['contato', 'funcoesMinisteriais', 'familiar', 'formacoesEclesiasticas', 'notificacaoTransferenciaAtiva'])
             ->where('id', $id)
             ->firstOr(function () {
                 throw new MembroNotFoundException('Registro não encontrado', 404);

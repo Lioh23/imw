@@ -101,6 +101,7 @@
                                                 $totalTransferenciasSaida = 0;
                                                 $totalSaldoAtual = 0;
                                             @endphp
+                                            
 
                                             @foreach ($caixas as $caixa)
                                                 <tr>
