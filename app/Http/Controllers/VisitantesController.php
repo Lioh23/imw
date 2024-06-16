@@ -4,9 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVisitanteRequest;
 use App\Http\Requests\UpdateVisitanteRequest;
+use App\Services\ServiceDatatable\VisitantesDatatable;
 use App\Services\ServiceVisitantes\DeletarVisitanteService;
 use App\Services\ServiceVisitantes\EditarVisitanteService;
-use App\Services\ServiceVisitantes\ListVisitanteService;
+use App\Services\ServiceVisitantes\IdentificaDadosIndexService;
 use App\Services\ServiceVisitantes\StoreVisitanteService;
 use App\Traits\Identifiable;
 use Illuminate\Http\Request;
@@ -18,8 +19,17 @@ class VisitantesController extends Controller
 
     public function index(Request $request)
     {
-        $data = app(ListVisitanteService::class)->execute($request->all());
+        $data = app(IdentificaDadosIndexService::class)->execute($request->all());
         return view('visitantes.index', $data);
+    }
+
+    public function list(Request $request)
+    {
+        try {
+            return app(VisitantesDatatable::class)->execute($request->all());
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'erro ao carregar os dados dos visitantes'], 500);
+        }
     }
 
     public function update(UpdateVisitanteRequest $request, $id){

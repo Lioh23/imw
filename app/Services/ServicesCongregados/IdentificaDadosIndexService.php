@@ -6,7 +6,7 @@ use App\Models\MembresiaMembro;
 use App\Traits\Identifiable;
 use App\Traits\MemberCountable;
 
-class ListCongregadosService
+class IdentificaDadosIndexService
 {
     use MemberCountable, Identifiable;
 

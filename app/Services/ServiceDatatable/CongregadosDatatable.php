@@ -7,16 +7,9 @@ use App\Traits\Identifiable;
 use Illuminate\Database\Eloquent\Builder;
 use Yajra\DataTables\Facades\DataTables;
 
-class CongregadosDatatable
+class CongregadosDatatable extends Datatable implements DatatableInterface
 {
     use Identifiable;
-
-    public function execute($requestData = [])
-    {
-        $queryBuilder = $this->getQueryBuilder($requestData['parameters']);
-
-        return $this->dataTable($queryBuilder, $requestData);
-    }
 
     public function getQueryBuilder($parameters = []): Builder
     {

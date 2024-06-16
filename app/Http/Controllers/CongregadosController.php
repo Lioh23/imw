@@ -9,7 +9,7 @@ use App\Services\ServiceDatatable\CongregadosDatatable;
 use App\Services\ServiceMembrosGeral\DeletarMembroService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;
-use App\Services\ServicesCongregados\ListCongregadosService;
+use App\Services\ServicesCongregados\IdentificaDadosIndexService;
 use App\Services\ServicesCongregados\NovoCongregadoService;
 use App\Services\ServicesCongregados\SalvarCongregadoService;
 use Illuminate\Http\Request;
@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\DB;
 class CongregadosController extends Controller
 {
     public function index() {
-        $data = app(ListCongregadosService::class)->execute();
+        $data = app(IdentificaDadosIndexService::class)->execute();
         return view('congregados.index', $data);
     }
 

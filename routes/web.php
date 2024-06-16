@@ -102,6 +102,7 @@ Route::middleware(['auth'])->group(function () {
         // Grupo de rotas para 'visitantes'
         Route::prefix('visitante')->name('visitante.')->group(function () {
             Route::get('/', [VisitantesController::class, 'index'])->name('index')->middleware(['seguranca:visitantes-index']);
+            Route::get('list', [VisitantesController::class, 'list'])->name('list')->middleware(['seguranca:visitantes-index']);
             Route::get('/novo', [VisitantesController::class, 'novo'])->name('novo')->middleware(['seguranca:visitantes-cadastrar']);
             Route::post('/salvar', [VisitantesController::class, 'store'])->name('store')->middleware(['seguranca:visitantes-cadastrar']);
             Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar')->middleware(['seguranca:visitantes-atualizar']);

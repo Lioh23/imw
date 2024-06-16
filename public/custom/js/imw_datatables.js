@@ -17,6 +17,7 @@ function initDataTable(selector = '#datatable', userOptions = {}, fnDrawCallback
         "oLanguage": {
             "sProcessing": '<div class="load-datatable text-primary"><div class="spinner-border mr-2 align-self-center loader-sm "></div>Carregando...</div>',
             "sInfo": "Exibindo página _PAGE_ de _PAGES_",
+            "sZeroRecords": "Nenhum registro encontrado",
             "oPaginate": { 
                 "sPrevious": 'Anterior', 
                 "sNext": 'Próxima',
