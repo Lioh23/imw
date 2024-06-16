@@ -17,9 +17,11 @@ use App\Http\Requests\UpdateDisciplinarRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Models\NotificacaoTransferencia;
+use App\Services\ServiceDatatable\RolMembroDatatable;
 use App\Services\ServiceMembros\DeletarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
+use App\Services\ServiceMembros\IdentificaDadosIndexService;
 use App\Services\ServiceMembros\IdentificaDadosReceberMembroExternoService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReintegrarMembroService;
@@ -34,7 +36,6 @@ use App\Services\ServiceMembros\StoreReintegracaoService;
 use App\Services\ServiceMembros\StoreTransferenciaInternaService;
 use App\Services\ServiceMembros\UpdateDisciplinarService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
-use App\Services\ServiceMembrosGeral\ListMembrosService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -43,17 +44,15 @@ class MembrosController extends Controller
 {
     public function index(Request $request)
     {
-        $data = app(ListMembrosService::class)->execute($request->all());
+        $data = app(IdentificaDadosIndexService::class)->execute($request->all());
         return view('membros.index', $data);
     }
 
     public function list(Request $request) 
     {
         try {
-            $data = app(ListMembrosService::class)->query($request->all());
-            // return DataTables::of($data)->make(true);
+            return app(RolMembroDatatable::class)->execute($request->all());
         } catch (\Exception $e) {
-            dd($e);
             return response()->json(['message' => 'erro ao carregar os dados dos membros'], 500);
         }
     }
