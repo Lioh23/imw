@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreVisitanteRequest;
 use App\Http\Requests\UpdateVisitanteRequest;
-use App\Services\ServiceMembrosGeral\DeletarMembroService;
+use App\Services\ServiceVisitantes\DeletarVisitanteService;
 use App\Services\ServiceVisitantes\EditarVisitanteService;
 use App\Services\ServiceVisitantes\ListVisitanteService;
 use App\Services\ServiceVisitantes\StoreVisitanteService;
@@ -45,7 +45,7 @@ class VisitantesController extends Controller
 
     public function deletar($id) {
         try {
-            app(DeletarMembroService::class)->execute($id);
+            app(DeletarVisitanteService::class)->execute($id);
             return redirect()->route('visitante.index')->with('success', 'Visitante deletado com sucesso.');
         } catch(\Exception $e) {
             return back()->with('error', 'Falha ao deletar o visitante.');

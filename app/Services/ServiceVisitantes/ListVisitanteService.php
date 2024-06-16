@@ -31,7 +31,7 @@ class ListVisitanteService
                     ->orWhereHas('contato', function ($subQuery) use ($searchTerm) { $subQuery->where('email_preferencial', 'like', "%$searchTerm%"); })
                     ->orWhereHas('contato', function ($subQuery) use ($searchTerm) { $subQuery->where('telefone_preferencial', 'like', "%$searchTerm%"); });
             })
-            ->when(isset($parameters['excluido']), function ($query) {
+            ->when(isset($parameters['excluido']) && $parameters['excluido'] == 1, function ($query) {
                 $query->onlyTrashed();
             })
             ->when(isset($parameters['has_errors']), function ($query) {

@@ -17,9 +17,11 @@ use App\Http\Requests\UpdateDisciplinarRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Models\NotificacaoTransferencia;
+use App\Services\ServiceDatatable\RolMembroDatatable;
 use App\Services\ServiceMembros\DeletarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
+use App\Services\ServiceMembros\IdentificaDadosIndexService;
 use App\Services\ServiceMembros\IdentificaDadosReceberMembroExternoService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
 use App\Services\ServiceMembros\IdentificaDadosReintegrarMembroService;
@@ -34,16 +36,25 @@ use App\Services\ServiceMembros\StoreReintegracaoService;
 use App\Services\ServiceMembros\StoreTransferenciaInternaService;
 use App\Services\ServiceMembros\UpdateDisciplinarService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
-use App\Services\ServiceMembrosGeral\ListMembrosService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class MembrosController extends Controller
 {
-    public function index(Request $request) {
-        $data = app(ListMembrosService::class)->execute($request->all());
+    public function index(Request $request)
+    {
+        $data = app(IdentificaDadosIndexService::class)->execute($request->all());
         return view('membros.index', $data);
+    }
+
+    public function list(Request $request) 
+    {
+        try {
+            return app(RolMembroDatatable::class)->execute($request->all());
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'erro ao carregar os dados dos membros'], 500);
+        }
     }
 
     public function editar($id)
@@ -59,6 +70,7 @@ class MembrosController extends Controller
                 'cursos'               => $pessoa['cursos'],
                 'formacoes'            => $pessoa['formacoes'],
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
+                'congregacoes'         => $pessoa['congregacoes'],
                 'disciplinas'          => $disciplinas,
             ]);
         } catch(MembroNotFoundException $e) {
@@ -87,7 +99,6 @@ class MembrosController extends Controller
         } catch(\Exception $e) {
             DB::rollback();
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
-
         }
     }
 
@@ -228,6 +239,19 @@ class MembrosController extends Controller
             return redirect()->route('membro.editar', ['id' => $id])->with('success', 'Exclusão por transferência registrada com sucesso!');
         } catch (\Exception $e) {
             return redirect()->route('membro.exclusao_transferencia', ['id' => $id])->with('error', 'Erro ao registrar a transferência.');
+        }
+    }
+
+    public function cancelExclusaoPorTransferencia(NotificacaoTransferencia $notificacaoTransferencia)
+    {
+        try {
+            DB::beginTransaction();
+            $notificacaoTransferencia->delete();
+            DB::commit();
+            return redirect()->route('membro.index')->with('success', 'Transferência cancelada com sucesso!');
+        } catch(\Exception $e) {
+            DB::rollback();
+            return redirect()->route('membro.index')->with('error', 'Erro ao cancelar a transferência.');
         }
     }
 

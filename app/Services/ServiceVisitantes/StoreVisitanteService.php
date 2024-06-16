@@ -16,7 +16,7 @@ class StoreVisitanteService
         $dataMembro = [
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
-            'data_nascimento' => isset($data['data_nascimento']) ? Carbon::createFromFormat('Y-m-d', $data['data_nascimento']) : null,
+            'data_nascimento' => $data['data_nascimento'],
             'data_conversao'  => $data['data_conversao'],
             'congregacao_id'  => $data['congregacao_id'],
             'vinculo'         => MembresiaMembro::VINCULO_VISITANTE,
@@ -26,8 +26,6 @@ class StoreVisitanteService
 
         $dataContato = [
             'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
-            'telefone_alternativo'  => preg_replace('/[^0-9]/', '', $data['telefone_alternativo']),
-            'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
             'email_preferencial'    => $data['email_preferencial'],
         ];
 
@@ -42,7 +40,7 @@ class StoreVisitanteService
     private function handleStoreMembro($data): string
     {
         $membro = MembresiaMembro::create($data);
-        
+
         return $membro->id;
     }
 

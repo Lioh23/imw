@@ -90,7 +90,7 @@
                 <option value="{{ $pastor->id }}" {{ old('clerigo_id') == $pastor->id ? 'selected' : '' }}>{{ $pastor->nome }}</option>
               @endforeach
             </select>
-            @error('modo_recepcao_id')
+            @error('clerigo_id')
                 <div class="invalid-feedback">{{ $message }}</div>
             @enderror
           </div>

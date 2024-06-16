@@ -59,7 +59,7 @@ class MembresiaMembro extends Model
     protected $casts = [
         'data_nascimento' => 'date'
     ];
-   
+
     public function contato()
     {
         return $this->hasOne(MembresiaContato::class, 'membro_id');
@@ -69,7 +69,7 @@ class MembresiaMembro extends Model
     {
         return $this->hasOne(MembresiaFamiliar::class, 'membro_id');
     }
-  
+
     public function funcoesMinisteriais()
     {
         return $this->hasMany(MembresiaFuncaoMinisterial::class, 'membro_id');
@@ -88,7 +88,7 @@ class MembresiaMembro extends Model
     {
         return $this->hasMany(MembresiaRolPermanente::class, 'membro_id');
     }
-    
+
     public function rolAtual()
     {
         return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->where('lastrec', 1);
@@ -98,13 +98,18 @@ class MembresiaMembro extends Model
     {
         return $this->hasMany(MembresiaDisciplina::class, 'membro_id');
     }
+    
+    public function notificacaoTransferenciaAtiva()
+    {
+        return $this->hasOne(NotificacaoTransferencia::class, 'membro_id')->whereNull('dt_aceite')->whereNull('dt_rejeicao');
+    }
 
     public function getStatusTextAttribute()
     {
         switch ($this->status) {
             case 'A':
                 return 'ATIVO';
-            
+
             case 'I':
                 return 'INATIVO';
         }
@@ -117,7 +122,7 @@ class MembresiaMembro extends Model
                 return 'MEMBRO';
             case 'C':
                 return 'CONGREGADO';
-            case 'V':            
+            case 'V':
                 return 'VISITANTE';
         }
     }

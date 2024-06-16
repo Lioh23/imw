@@ -99,10 +99,25 @@
            
         }
 
+    #datatable_processing {
+        inset: 0;
+        border: none;
+        margin: 0;
+        width: 100%;
+        background: rgba(255, 255, 255, 0.8);
+    }
 
-       
+    #datatable_processing .load-datatable {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        width: 100%;
+    }
 
-
+    .table-responsive {
+        position: relative;
+    }
     </style>
 </head>
 

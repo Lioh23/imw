@@ -11,6 +11,7 @@
 <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/plugins/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
 <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
 
 <style>
@@ -47,7 +48,7 @@
                 </div>
             </div>
             <div class="widget-content widget-content-area">
-                <form class="row mb-4">
+                <form class="row mb-5" id="searchForm">
                     <div class="col-12">
                         <div class="form-check form-check-inline">
                             <div class="n-chk">
@@ -95,7 +96,7 @@
                     </div>
                 </form>
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover mb-4">
+                    <table class="table table-bordered table-striped table-hover mb-4" id="datatable" data-url="{{ route('membro.list') }}">
                         <thead>
                             <tr>
                                 <th>ROL</th>
@@ -106,48 +107,7 @@
                                 <th></th>
                             </tr>
                         </thead>
-                        <tbody>
-                            @foreach ($membros as $index => $membro)
-                                <tr>
-                                    <td>{{ optional($membro->rolAtual)->numero_rol }}</td>
-                                    <td>
-                                        @if($membro->has_errors)
-                                            <span class="badge badge-warning"> {{ $membro->nome }} </span>
-                                        @else
-                                            {{ $membro->nome }}
-                                        @endif
-                                    </td>
-                                    <td>{{ optional($membro->rolAtual->dt_recepcao)->format('d/m/Y') }}</td>
-                                    <td> {{ optional($membro->rolAtual->dt_exclusao)->format('d/m/Y') }}</td>
-                                    <td>{{ optional(optional($membro->rolAtual)->congregacao)->nome }}</td>
-                                    <td class="text-center">
-                                        @if ($membro->rolAtual->status == \App\Models\MembresiaMembro::STATUS_ATIVO)
-                                            <a href="{{ route('membro.editar', $membro->id) }}" title="Editar"
-                                                class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                    class="feather feather-edit-2">
-                                                    <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
-                                                </svg>
-                                            </a>
-                                        @endif
-
-                                        @if ($membro->rolAtual->status == \App\Models\MembresiaMembro::STATUS_INATIVO)
-                                            <a href="{{ route('membro.reintegrar', $membro->id) }}" title="Reintegrar membro" class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                                <x-bx-log-in-circle />
-                                            </a>
-                                        @endif
-
-                                        <button class="btn btn-sm btn-info mr-2 btn-rounded btn-visualizar" data-membro-id="{{ $membro->id }}">
-                                            <x-bx-show />
-                                        </button>
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
                     </table>
-                    {{ $membros->links('vendor.pagination.index') }}
                 </div>
             </div>
         </div>
@@ -156,72 +116,18 @@
     {{-- modal de visualizar membro --}}
     <div class="modal fade" tabindex="-1" id="visualizarMembroModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" >
-          <div class="modal-content loadable">
+            <div class="modal-content loadable">
             <div class="modal-body" style="min-height: 200px"></div>
-          </div>
+            </div>
         </div>
     </div>
 @endsection
 
 @section('extras-scripts')
-<script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-<script>
-    $('.btn-confirm-delete').on('click', function () {
-        const formId = $(this).data('form-id')
-        swal({
-            title: 'Deseja realmente apagar os registros deste membro?',
-            type: 'error',
-            showCancelButton: true,
-            confirmButtonText: "Deletar",
-            confirmButtonColor: "#d33",
-            cancelButtonText: "Cancelar",
-            cancelButtonColor: "#3085d6",
-            padding: '2em'
-        }).then(function(result) {
-            if(result.value) document.getElementById(formId).submit()
-        })
-    })
-
-    $('.btn-visualizar').click(function () {
-        $('#visualizarMembroModal').modal('show')
-
-        $.ajax({
-            type: "get",
-            url: "/membro/visualizar-html/" + $(this).data('membro-id'),
-            beforeSend: function () {
-                $('#visualizarMembroModal .modal-content').html('<div class="modal-body" style="min-height: 200px"></div>');
-
-                $('.loadable').block({
-                    message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
-                    // timeout: 2000, //unblock after 2 seconds
-                    overlayCSS: {
-                        backgroundColor: '#fff',
-                        opacity: 0.8,
-                        cursor: 'wait'
-                    },
-                    css: {
-                        border: 0,
-                        padding: 0,
-                        width: '100%',
-                        height: '100%',
-                        padding: '80px',
-                        backgroundColor: 'transparent',
-                    }
-                });
-            },
-            success: function (html) {
-                $('#visualizarMembroModal .modal-content').html(html);
-            },
-            error: function (error) {
-                $('#visualizarMembroModal').modal('hide');
-                toastr.error('Erro ao visualizar dados desta pessoa.');
-            },
-            complete: function () {
-                $('.loadable').unblock();
-            }
-        });        
-    })
-</script>
+    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
+    <script src="{{ asset('custom/js/imw_datatables.js')}}?time={{ time() }}"></script>
+    <script src="{{ asset('membros/js/index.js')}}?time={{ time() }}"></script>
 @endsection
