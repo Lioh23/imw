@@ -43,8 +43,9 @@ class CongregadosController extends Controller
             DB::commit();
             return redirect()->action([CongregadosController::class, 'editar'], ['id' => $membroID])->with('success', 'Registro atualizado.');
         } catch(\Exception $e) {
+            dd($e);
             DB::rollback();
-            return redirect()->route('congregado.index')->with('success', 'Falha na criação do registro.');
+            return redirect()->route('congregado.index')->with('error', 'Falha na criação do registro.');
         }
     }
 

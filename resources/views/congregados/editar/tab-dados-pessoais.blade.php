@@ -352,8 +352,7 @@
 
                           <div class="col-xl-3">
                               <label for="uf">* UF</label>
-                              <select class="form-control @error('uf') is-invalid @enderror" id="uf"
-                                  name="uf">
+                              <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf" {{ $pessoa->nacionalidade != 'BR' ? 'disabled' : '' }}>
                                   <option value="">Selecione</option>
                                   @php
                                       //Colocar no banco de dados , esta estranho assim
@@ -543,3 +542,17 @@
           </div>
       </blockquote>
   </div>
+
+@push('tab-scripts')
+<script>
+    $('#nacionalidade').change(function () {
+      if ($(this).val() != 'BR') {
+        $('#uf').attr('disabled', true);
+        $('#uf').val('');
+        $('#naturalidade').val('');
+      } else {
+        $('#uf').attr('disabled', false);
+      }
+    });
+</script>
+@endpush

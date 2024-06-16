@@ -57,7 +57,7 @@ class SalvarCongregadoService
             'estado_civil'  => $data['estado_civil'],
             'nacionalidade'  => $data['nacionalidade'],
             'naturalidade'  => $data['naturalidade'],
-            'uf'  => $data['uf'],
+            'uf'  => $data['uf'] ?? null,
             'escolaridade_id'  => $data['escolaridade_id'],
             'profissao'  => $data['profissao'],
             'funcao_eclesiastica_id'  => $data['funcao_eclesiastica_id'],
@@ -79,7 +79,6 @@ class SalvarCongregadoService
         {
             $contatoData = [
                 'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
-                'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
                 'email_preferencial'     => $data['email_preferencial'],
                 'cep' => preg_replace('/[^0-9]/', '', $data['cep']),
                 'endereco' => $data['endereco'],

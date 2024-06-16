@@ -61,9 +61,11 @@
         </div>
         <div class="row">
             <div class="col-12">
-                <a href="{{ route('membro.exclusao_transferencia', ['id' => $pessoa->id]) }}" class="btn btn-secondary">
-                    <x-bx-transfer-alt/> Transferir
-                </a>
+                @if(! $pessoa->notificacaoTransferenciaAtiva)
+                    <a href="{{ route('membro.exclusao_transferencia', ['id' => $pessoa->id]) }}" class="btn btn-secondary">
+                        <x-bx-transfer-alt/> Transferir
+                    </a>
+                @endif
                 <a href="{{ route('membro.disciplinar', ['id' => $pessoa->id]) }}" class="btn btn-warning">
                     <x-bx-block/> Disciplinar
                 </a>

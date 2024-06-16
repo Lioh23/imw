@@ -111,8 +111,7 @@
                             <option value="" hidden>Selecione</option>
                             @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
                                 @if ($tipoPaganteFavorecido->id == 2 || $tipoPaganteFavorecido->id == 3 || $tipoPaganteFavorecido->id == 99)
-                                    <option value="{{ $tipoPaganteFavorecido->id }}"
-                                        {{ old('tipo_pagante_favorecido_id') == $tipoPaganteFavorecido->id ? 'selected' : '' }}>
+                                    <option value="{{ $tipoPaganteFavorecido->id }}">
                                         {{ $tipoPaganteFavorecido->nome }}
                                     </option>
                                 @endif
@@ -230,6 +229,18 @@
         // definir o idioma padrão do Select2 para português
         $.fn.select2.defaults.set("language", "pt-BR");
 
+        $('#caixa_id').select2({
+           placeholder: 'Selecione',
+            allowClear: true
+        }); 
+
+    
+        $('#plano_conta_id').select2({
+           placeholder: 'Selecione',
+            allowClear: true
+        }); 
+
+        
         // evento de exibição do descritivo do pagante/favorecido
         $('#tipo_pagante_favorecido_id').change(function() {
             var tipoPaganteFavorecido = this.value;

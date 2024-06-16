@@ -59,6 +59,7 @@ Route::middleware(['auth'])->group(function () {
         // Grupo de rotas para 'membresia'
         Route::prefix('membro')->name('membro.')->group(function () {
             Route::get('', [MembrosController::class, 'index'])->name('index')->middleware(['seguranca:membros-index']);
+            Route::get('list', [MembrosController::class, 'list'])->name('list')->middleware(['seguranca:membros-index']);
             Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar')->middleware(['seguranca:membros-editar']);
             Route::get('visualizar-html/{id}', [MembrosController::class, 'visualizarHtml'])->name('visualizarHtml')->middleware(['seguranca:membros-index']);
             Route::get('receber-novo/{id}', [MembrosController::class, 'receberNovo'])->name('receber_novo')->middleware(['seguranca:membros-recebernovo']);
@@ -72,6 +73,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('transferencia/interna/store/{id}', [MembrosController::class, 'storeTransferenciaInterna'])->name('transferencia_interna.store')->middleware(['seguranca:membros-transferenciainterna']);
             Route::get('exclusao/transferencia/{id}', [MembrosController::class, 'exclusaoPorTransferencia'])->name('exclusao_transferencia')->middleware(['seguranca:membros-exclusaotransferencia']);
             Route::post('exclusao/transferencia/store/{id}', [MembrosController::class, 'storeExclusaoPorTransferencia'])->name('exclusao_transferencia.store')->middleware(['seguranca:membros-exclusaotransferencia']);
+            Route::delete('exclusao/transferencia/cancel/{notificacaoTransferencia}', [MembrosController::class, 'cancelExclusaoPorTransferencia'])->name('exclusao_transferencia.cancel')->middleware(['seguranca:membros-exclusaotransferencia']);
             Route::get('receber-membro-externo/{notificacao}', [MembrosController::class, 'receberMembroExterno'])->name('receber_membro_externo')->middleware(['seguranca:membros-recebermembroexterno']);
             Route::post('receber-membro-externo/store/{notificacao}', [MembrosController::class, 'storeReceberMembroExterno'])->name('receber_membro_externo.store')->middleware(['seguranca:membros-recebermembroexterno']);
             Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar')->middleware(['seguranca:membros-disciplinar']);

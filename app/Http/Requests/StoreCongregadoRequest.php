@@ -6,6 +6,7 @@ use App\Rules\RangeDateRule;
 use App\Rules\ValidaCPF;
 use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\DB;
 
 class StoreCongregadoRequest extends FormRequest
 {
@@ -83,10 +84,25 @@ class StoreCongregadoRequest extends FormRequest
             'estado_civil' => 'required',
             'nacionalidade' => 'required',
             'naturalidade' => 'required',
-            'uf' => 'required',
+            'uf' => 'sometimes|required',
             'cpf' => [
                 'nullable',
                 new ValidaCPF,
+                function ($attribute, $value, $fail) use ($membroId) {
+                    // Remove todos os caracteres que não são números
+                    $cpf = preg_replace('/[^0-9]/', '', $value);
+
+                    // Verifica se o CPF já existe na tabela membresia_membros, ignorando o membro atual
+                    $query = DB::table('membresia_membros')->where('cpf', $cpf);
+
+                    if ($membroId) {
+                        $query->where('id', '!=', $membroId);
+                    }
+
+                    if ($query->exists()) {
+                        $fail('Este CPF já está sendo utilizado por outra pessoa');
+                    }
+                }
             ],
             'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if ($value) {
@@ -96,9 +112,7 @@ class StoreCongregadoRequest extends FormRequest
                 }
             }],
             'email_alternativo' => 'email|nullable',
-            'telefone_preferencial' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_alternativo' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_whatsapp' => ['nullable', 'regex:/^\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'telefone_preferencial' => ['nullable',  'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'data_casamento' => [
                 'nullable',
                 'date',
@@ -121,4 +135,14 @@ class StoreCongregadoRequest extends FormRequest
             'cpf.unique' => 'Este CPF já está sendo utilizado por outra pessoa'
         ];
     }
+
+    protected function prepareForValidation()
+    {
+        if ($this->has('cpf') && $this->input('cpf') === '') {
+            $this->merge([
+                'cpf' => null,
+            ]);
+        }
+    }
+    
 }
