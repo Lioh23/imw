@@ -169,6 +169,11 @@
                     </div>
                     <div class="col-12 text-center mt-3">
                        <div id="alertContainer" class="mt-3" style="text-align: left;"></div>
+                       <div id="alertEssenciais" class="mt-3" style="text-align: left;">
+                        @foreach($essenciais as $essencial)
+                            <div class="alert alert-danger" role="alert">{{$essencial->nome}}</div>
+                        @endforeach
+                       </div>
 
                         <form class="mt-4" method="post" action="{{ route('financeiro.consolidar.store') }}" id="form_consolidacao_automatica">
                             @csrf

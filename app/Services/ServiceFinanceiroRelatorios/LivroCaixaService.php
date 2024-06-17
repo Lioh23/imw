@@ -3,6 +3,7 @@
 namespace App\Services\ServiceFinanceiroRelatorios;
 
 use App\Models\FinanceiroCaixa;
+use App\Models\FinanceiroPlanoConta;
 use App\Traits\FinanceiroUtils;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
@@ -24,13 +25,34 @@ class LivroCaixaService
         $caixas =  $this->handleCaixas($dt, $caixaId);
         $lancamentos = $this->handleLancamentos($dt, $caixaId);
 
+        $essenciais = $this->handleEssenciais($dt);
+
         return [
             'caixas' => $caixas,
             'caixasSelect' => $caixasSelect,
-            'lancamentos' => $lancamentos
+            'lancamentos' => $lancamentos,
+            'essenciais' => $essenciais
         ];
     }
 
+    private function handleEssenciais($dt)
+    {
+        list($mes, $ano) = explode('/', $dt);
+        $anoMes = $ano . '-' . str_pad($mes, 2, '0', STR_PAD_LEFT);
+
+        $results = FinanceiroPlanoConta::select('id', 'nome')
+            ->selectSub(function ($query) use ($anoMes) {
+                $query->select(DB::raw('SUM(valor)'))
+                    ->from('financeiro_lancamentos')
+                    ->whereRaw('DATE_FORMAT(data_movimento, "%Y-%m") = ?', [$anoMes])
+                    ->whereColumn('plano_conta_id', 'financeiro_plano_contas.id');
+            }, 'total_mes')
+            ->where('essencial', 1)
+            ->havingRaw('total_mes IS NULL OR total_mes = 0')
+            ->get();
+
+        return $results;
+    }
 
     private function handleListaCaixas()
     {
@@ -54,11 +76,11 @@ class LivroCaixaService
                     financeiro_caixas fc ON fc.id = fl.caixa_id
                 WHERE 
                     fl.instituicao_id = :instituicaoID  ";
-    
+
         if ($caixaID !== 'all') {
             $sql .= "AND fl.caixa_id = :caixaId ";
         }
-    
+
         $sql .= "AND fl.deleted_at IS NULL 
                 AND DATE_FORMAT(fl.data_movimento, '%m/%Y') = :dt 
                 GROUP BY 
@@ -72,21 +94,21 @@ class LivroCaixaService
                     CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 2), '.', -1) AS UNSIGNED),
                     CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 3), '.', -1) AS UNSIGNED),
                     fpc.numeracao ";
-    
+
         $params = [
             'dt' => $dt,
             'instituicaoID' => session()->get('session_perfil')->instituicao_id,
         ];
-    
+
         if ($caixaID !== 'all') {
             $params['caixaId'] = $caixaID;
         }
-    
+
         $lancamentos = DB::select($sql, $params);
-    
+
         return $lancamentos;
     }
-    
+
 
     private function handleCaixas($dt, $caixaId)
     {
