@@ -26,7 +26,6 @@
 
               <div class="col-xl-3">
                 <label for="nascimento">* Data de Nascimento</label>
-                  
                 @error('data_nascimento')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
