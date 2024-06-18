@@ -62,9 +62,17 @@ class CongregacoesController extends Controller
         }
     }
 
-    public function update(SaveCongregacaoRequest $request)
+    public function update(SaveCongregacaoRequest $request, CongregacoesCongregacao $congregacao)
     {
-
+        try {
+            DB::beginTransaction();
+            $congregacao->update($request->all());
+            DB::commit();
+            return redirect()->route('congregacao.index')->with('success', 'A congregação foi atualizada com sucesso');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Não foi possível atualizar a congregação');
+        }
     }
 
     public function desativar()

@@ -169,7 +169,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/novo', [CongregacoesController::class, 'novo'])->name('novo')->middleware(['seguranca:congregacao-cadastrar']);
             Route::post('/store', [CongregacoesController::class, 'store'])->name('store')->middleware(['seguranca:congregacao-cadastrar']);
             Route::get('/editar/{congregacao}', [CongregacoesController::class, 'editar'])->name('editar')->middleware(['seguranca:congregacao-editar']);
-            Route::post('/update', [CongregacoesController::class, 'update'])->name('update')->middleware(['seguranca:congregacao-atualizar']);
+            Route::put('/update/{congregacao}', [CongregacoesController::class, 'update'])->name('update')->middleware(['seguranca:congregacao-atualizar']);
             Route::delete('/desativar/{id}', [CongregacoesController::class, 'desativar'])->name('desativar')->middleware(['seguranca:congregacao-excluir']);
             Route::put('/restaurar/{id}', [CongregacoesController::class, 'restaurar'])->name('restaurar')->middleware(['seguranca:congregacao-editar']);
         });
