@@ -171,7 +171,7 @@
                        <div id="alertContainer" class="mt-3" style="text-align: left;"></div>
                        <div id="alertEssenciais" class="mt-3" style="text-align: left;">
                         @foreach($essenciais as $essencial)
-                            <div class="alert alert-danger" role="alert">{{$essencial->nome}}</div>
+                            <div class="alert alert-danger" role="alert">{{$essencial->numeracao}} - {{$essencial->nome}}</div>
                         @endforeach
                        </div>
 

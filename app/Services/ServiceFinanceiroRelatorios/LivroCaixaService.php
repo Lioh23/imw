@@ -40,7 +40,7 @@ class LivroCaixaService
         list($mes, $ano) = explode('/', $dt);
         $anoMes = $ano . '-' . str_pad($mes, 2, '0', STR_PAD_LEFT);
 
-        $results = FinanceiroPlanoConta::select('id', 'nome')
+        $results = FinanceiroPlanoConta::select('id', 'nome', 'numeracao')
             ->selectSub(function ($query) use ($anoMes) {
                 $query->select(DB::raw('SUM(valor)'))
                     ->from('financeiro_lancamentos')
