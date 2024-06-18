@@ -171,7 +171,7 @@
                         <div id="alertContainer" class="mt-3" style="text-align: left;"></div>
                         @if($essenciais->isNotEmpty())
                         <div id="alertEssenciais" class="mt-3" style="text-align: left;">
-                            <h6 class="mb-3"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: red;"></i> Atenção, os planos de contas abaixo estão sem lançamentos!</h6>
+                            <h6 class="mb-3"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: red;"></i> Atenção, as contas abaixo estão sem lançamentos!</h6>
                             @foreach($essenciais as $essencial)
                             <div class="alert alert-warning" role="alert">{{$essencial->numeracao}} - {{$essencial->nome}}</div>
                             @endforeach
