@@ -31,10 +31,7 @@ class CongregacoesController extends Controller
     public function novo()
     {
         try { 
-            return view('congregacoes.create', [
-                'ufs'           => LocationUtils::fetchUFs(),
-                // 'InstituicaoId' => Identifiable::fetchSessionIgrejaLocal()->id
-            ]);
+            return view('congregacoes.create', ['ufs' => LocationUtils::fetchUFs()]);
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Não foi possível criar uma nova congregação');
         }
@@ -53,17 +50,24 @@ class CongregacoesController extends Controller
         }
     }
 
+    public function editar(CongregacoesCongregacao $congregacao)
+    {
+        try {
+            return view('congregacoes.edit', [
+                'congregacao' => $congregacao,
+                'ufs'         => LocationUtils::fetchUFs(),
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Não foi possível editar a congregação');
+        }
+    }
+
     public function update(SaveCongregacaoRequest $request)
     {
 
     }
 
     public function desativar()
-    {
-
-    }
-
-    public function editar()
     {
 
     }

@@ -17,6 +17,12 @@ class CongregacoesCongregacaoObserver
         $congregacoesCongregacao->telefone = clearFormatNumber($congregacoesCongregacao->telefone);
     }
 
+    public function updating(CongregacoesCongregacao $congregacoesCongregacao)
+    {
+        $congregacoesCongregacao->cep = clearFormatNumber($congregacoesCongregacao->cep);
+        $congregacoesCongregacao->telefone = clearFormatNumber($congregacoesCongregacao->telefone);
+    }
+
     public function created(CongregacoesCongregacao $congregacoesCongregacao)
     {
         //
