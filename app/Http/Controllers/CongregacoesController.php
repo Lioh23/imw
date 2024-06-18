@@ -2,11 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\SaveCongregacaoRequest;
+use App\Models\CongregacoesCongregacao;
 use App\Services\ServiceDatatable\CongregacoesDatatable;
+use App\Traits\Identifiable;
+use App\Traits\LocationUtils;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CongregacoesController extends Controller
 {
+    use LocationUtils, Identifiable;
+
     public function index()
     {
         return view('congregacoes.index');
@@ -23,15 +30,30 @@ class CongregacoesController extends Controller
 
     public function novo()
     {
-
+        try { 
+            return view('congregacoes.create', [
+                'ufs'           => LocationUtils::fetchUFs(),
+                // 'InstituicaoId' => Identifiable::fetchSessionIgrejaLocal()->id
+            ]);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Não foi possível criar uma nova congregação');
+        }
     }
 
-    public function update()
+    public function store(SaveCongregacaoRequest $request)
     {
-
+        try {
+            DB::beginTransaction();
+            CongregacoesCongregacao::create($request->all());
+            DB::commit();
+            return redirect()->route('congregacao.index')->with('success', 'Nova congregação salva com sucesso');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return redirect()->back()->with('error', 'Não foi possível salvar a congregação');
+        }
     }
 
-    public function store()
+    public function update(SaveCongregacaoRequest $request)
     {
 
     }

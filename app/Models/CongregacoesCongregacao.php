@@ -34,4 +34,9 @@ class CongregacoesCongregacao extends Model
         'uf',
         'data_extincao',
     ];
+
+    public function instituicao()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'instituicao_id', 'id');
+    }
 }
