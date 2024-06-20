@@ -23,7 +23,7 @@ class UpdateLancamentoEntradaService
         $tipoPaganteFavorecidoId = $data['tipo_pagante_favorecido_id'];
         $paganteFavorecido = $data['pagante_favorecido'] ?? null;
         $lancamento->data_lancamento = Carbon::now()->format('Y-m-d');
-        $lancamento->valor = str_replace(',', '.', $data['valor']);
+        $lancamento->valor = str_replace(',', '.', str_replace('.', '', $data['valor']));
         $lancamento->descricao = $data['descricao'];
         $lancamento->tipo_lancamento = FinanceiroLancamento::TP_LANCAMENTO_ENTRADA;
         $lancamento->plano_conta_id = $data['plano_conta_id'];
