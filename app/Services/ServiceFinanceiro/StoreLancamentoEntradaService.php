@@ -43,7 +43,10 @@ class StoreLancamentoEntradaService
                 $paganteFavorecidoModel = MembresiaMembro::find($paganteFavorecido);
                 $campoId = 'membro_id';
                 if ($paganteFavorecidoModel) {
-                    $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento']);
+                    $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
+                    if ($paganteFavorecidoModel && in_array($lancamentos['plano_conta_id'], $planoContaIds)) {
+                        $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento']);
+                    }
                 }
                 break;
             case 2:

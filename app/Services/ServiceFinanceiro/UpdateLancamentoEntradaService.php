@@ -3,6 +3,7 @@
 namespace App\Services\ServiceFinanceiro;
 
 use App\Models\FinanceiroFornecedores;
+use App\Models\FinanceiroGrade;
 use App\Models\FinanceiroLancamento;
 use App\Models\MembresiaMembro;
 use App\Models\PessoasPessoa;
@@ -35,6 +36,12 @@ class UpdateLancamentoEntradaService
             case 1:
                 $paganteFavorecidoModel = MembresiaMembro::find($paganteFavorecido);
                 $campoId = 'membro_id';
+              
+                $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
+                if ($paganteFavorecidoModel && in_array($lancamento->plano_conta_id , $planoContaIds)) {
+                    $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id);
+                }
+
                 break;
             case 2:
                 $paganteFavorecidoModel = FinanceiroFornecedores::find($paganteFavorecido);
@@ -57,6 +64,67 @@ class UpdateLancamentoEntradaService
         }
 
         $lancamento->save();
+    }
+
+    private function handleLivroGrade($membroId, $valor, $dataMovimento, $lancamentoID){
+        $date = Carbon::parse($dataMovimento);
+        $ano = $date->year;
+        $mes = $date->format('M');
+        
+        $monthsMap = [
+            'Jan' => 'JAN',
+            'Feb' => 'FEV',
+            'Mar' => 'MAR',
+            'Apr' => 'ABR',
+            'May' => 'MAI',
+            'Jun' => 'JUN',
+            'Jul' => 'JUL',
+            'Aug' => 'AGO',
+            'Sep' => 'SET',
+            'Oct' => 'OUT',
+            'Nov' => 'NOV',
+            'Dec' => 'DEZ'
+        ];
+
+        $data = [
+            'lancamento_id' => $lancamentoID,
+            'ano' => $ano,
+            'membro_id' => $membroId,
+            'mes' => strtolower($monthsMap[$mes]),
+            'valor' => $valor
+        ];
+
+        $this->handleLancamento($data);
+
+    }
+
+    private function handleLancamento($data) {
+        // Verificar se já existe um registro para o membro_id, ano e mês específico
+        $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
+            ->where('ano', $data['ano'])
+            ->where(function ($query) use ($data) {
+                $query->where($data['mes'], '!=', null)
+                    ->orWhere($data['mes'], '!=', '0.00');
+            })
+            ->first();
+            
+        if ($existingLancamento) {
+            // Se o registro já existe, atualize-o
+            $mes = $data['mes'];
+            $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']); 
+            $existingLancamento->update([$data['mes'] => $valorTotal]);
+            return $existingLancamento;
+        } else {
+            // Se não existir, crie um novo registro
+            return FinanceiroGrade::create([
+                'membro_id' => $data['membro_id'],
+                'ano' => $data['ano'],
+                $data['mes'] => $data['valor'],
+                'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
+                'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
+                'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
+            ]);
+        }
     }
 }
 
