@@ -1,14 +1,22 @@
 @extends('template.layout')
 @section('extras-css')
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
 <style>
-     .chart-container {
-            position: relative;
-            height: 400px; /* Ajuste a altura conforme necessário */
-        }
+    .chart-container {
+        position: relative;
+        height: 400px; /* Ajuste a altura conforme necessário */
+    }
+    .swal2-popup .swal2-styled.swal2-cancel {
+        color: white !important;
+    }
 </style>
 @endsection
 
 @section('content')
+@include('extras.alerts')
 <div class="container-fluid h-100">
      <div class="row flex-fill mt-4">
         <div class="col-md-4">
