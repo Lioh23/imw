@@ -25,7 +25,7 @@ class StoreLancamentoEntradaService
 
         $lancamentos = [
             'data_lancamento' => Carbon::now()->format('Y-m-d'),
-            'valor' => str_replace(',', '.', $data['valor']),
+            'valor' => str_replace(',', '.', str_replace('.', '', $data['valor'])),
             'tipo_pagante_favorecido_id' => $tipoPaganteFavorecidoId,
             'descricao' => $data['descricao'],
             'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_ENTRADA, 
