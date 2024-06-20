@@ -26,8 +26,8 @@ class CongregacoesCongregacaoObserver
     public function deleting(CongregacoesCongregacao $congregacoesCongregacao)
     {
         $congregacoesCongregacao->update([
-            'dt_extincao' => date('Y-m-d'),
-            'ativo'       => 0,
+            'data_extincao' => date('Y-m-d'),
+            'ativo'         => 0,
         ]);
     }
 
