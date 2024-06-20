@@ -43,7 +43,8 @@
                     </div>
                 </div>
             </div>
-     
+
+           
             <form action="{{ route('financeiro.entrada.update', $entrada->id) }}" method="POST"
                 class="widget-content widget-content-area">
                 @csrf
@@ -141,7 +142,7 @@
                     <div class="col-12">
                         <label for="descricao">Descrição</label>
                         <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" rows="3"
-                            >{{ $entrada->descricao }}</textarea>
+                            required>{{ $entrada->descricao }}</textarea>
                         @error('descricao')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -160,13 +161,13 @@
 
 @section('extras-scripts')
 <script>
-    // máscara de valor
-    $('#valor').mask('0.000.000.000,00', {
-        reverse: true
-    });
-    // definir o idioma padrão do Select2 para português
-    $.fn.select2.defaults.set("language", "pt-BR");
-    $('#caixa_id').select2({
+        // máscara de valor
+        $('#valor').mask('0.000.000.000,00', {
+            reverse: true
+        });
+        // definir o idioma padrão do Select2 para português
+        $.fn.select2.defaults.set("language", "pt-BR");
+        $('#caixa_id').select2({
            placeholder: 'Selecione',
             allowClear: true
         }); 
@@ -177,81 +178,82 @@
             allowClear: true
         }); 
 
-    $(document).ready(function() {
-        $('#tipo_pagante_favorecido_id').trigger('change'); // disparar o evento change ao carregar a página
-    });
+        $(document).ready(function() {
+            $('#tipo_pagante_favorecido_id').trigger('change'); // disparar o evento change ao carregar a página
+        });
 
-    $('#tipo_pagante_favorecido_id').change(function() {
-        var tipoPaganteFavorecido = this.value;
+        $('#tipo_pagante_favorecido_id').change(function() {
+            var tipoPaganteFavorecido = this.value;
 
-        $('#show_pagante_favorecido').removeClass('d-none');
+            $('#show_pagante_favorecido').removeClass('d-none');
 
-        if ($('#pagante_favorecido').data('select2')) {
-            $('#pagante_favorecido').select2('destroy').empty();
-        }
+            if ($('#pagante_favorecido').data('select2')) {
+                $('#pagante_favorecido').select2('destroy').empty();
+            }
 
-        if (tipoPaganteFavorecido == 1) {
-            var membros = {!! json_encode($membros) !!};
-            var membroId = {{ $entrada->membro_id ?? 'null' }};
-            var selectHtml =
-                `<div class="col-12">
-                    <label for="pagante_favorecido">Pagante</label>
-                    <select class="form-control" id="   " name="pagante_favorecido">
-                        <option value="" disabled${membroId === null ? ' selected' : ''}>Selecione</option>
-                        @error('pagante_favorecido')
-                    <span class="help-block text-danger">{{ $message }}</span>
-                    @enderror
-                </div> `;
-                
-            membros.forEach(function(membro) {
-                selectHtml += '<option value="' + membro.id + '"';
-                if (membro.id == {{ $entrada->membro_id ?? 0 }}) {
-                    selectHtml += ' selected';
-                }
-                selectHtml += '>' + membro.nome + '</option>';
-            });
+            if (tipoPaganteFavorecido == 1) {
+                var membros = {!! json_encode($membros) !!};
+                var membroId = '{{ $entrada->membro_id ?? 'null' }}';
+                var selectHtml =
+                    `<div class="col-12">
+                        <label for="pagante_favorecido">Beneficiário</label>
+                        <select class="form-control" id="pagante_favorecido" name="pagante_favorecido">
+                            <option value="" disabled${membroId === null ? ' selected' : ''}>Selecione</option>
+                    `;
 
-            selectHtml += '</select>';
+                membros.forEach(membro => {
+                    selectHtml += `<option value="${membro.id}"${membro.id == membroId ? ' selected' : ''}>${membro.nome}</option>`;
+                });
 
-            $('#show_pagante_favorecido').html(selectHtml);
-        } else if (tipoPaganteFavorecido == 3) {
-            var clerigos = {!! json_encode($clerigos) !!};
-            var selectHtml =
-                `<div class="col-12">
-                    <label for="pagante_favorecido">Pagante</label>
-                    <select class="form-control" id="pagante_favorecido" name="pagante_favorecido" required><option value="" disabled>Selecione</option>
-                        @error('pagante_favorecido')
-                    <span class="help-block text-danger">{{ $message }}</span>
-                    @enderror
-                 </div>`;
+                selectHtml += `@error('pagante_favorecido')
+                                    <span class="help-block text-danger">{{ $message }}</span>
+                                @enderror
+                             </select>
+                             </div>`;
 
-            clerigos.forEach(function(clerigo) {
-                selectHtml += '<option value="' + clerigo.id + '"';
-                if (clerigo.id == {{ $entrada->clerigo_id ?? 0 }}) {
-                    selectHtml += ' selected';
-                }
-                selectHtml += '>' + clerigo.nome + '</option>';
-            });
+                $('#show_pagante_favorecido').html(selectHtml);
+                $('#pagante_favorecido').select2({
+                    placeholder: 'Selecione',
+                    allowClear: true
+                });
+            }    else if (tipoPaganteFavorecido == 3) {
+                        var clerigos = {!! json_encode($clerigos) !!};
+                        var selectHtml =
+                            `<div class="col-12">
+                                <label for="pagante_favorecido">Beneficiário</label>
+                                <select class="form-control" id="pagante_favorecido" name="pagante_favorecido" required><option value="" disabled>Selecione</option>
+                                    @error('pagante_favorecido')
+                                <span class="help-block text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>`;
 
-            selectHtml += '</select>';
+                        clerigos.forEach(function(clerigo) {
+                            selectHtml += '<option value="' + clerigo.id + '"';
+                            if (clerigo.id == {{ $saida->clerigo_id ?? 0 }}) {
+                                selectHtml += ' selected';
+                            }
+                            selectHtml += '>' + clerigo.nome + '</option>';
+                        });
 
-            $('#show_pagante_favorecido').html(selectHtml);
-        } else {
-            var fieldValue = '{{ $entrada->pagante_favorecido ?? '' }}';
-            var inputHtml =
-                `<div class="col-12">
-                    <label for="pagante_favorecido">Pagante</label>` +
-                    '<input type="text" class="form-control" id="pagante_favorecido" name="pagante_favorecido" value="' +
-                    fieldValue + '">' +
-                    `@error('pagante_favorecido')
-                            <span class="help-block text-danger">{{ $message }}</span>
-                            @enderror
-                </div>`;
+                        selectHtml += '</select>';
 
-            $('#show_pagante_favorecido').html(inputHtml);
-        }
-    });
-</script>
+                        $('#show_pagante_favorecido').html(selectHtml);
+                    } else {
+                        var fieldValue = '{{ $saida->pagante_favorecido ?? '' }}';
+                        var inputHtml =
+                            `<div class="col-12">
+                                <label for="pagante_favorecido">Beneficiário</label>` +
+                                '<input type="text" class="form-control" id="pagante_favorecido" name="pagante_favorecido" value="' +
+                                fieldValue + '">' +
+                                `@error('pagante_favorecido')
+                                        <span class="help-block text-danger">{{ $message }}</span>
+                                        @enderror
+                            </div>`;
+
+                        $('#show_pagante_favorecido').html(inputHtml);
+                    }
+                });
+    </script>
 @endsection
 
 
