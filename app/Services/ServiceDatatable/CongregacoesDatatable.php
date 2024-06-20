@@ -17,8 +17,7 @@ class CongregacoesDatatable extends Datatable implements DatatableInterface
             ->where('instituicao_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->when(isset($parameters['search']), function ($query) use ($parameters) {
                 $query->where(function ($subQuery) use ($parameters) {
-                    $subQuery->where('congregacoes_congregacoes.nome', 'like', '%'.$parameters['search'].'%')
-                             ->orWhere('instituicoes_instituicoes.nome', 'like', '%'.$parameters['search'].'%');
+                    $subQuery->where('nome', 'like', '%'.$parameters['search'].'%');
                 });
             })
             ->withTrashed();
