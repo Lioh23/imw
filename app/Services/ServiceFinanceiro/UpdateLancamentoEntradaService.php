@@ -103,64 +103,71 @@ class UpdateLancamentoEntradaService
     {
         // Encontrar o lançamento antigo
         $lancamento = FinanceiroLancamento::findOrFail($data['lancamento_id']);
-             // Extrair o ano e o mês da data de lançamento antigo
-             $ano = Carbon::parse($lancamento->data_lancamento)->year;
-             $mes = strtolower(Carbon::parse($lancamento->data_lancamento)->format('M'));
+        // Extrair o ano e o mês da data de lançamento antigo
+        $ano = Carbon::parse($lancamento->data_movimento)->year;
+        $mes = strtolower(Carbon::parse($lancamento->data_movimento)->format('M'));
 
-             // Mapeamento dos meses para abreviações em português
-             $monthsMap = [
-                 'Jan' => 'jan',
-                 'Feb' => 'fev',
-                 'Mar' => 'mar',
-                 'Apr' => 'abr',
-                 'May' => 'mai',
-                 'Jun' => 'jun',
-                 'Jul' => 'jul',
-                 'Aug' => 'ago',
-                 'Sep' => 'set',
-                 'Oct' => 'out',
-                 'Nov' => 'nov',
-                 'Dec' => 'dez'
-             ];
+        $dtold = Carbon::parse($lancamento->data_movimento);
+        $dtnow = Carbon::parse($data['dt']);
+            // Mapeamento dos meses para abreviações em português
+            $monthsMap = [
+            'jan' => 'jan',
+            'feb' => 'fev',
+            'mar' => 'mar',
+            'apr' => 'abr',
+            'may' => 'mai',
+            'jun' => 'jun',
+            'jul' => 'jul',
+            'aug' => 'ago',
+            'sep' => 'set',
+            'oct' => 'out',
+            'nov' => 'nov',
+            'dec' => 'dez'
+        ];
 
-             // Converter o mês para a abreviação em português
-             $mes = $monthsMap[$mes] ?? $mes;
+        // Converter o mês para a abreviação em português
+        $mes = $monthsMap[$mes] ?? $mes;
 
-             // Verificar se já existe um registro para o membro_id, ano e mês específico
-             $existingLancamentoOld = FinanceiroGrade::where('membro_id', $data['membro_id'])
-                 ->where('ano', $ano)
-                 ->where(function ($query) use ($mes) {
-                     $query->where($mes, '!=', null)
-                         ->orWhere($mes, '!=', '0.00');
-                 })
-                 ->first();
-
-             // NAO PODE ZERAR PRECISA DIMINUIR O VALOR ANTERIOR
-             if ($existingLancamentoOld) {
-                 $valorTotal = floatval($existingLancamentoOld->$mes) - floatval($data['valor']);
-                 $existingLancamentoOld->update([$mes => $valorTotal]);
-             }
-
-        //ADICIONA VALOR NOVO
-        
-            // Verificar se já existe um registro para o membro_id, ano e mês específico
-            $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
-            ->where('ano', $data['ano'])
-            ->where(function ($query) use ($data) {
-                $query->where($data['mes'], '!=', null)
-                    ->orWhere($data['mes'], '!=', '0.00');
+        // Verificar se já existe um registro para o membro_id, ano e mês específico
+        $existingLancamentoOld = FinanceiroGrade::where('membro_id', $data['membro_id'])
+            ->where('ano', $ano)
+            ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
+            ->where(function ($query) use ($mes) {
+                $query->where($mes, '!=', null)
+                    ->orWhere($mes, '!=', '0');
             })
             ->first();
 
+            
+        //ATENÇÃO! MESMA DATA
+        if ($dtold->format('Y-m') === $dtnow->format('Y-m')) {
+                $total = $existingLancamentoOld->$mes - $lancamento->valor + $data['valor']; 
+                // ZERAR VALOR
+                if ($existingLancamentoOld) {
+                    $existingLancamentoOld->update([$mes => $total]);
+            }
+        //ATENÇÃO! DATAS DIFERENTES
+        } else {
+            // Diminuir no mês anterior.
+            $total = $existingLancamentoOld->$mes - $lancamento->valor; 
+            $existingLancamentoOld->update([$mes => $total]);   
+
+            $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
+                ->where('ano', $data['ano'])
+                ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
+                ->where(function ($query) use ($data) {
+                    $query->where($data['mes'], '!=', null)
+                        ->orWhere($data['mes'], '!=', '0.00');
+                })
+                ->first();
+
+            // Se o registro já existe, atualize.
             if ($existingLancamento) {
-                // Se o registro já existe, atualize-o
-                $mes = $data['mes'];
-                $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']);
-                $existingLancamento->update([$data['mes'] => $valorTotal]);
-                return $existingLancamento;
+                   $mes = $data['mes'];
+                   $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']);
+                   $existingLancamento->update([$data['mes'] => $valorTotal]);     
             } else {
-                // Se não existir, crie um novo registro
-                return FinanceiroGrade::create([
+                 FinanceiroGrade::create([
                     'membro_id' => $data['membro_id'],
                     'ano' => $data['ano'],
                     $data['mes'] => $data['valor'],
@@ -168,7 +175,8 @@ class UpdateLancamentoEntradaService
                     'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
                     'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
                 ]);
+
             }
-       
+        }
     }
 }
