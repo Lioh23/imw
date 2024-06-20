@@ -21,8 +21,7 @@ class UpdateLancamentoEntradaService
             3 = CLERIGO
         */
         $tipoPaganteFavorecidoId = $data['tipo_pagante_favorecido_id'];
-        $paganteFavorecido = $data['pagante_favorecido'];
-
+        $paganteFavorecido = $data['pagante_favorecido'] ?? null;
         $lancamento->data_lancamento = Carbon::now()->format('Y-m-d');
         $lancamento->valor = str_replace(',', '.', $data['valor']);
         $lancamento->descricao = $data['descricao'];
@@ -52,7 +51,9 @@ class UpdateLancamentoEntradaService
 
         if (isset($paganteFavorecidoModel)) {
             $lancamento->pagante_favorecido = $paganteFavorecidoModel->nome;
-            $lancamento->$campoId = $paganteFavorecido;
+            if ($paganteFavorecido !== null) {
+                $lancamento->$campoId = $paganteFavorecido;
+            }
         }
 
         $lancamento->save();

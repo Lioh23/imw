@@ -29,7 +29,7 @@ class FinanceiroUpdateEntradaRequest extends FormRequest
             'valor'          => 'required',
             'data_movimento' => 'required',
             'descricao'      => 'nullable|string',
-            'tipo_pagante_favorecido_id' => 'required'
+            'tipo_pagante_favorecido_id' => 'nullable|string'
         ];
     }
 }
