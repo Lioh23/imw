@@ -142,7 +142,7 @@
                     <div class="col-12">
                         <label for="descricao">Descrição</label>
                         <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" rows="3"
-                            required>{{ $entrada->descricao }}</textarea>
+                            >{{ $entrada->descricao }}</textarea>
                         @error('descricao')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -198,7 +198,7 @@
                     `<div class="col-12">
                         <label for="pagante_favorecido">Beneficiário</label>
                         <select class="form-control" id="pagante_favorecido" name="pagante_favorecido">
-                            <option value="" disabled${membroId === null ? ' selected' : ''}>Selecione</option>
+                            <option value="" disabled${membroId === 'null' ? ' selected' : ''}>Selecione</option>
                     `;
 
                 membros.forEach(membro => {
