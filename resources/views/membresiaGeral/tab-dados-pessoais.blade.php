@@ -1,8 +1,26 @@
+<Style>
+    .mosaic {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 10px;
+        padding: 20px;
+        background-color: #f0f0f0;
+    }
+
+    .mosaic p {
+        background-color: white;
+        border: 1px solid #ccc;
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-radius: 5px;
+        border-radius: 10px;
+    }
+</Style>
 <div class=" card tab-pane fade show active" id="border-top-dados-pessoal" role="tabpanel"
     aria-labelledby="border-top-dados-pessoais">
     <div class="card-body">
         <h5 class="card-title">{{ $membro['nome'] }}</h5>
-        <div class="card mb-3 border-0">
+        <div class="card mb-3 mosaic">
             @if (isset($membro['data_nascimento']))
                 <p type='date' class="card-text"> Data de Nascimento:
                     {{ old('data_nascimento', optional($membro['data_nascimento'])->format('d/m/Y')) }}
@@ -61,6 +79,28 @@
             @endif
             @if (isset($membro['congregacao_id']))
                 <p class="card-text">congregacao {{ $membro['congregacao_id']['nome'] }}</p>
+            @endif
+            @if (
+                !isset($membro['data_nascimento']) &&
+                    !isset($membro['cpf']) &&
+                    !isset($membro['sexo']) &&
+                    !isset($membro['estado_civil']) &&
+                    !isset($membro['nacionalidade']) &&
+                    !isset($membro['naturalidade']) &&
+                    !isset($membro['uf']) &&
+                    !isset($membro['escolaridade']) &&
+                    !isset($membro['profissao']) &&
+                    !isset($membro['Função Eclesiástica']) &&
+                    !isset($membro['rg']) &&
+                    !isset($membro['cnh']) &&
+                    !isset($membro['documento']) &&
+                    !isset($membro['documento_complemento']) &&
+                    !isset($membro['data_conversao']) &&
+                    !isset($membro['data_batismo']) &&
+                    !isset($membro['data_batismo_espirito']) &&
+                    !isset($membro['historico']) &&
+                    !isset($membro['congregacao_id']))
+                <span class="card-text">Sem informações</span>
             @endif
         </div>
     </div>

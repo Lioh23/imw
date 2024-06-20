@@ -60,3 +60,11 @@ if (!function_exists('formatarTelefone')) {
         }
     }
 }
+
+if (!function_exists('clearFormatNumber')) {
+    function clearFormatNumber($number)
+    {
+        $number = preg_replace('/[^0-9]/', '', $number);
+        return $number;
+    }
+}

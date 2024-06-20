@@ -138,9 +138,9 @@
 
                 <div class="row mb-4">
                     <div class="col-12">
-                        <label for="descricao">* Descrição</label>
+                        <label for="descricao">Descrição</label>
                         <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao"
-                            value="{{ old('descricao') }}" rows="3" required></textarea>
+                            value="{{ old('descricao') }}" rows="3"></textarea>
                         @error('descricao')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -202,7 +202,7 @@
                 }).on('select2:select', function(e) {
                     var data = e.params.data;
                     $('#pagante_favorecido').val(data.id); // atribuir o valor selecionado ao input
-                }).prop('required', true); // Adicionar required
+                }).prop('required', false); // Adicionar required - removi .prop('required', true);
 
             } else if (tipoPaganteFavorecido == 2) {
                 // Exibir o campo para fornecedores

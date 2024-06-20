@@ -154,15 +154,15 @@
                 @endif
 
                 @if ($membro->familiar)
-                    @include('membresiaGeral.tab-familia')
+                    @include('membresiaGeral.tab-familia', ['membro' => $membro])
                 @endif
 
                 @if ($membro->funcoesMinisteriais->count())
-                    @include('membresiaGeral.tab-ministerio')
+                    @include('membresiaGeral.tab-ministerio', ['membro' => $membro])
                 @endif
 
                 @if ($membro->formacoesEclesiasticas->count())
-                    @include('membresiaGeral.tab-formacao')
+                    @include('membresiaGeral.tab-formacao', ['membro' => $membro])
                 @endif
 
                 @if ($membro->rolPermanente->count())

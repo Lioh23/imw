@@ -10,7 +10,7 @@ class IdentificaDadosIndexService
 {
     use MemberCountable, Identifiable;
 
-    public function execute($parameters = [])
+    public function execute()
     {
         return [
             'countAtual'      => MemberCountable::countRolAtual(MembresiaMembro::VINCULO_MEMBRO),

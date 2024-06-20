@@ -203,6 +203,16 @@
                    </li>
                @endif
 
+               @if (auth()->check() && auth()->user()->hasPerfilRegra('congregacao-index'))
+               <li class="menu">
+                    <a href="/congregacao" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <x-bx-church />
+                        <span>Congregações</span>
+                    </div>
+                </li>
+                @endif
+
                <li class="menu menu-heading">
                    <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

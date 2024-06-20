@@ -7,16 +7,9 @@ use App\Traits\Identifiable;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Database\Eloquent\Builder;
 
-class RolMembroDatatable
+class RolMembroDatatable extends Datatable implements DatatableInterface
 {
     use Identifiable;
-
-    public function execute($requestData = [])
-    {        
-        $queryBuilder = $this->getQueryBuilder($requestData['parameters']);
-        
-        return $this->dataTable($queryBuilder, $requestData);
-    }
 
     public function getQueryBuilder($parameters = []): Builder
     {

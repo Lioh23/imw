@@ -168,7 +168,16 @@
                         </div>
                     </div>
                     <div class="col-12 text-center mt-3">
-                       <div id="alertContainer" class="mt-3" style="text-align: left;"></div>
+                        <div id="alertContainer" class="mt-3" style="text-align: left;"></div>
+                        @if($essenciais->isNotEmpty())
+                        <div id="alertEssenciais" class="mt-3" style="text-align: left;">
+                            <h6 class="mb-3"><i class="fa fa-exclamation-triangle" aria-hidden="true" style="color: red;"></i> Atenção, as contas abaixo estão sem lançamentos!</h6>
+                            @foreach($essenciais as $essencial)
+                            <div class="alert alert-warning" role="alert">{{$essencial->numeracao}} - {{$essencial->nome}}</div>
+                            @endforeach
+                        </div>
+                        @endif
+
 
                         <form class="mt-4" method="post" action="{{ route('financeiro.consolidar.store') }}" id="form_consolidacao_automatica">
                             @csrf

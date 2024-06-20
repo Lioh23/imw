@@ -25,7 +25,7 @@ class StoreLancamentoEntradaService
 
         $lancamentos = [
             'data_lancamento' => Carbon::now()->format('Y-m-d'),
-            'valor' => str_replace(',', '.', $data['valor']),
+            'valor' => str_replace(',', '.', str_replace('.', '', $data['valor'])),
             'tipo_pagante_favorecido_id' => $tipoPaganteFavorecidoId,
             'descricao' => $data['descricao'],
             'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_ENTRADA, 
@@ -42,7 +42,12 @@ class StoreLancamentoEntradaService
             case 1:
                 $paganteFavorecidoModel = MembresiaMembro::find($paganteFavorecido);
                 $campoId = 'membro_id';
-                $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento']);
+                if ($paganteFavorecidoModel) {
+                    $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
+                    if ($paganteFavorecidoModel && in_array($lancamentos['plano_conta_id'], $planoContaIds)) {
+                        $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento']);
+                    }
+                }
                 break;
             case 2:
                 $paganteFavorecidoModel = FinanceiroFornecedores::find($paganteFavorecido);

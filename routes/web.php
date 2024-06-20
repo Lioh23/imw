@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\CongregacoesController;
 use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
@@ -60,8 +61,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('membro')->name('membro.')->group(function () {
             Route::get('', [MembrosController::class, 'index'])->name('index')->middleware(['seguranca:membros-index']);
             Route::get('list', [MembrosController::class, 'list'])->name('list')->middleware(['seguranca:membros-index']);
-            Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar')->middleware(['seguranca:membros-editar']);
-            Route::get('visualizar-html/{id}', [MembrosController::class, 'visualizarHtml'])->name('visualizarHtml')->middleware(['seguranca:membros-index']);
+            Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar')->middleware(['seguranca:membros-editar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
             Route::get('receber-novo/{id}', [MembrosController::class, 'receberNovo'])->name('receber_novo')->middleware(['seguranca:membros-recebernovo']);
             Route::post('receber-novo-store/{id}', [MembrosController::class, 'storeReceberNovo'])->name('receber_novo.store')->middleware(['seguranca:membros-recebernovo']);
             Route::post('atualizar/{id}', [MembrosController::class, 'update'])->name('update')->middleware(['seguranca:membros-atualizar']);
@@ -76,7 +76,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('exclusao/transferencia/cancel/{notificacaoTransferencia}', [MembrosController::class, 'cancelExclusaoPorTransferencia'])->name('exclusao_transferencia.cancel')->middleware(['seguranca:membros-exclusaotransferencia']);
             Route::get('receber-membro-externo/{notificacao}', [MembrosController::class, 'receberMembroExterno'])->name('receber_membro_externo')->middleware(['seguranca:membros-recebermembroexterno']);
             Route::post('receber-membro-externo/store/{notificacao}', [MembrosController::class, 'storeReceberMembroExterno'])->name('receber_membro_externo.store')->middleware(['seguranca:membros-recebermembroexterno']);
-            Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar')->middleware(['seguranca:membros-disciplinar']);
+            Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar')->middleware(['seguranca:membros-disciplinar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
             Route::post('disciplinar/store/{id}', [MembrosController::class, 'storeDisciplinar'])->name('disciplinar.store')->middleware(['seguranca:membros-disciplinar']);
             Route::put('disciplinar/update/{id}', [MembrosController::class, 'updateDisciplinar'])->name('disciplinar.update')->middleware(['seguranca:membros-disciplinar']);
 
@@ -103,9 +103,10 @@ Route::middleware(['auth'])->group(function () {
         // Grupo de rotas para 'visitantes'
         Route::prefix('visitante')->name('visitante.')->group(function () {
             Route::get('/', [VisitantesController::class, 'index'])->name('index')->middleware(['seguranca:visitantes-index']);
+            Route::get('list', [VisitantesController::class, 'list'])->name('list')->middleware(['seguranca:visitantes-index']);
             Route::get('/novo', [VisitantesController::class, 'novo'])->name('novo')->middleware(['seguranca:visitantes-cadastrar']);
             Route::post('/salvar', [VisitantesController::class, 'store'])->name('store')->middleware(['seguranca:visitantes-cadastrar']);
-            Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar')->middleware(['seguranca:visitantes-atualizar']);
+            Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar')->middleware(['seguranca:visitantes-atualizar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
             Route::post('/visitante/{id}', [VisitantesController::class, 'update'])->name('update')->middleware(['seguranca:visitantes-atualizar']);
             Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar')->middleware(['seguranca:visitantes-excluir']);
 
@@ -114,11 +115,12 @@ Route::middleware(['auth'])->group(function () {
         // Grupo de rotas para 'congregado'
         Route::prefix('congregado')->name('congregado.')->group(function () {
             Route::get('/', [CongregadosController::class, 'index'])->name('index')->middleware(['seguranca:congregados-index']);
+            Route::get('list', [CongregadosController::class, 'list'])->name('list')->middleware(['seguranca:congregados-index']);
             Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo')->middleware(['seguranca:congregados-cadastrar']);
             Route::post('/update', [CongregadosController::class, 'update'])->name('update')->middleware(['seguranca:congregados-atualizar']);
             Route::post('/store', [CongregadosController::class, 'store'])->name('store')->middleware(['seguranca:congregados-cadastrar']);
             Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar')->middleware(['seguranca:congregados-excluir']);
-            Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar')->middleware(['seguranca:congregados-editar']);
+            Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar')->middleware(['seguranca:congregados-editar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
         });
 
         /* Por enquanto somente visualiações */
@@ -159,6 +161,19 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/balancete', [FinanceiroRelatorioController::class, 'balancete'])->name('relatorio-balancete')->middleware(['seguranca:menu-relatorios']);
 
         });
+
+        // Crud congregações
+        Route::prefix('congregacao')->name('congregacao.')->group(function () {
+            Route::get('/', [CongregacoesController::class, 'index'])->name('index')->middleware(['seguranca:congregacao-index']);
+            Route::get('/list', [CongregacoesController::class, 'list'])->name('list')->middleware(['seguranca:congregacao-index']);
+            Route::get('/novo', [CongregacoesController::class, 'novo'])->name('novo')->middleware(['seguranca:congregacao-cadastrar']);
+            Route::post('/store', [CongregacoesController::class, 'store'])->name('store')->middleware(['seguranca:congregacao-cadastrar']);
+            Route::get('/editar/{congregacao}', [CongregacoesController::class, 'editar'])->name('editar')->middleware(['seguranca:congregacao-editar'])->can('checkSameChurch', 'congregacao');
+            Route::put('/update/{congregacao}', [CongregacoesController::class, 'update'])->name('update')->middleware(['seguranca:congregacao-atualizar']);
+            Route::delete('/desativar/{congregacao}', [CongregacoesController::class, 'desativar'])->name('desativar')->middleware(['seguranca:congregacao-excluir']);
+            Route::put('/restaurar/{id}', [CongregacoesController::class, 'restaurar'])->name('restaurar')->middleware(['seguranca:congregacao-editar']);
+        });
+
 
          /* Por enquanto somente visualiações */
          Route::prefix('fornecedor')->name('fornecedor.')->group(function () {

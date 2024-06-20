@@ -3,6 +3,11 @@
 namespace App\Providers;
 
 // use Illuminate\Support\Facades\Gate;
+
+use App\Models\CongregacoesCongregacao;
+use App\Models\MembresiaMembro;
+use App\Policies\CongregacoesCongregacaoPolicy;
+use App\Policies\MembresiaMembroPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -14,6 +19,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies = [
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
+        CongregacoesCongregacao::class => CongregacoesCongregacaoPolicy::class,
+        MembresiaMembro::class         => MembresiaMembroPolicy::class,
     ];
 
     /**
