@@ -36,9 +36,9 @@ class UpdateLancamentoEntradaService
             case 1:
                 $paganteFavorecidoModel = MembresiaMembro::find($paganteFavorecido);
                 $campoId = 'membro_id';
-              
+
                 $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
-                if ($paganteFavorecidoModel && in_array($lancamento->plano_conta_id , $planoContaIds)) {
+                if ($paganteFavorecidoModel && in_array($lancamento->plano_conta_id, $planoContaIds)) {
                     $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id);
                 }
 
@@ -66,11 +66,12 @@ class UpdateLancamentoEntradaService
         $lancamento->save();
     }
 
-    private function handleLivroGrade($membroId, $valor, $dataMovimento, $lancamentoID){
+    private function handleLivroGrade($membroId, $valor, $dataMovimento, $lancamentoID)
+    {
         $date = Carbon::parse($dataMovimento);
         $ano = $date->year;
         $mes = $date->format('M');
-        
+
         $monthsMap = [
             'Jan' => 'JAN',
             'Feb' => 'FEV',
@@ -95,10 +96,54 @@ class UpdateLancamentoEntradaService
         ];
 
         $this->handleLancamento($data);
-
     }
 
-    private function handleLancamento($data) {
+    private function handleLancamento($data)
+    {
+        // Encontrar o lançamento antigo
+        $lancamento = FinanceiroLancamento::findOrFail($data['lancamento_id']);
+        $lancamento->data_lancamento = Carbon::now()->format('Y-m-d');
+
+        // Extrair o ano e o mês da data de lançamento antigo
+        $ano = Carbon::parse($lancamento->data_lancamento)->year;
+        $mes = strtolower(Carbon::parse($lancamento->data_lancamento)->format('M'));
+
+        // Mapeamento dos meses para abreviações em português
+        $monthsMap = [
+            'Jan' => 'jan',
+            'Feb' => 'fev',
+            'Mar' => 'mar',
+            'Apr' => 'abr',
+            'May' => 'mai',
+            'Jun' => 'jun',
+            'Jul' => 'jul',
+            'Aug' => 'ago',
+            'Sep' => 'set',
+            'Oct' => 'out',
+            'Nov' => 'nov',
+            'Dec' => 'dez'
+        ];
+
+        // Converter o mês para a abreviação em português
+        $mes = $monthsMap[$mes] ?? $mes;
+
+        // Verificar se já existe um registro para o membro_id, ano e mês específico
+        $existingLancamentoOld = FinanceiroGrade::where('membro_id', $data['membro_id'])
+            ->where('ano', $ano)
+            ->where(function ($query) use ($mes) {
+                $query->where($mes, '!=', null)
+                    ->orWhere($mes, '!=', '0.00');
+            })
+            ->first();
+
+
+        // Apagar o registro existente, se encontrado
+        if ($existingLancamentoOld) {
+            $existingLancamentoOld->delete();
+        }
+
+    //VERIFICA NOVA DATA SE EXISTE LANÇAMENTOS
+
         // Verificar se já existe um registro para o membro_id, ano e mês específico
         $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
             ->where('ano', $data['ano'])
@@ -107,11 +152,11 @@ class UpdateLancamentoEntradaService
                     ->orWhere($data['mes'], '!=', '0.00');
             })
             ->first();
-            
+
         if ($existingLancamento) {
             // Se o registro já existe, atualize-o
             $mes = $data['mes'];
-            $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']); 
+            $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']);
             $existingLancamento->update([$data['mes'] => $valorTotal]);
             return $existingLancamento;
         } else {
@@ -127,4 +172,3 @@ class UpdateLancamentoEntradaService
         }
     }
 }
-
