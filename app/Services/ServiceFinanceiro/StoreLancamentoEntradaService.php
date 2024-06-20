@@ -42,7 +42,9 @@ class StoreLancamentoEntradaService
             case 1:
                 $paganteFavorecidoModel = MembresiaMembro::find($paganteFavorecido);
                 $campoId = 'membro_id';
-                $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento']);
+                if ($paganteFavorecidoModel) {
+                    $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento']);
+                }
                 break;
             case 2:
                 $paganteFavorecidoModel = FinanceiroFornecedores::find($paganteFavorecido);

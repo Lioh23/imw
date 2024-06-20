@@ -43,7 +43,7 @@
                     </div>
                 </div>
             </div>
-
+     
             <form action="{{ route('financeiro.entrada.update', $entrada->id) }}" method="POST"
                 class="widget-content widget-content-area">
                 @csrf
@@ -139,7 +139,7 @@
                 
                 <div class="row mb-4">
                     <div class="col-12">
-                        <label for="descricao">* Descrição</label>
+                        <label for="descricao">Descrição</label>
                         <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" rows="3"
                             required>{{ $entrada->descricao }}</textarea>
                         @error('descricao')
@@ -192,18 +192,20 @@
 
         if (tipoPaganteFavorecido == 1) {
             var membros = {!! json_encode($membros) !!};
+            var membroId = {{ $entrada->membro_id ?? 'null' }};
             var selectHtml =
                 `<div class="col-12">
                     <label for="pagante_favorecido">Pagante</label>
-                    <select class="form-control" id="   " name="pagante_favorecido" required><option value="" disabled>Selecione</option>
+                    <select class="form-control" id="   " name="pagante_favorecido">
+                        <option value="" disabled${membroId === null ? ' selected' : ''}>Selecione</option>
                         @error('pagante_favorecido')
                     <span class="help-block text-danger">{{ $message }}</span>
                     @enderror
                 </div> `;
-
+                
             membros.forEach(function(membro) {
                 selectHtml += '<option value="' + membro.id + '"';
-                if (membro.id == {{ $entrada->membros_id ?? 0 }}) {
+                if (membro.id == {{ $entrada->membro_id ?? 0 }}) {
                     selectHtml += ' selected';
                 }
                 selectHtml += '>' + membro.nome + '</option>';

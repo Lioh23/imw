@@ -28,7 +28,7 @@ class FinanceiroUpdateEntradaRequest extends FormRequest
             'caixa_id'       => 'required',
             'valor'          => 'required',
             'data_movimento' => 'required',
-            'descricao'      => 'required',
+            'descricao'      => 'nullable|string',
             'tipo_pagante_favorecido_id' => 'required'
         ];
     }

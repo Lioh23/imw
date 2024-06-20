@@ -137,9 +137,9 @@
 
                 <div class="row mb-4">
                     <div class="col-12">
-                        <label for="descricao">* Descrição</label>
+                        <label for="descricao">Descrição</label>
                         <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao"
-                            value="{{ old('descricao') }}" rows="3" required></textarea>
+                            value="{{ old('descricao') }}" rows="3"></textarea>
                         @error('descricao')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
