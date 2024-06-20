@@ -168,9 +168,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/list', [CongregacoesController::class, 'list'])->name('list')->middleware(['seguranca:congregacao-index']);
             Route::get('/novo', [CongregacoesController::class, 'novo'])->name('novo')->middleware(['seguranca:congregacao-cadastrar']);
             Route::post('/store', [CongregacoesController::class, 'store'])->name('store')->middleware(['seguranca:congregacao-cadastrar']);
-            Route::get('/editar/{congregacao}', [CongregacoesController::class, 'editar'])->name('editar')->middleware(['seguranca:congregacao-editar']);
+            Route::get('/editar/{congregacao}', [CongregacoesController::class, 'editar'])->name('editar')->middleware(['seguranca:congregacao-editar'])->can('checkSameChurch', 'congregacao');
             Route::put('/update/{congregacao}', [CongregacoesController::class, 'update'])->name('update')->middleware(['seguranca:congregacao-atualizar']);
-            Route::delete('/desativar/{id}', [CongregacoesController::class, 'desativar'])->name('desativar')->middleware(['seguranca:congregacao-excluir']);
+            Route::delete('/desativar/{congregacao}', [CongregacoesController::class, 'desativar'])->name('desativar')->middleware(['seguranca:congregacao-excluir']);
             Route::put('/restaurar/{id}', [CongregacoesController::class, 'restaurar'])->name('restaurar')->middleware(['seguranca:congregacao-editar']);
         });
 

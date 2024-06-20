@@ -23,6 +23,14 @@ class CongregacoesCongregacaoObserver
         $congregacoesCongregacao->telefone = clearFormatNumber($congregacoesCongregacao->telefone);
     }
 
+    public function deleting(CongregacoesCongregacao $congregacoesCongregacao)
+    {
+        $congregacoesCongregacao->update([
+            'dt_extincao' => date('Y-m-d'),
+            'ativo'       => 0,
+        ]);
+    }
+
     public function created(CongregacoesCongregacao $congregacoesCongregacao)
     {
         //

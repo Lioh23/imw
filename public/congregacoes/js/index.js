@@ -7,7 +7,41 @@ $(document).ready(function() {
     }
 
     // ativa as ações dos botões na datatable
-    function activeActions() { }
+    function activeActions() { 
+        // ação de remover
+        $('.btn-confirm-delete').on('click', function() {
+            const formId = $(this).data('form-id')
+            swal({
+                title: 'Deseja realmente deativar a congregação?',
+                type: 'error',
+                showCancelButton: true,
+                confirmButtonText: "Desativar",
+                confirmButtonColor: "#d33",
+                cancelButtonText: "Cancelar",
+                cancelButtonColor: "#3085d6",
+                padding: '2em'
+            }).then(function(result) {
+                if (result.value) document.getElementById(formId).submit()
+            })
+        })
+
+        // ação de restaurar
+        $('.btn-confirm-restore').on('click', function() {
+            const formId = $(this).data('form-id')
+            swal({
+                title: 'Deseja realmente restaurar a congregação?',
+                type: 'success',
+                showCancelButton: true,
+                confirmButtonText: "Restaurar",
+                confirmButtonColor: "#1abc9c",
+                cancelButtonText: "Cancelar",
+                cancelButtonColor: "#3085d6",
+                padding: '2em'
+            }).then(function(result) {
+                if (result.value) document.getElementById(formId).submit()
+            })
+        })
+    }
 
     // passa as opções customizadas para o DataTable
     const optionsDataTable = {

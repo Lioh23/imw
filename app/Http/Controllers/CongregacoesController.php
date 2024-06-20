@@ -75,13 +75,30 @@ class CongregacoesController extends Controller
         }
     }
 
-    public function desativar()
+    public function desativar(CongregacoesCongregacao $congregacao)
     {
-
+        try {
+            DB::beginTransaction();
+            $congregacao->delete();
+            DB::commit();
+            return redirect()->route('congregacao.index')->with('success', 'A congregação foi desativada com sucesso');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Não foi possível desativar a congregação');
+        }
     }
 
-    public function restaurar()
+    public function restaurar($id)
     {
-
+        try {
+            DB::beginTransaction();
+            // app()
+            $congregacao = CongregacoesCongregacao::withTrashed()->findOrFail($id);
+            $congregacao->restore();
+            $congregacao->update(['dt_extincao' => null]);
+            DB::commit();
+            return redirect()->route('congregacao.index')->with('success', 'A congregação foi restaurada com sucesso');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Não foi possível restaurar a congregação');
+        }
     }
 }
