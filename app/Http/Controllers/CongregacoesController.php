@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SaveCongregacaoRequest;
 use App\Models\CongregacoesCongregacao;
+use App\Services\ServiceCongregacoes\RestaurarCongregacaoService;
 use App\Services\ServiceDatatable\CongregacoesDatatable;
 use App\Traits\Identifiable;
 use App\Traits\LocationUtils;
@@ -91,10 +92,7 @@ class CongregacoesController extends Controller
     {
         try {
             DB::beginTransaction();
-            // app()
-            $congregacao = CongregacoesCongregacao::withTrashed()->findOrFail($id);
-            $congregacao->restore();
-            $congregacao->update(['dt_extincao' => null]);
+            app(RestaurarCongregacaoService::class)->execute($id);
             DB::commit();
             return redirect()->route('congregacao.index')->with('success', 'A congregação foi restaurada com sucesso');
         } catch (\Exception $e) {
