@@ -165,123 +165,124 @@
                             class="btn btn-primary right btn-rounded">
                             <x-bx-wallet /> Saldo
                         </a>
+                        <div class="table-responsive">
+                            <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
+                                <thead class="thead-light">
 
-                        <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
-                            <thead class="thead-light">
-
-                                <tr>
-                                    <th>Data</th>
-                                    <th>Caixa</th>
-                                    <th>Entrada</th>
-                                    <th>Saída</th>
-                                    <th>Plano de Conta</th>
-                                    <th>Pagante/Favorecido</th>
-                                    <th width="150"></th>
-                                </tr>
-
-                            </thead>
-                            <tbody>
-                                @foreach ($lancamentos as $index => $lancamento)
                                     <tr>
-                                        <td>{{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}</td>
-                                        <td>{{ $lancamento->caixa->descricao }}</td>
-                                        <td>
-                                            @if ($lancamento->tipo_lancamento == 'E')
-                                                <div class="badge badge-success">R$
-                                                    {{ number_format($lancamento->valor, 2, ',', '.') }}</div>
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td>
-                                            @if ($lancamento->tipo_lancamento == 'S')
-                                                <div class="badge badge-danger">R$
-                                                    {{ number_format($lancamento->valor, 2, ',', '.') }}</div>
-                                            @else
-                                                -
-                                            @endif
-                                        </td>
-                                        <td>{{ $lancamento->planoConta->nome }}</td>
-                                        <td>{{ $lancamento->pagante_favorecido }}</td>
-                                        <td class="d-flex align-items-center">
-                                            @if (in_array($lancamento->planoConta->posicao, [3, 301, 302, 303, 304, 305, 306, 311, 312, 313, 314]))
-                                                <form action="{{ route('financeiro.excluirMovimento', $lancamento->id) }}"
-                                                    method="POST" style="display: inline-block;"
-                                                    id="form_delete_excluirMovimento_{{ $index }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" title="Apagar"
-                                                        class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
-                                                        data-form-id="form_delete_excluirMovimento_{{ $index }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18"
-                                                            height="18" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" class="feather feather-trash-2">
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path
-                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                            <line x1="10" y1="11" x2="10"
-                                                                y2="17"></line>
-                                                            <line x1="14" y1="11" x2="14"
-                                                                y2="17"></line>
-                                                        </svg>
-                                                    </button>
-                                                </form>
-                                            @else
-                                            <form action="{{ route('financeiro.excluirMovimento', $lancamento->id) }}"
-                                                    method="POST" style="display: inline-block;"
-                                                    id="form_delete_excluirMovimento_{{ $index }}">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="button" title="Apagar"
-                                                        class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
-                                                        data-form-id="form_delete_excluirMovimento_{{ $index }}">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18"
-                                                            height="18" viewBox="0 0 24 24" fill="none"
-                                                            stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                            stroke-linejoin="round" class="feather feather-trash-2">
-                                                            <polyline points="3 6 5 6 21 6"></polyline>
-                                                            <path
-                                                                d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                            </path>
-                                                            <line x1="10" y1="11" x2="10"
-                                                                y2="17"></line>
-                                                            <line x1="14" y1="11" x2="14"
-                                                                y2="17"></line>
-                                                        </svg>
-                                                    </button>
-                                                </form>
-                                                <a class="btn btn-sm btn-dark mr-2 btn-rounded" title="Editar"
-                                                    href="{{ route('financeiro.editarMovimento', ['id' => $lancamento->id, 'tipo_lancamento' => $lancamento->tipo_lancamento]) }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                        class="feather feather-edit-2">
-                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                        </path>
-                                                    </svg>
-                                                </a>
-                                            @endif
-                                        
-                                            @if ($lancamento->tipo_lancamento == 'S')
-                                                <button type="button" title="Anexos"
-                                                    class="btn btn-sm btn-info mr-2 btn-rounded btn-anexos"
-                                                    data-lancamento-id="{{ $lancamento->id }}">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
-                                                        viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                                        <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5z">
-                                                        </path>
-                                                    </svg>
-                                                </button>
-                                            @endif
-                                        </td>
-                                        
+                                        <th>Data</th>
+                                        <th>Caixa</th>
+                                        <th>Entrada</th>
+                                        <th>Saída</th>
+                                        <th>Plano de Conta</th>
+                                        <th>Pagante/Favorecido</th>
+                                        <th width="150"></th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+
+                                </thead>
+                                <tbody>
+                                    @foreach ($lancamentos as $index => $lancamento)
+                                        <tr>
+                                            <td>{{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}</td>
+                                            <td>{{ $lancamento->caixa->descricao }}</td>
+                                            <td>
+                                                @if ($lancamento->tipo_lancamento == 'E')
+                                                    <div class="badge badge-success">R$
+                                                        {{ number_format($lancamento->valor, 2, ',', '.') }}</div>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>
+                                                @if ($lancamento->tipo_lancamento == 'S')
+                                                    <div class="badge badge-danger">R$
+                                                        {{ number_format($lancamento->valor, 2, ',', '.') }}</div>
+                                                @else
+                                                    -
+                                                @endif
+                                            </td>
+                                            <td>{{ $lancamento->planoConta->nome }}</td>
+                                            <td>{{ $lancamento->pagante_favorecido }}</td>
+                                            <td class="d-flex align-items-center">
+                                                @if (in_array($lancamento->planoConta->posicao, [3, 301, 302, 303, 304, 305, 306, 311, 312, 313, 314]))
+                                                    <form action="{{ route('financeiro.excluirMovimento', $lancamento->id) }}"
+                                                        method="POST" style="display: inline-block;"
+                                                        id="form_delete_excluirMovimento_{{ $index }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" title="Apagar"
+                                                            class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
+                                                            data-form-id="form_delete_excluirMovimento_{{ $index }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                                                height="18" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round" class="feather feather-trash-2">
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                                <line x1="10" y1="11" x2="10"
+                                                                    y2="17"></line>
+                                                                <line x1="14" y1="11" x2="14"
+                                                                    y2="17"></line>
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                @else
+                                                <form action="{{ route('financeiro.excluirMovimento', $lancamento->id) }}"
+                                                        method="POST" style="display: inline-block;"
+                                                        id="form_delete_excluirMovimento_{{ $index }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" title="Apagar"
+                                                            class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
+                                                            data-form-id="form_delete_excluirMovimento_{{ $index }}">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="18"
+                                                                height="18" viewBox="0 0 24 24" fill="none"
+                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                                                stroke-linejoin="round" class="feather feather-trash-2">
+                                                                <polyline points="3 6 5 6 21 6"></polyline>
+                                                                <path
+                                                                    d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                                                </path>
+                                                                <line x1="10" y1="11" x2="10"
+                                                                    y2="17"></line>
+                                                                <line x1="14" y1="11" x2="14"
+                                                                    y2="17"></line>
+                                                            </svg>
+                                                        </button>
+                                                    </form>
+                                                    <a class="btn btn-sm btn-dark mr-2 btn-rounded" title="Editar"
+                                                        href="{{ route('financeiro.editarMovimento', ['id' => $lancamento->id, 'tipo_lancamento' => $lancamento->tipo_lancamento]) }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                                                            class="feather feather-edit-2">
+                                                            <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
+                                                            </path>
+                                                        </svg>
+                                                    </a>
+                                                @endif
+                                            
+                                                @if ($lancamento->tipo_lancamento == 'S')
+                                                    <button type="button" title="Anexos"
+                                                        class="btn btn-sm btn-info mr-2 btn-rounded btn-anexos"
+                                                        data-lancamento-id="{{ $lancamento->id }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                                            viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                                            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5-10-5-10 5z">
+                                                            </path>
+                                                        </svg>
+                                                    </button>
+                                                @endif
+                                            </td>
+                                            
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
 
