@@ -221,6 +221,12 @@
 @endsection
 @section('extras-scripts')
     <script>
+        $(document).ready(function() {
+            // limpar o campo Pagante
+            $('#pagante_favorecido').val('').trigger('change');
+        });
+
+
         // máscara de valor
         $('#valor').mask('0.000.000.000,00', {
             reverse: true
