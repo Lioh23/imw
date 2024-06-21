@@ -8,7 +8,7 @@
 @endsection
 
 @section('extras-css')
-  <style> 
+  <style>
     .centralizado {
         display: flex;
         justify-content: center;
@@ -60,7 +60,7 @@
               @enderror
             </div>
           </div>
-          
+
           <div class="row mt-5">
             <div class="col-12 mb-2">
               <h4 class="text-italic" style="color: #888ea8; font-style:italic">Informações de endereço</h4>
@@ -68,7 +68,7 @@
 
             <div class="form-group col-12 col-md-3">
               <label for="cep" class="control-label">* CEP</label>
-              <input type="text" name="cep" class="form-control @error('cep') is-invalid @enderror"  minlength="4" value="{{ old('cep', $congregacao->cep) }}">
+              <input type="text" name="cep" class="form-control @error('cep') is-invalid @enderror" data-mask="00000-000" minlength="4" value="{{ old('cep', $congregacao->cep) }}">
               @error('cep')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -143,7 +143,7 @@
 
             <div class="form-group col-8 col-md-10 col-lg-7 col-xl-4">
               <label for="telefone" class="control-label">Telefone</label>
-              <input type="text" name="telefone" class="form-control @error('telefone') is-invalid @enderror" value="{{ old('telefone', $congregacao->telefone) }}">
+              <input type="text" name="telefone" class="form-control @error('telefone') is-invalid @enderror" data-mask="00000-0000" value="{{ old('telefone', $congregacao->telefone) }}">
               @error('telefone')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -176,5 +176,13 @@
 
 @endsection
 @section('extras-scripts')
-
+    <script>
+        $(document).ready(function(){
+            // Selecionar todos os inputs com o atributo data-mask e aplicar a máscara
+            $('input[data-mask]').each(function(){
+                var mask = $(this).data('mask');
+                $(this).mask(mask);
+            });
+        });
+    </script>
 @endsection
