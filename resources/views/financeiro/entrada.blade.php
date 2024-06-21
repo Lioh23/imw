@@ -27,7 +27,6 @@
         .select2-selection__arrow {
             height: 50px !important;
             font-family: 'Nunito', sans-serif;
-
         }
     </style>
 @endsection
@@ -44,13 +43,12 @@
                 </div>
             </div>
 
-            <form action="{{ route('financeiro.entrada.store') }}" method="POST" class="widget-content widget-content-area">
+            <form id="entradaForm" action="{{ route('financeiro.entrada.store') }}" method="POST" class="widget-content widget-content-area">
                 @csrf
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <label for="caixa_id">* Caixa</label>
-                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id"
-                            required>
+                        <select class="form-control @error('caixa_id') is-invalid @enderror" id="caixa_id" name="caixa_id" required>
                             <option value="" hidden disabled>Selecione</option>
                             @foreach ($caixas as $caixa)
                                 @if ($caixa->id == old('caixa_id'))
@@ -65,16 +63,12 @@
                         @enderror
                     </div>
 
-
-
                     <div class="col-md-6">
                         <label for="plano_conta_id">* Plano de contas</label>
-                        <select class="form-control @error('plano_conta_id') is-invalid @enderror" id="plano_conta_id"
-                            name="plano_conta_id" required>
+                        <select class="form-control @error('plano_conta_id') is-invalid @enderror" id="plano_conta_id" name="plano_conta_id" required>
                             <option value="" hidden disabled>Selecione</option>
                             @foreach ($planoContas as $pc)
-                                <option {{ !$pc->selecionavel ? 'disabled' : '' }} value="{{ $pc->id }}"
-                                    {{ old('plano_conta_id') == $pc->id ? 'selected' : '' }}>
+                                <option {{ !$pc->selecionavel ? 'disabled' : '' }} value="{{ $pc->id }}" {{ old('plano_conta_id') == $pc->id ? 'selected' : '' }}>
                                     {{ $pc->numeracao }} - {{ $pc->nome }}
                                 </option>
                             @endforeach
@@ -82,32 +76,27 @@
                         @error('plano_conta_id')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
-
                     </div>
                 </div>
 
                 <div class="row mb-4">
                     <div class="col-md-4">
                         <label for="valor">* Valor</label>
-                        <input type="text" class="form-control @error('valor') is-invalid @enderror" id="valor"
-                            name="valor" required autofocus>
+                        <input type="text" class="form-control @error('valor') is-invalid @enderror" id="valor" name="valor" required autofocus>
                         @error('valor')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-4">
                         <label for="data_movimento">* Data do Movimento</label>
-                        <input type="date" class="form-control @error('data_movimento') is-invalid @enderror"
-                            id="data_movimento" name="data_movimento" value="{{ old('data_movimento', date('Y-m-d')) }}"
-                            required>
+                        <input type="date" class="form-control @error('data_movimento') is-invalid @enderror" id="data_movimento" name="data_movimento" value="{{ old('data_movimento', date('Y-m-d')) }}" required>
                         @error('data_movimento')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
                     <div class="col-md-4">
                         <label for="tipo_pagante_favorecido_id">* Tipo de Pagante</label>
-                        <select class="form-control @error('tipo_pagante_favorecido_id') is-invalid @enderror"
-                            id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
+                        <select class="form-control @error('tipo_pagante_favorecido_id') is-invalid @enderror" id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
                             <option value="" selected disabled hidden>Selecione</option>
                             @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
                                 @if ($tipoPaganteFavorecido->id != 2)
@@ -117,7 +106,6 @@
                                 @endif
                             @endforeach
                         </select>
-
                         @error('tipo_pagante_favorecido_id')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -127,9 +115,7 @@
                 <div class="row mb-4 d-none" id="show_pagante_favorecido">
                     <div class="col-6">
                         <label for="pagante_favorecido">Pagante</label>
-                        <input type="text" class="form-control @error('pagante_favorecido') is-invalid @enderror"
-                            id="pagante_favorecido" name="pagante_favorecido" value="{{ old('pagante_favorecido') }}">
-
+                        <input type="text" class="form-control @error('pagante_favorecido') is-invalid @enderror" id="pagante_favorecido" name="pagante_favorecido" value="{{ old('pagante_favorecido') }}">
                         @error('pagante_favorecido')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -139,8 +125,7 @@
                 <div class="row mb-4">
                     <div class="col-12">
                         <label for="descricao">Descrição</label>
-                        <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao"
-                            value="{{ old('descricao') }}" rows="3"></textarea>
+                        <textarea class="form-control @error('descricao') is-invalid @enderror" id="descricao" name="descricao" value="{{ old('descricao') }}" rows="3"></textarea>
                         @error('descricao')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -148,15 +133,15 @@
                 </div>
 
                 <div class="row mb-4 justify-content-center">
-                    <button type="submit" title="Salvar nova movimentação de entrada" class="btn btn-success btn-lg ml-4">
+                    <button type="submit" title="Salvar nova movimentação de entrada" class="btn btn-success btn-lg ml-4" id="submitButton">
                         <x-bx-save /> Salvar
                     </button>
                 </div>
+            </form>
         </div>
-        </form>
-    </div>
     </div>
 @endsection
+
 @section('extras-scripts')
     <script>
         // máscara de valor
@@ -260,6 +245,16 @@
                 // Remover required
                 $('#pagante_favorecido').prop('required', false);
             }
+        });
+
+        // desabilitar botão submit ao enviar o formulário
+        $('#entradaForm').submit(function() {
+            var submitButton = $('#submitButton');
+            submitButton.prop('disabled', true);
+            var originalText = submitButton.html();
+            submitButton.html('<i class="fa fa-spinner fa-spin"></i> Aguarde...');
+            // limpar o campo Pagante
+            $('#pagante_favorecido').val('').trigger('change');
         });
     </script>
 @endsection
