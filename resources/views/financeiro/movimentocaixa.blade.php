@@ -184,7 +184,7 @@
                             </div>
                             <div class="mb-3 col-lg-4 col-md-6 col-sm-12">
                                 <div class="col-auto" style="margin-top: 32px;">
-                                    <button type="submit" class="btn btn-primary btn-rounded"><x-bx-search />
+                                    <button type="submit" class="btn btn-primary btn-lg btn-rounded"><x-bx-search />
                                         Pesquisar</button>
                                 </div>
                             </div>
