@@ -12,6 +12,7 @@
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <style>
         .input-group-addon {
             cursor: pointer;
@@ -56,6 +57,8 @@
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
         $(document).ready(function() {
             $('#movimentoCaixaTable').DataTable({
@@ -85,6 +88,15 @@
                     }
                 }
             });
+
+            // Aplicar máscara de data e datepicker
+            $('#d1, #d2').mask('00/00/0000');
+            $('#d1, #d2').datepicker({
+                dateFormat: 'dd/mm/yy'
+            });
+
+            // Limpar o campo Pagante ao carregar a página
+            $('#pagante_favorecido').val('').trigger('change');
         });
     </script>
 @endsection
@@ -150,7 +162,7 @@
                             </div>
 
                             <div class="mb-3 col-lg-4 col-md-6 col-sm-12 pf lgpd">
-                                <label for="d1">Data do Inicial</label>
+                                <label for="d1">Data Inicio</label>
                                 <div class="input-group">
                                     <input class="form-control datepicker" id="d1" name="d1" maxlength="20"
                                         value="" type="text" placeholder="">
@@ -161,7 +173,7 @@
                             </div>
 
                             <div class="mb-3 col-lg-4 col-md-6 col-sm-12 pf lgpd">
-                                <label for="d2">Data do Final</label>
+                                <label for="d2">Data Fim</label>
                                 <div class="input-group">
                                     <input class="form-control datepicker" id="d2" name="d2" maxlength="20"
                                         value="" type="text" placeholder="">
