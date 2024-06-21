@@ -144,6 +144,11 @@
 
 @section('extras-scripts')
     <script>
+        $(document).ready(function() {
+            // limpar o campo Pagante
+            $('#pagante_favorecido').val('').trigger('change');
+        });
+
         // máscara de valor
         $('#valor').mask('0.000.000.000,00', {
             reverse: true
@@ -253,8 +258,7 @@
             submitButton.prop('disabled', true);
             var originalText = submitButton.html();
             submitButton.html('<i class="fa fa-spinner fa-spin"></i> Aguarde...');
-            // limpar o campo Pagante
-            $('#pagante_favorecido').val('').trigger('change');
+         
         });
     </script>
 @endsection
