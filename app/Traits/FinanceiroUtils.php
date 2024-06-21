@@ -27,7 +27,7 @@ trait FinanceiroUtils
             ->where('l.conciliado', 0)
             ->where('l.instituicao_id', '=', session()->get('session_perfil')->instituicao_id)
             ->groupBy('pc.numeracao', 'pc.nome', 'c.descricao')
-            ->havingRaw('total_lancamentos > 0')
+            ->havingRaw('total_lancamentos > 0') 
             ->orderBy('pc.numeracao')
             ->orderBy('pc.nome')
             ->orderBy('c.descricao')
@@ -69,6 +69,7 @@ trait FinanceiroUtils
         return $query->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->where('conciliado', 0)
             ->orWhereNull('conciliado')
+            ->orderBy('data_movimento', 'desc')
             ->get();
     }
 
