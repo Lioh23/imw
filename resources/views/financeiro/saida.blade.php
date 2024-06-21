@@ -45,7 +45,7 @@
             </div>
 
             <form action="{{ route('financeiro.saida.store') }}" method="POST" class="widget-content widget-content-area"
-                enctype="multipart/form-data">
+                enctype="multipart/form-data" id="saidaForm">
                 @csrf
                 <div class="row mb-4">
                     <div class="col-md-6">
@@ -209,8 +209,8 @@
                 </div>
 
                 <div class="row mb-4 justify-content-center">
-                    <button type="submit" title="Salvar nova movimentação de entrada"
-                        class="btn btn-success btn-lg ml-4">
+                    <button type="submit" title="Salvar nova movimentação de entrada" class="btn btn-success btn-lg ml-4"
+                        id="submitButton">
                         <x-bx-save /> Salvar
                     </button>
                 </div>
@@ -323,6 +323,11 @@
                 // Remover required
                 $('#pagante_favorecido').prop('required', false);
             }
+        });
+
+        // Desabilitar o botão de submit ao salvar
+        $('#saidaForm').submit(function() {
+            $('#submitButton').prop('disabled', true).html('<i class="fas fa-spinner fa-spin"></i> Aguarde...');
         });
     </script>
 @endsection
