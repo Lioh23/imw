@@ -19,53 +19,45 @@
 
 <div class="tab-pane fade" id="border-top-contato" role="tabpanel" aria-labelledby="border-top-contatos">
     <div class="card-body">
-        <h5 class="card-title">{{ $membro['nome'] }}</h5>
         <div class="card mb-3 mosaic">
-            @if (isset($membro['email_preferencial']))
-                <p class="card-text"> E-mail: {{ $membro['email'] }}</p>
-            @endif
-            @if (isset($membro['telefone_preferencial']))
-                <p class="card-text"> Telefone: {{ $membro['telefone_preferencial'] }}</p>
-            @endif
-            @if (isset($membro['telefone_whatsapp']))
-                <p class="card-text"> Número: {{ $membro['telefone_whatsapp'] }}</p>
-            @endif
-            @if (isset($membro['cep']))
-                <p class="card-text"> CEP: {{ $membro['cep'] }}</p>
-            @endif
-            @if (isset($membro['endereco']))
-                <p class="card-text"> Celular: {{ $membro['endereco'] }}</p>
-            @endif
-            @if (isset($membro['numero']))
-                <p class="card-text"> numero: {{ $membro['numero'] }}</p>
-            @endif
-            @if (isset($membro['complemento']))
-                <p class="card-text"> Complemento: {{ $membro['complemento'] }}</p>
-            @endif
-            @if (isset($membro['bairro']))
-                <p class="card-text"> Bairro: {{ $membro['bairro'] }}</p>
-            @endif
-            @if (isset($membro['cidade']))
-                <p class="card-text"> Cidade: {{ $membro['cidade'] }}</p>
-            @endif
-            @if (isset($membro['estado']))
-                <p class="card-text"> UF: {{ $membro['estado'] }}</p>
-            @endif
-            @if (isset($membro['observacoes']))
-                <p class="card-text"> UF: {{ $membro['observacoes'] }}</p>
-            @endif
-            @if (
-                !isset($membro['email_preferencial']) &&
-                    !isset($membro['telefone_preferencial']) &&
-                    !isset($membro['telefone_whatsapp']) &&
-                    !isset($membro['cep']) &&
-                    !isset($membro['endereco']) &&
-                    !isset($membro['numero']) &&
-                    !isset($membro['complemento']) &&
-                    !isset($membro['bairro']) &&
-                    !isset($membro['cidade']) &&
-                    !isset($membro['estado']) &&
-                    !isset($membro['observacoes']))
+            @if($membro->contato)
+                
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->contato->email_preferencial ?? 'Sem informação de e-mail' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">E-mail</span>
+                </p>
+                
+                @if (isset($membro['telefone_preferencial']))
+                    <p class="card-text"> Telefone: {{ $membro['telefone_preferencial'] }}</p>
+                @endif
+                @if (isset($membro['cep']))
+                    <p class="card-text"> CEP: {{ $membro['cep'] }}</p>
+                @endif
+                @if (isset($membro['endereco']))
+                    <p class="card-text"> Celular: {{ $membro['endereco'] }}</p>
+                @endif
+                @if (isset($membro['numero']))
+                    <p class="card-text"> numero: {{ $membro['numero'] }}</p>
+                @endif
+
+                <p class="card-text"> 
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro['complemento'] ?? 'Não informado' }}</span> 
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Complemento </span>
+                </p>
+
+                @if (isset($membro['bairro']))
+                    <p class="card-text"> Bairro: {{ $membro['bairro'] }}</p>
+                @endif
+                @if (isset($membro['cidade']))
+                    <p class="card-text"> Cidade: {{ $membro['cidade'] }}</p>
+                @endif
+                @if (isset($membro['estado']))
+                    <p class="card-text"> UF: {{ $membro['estado'] }}</p>
+                @endif
+                @if (isset($membro['observacoes']))
+                    <p class="card-text"> UF: {{ $membro['observacoes'] }}</p>
+                @endif
+            @else
                 <span class="card-text">Sem informações</span>
             @endif
         </div>

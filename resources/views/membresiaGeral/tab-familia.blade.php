@@ -21,7 +21,7 @@
     <div class="card-body">
         <h5 class="card-title">{{ $membro['nome'] }}</h5>
         <div class="card mb-3 mosaic">
-            @if (isset($membro['pai_nome']))
+            @if (isset($membro->familiar->pai_nome))
                 <p class="card-text">Nome do Pai: {{ $membro['pai_nome'] }}</p>
             @endif
             @if (isset($membro['mae_nome']))

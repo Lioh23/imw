@@ -19,11 +19,11 @@
 <div class=" card tab-pane fade show active" id="border-top-dados-pessoal" role="tabpanel"
     aria-labelledby="border-top-dados-pessoais">
     <div class="card-body">
-        <h5 class="card-title">{{ $membro['nome'] }}</h5>
         <div class="card mb-3 mosaic">
             @if (isset($membro['data_nascimento']))
-                <p type='date' class="card-text"> Data de Nascimento:
-                    {{ old('data_nascimento', optional($membro['data_nascimento'])->format('d/m/Y')) }}
+                <p type='date' class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ old('data_nascimento', optional($membro->data_nascimento)->format('d/m/Y')) }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Nascimento</span>
                 </p>
             @endif
             @if (isset($membro['cpf']))
@@ -66,7 +66,7 @@
                 <p class="card-text">Documento Complemento {{ $membro['documento_complemento'] }}</p>
             @endif
             @if (isset($membro['data_conversao']))
-                <p class="card-text"> data de conversão {{ $membro['data_conversao'] }}</p>
+                <p class="card-text"> data de conversão {{ $membro->data_conversao ? Carbon\Carbon::parse($membro->data_conversao)->format('d/m/Y') : '' }}</p> 
             @endif
             @if (isset($membro['data_batismo']))
                 <p class="card-text"> Data de Batismo {{ $membro['data_batismo'] }}</p>
@@ -77,8 +77,8 @@
             @if (isset($membro['historico']))
                 <p class="card-text">Data de Batismo Espirito Santo {{ $membro['historico'] }}</p>
             @endif
-            @if (isset($membro['congregacao_id']))
-                <p class="card-text">congregacao {{ $membro['congregacao_id']['nome'] }}</p>
+            @if ($membro->congregacao)
+                <p class="card-text">congregacao {{ $membro->congregacao->nome }}</p>
             @endif
             @if (
                 !isset($membro['data_nascimento']) &&
