@@ -56,7 +56,7 @@
                 {{-- novo anexo --}}
                 <div class="col-sm-12 mb-4 d-flex justify-content-between anexo-block">
                     <div class="d-flex">
-                        <button class="btn btn-outline-primary rounded-circle mr-2" style="border-width: 2px!important;">
+                        <button class="btn btn-outline-primary rounded-circle mr-2 novo-anexo" style="border-width: 2px!important;">
                             <x-bx-plus />
                         </button>
                         <div>

@@ -163,7 +163,37 @@
         </div>
         </form>
     </div>
+</div>
+
+{{-- modal pra inserir anexo --}}
+<div class="modal fade" tabindex="-1" id="novoAnexoModal" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl" >
+      <div class="modal-content loadable p-3">
+        <form class="row mb-4" method="POST" id="novoAnexoForm">
+            <div class="col-md-12 mb-4">
+                <label for="anexo">Anexo</label>
+                <input type="file" class="mb-3 form-control-file @error('anexo') is-invalid @enderror"
+                    id="anexo" name="anexo">
+                <label for="descricao_anexo">Descrição do Anexo</label>
+                <textarea class="form-control @error('descricao_anexo') is-invalid @enderror" 
+                          id="descricao_anexo"
+                          name="descricao_anexo" rows="1"></textarea>
+                @error('anexo')
+                    <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+                @error('descricao_anexo')
+                    <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="col-12">
+                <button type="submit" title="Inserir novo anexo" class="btn btn-primary">
+                    <x-bx-save /> Salvar
+                 </button>
+            </div>
+        </form>
+      </div>
     </div>
+</div>
 @endsection
 
 @section('extras-scripts')
@@ -349,7 +379,10 @@
         }
 
         function activeInsertNewAnexo() {
-            // TODO
+            $('.novo-anexo').click(function (event) {
+                event.preventDefault();
+                $('#novoAnexoModal').modal('show');
+            })        
         }
     </script>
 @endsection
