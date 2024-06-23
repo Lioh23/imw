@@ -27,8 +27,7 @@ use App\Services\ServiceFinanceiro\UpdateLancamentoEntradaService;
 use App\Services\ServiceFinanceiro\UpdateLancamentoSaidaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class FinanceiroController extends Controller
 {
@@ -202,10 +201,21 @@ class FinanceiroController extends Controller
         try {
             $data = app(GetAnexosByLancamentoService::class)->execute($lancamento);
             return view('financeiro.html-edicao-anexo', $data);
-        } catch(LancamentoNotFoundException $e) {
-            return response()->json(['message' => 'Lançamento não encontrado'], 400);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Não foi possível abrir a página de movimento de caixa'], 500);
+        }
+    }
+
+    public function downloadAnexo(Anexo $anexo)
+    {
+        try {
+            $fileContent = Storage::disk('minio')->get($anexo->caminho);
+        
+            return response($fileContent)
+                ->header('Content-Type', "application/{$anexo->mime}")
+                ->header('Content-Disposition', 'attachment; filename="' . $anexo->nome . '"');
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Não foi possível baixar o anexo informado'], 500);
         }
     }
 

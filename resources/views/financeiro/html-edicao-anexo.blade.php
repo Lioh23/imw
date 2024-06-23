@@ -42,8 +42,11 @@
         
                     {{-- actions --}}
                     <div>
-                        <a href="" class="btn btn-secondary mr-2 rounded-circle bs-tooltip" target="_blank" title="Visualizar anexo">
-                            <x-bx-show-alt />
+                        <a  href="{{ route('financeiro.downloadAnexo', $anexo->id) }}" 
+                            class="btn btn-secondary mr-2 rounded-circle bs-tooltip" 
+                            target="_blank" 
+                            title="Baixar anexo">
+                            <x-bx-download />
                         </a>
                         <button class="btn btn-danger mr-2 rounded-circle delete-anexo bs-tooltip" 
                                 title="Excluir anexo"

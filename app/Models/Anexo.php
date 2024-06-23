@@ -15,4 +15,9 @@ class Anexo extends Model
         'descricao',
         'lancamento_id',
     ];
+
+    public function getMimeAttribute()
+    {
+        return collect(explode('.', $this->caminho))->last();
+    }
 }
