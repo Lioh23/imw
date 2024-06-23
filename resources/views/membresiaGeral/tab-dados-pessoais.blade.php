@@ -66,62 +66,79 @@
                         style="font-weight: bold">{{ $membro->escolaridade ?? 'Sem informações' }}</span>
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Escolaridade</span>
                 </p>
-                <p class="card-text">
-                    <span class="text-center d-block"
-                        style="font-weight: bold">{{ $membro->profissao ?? 'Sem informações' }}</span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Profissão</span>
-                </p>
+                @if ($membro->profissao)
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ $membro->profissao }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Profissão</span>
+                    </p>
+                @endif
                 <p class="card-text">
                     <span class="text-center d-block"
                         style="font-weight: bold">{{ $membro->rg ?? 'Sem informações' }}</span>
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">RG</span>
                 </p>
-                <p class="card-text">
-                    <span class="text-center d-block"
-                        style="font-weight: bold">{{ $membro->Funcao_Eclesiastica ?? 'Sem informações' }}</span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Função
-                        Eclesiástica</span>
-                </p>
-                <p class="card-text">
-                    <span class="text-center d-block"
-                        style="font-weight: bold">{{ $membro->cnh ?? 'Sem informações' }}</span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">CNH</span>
-                </p>
-                <p class="card-text">
-                    <span class="text-center d-block"
-                        style="font-weight: bold">{{ $membro->documento ?? 'Sem informações' }}</span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Documento</span>
-                </p>
-                <p class="card-text">
-                    <span class="text-center d-block"
-                        style="font-weight: bold">{{ $membro->documento_complemento ?? 'Sem informações' }}</span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Documento
-                        Complemento
-                    </span>
-                </p>
-                <p class="card-text">
-                    <span class="text-center d-block" style="font-weight: bold">
-                        {{ $membro->data_conversao ? Carbon\Carbon::parse($membro->data_conversao)->format('d/m/Y') : 'sem informações' }}
-                    </span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Conversão</span>
-                </p>
-                <p class="card-text">
-                    <span class="text-center d-block"
-                        style="font-weight: bold">{{ $membro->data_batismo ?? 'Sem informações' }}</span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo</span>
-                </p>
-                <p class="card-text">
-                    <span class="text-center d-block"
-                        style="font-weight: bold">{{ $membro->data_batismo_espirito ?? 'Sem informações' }}</span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo Espirito
-                        Santo
-                    </span>
-                </p>
-                <p class="card-text">
-                    <span class="text-center d-block"
-                        style="font-weight: bold">{{ $membro->historico ?? 'Sem informações' }}</span>
-                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Histórico</span>
-                </p>
+                @if ($membro->Funcao_Eclesiastica)
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ $membro->Funcao_Eclesiastica }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Função Eclesiástica</span>
+                    </p>
+                @endif
+                @if ($membro->cnh)
+                    <p class="card-text">
+                        <span class="text-center d-block"
+                            style="font-weight: bold">{{ $membro->cnh }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">CNH</span>
+                    </p>
+                @endif
+                @if ($membro->documento)
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ $membro->documento }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Documento</span>
+                    </p>
+                @endif
+                @if ($membro->documento_complemento)
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ $membro->documento_complemento }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Documento Complemento</span>
+                    </p>
+                @endif
+                @if ($membro->data_conversao)
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ $membro->data_conversao ? Carbon\Carbon::parse($membro->data_conversao)->format('d/m/Y') : 'sem informações' }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Conversão</span>
+                    </p>
+                @endif
+                @if ($membro->data_batismo)
+                    <p class="card-text">
+                        <span class="text-center d-block"
+                            style="font-weight: bold">{{ $membro->data_batismo->format('d/m/Y') }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo</span>
+                    </p>
+                @endif
+                @if ($membro->data_batismo_espirito)
+                    <p class="card-text">
+                        <span class="text-center d-block"
+                            style="font-weight: bold">{{ $membro->data_batismo_espirito }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo Espirito Santo</span>
+                    </p>
+                @endif
+                @if ($membro->historico)
+                    <p class="card-text">
+                        <span class="text-center d-block"
+                            style="font-weight: bold">{{ $membro->historico }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Histórico</span>
+                    </p>
+                @endif
                 <p class="card-text">
                     <span class="text-center d-block"
                         style="font-weight: bold">{{ $membro->congregacao->nome ?? 'Sem informações' }}</span>
