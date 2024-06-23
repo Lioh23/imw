@@ -20,86 +20,114 @@
     aria-labelledby="border-top-dados-pessoais">
     <div class="card-body">
         <div class="card mb-3 mosaic">
-            @if (isset($membro['data_nascimento']))
+            @if ($membro)
                 <p type='date' class="card-text">
-                    <span class="text-center d-block" style="font-weight: bold">{{ old('data_nascimento', optional($membro->data_nascimento)->format('d/m/Y')) }}</span>
+                    <span class="text-center d-block" style="font-weight: bold">
+                        {{ old('data_nascimento', optional($membro->data_nascimento)->format('d/m/Y')) ?? 'Sem informações' }}
+                    </span>
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Nascimento</span>
                 </p>
-            @endif
-            @if (isset($membro['cpf']))
-                <p class="card-text"> CPF: {{ $membro['cpf'] }}</p>
-            @endif
-            @if (isset($membro['sexo']))
-                <p class="card-text"> sexo:
-                    {{ $membro['sexo'] === 'F' ? 'feminino' : ($membro['sexo'] === 'M' ? 'masculino' : 'outro') }}</p>
-            @endif
-            @if (isset($membro['estado_civil']))
-                <p class="card-text"> Estado civil: {{ $membro['estado_civil'] === 'S' ? 'Solteiro' : 'Casado' }}</p>
-            @endif
-            @if (isset($membro['nacionalidade']))
-                <p class="card-text"> Nacionalidade: {{ $membro['nacionalidade'] }}</p>
-            @endif
-            @if (isset($membro['naturalidade']))
-                <p class="card-text"> Naturalidade: {{ $membro['naturalidade'] }}</p>
-            @endif
-            @if (isset($membro['uf']))
-                <p class="card-text">UF :{{ $membro['uf'] }}</p>
-            @endif
-            @if (isset($membro['escolaridade']))
-                <p class="card-text">Escolaridade: {{ $membro['escolaridade'] }}</p>
-            @endif
-            @if (isset($membro['profissao']))
-                <p class="card-text">Profissão: {{ $membro['profissao'] }}</p>
-            @endif
-            @if (isset($membro['Função Eclesiástica']))
-                <p class="card-text">Função Eclesiástica {{ $membro['Função Eclesiástica'] }}</p>
-            @endif
-            @if (isset($membro['rg']))
-                <p class="card-text">RG: {{ $membro['rg'] }}</p>
-            @elseif(isset($membro['cnh']))
-                <p class="card-text">CNH: {{ $membro['cnh'] }}</p>
-            @endif
-            @if (isset($membro['documento']))
-                <p class="card-text">Documento {{ $membro['documento'] }}</p>
-            @endif
-            @if (isset($membro['documento_complemento']))
-                <p class="card-text">Documento Complemento {{ $membro['documento_complemento'] }}</p>
-            @endif
-            @if (isset($membro['data_conversao']))
-                <p class="card-text"> data de conversão {{ $membro->data_conversao ? Carbon\Carbon::parse($membro->data_conversao)->format('d/m/Y') : '' }}</p> 
-            @endif
-            @if (isset($membro['data_batismo']))
-                <p class="card-text"> Data de Batismo {{ $membro['data_batismo'] }}</p>
-            @endif
-            @if (isset($membro['data_batismo_espirito']))
-                <p class="card-text">Data de Batismo Espirito Santo {{ $membro['data_batismo_espirito'] }}</p>
-            @endif
-            @if (isset($membro['historico']))
-                <p class="card-text">Data de Batismo Espirito Santo {{ $membro['historico'] }}</p>
-            @endif
-            @if ($membro->congregacao)
-                <p class="card-text">congregacao {{ $membro->congregacao->nome }}</p>
-            @endif
-            @if (
-                !isset($membro['data_nascimento']) &&
-                    !isset($membro['cpf']) &&
-                    !isset($membro['sexo']) &&
-                    !isset($membro['estado_civil']) &&
-                    !isset($membro['nacionalidade']) &&
-                    !isset($membro['naturalidade']) &&
-                    !isset($membro['uf']) &&
-                    !isset($membro['escolaridade']) &&
-                    !isset($membro['profissao']) &&
-                    !isset($membro['Função Eclesiástica']) &&
-                    !isset($membro['rg']) &&
-                    !isset($membro['cnh']) &&
-                    !isset($membro['documento']) &&
-                    !isset($membro['documento_complemento']) &&
-                    !isset($membro['data_conversao']) &&
-                    !isset($membro['data_batismo']) &&
-                    !isset($membro['data_batismo_espirito']) &&
-                    !isset($membro['historico']) &&
-                    !isset($membro['congregacao_id']))
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">
+                        {{ $membro->cpf ?? 'Sem informações' }}
+                    </span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">CPF</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">
+                        {{ $membro->sexo === 'F' ? 'feminino' : ($membro->sexo === 'M' ? 'masculino' : 'outro') ?? 'Sem informações' }}
+                    </span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Sexo</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">
+                        {{ $membro->estado_civil === 'S' ? 'Solteiro' : 'Casado' ?? 'Sem informações' }}
+                    </span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Estado Civil</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">
+                        {{ $membro->nacionalidade ?? 'Sem informações' }}
+                    </span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Nacionalidade</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->naturalidade ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Naturalidade</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->uf ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">UF</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->escolaridade ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Escolaridade</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->profissao ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Profissão</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->rg ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">RG</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->Funcao_Eclesiastica ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Função
+                        Eclesiástica</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->cnh ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">CNH</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->documento ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Documento</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->documento_complemento ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Documento
+                        Complemento
+                    </span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">
+                        {{ $membro->data_conversao ? Carbon\Carbon::parse($membro->data_conversao)->format('d/m/Y') : 'sem informações' }}
+                    </span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Conversão</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->data_batismo ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->data_batismo_espirito ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo Espirito
+                        Santo
+                    </span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->historico ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Histórico</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->congregacao->nome ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Congregação</span>
+                </p>
+            @else
                 <span class="card-text">Sem informações</span>
             @endif
         </div>

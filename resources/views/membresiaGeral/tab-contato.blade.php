@@ -21,12 +21,11 @@
     <div class="card-body">
         <div class="card mb-3 mosaic">
             @if($membro->contato)
-                
+
                 <p class="card-text">
                     <span class="text-center d-block" style="font-weight: bold">{{ $membro->contato->email_preferencial ?? 'Sem informação de e-mail' }}</span>
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">E-mail</span>
                 </p>
-                
                 @if (isset($membro['telefone_preferencial']))
                     <p class="card-text"> Telefone: {{ $membro['telefone_preferencial'] }}</p>
                 @endif
@@ -40,8 +39,8 @@
                     <p class="card-text"> numero: {{ $membro['numero'] }}</p>
                 @endif
 
-                <p class="card-text"> 
-                    <span class="text-center d-block" style="font-weight: bold">{{ $membro['complemento'] ?? 'Não informado' }}</span> 
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro['complemento'] ?? 'Não informado' }}</span>
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Complemento </span>
                 </p>
 
