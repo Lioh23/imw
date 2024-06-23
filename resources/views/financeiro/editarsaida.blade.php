@@ -9,6 +9,9 @@
 
 @section('extras-css')
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/pt-BR.js"></script>
     <style>
@@ -145,43 +148,13 @@
             </div>
         </div>
 
-        <!-- Anexos -->
-        <!-- Anexos existentes -->
-        <div class="row mb-4">
-            <div class="col-md-12">
-                <h4><b>Anexos</b></h4>
-                @php
-                    $x = 0;
-                @endphp
-                @foreach ($anexos as $index => $anexo)
-                    <div class="mb-3">
-                        <label for="anexo1">Anexo {{ ++$x }}</label><br>
-                        <a href="{{ asset($anexo['url']) }}" target="_blank">{{ $anexo['nome'] }}</a>
-                        <input type="file" class="mb-3 form-control-file @error('anexo' . $index) is-invalid @enderror"
-                            id="anexo{{ $index }}" name="anexo{{ $index }}">
-                        <label for="descricao_anexo1">Descrição do Anexo {{ $x }}</label>
-                        <textarea class="form-control mt-2" name="descricao_anexo[{{ $anexo['nome'] }}]" rows="1">{{ $anexo['nome'] }}</textarea>
-                        @error('anexo' . $index)
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                @endforeach
-
-                <!-- Campos de upload adicionais, se necessário -->
-                @for ($i = count($anexos), $x = $i; $i < 3; $i++)
-                    <div class="mb-3">
-                        <label for="anexo1">Anexo {{ ++$x }}</label><br>
-                        <input type="file" class="mb-3 form-control-file @error('anexo' . $i) is-invalid @enderror"
-                            id="anexo{{ $i }}" name="anexo{{ $i }}">
-                        <label for="descricao_anexo1">Descrição do Anexo {{ $x }}</label>
-                        <textarea class="form-control mt-2" name="descricao_anexo[{{ $i }}]" rows="1"></textarea>
-                        @error('anexo' . $i)
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                @endfor
-            </div>
+        <div class="col-12 mb-4">
+            <h4><b>Anexos</b></h4>
         </div>
+        <div id="contentAnexos" 
+             data-url="{{ route('financeiro.htmlManipularAnexos', ['lancamento' => $saida->id]) }}"
+             class="loadable">
+        </div> 
 
         <div class="row mb-4 justify-content-center">
              <button type="submit" title="Atualizar movimentação de entrada" class="btn btn-primary btn-lg ml-4">
@@ -194,6 +167,8 @@
 @endsection
 
 @section('extras-scripts')
+    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script>
         // máscara de valor
         $('#valor').mask('0.000.000.000,00', {
@@ -214,6 +189,7 @@
 
         $(document).ready(function() {
             $('#tipo_pagante_favorecido_id').trigger('change'); // disparar o evento change ao carregar a página
+            loadAnexos();
         });
 
         $('#tipo_pagante_favorecido_id').change(function() {
@@ -284,5 +260,96 @@
                 $('#show_pagante_favorecido').html(inputHtml);
             }
         });
+
+        function loadAnexos() {
+            $.ajax({
+                url: $('#contentAnexos').data('url'),
+                method: 'GET',
+                beforeSend: function () {
+                    $('#contentAnexos').html('<div style="min-height: 200px"></div>');
+                    $('.loadable').block({
+                        message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
+                        // timeout: 2000, //unblock after 2 seconds
+                        overlayCSS: {
+                            backgroundColor: '#fff',
+                            opacity: 0.8,
+                            cursor: 'wait'
+                        },
+                        css: {
+                            border: 0,
+                            padding: 0,
+                            width: '100%',
+                            height: '100%',
+                            padding: '80px',
+                            backgroundColor: 'transparent',
+                        }
+                    });
+                },
+                success: function (data) {
+                    $('#contentAnexos').html(data);
+                    activeAnexosFunctions();
+                },
+                error: function (data) {
+                    toastr.error('Erro ao carregar anexos');
+                },
+                complete: function () {
+                    $('.loadable')?.unblock();
+                }
+            });
+        }
+
+        function activeAnexosFunctions() {
+           activeTooltips();
+           activeDeleteAnexos();
+           activeInsertNewAnexo();
+        }
+
+        function activeTooltips() {
+            $('.bs-tooltip-top').tooltip();
+        }
+
+        function activeDeleteAnexos() {
+            $('.delete-anexo').click(function (event) {
+                event.preventDefault();
+
+                const url = $(this).data('url');
+                swal({
+                    title: 'Deseja realmente apagar este anexo?',
+                    type: 'error',
+                    showCancelButton: true,
+                    confirmButtonText: "Deletar",
+                    confirmButtonColor: "#d33",
+                    cancelButtonText: "Cancelar",
+                    padding: '2em'
+                }).then(function(result) {
+                    if (result.value) {
+                        deleteAnexo(url);
+                    }
+                })
+            });
+        }
+
+        function deleteAnexo(url) {
+            $.ajax({
+                url,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                method: 'DELETE',
+                beforeSend: function () {
+                },
+                success: function (data) {
+                    toastr.success('Anexo excluído com sucesso.');
+                    loadAnexos();
+                },
+                error: function (data) {
+                    toastr.error('Erro ao excluir anexo');
+                }
+            });
+        }
+
+        function activeInsertNewAnexo() {
+            // TODO
+        }
     </script>
 @endsection

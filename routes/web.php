@@ -140,6 +140,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar-movimento/{id}/{tipo_lancamento}', [FinanceiroController::class, 'editarMovimento'])->name('editarMovimento')->middleware(['seguranca:financeiro-caixas']);
             Route::delete('/excluir-movimento/{id}', [FinanceiroController::class, 'excluirMovimento'])->name('excluirMovimento')->middleware(['seguranca:financeiro-caixas']);
             Route::get('/anexos/{id_lancamento}', [FinanceiroController::class, 'buscarAnexos'])->name('buscarAnexos')->middleware(['seguranca:financeiro-caixas']);
+            Route::get('/anexos/html/{lancamento}', [FinanceiroController::class, 'htmlManipularAnexos'])->name('htmlManipularAnexos')->middleware(['seguranca:financeiro-caixas']);
+            Route::delete('/anexos/{anexo}', [FinanceiroController::class, 'deleteAnexo'])->name('anexo.delete')->middleware(['seguranca:financeiro-caixas']);
             //Plano de Conta
             Route::get('/plano-conta', [FinanceiroPlanoContaController::class, 'index'])->name('plano.conta')->middleware(['seguranca:financeiro-planoconta']);
 

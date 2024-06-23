@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\FinanceiroLancamentoNotFoundException;
+use App\Exceptions\LancamentoNotFoundException;
 use App\Http\Requests\FinanceiroStoreEntradaRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Http\Requests\FinanceiroTransferenciaRequest;
@@ -11,6 +12,7 @@ use App\Http\Requests\FinanceiroUpdateSaidaRequest;
 use App\Models\Anexo;
 use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
+use App\Services\ServiceAnexos\GetAnexosByLancamentoService;
 use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
 use App\Services\ServiceFinanceiro\ConsolidacaoStoreService;
@@ -193,6 +195,23 @@ class FinanceiroController extends Controller
             $route = $tipo_lancamento == FinanceiroPlanoConta::TP_ENTRADA ? 'financeiro.editarentrada' : 'financeiro.editarsaida';
             return redirect()->route($route)->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
+    }
+
+    public function htmlManipularAnexos($lancamento)
+    {
+        try {
+            $data = app(GetAnexosByLancamentoService::class)->execute($lancamento);
+            return view('financeiro.html-edicao-anexo', $data);
+        } catch(LancamentoNotFoundException $e) {
+            return response()->json(['message' => 'Lançamento não encontrado'], 400);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Não foi possível abrir a página de movimento de caixa'], 500);
+        }
+    }
+
+    public function deleteAnexo(Anexo $anexo)
+    {
+        
     }
     
     private function prepareDataForView($data, $lancamento, $key) {
