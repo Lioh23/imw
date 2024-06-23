@@ -136,4 +136,9 @@ class FinanceiroLancamento extends Model
     {
         return $this->belongsTo(InstituicoesInstituicao::class, 'instituicao_id');
     }
+
+    public function anexos()
+    {
+        return $this->hasMany(Anexo::class, 'lancamento_id');
+    }
 }

@@ -168,16 +168,18 @@
 {{-- modal pra inserir anexo --}}
 <div class="modal fade" tabindex="-1" id="novoAnexoModal" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-xl" >
-      <div class="modal-content loadable p-3">
-        <form class="row mb-4" method="POST" id="novoAnexoForm">
+      <div class="modal-content p-3" id="novoAnexoModalContent">
+        <form class="row mb-4" method="POST" id="novoAnexoForm" data-url="{{ route('financeiro.storeNewAnexo', ['lancamento' => $saida->id]) }}">
             <div class="col-md-12 mb-4">
                 <label for="anexo">Anexo</label>
-                <input type="file" class="mb-3 form-control-file @error('anexo') is-invalid @enderror"
-                    id="anexo" name="anexo">
+                <input  type="file" 
+                        class="mb-3 form-control-file @error('anexo') is-invalid @enderror"
+                        id="anexo" name="anexo">
                 <label for="descricao_anexo">Descrição do Anexo</label>
                 <textarea class="form-control @error('descricao_anexo') is-invalid @enderror" 
                           id="descricao_anexo"
-                          name="descricao_anexo" rows="1"></textarea>
+                          name="descricao_anexo" 
+                          rows="1"></textarea>
                 @error('anexo')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -291,6 +293,55 @@
             }
         });
 
+        // funções relativas ao anexo
+        $('#novoAnexoForm').submit(function (event) {
+            event.preventDefault();
+            const formData = new FormData(this);
+
+            console.log($(this).data('url'));
+            $.ajax({
+                url: $(this).data('url'),
+                method: 'POST',
+                data: formData,
+                 processData: false,
+                contentType: false,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                beforeSend: function () {
+                    $('#novoAnexoModalContent').block({ 
+                        message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
+                        overlayCSS: {
+                            backgroundColor: '#fff',
+                            opacity: 0.8,
+                            cursor: 'wait'
+                        },
+                        css: {
+                            border: 0,
+                            color: '#fff',
+                            padding: 0,
+                            backgroundColor: 'transparent'
+                        }
+                    });
+                },
+                success: function (data) {
+                    toastr.success('Anexo salvo com sucesso.');
+                    $('#novoAnexoModal').modal('hide');
+                    loadAnexos();
+                },
+                error: function (xhr) {
+                    if (xhr.status == 422) {
+                        toastr.error(xhr.responseJSON.message);
+                    } else {
+                        toastr.error('Erro ao tentar salvar o anexo');
+                    }
+                },
+                complete: function () {
+                    $('#novoAnexoModalContent').unblock();
+                }
+            });
+        });
+
         function loadAnexos() {
             $.ajax({
                 url: $('#contentAnexos').data('url'),
@@ -299,7 +350,6 @@
                     $('#contentAnexos').html('<div style="min-height: 200px"></div>');
                     $('.loadable').block({
                         message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
-                        // timeout: 2000, //unblock after 2 seconds
                         overlayCSS: {
                             backgroundColor: '#fff',
                             opacity: 0.8,
@@ -331,7 +381,7 @@
         function activeAnexosFunctions() {
            activeTooltips();
            activeDeleteAnexos();
-           activeInsertNewAnexo();
+           activeOpenModalNewAnexo();
         }
 
         function activeTooltips() {
@@ -378,9 +428,10 @@
             });
         }
 
-        function activeInsertNewAnexo() {
+        function activeOpenModalNewAnexo() {
             $('.novo-anexo').click(function (event) {
                 event.preventDefault();
+                $('#novoAnexoForm')[0].reset();
                 $('#novoAnexoModal').modal('show');
             })        
         }

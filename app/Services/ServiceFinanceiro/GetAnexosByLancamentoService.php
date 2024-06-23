@@ -1,6 +1,6 @@
 <?php 
 
-namespace App\Services\ServiceAnexos;
+namespace App\Services\ServiceFinanceiro;
 
 use App\Models\Anexo;
 
