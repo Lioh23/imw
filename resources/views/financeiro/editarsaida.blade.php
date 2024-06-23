@@ -297,8 +297,6 @@
         $('#novoAnexoForm').submit(function (event) {
             event.preventDefault();
             const formData = new FormData(this);
-
-            console.log($(this).data('url'));
             $.ajax({
                 url: $(this).data('url'),
                 method: 'POST',
@@ -417,6 +415,20 @@
                 },
                 method: 'DELETE',
                 beforeSend: function () {
+                    $('#anexosList').block({ 
+                        message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
+                        overlayCSS: {
+                            backgroundColor: '#fff',
+                            opacity: 0.8,
+                            cursor: 'wait'
+                        },
+                        css: {
+                            border: 0,
+                            color: '#fff',
+                            padding: 0,
+                            backgroundColor: 'transparent'
+                        }
+                    })
                 },
                 success: function (data) {
                     toastr.success('Anexo excluído com sucesso.');
@@ -424,6 +436,9 @@
                 },
                 error: function (data) {
                     toastr.error('Erro ao excluir anexo');
+                },
+                complete: function () {
+                    $('#anexosList')?.unblock();
                 }
             });
         }

@@ -24,7 +24,7 @@
 
 <!-- Anexos anexos -->
 <div class="col-12 mb-5">
-    <div class="row" style="gap: .5rem">   
+    <div class="row" style="gap: .5rem" id="anexosList">   
         @foreach ($anexos as $index => $anexo)
             @if($anexo)
                 {{-- anexo existente --}}
