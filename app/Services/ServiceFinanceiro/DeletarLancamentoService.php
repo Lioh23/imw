@@ -12,7 +12,7 @@ class DeletarLancamentoService
         $lancamento = FinanceiroLancamento::findOrFail($id);
 
         if ($lancamento->instituicao_id == session()->get('session_perfil')->instituicao_id) {
-            $lancamento->forceDelete();
+            $lancamento->delete();
         } else {
             throw new \Exception('Permissão negada para excluir este lançamento.');
         }
