@@ -217,9 +217,6 @@
                                 <x-bx-wallet /> Saldo
                             </a>
 
-                            <button class="btn btn-success btn-rounded btn-responsive mb-2" onclick="exportReportToExcel();">
-                                <i class="fa fa-file-excel" aria-hidden="true"></i> Exportar
-                            </button>
                         </div>
                     </div>
                     <div class="table-responsive mt-4">
@@ -336,6 +333,9 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        <button class="btn btn-success btn-rounded btn-responsive mb-2" onclick="exportReportToExcel();">
+                                <i class="fa fa-file-excel" aria-hidden="true"></i> Exportar
+                        </button>
                     </div>
                 </div>
             </div>
