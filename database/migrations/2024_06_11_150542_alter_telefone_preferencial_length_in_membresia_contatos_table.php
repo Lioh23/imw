@@ -14,7 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::table('membresia_contatos', function (Blueprint $table) {
-            $table->string('telefone_preferencial', 14)->nullable()->change();
+            $table->dropColumn('telefone_preferencial');
+        });
+
+        Schema::table('membresia_contatos', function (Blueprint $table) {
+            $table->string('telefone_preferencial', 14)->nullable()->after('id');
         });
     }
 
@@ -25,6 +29,10 @@ return new class extends Migration
      */
     public function down()
     {
+        Schema::table('membresia_contatos', function (Blueprint $table) {
+            $table->dropColumn('telefone_preferencial');
+        });
+
         Schema::table('membresia_contatos', function (Blueprint $table) {
             $table->string('telefone_preferencial', 11)->nullable()->change();
         });

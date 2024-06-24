@@ -2,9 +2,10 @@
 
 namespace App\Providers;
 
-use App\Services\ServiceBase\GetBaseParamsService;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\ServiceProvider;
+use App\Services\ServiceBase\GetBaseParamsService;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -25,6 +26,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
+
         View::composer('*', fn ($view) => $view->with('baseParams', app(GetBaseParamsService::class)->execute()) );
     }
 }

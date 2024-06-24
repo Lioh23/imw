@@ -94,6 +94,11 @@ class MembresiaMembro extends Model
         return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->where('lastrec', 1);
     }
 
+    public function disciplinas()
+    {
+        return $this->hasMany(MembresiaDisciplina::class, 'membro_id');
+    }
+    
     public function notificacaoTransferenciaAtiva()
     {
         return $this->hasOne(NotificacaoTransferencia::class, 'membro_id')->whereNull('dt_aceite')->whereNull('dt_rejeicao');

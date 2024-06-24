@@ -17,7 +17,7 @@
 <style>
     .swal2-popup .swal2-styled.swal2-cancel {
         color: white!important;
-    }
+    },
 </style>
 @endsection
 
@@ -109,6 +109,15 @@
                         </thead>
                     </table>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    {{-- modal de visualizar membro --}}
+    <div class="modal fade" tabindex="-1" id="visualizarMembroModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" >
+            <div class="modal-content loadable">
+            <div class="modal-body" style="min-height: 200px"></div>
             </div>
         </div>
     </div>

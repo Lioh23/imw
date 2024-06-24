@@ -23,7 +23,47 @@ $(document).ready(function() {
             }).then(function(result) {
                 if(result.value) document.getElementById(formId).submit()
             })
-        }) 
+        })
+
+        $('.btn-visualizar').click(function () {
+            $('#visualizarMembroModal').modal('show')
+    
+            $.ajax({
+                type: "get",
+                url: "/membresia-geral/visualizar-html/" + $(this).data('membro-id'),
+                beforeSend: function () {
+                    $('#visualizarMembroModal .modal-content').html('<div class="modal-body" style="min-height: 200px"></div>');
+    
+                    $('.loadable').block({
+                        message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
+                        // timeout: 2000, //unblock after 2 seconds
+                        overlayCSS: {
+                            backgroundColor: '#fff',
+                            opacity: 0.8,
+                            cursor: 'wait'
+                        },
+                        css: {
+                            border: 0,
+                            padding: 0,
+                            width: '100%',
+                            height: '100%',
+                            padding: '80px',
+                            backgroundColor: 'transparent',
+                        }
+                    });
+                },
+                success: function (html) {
+                    $('#visualizarMembroModal .modal-content').html(html);
+                },
+                error: function (error) {
+                    $('#visualizarMembroModal').modal('hide');
+                    toastr.error('Erro ao visualizar dados desta pessoa.');
+                },
+                complete: function () {
+                    $('.loadable').unblock();
+                }
+            });        
+        })
     }
 
     // passa as opções customizadas para o DataTable

@@ -11,6 +11,7 @@ use App\Http\Controllers\FinanceiroRelatorioController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
+use App\Http\Controllers\MembresiaGeralController;
 use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RelatorioController;
@@ -79,7 +80,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('disciplinar/{id}', [MembrosController::class, 'disciplinar'])->name('disciplinar')->middleware(['seguranca:membros-disciplinar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
             Route::post('disciplinar/store/{id}', [MembrosController::class, 'storeDisciplinar'])->name('disciplinar.store')->middleware(['seguranca:membros-disciplinar']);
             Route::put('disciplinar/update/{id}', [MembrosController::class, 'updateDisciplinar'])->name('disciplinar.update')->middleware(['seguranca:membros-disciplinar']);
-
         });
 
         Route::controller(HomeController::class)->group(function () {
@@ -123,6 +123,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar')->middleware(['seguranca:congregados-editar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
         });
 
+        Route::prefix('membresia-geral')->name('membresia-geral.')->group(function () {
+            Route::get('visualizar-html/{membro}', [MembresiaGeralController::class, 'visualizarHtml'])->name('visualizar-html');
+        });
+        
         /* Por enquanto somente visualiações */
         Route::prefix('financeiro')->name('financeiro.')->group(function () {
             Route::get('/movimento-caixa', [FinanceiroController::class, 'movimentocaixa'])->name('movimento.caixa')->middleware(['seguranca:financeiro-movimentocaixa-index']);

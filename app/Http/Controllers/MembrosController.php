@@ -80,6 +80,15 @@ class MembrosController extends Controller
         }
     }
 
+    public function visualizarHtml($id)
+    {
+        try {
+            return view('membresiaGeral.visualizar', ['membro' => MembresiaMembro::findOrFail($id)]);
+        } catch(\Exception $e) {
+            return response()->json(['message' => 'Erro ao visualizar dados desta pessoa.'], 500);
+        }
+    }
+
     public function update(UpdateMembroRequest $request, $id)
     {
         try {

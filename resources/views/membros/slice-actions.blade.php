@@ -29,3 +29,9 @@
         <x-bx-log-in-circle />
     </a>
 @endif
+
+<button class="btn btn-sm btn-info mr-2 btn-rounded btn-visualizar bs-tooltip" 
+        title="Visualizar dados da pessoa"
+        data-membro-id="{{ $rolMembro->membro_id }}">
+    <x-bx-show />
+</button>
