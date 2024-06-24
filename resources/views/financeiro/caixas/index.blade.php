@@ -89,7 +89,7 @@
                                                     <td style="{{ $caixa->tipo == 'P' ? 'color: white !important;' : '' }}">
                                                         {{ $caixa->descricao }}</td>
                                                     <td style="{{ $caixa->tipo == 'P' ? 'color: white !important;' : '' }}">
-                                                        {{ match ($caixa->tipo) {'S' => 'Secundário','B' => 'Banco','P' => 'Principal','C' => 'Caixa',default => $caixa->tipo} }}
+                                                        {{ match ($caixa->tipo) {'S' => 'Secundário','B' => 'Banco','P' => 'Principal','C' => 'Congregação',default => $caixa->tipo} }}
                                                     </td>
                                                     <td class="table-action">
                                                         @if ($caixa->tipo != 'P')

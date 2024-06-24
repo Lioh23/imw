@@ -41,7 +41,7 @@
                                     <select class="form-control @error('tipo') is-invalid @enderror" name="tipo">
                                         <option value="" {{ old('tipo', $caixa->tipo) == '' ? 'selected' : '' }}>Selecione um tipo</option>
                                         <option value="B" {{ old('tipo', $caixa->tipo) == 'B' ? 'selected' : '' }}>Banco</option>
-                                        <option value="C" {{ old('tipo', $caixa->tipo) == 'C' ? 'selected' : '' }}>Caixa</option>
+                                        <option value="C" {{ old('tipo', $caixa->tipo) == 'C' ? 'selected' : '' }}>Congregação</option>
                                         <option value="S" {{ old('tipo', $caixa->tipo) == 'S' ? 'selected' : '' }}>Secundário</option>
                                     </select>
                                 
