@@ -1,6 +1,5 @@
-<div class="modal fade" id="modalInstituicoes" tabindex="-1" role="dialog" aria-labelledby="modalInstituicoesLabel"
-    aria-hidden="true">
-    <div class="modal-dialog" role="document">
+<div class="modal fade" id="modalInstituicoes" tabindex="-1" role="dialog" aria-labelledby="modalInstituicoesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <input type="text" class="form-control" id="searchInstituicao" placeholder="Pesquisar instituição">
