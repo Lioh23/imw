@@ -3,14 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Exceptions\FinanceiroLancamentoNotFoundException;
+use App\Exceptions\LancamentoNotFoundException;
 use App\Http\Requests\FinanceiroStoreEntradaRequest;
+use App\Http\Requests\FinanceiroStoreNewAnexoRequest;
 use App\Http\Requests\FinanceiroStoreSaidaRequest;
 use App\Http\Requests\FinanceiroTransferenciaRequest;
 use App\Http\Requests\FinanceiroUpdateEntradaRequest;
 use App\Http\Requests\FinanceiroUpdateSaidaRequest;
+use App\Http\Requests\StoreNewAnexoRequest;
 use App\Models\Anexo;
 use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
+use App\Services\ServiceFinanceiro\GetAnexosByLancamentoService;
 use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
 use App\Services\ServiceFinanceiro\ConsolidacaoStoreService;
@@ -20,13 +24,13 @@ use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
 use App\Services\ServiceFinanceiro\SaldoService;
 use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
+use App\Services\ServiceFinanceiro\StoreNewAnexoService;
 use App\Services\ServiceFinanceiro\StoreTransferenciaService;
 use App\Services\ServiceFinanceiro\UpdateLancamentoEntradaService;
 use App\Services\ServiceFinanceiro\UpdateLancamentoSaidaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
-
+use Illuminate\Support\Facades\Storage;
 
 class FinanceiroController extends Controller
 {
@@ -194,6 +198,53 @@ class FinanceiroController extends Controller
             return redirect()->route($route)->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
     }
+
+    public function htmlManipularAnexos($lancamento)
+    {
+        try {
+            $data = app(GetAnexosByLancamentoService::class)->execute($lancamento);
+            return view('financeiro.html-edicao-anexo', $data);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Não foi possível abrir a página de movimento de caixa'], 500);
+        }
+    }
+
+    public function downloadAnexo(Anexo $anexo)
+    {
+        try {
+            $fileContent = Storage::disk('minio')->get($anexo->caminho);
+        
+            return response($fileContent)
+                ->header('Content-Type', "application/{$anexo->mime}")
+                ->header('Content-Disposition', 'attachment; filename="' . $anexo->nome . '"');
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Não foi possível baixar o anexo informado'], 500);
+        }
+    }
+
+    public function deleteAnexo(Anexo $anexo)
+    {
+        try {
+            DB::beginTransaction();
+            $anexo->delete();
+            DB::commit();
+            return response()->json(['message' => 'Anexo excluído com sucesso.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Não foi possível excluir o anexo informado'], 500);
+        }
+    }
+
+    public function storeNewAnexo(FinanceiroStoreNewAnexoRequest $request, FinanceiroLancamento $lancamento)
+    {
+        try {
+            DB::beginTransaction();
+            app(StoreNewAnexoService::class)->execute($request->validated(), $lancamento);
+            DB::commit();
+            return response()->json(['message' => 'Anexo salvo com sucesso.']);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Não foi possível salvar o anexo informado'], 500);
+        }
+    }  
     
     private function prepareDataForView($data, $lancamento, $key) {
         $data[$key] = $lancamento;
