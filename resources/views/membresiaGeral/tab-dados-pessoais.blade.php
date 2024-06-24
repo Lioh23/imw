@@ -16,6 +16,7 @@
         border-radius: 10px;
     }
 </Style>
+
 <div class=" card tab-pane fade show active" id="border-top-dados-pessoal" role="tabpanel"
     aria-labelledby="border-top-dados-pessoais">
     <div class="card-body">

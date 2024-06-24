@@ -18,11 +18,9 @@
 
 <div class="tab-pane fade" id="border-top-historico" role="tabpanel" aria-labelledby="border-top-historico">
     <div class="card-body">
-        {{-- {{ dd($membro->formacoesEclesiasticas) }} --}}
         @if ($membro->rolPermanente)
             @foreach ($membro->rolPermanente as $rol)
                 <div class="card mb-3 mosaic">
-                    {{-- Exemplo de visualização de uma propriedade formatada --}}
                     <p class="card-text">
                         <span class="text-center d-block" style="font-weight: bold">
                             {{ $rol->status == 'A' ? ($rol->dt_recepcao ? $rol->dt_recepcao->format('d/m/Y') : 'Sem informações') : ($rol->dt_exclusao ? $rol->dt_exclusao->format('d/m/Y') : 'Sem informações') }}
