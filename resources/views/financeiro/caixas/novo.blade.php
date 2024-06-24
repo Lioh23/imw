@@ -43,7 +43,7 @@
                                         <option value="" {{ old('tipo') == '' ? 'selected' : '' }}>Selecione um tipo
                                         </option>
                                         <option value="B" {{ old('tipo') == 'B' ? 'selected' : '' }}>Banco</option>
-                                        <option value="C" {{ old('tipo') == 'C' ? 'selected' : '' }}>Caixa</option>
+                                        <option value="C" {{ old('tipo') == 'C' ? 'selected' : '' }}>Congregação</option>
                                         <option value="S" {{ old('tipo') == 'S' ? 'selected' : '' }}>Secundário
                                         </option>
                                     </select>

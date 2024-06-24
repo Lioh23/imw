@@ -22,8 +22,10 @@ class IdentificaDadosTransferenciaPorExclusaoService
     private function fetchIgrejas()
     {
         return InstituicoesInstituicao::where('tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
-            ->where('id', '<>', Identifiable::fetchSessionIgrejaLocal()->id)
-            ->orderBy('nome')
-            ->get();
+        ->where('id', '<>', Identifiable::fetchSessionIgrejaLocal()->id)
+        ->where('ativo', 1)
+        ->orderBy('nome', 'asc')
+        ->get();
+    
     }
 }
