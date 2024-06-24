@@ -55,7 +55,7 @@
     <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+   <!--  <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script> -->
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
