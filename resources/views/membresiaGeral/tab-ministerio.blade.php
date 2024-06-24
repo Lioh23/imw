@@ -18,39 +18,81 @@
 </Style>
 <div class="tab-pane fade" id="border-top-ministerio" role="tabpanel" aria-labelledby="border-top-ministerial">
     <div class="card-body">
-        <h5 class="card-title">{{ $membro['nome'] }}</h5>
+        <h5 class="card-title">{{ $membro->nome }}</h5>
         <div class="card mb-3 mosaic">
             @if (isset($membro['funcoes_ministeriais']))
-                <p class="card-text">Funções Ministeriais: {{ $membro['funcoes_ministeriais'] }}</p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->funcoes_ministeriais }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">
+                        Funções Ministeriais
+                    </span>
+                </p>
             @endif
             @if (isset($membro['data_ordenacao']))
-                <p class="card-text">Data de Ordenação: {{ $membro['data_ordenacao'] }}</p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->data_ordenacao }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">
+                        Data de Ordenação
+                    </span>
+                </p>
             @endif
             @if (isset($membro['local_ordenacao']))
-                <p class="card-text">Local de Ordenação: {{ $membro['local_ordenacao'] }}</p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->local_ordenacao }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">
+                        Local de Ordenação
+                    </span>
+                </p>
             @endif
             @if (isset($membro['ministerio']))
-                <p class="card-text">Ministério: {{ $membro['ministerio'] }}</p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->ministerio }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">
+                        Ministério
+                    </span>
+                </p>
             @endif
             @if (isset($membro['data_ministerio']))
-                <p class="card-text">Data do Ministério: {{ $membro['data_ministerio'] }}</p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->data_ministerio }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">
+                        Data do Ministério
+                    </span>
+                </p>
             @endif
             @if (isset($membro['local_ministerio']))
-                <p class="card-text">Local do Ministério: {{ $membro['local_ministerio'] }}</p>
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->local_ministerio }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">
+                        Local do Ministério
+                    </span>
+                </p>
             @endif
             @if (isset($membro['observacoes']))
-                <p class="card-text">Observações: {{ $membro['observacoes'] }}</p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">
+                        {{ $membro->observacoes }}
+                    </span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Observações</span>
+                </p>
             @endif
             @if (
-                !isset($membro['funcoes_ministeriais']) &&
-                    !isset($membro['data_ordenacao']) &&
-                    !isset($membro['local_ordenacao']) &&
-                    !isset($membro['ministerio']) &&
-                    !isset($membro['data_ministerio']) &&
-                    !isset($membro['local_ministerio']) &&
-                    !isset($membro['observacoes']))
+                !isset($membro->funcoes_ministeriais) &&
+                    !isset($membro->data_ordenacao) &&
+                    !isset($membro->local_ordenacao) &&
+                    !isset($membro->ministerio) &&
+                    !isset($membro->data_ministerio) &&
+                    !isset($membro->local_ministerio) &&
+                    !isset($membro->observacoes))
                 <span class="card-text" style="background-color: transparent; border: 0; text-shadow: none;">Sem
-                    informações</span>
+                    informações
+                </span>
             @endif
         </div>
     </div>

@@ -19,35 +19,32 @@
 
 <div class="tab-pane fade" id="border-top-familia" role="tabpanel" aria-labelledby="border-top-familiar">
     <div class="card-body">
-        <h5 class="card-title">{{ $membro['nome'] }}</h5>
         <div class="card mb-3 mosaic">
-            @if (isset($membro->familiar->pai_nome))
-                <p class="card-text">Nome do Pai: {{ $membro['pai_nome'] }}</p>
-            @endif
-            @if (isset($membro['mae_nome']))
-                <p class="card-text">Nome da Mãe: {{ $membro['mae_nome'] }}</p>
-            @endif
-            @if (isset($membro['conjuge_nome']))
-                <p class="card-text">Nome do Cônjuge: {{ $membro['conjuge_nome'] }}</p>
-            @endif
-            @if (isset($membro['filhos']))
-                <p class="card-text">Data do Casamento: {{ $membro['filhos'] }}</p>
-            @endif
-            @if (isset($membro['histórico_familiar']))
-                <p class="card-text">Quantidade de Filhos: {{ $membro['histórico_familiar'] }}</p>
-            @endif
-            @if (isset($membro['data_Casamento']))
-                <p class="card-text">Aniversário de Casamento: {{ $membro['data_Casamento'] }}</p>
-            @endif
-            @if (
-                !isset($membro['pai_nome']) &&
-                    !isset($membro['mae_nome']) &&
-                    !isset($membro['conjuge_nome']) &&
-                    !isset($membro['filhos']) &&
-                    !isset($membro['histórico_familiar']) &&
-                    !isset($membro['data_Casamento']))
-                <span class="card-text" style="background-color: transparent; border: 0; text-shadow: none;">Sem
-                    informações</span>
+            @if ($membro->familiar)
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->familiar->pai_nome ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Nome do Pai</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->mae_nome ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Nome da Mãe</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->conjuge_nome ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Nome do Cônjuge</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->filhos ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Quantidade de Filhos</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->histórico_familiar ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Histórico Familiar</span>
+                </p>
+                <p class="card-text">
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->data_Casamento ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Casamento</span>
+                </p>
             @endif
         </div>
     </div>

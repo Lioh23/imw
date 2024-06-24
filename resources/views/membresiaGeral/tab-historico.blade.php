@@ -1,4 +1,4 @@
-<Style>
+<style>
     .mosaic {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
@@ -12,34 +12,58 @@
         border: 1px solid #ccc;
         padding: 10px;
         box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        border-radius: 5px;
         border-radius: 10px;
     }
-</Style>
+</style>
+
 <div class="tab-pane fade" id="border-top-historico" role="tabpanel" aria-labelledby="border-top-historico">
     <div class="card-body">
-        <h5 class="card-title">{{ $membro['nome'] }}</h5>
-        <div class="card mb-3 mosaic">
-            @if (isset($membro['rol_permanente']))
-                <p class="card-text">Rol Permanente: {{ $membro['rol_permanente'] }}</p>
-            @endif
-            @if (isset($membro['data_rol']))
-                <p class="card-text">Data de Rol: {{ $membro['data_rol'] }}</p>
-            @endif
-            @if (isset($membro['igreja_rol']))
-                <p class="card-text">Igreja do Rol: {{ $membro['igreja_rol'] }}</p>
-            @endif
-            @if (isset($membro['observacoes']))
-                <p class="card-text">Observações: {{ $membro['observacoes'] }}</p>
-            @endif
-            @if (
-                !isset($membro['rol_permanente']) &&
-                    !isset($membro['data_rol']) &&
-                    !isset($membro['igreja_rol']) &&
-                    !isset($membro['observacoes']))
-                <span class="card-text" style="background-color: transparent; border: 0; text-shadow: none;">Sem
-                    informações</span>
-            @endif
-        </div>
+        {{-- {{ dd($membro->formacoesEclesiasticas) }} --}}
+        @if ($membro->rolPermanente)
+            @foreach ($membro->rolPermanente as $rol)
+                <div class="card mb-3 mosaic">
+                    {{-- Exemplo de visualização de uma propriedade formatada --}}
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ $rol->status == 'A' ? ($rol->dt_recepcao ? $rol->dt_recepcao->format('d/m/Y') : 'Sem informações') : ($rol->dt_exclusao ? $rol->dt_exclusao->format('d/m/Y') : 'Sem informações') }}
+                        </span>
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d" >Data</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            @if ($rol->status == 'A')
+                                Recebimento
+                            @elseif ($rol->status == 'I')
+                                Exclusão
+                            @elseif ($rol->status == 'T')
+                                Transferência
+                            @else
+                                Sem informações
+                            @endif
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Ocorrência</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">{{ $rol->modoRecepcao->nome ?? 'Sem informações' }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Modo/Forma</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">{{ $rol->igreja->nome ?? 'Sem informações' }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Igreja</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">{{ $rol->congregacao->nome ?? 'Sem informações' }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Congregação</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">{{ $rol->clerigo->nome ?? 'Sem informações' }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Pastor</span>
+                    </p>
+                </div>
+            @endforeach
+        @else
+            <span class="card-text">Sem informações</span>
+        @endif
     </div>
 </div>

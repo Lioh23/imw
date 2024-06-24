@@ -84,13 +84,13 @@
                         <span class="text-center d-block" style="font-weight: bold">
                             {{ $membro->Funcao_Eclesiastica }}
                         </span>
-                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Função Eclesiástica</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Função
+                            Eclesiástica</span>
                     </p>
                 @endif
                 @if ($membro->cnh)
                     <p class="card-text">
-                        <span class="text-center d-block"
-                            style="font-weight: bold">{{ $membro->cnh }}</span>
+                        <span class="text-center d-block" style="font-weight: bold">{{ $membro->cnh }}</span>
                         <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">CNH</span>
                     </p>
                 @endif
@@ -107,7 +107,8 @@
                         <span class="text-center d-block" style="font-weight: bold">
                             {{ $membro->documento_complemento }}
                         </span>
-                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Documento Complemento</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Documento
+                            Complemento</span>
                     </p>
                 @endif
                 @if ($membro->data_conversao)
@@ -115,27 +116,29 @@
                         <span class="text-center d-block" style="font-weight: bold">
                             {{ $membro->data_conversao ? Carbon\Carbon::parse($membro->data_conversao)->format('d/m/Y') : 'sem informações' }}
                         </span>
-                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Conversão</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de
+                            Conversão</span>
                     </p>
                 @endif
                 @if ($membro->data_batismo)
                     <p class="card-text">
                         <span class="text-center d-block"
                             style="font-weight: bold">{{ $membro->data_batismo->format('d/m/Y') }}</span>
-                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de
+                            Batismo</span>
                     </p>
                 @endif
                 @if ($membro->data_batismo_espirito)
                     <p class="card-text">
                         <span class="text-center d-block"
                             style="font-weight: bold">{{ $membro->data_batismo_espirito }}</span>
-                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo Espirito Santo</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Batismo
+                            Espirito Santo</span>
                     </p>
                 @endif
                 @if ($membro->historico)
                     <p class="card-text">
-                        <span class="text-center d-block"
-                            style="font-weight: bold">{{ $membro->historico }}</span>
+                        <span class="text-center d-block" style="font-weight: bold">{{ $membro->historico }}</span>
                         <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Histórico</span>
                     </p>
                 @endif
