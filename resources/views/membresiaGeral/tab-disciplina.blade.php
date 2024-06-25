@@ -18,32 +18,50 @@
 </Style>
 <div class="tab-pane fade" id="border-top-disciplina" role="tabpanel" aria-labelledby="border-top-disciplina">
     <div class="card-body">
-        <h5 class="card-title">{{ $membro['nome'] }}</h5>
         <div class="card mb-3 mosaic">
-            @if (isset($membro['data_exclusao']))
-                <p class="card-text">Data de Exclusão: {{ $membro['data_exclusao'] }}</p>
-            @endif
-            @if (isset($membro['motivo_exclusao']))
-                <p class="card-text">Motivo da Exclusão: {{ $membro['motivo_exclusao'] }}</p>
-            @endif
-            @if (isset($membro['data_reconciliacao']))
-                <p class="card-text">Data de Reconciliação: {{ $membro['data_reconciliacao'] }}</p>
-            @endif
-            @if (isset($membro['motivo_reconciliacao']))
-                <p class="card-text">Motivo da Reconciliação: {{ $membro['motivo_reconciliacao'] }}</p>
-            @endif
-            @if (isset($membro['observacoes']))
-                <p class="card-text">Observações: {{ $membro['observacoes'] }}</p>
-            @endif
-            @if (
-                !isset($membro['data_exclusao']) &&
-                    !isset($membro['motivo_exclusao']) &&
-                    !isset($membro['data_reconciliacao']) &&
-                    !isset($membro['motivo_reconciliacao']) &&
-                    !isset($membro['observacoes']))
-                <span class="card-text" style="background-color: transparent; border: 0; text-shadow: none;">Sem
-                    informações</span>
-            @endif
+            @if ($membro->disciplinas)
+                @foreach ($membro->disciplinas as $disciplina)
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ $disciplina->dt_inicio->format('d/m/Y') }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Início</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ $disciplina->dt_termino ? $disciplina->dt_termino->format('d/m/Y') : 'Sem informações' }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de
+                            Término</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ optional($disciplina->igreja)->nome ?? 'Sem informações' }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Igreja</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block" style="font-weight: bold">
+                            {{ optional($disciplina->pastor)->nome ?? 'Sem informações' }}
+                        </span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Pastor</span>
+                    </p>
+                    <p class="card-text">
+                        <span class="text-center d-block"
+                            style="font-weight: bold">{{ $membro->observacao ?? 'sem informações' }}</span>
+                        <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Observações</span>
+                    </p>
+                    @if ($disciplina->dt_termino == null)
+                        <p class="card-text">
+                            <button type="button" class="btn btn-warning"
+                                onclick="encerrarDisciplina(event, {{ $disciplina->id }})">
+                                <x-bx-block /> Encerrar Disciplina
+                            </button>
+                        </p>
+                    @endif
+                @else
+                    <span class="card-text">Sem informações</span>
+                @endif
         </div>
     </div>
 </div>
