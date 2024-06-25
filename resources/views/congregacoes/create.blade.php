@@ -67,7 +67,7 @@
 
             <div class="form-group col-12 col-md-3">
               <label for="cep" class="control-label">* CEP</label>
-              <input type="text" name="cep" class="form-control @error('cep') is-invalid @enderror" data-mask="00000-000" minlength="4" value="{{ old('cep') }}">
+              <input type="text" name="cep" id="cep" class="form-control @error('cep') is-invalid @enderror" data-mask="00000-000" minlength="4" value="{{ old('cep') }}">
               @error('cep')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -75,7 +75,7 @@
 
             <div class="form-group col-12 col-sm-9 col-md-9">
               <label for="endereco" class="control-label">* Endereço</label>
-              <input type="text" name="endereco" class="form-control @error('endereco') is-invalid @enderror" value="{{ old('endereco') }}" maxlength="100">
+              <input type="text" name="endereco" id="endereco" class="form-control @error('endereco') is-invalid @enderror" value="{{ old('endereco') }}" maxlength="100">
               @error('endereco')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -99,7 +99,7 @@
 
             <div class="form-group col-12 col-md-6">
               <label for="bairro" class="control-label">* Bairro</label>
-              <input type="text" name="bairro" class="form-control @error('bairro') is-invalid @enderror"  minlength="4" value="{{ old('bairro') }}" maxlength="100">
+              <input type="text" name="bairro" id="bairro" class="form-control @error('bairro') is-invalid @enderror"  minlength="4" value="{{ old('bairro') }}" maxlength="100">
               @error('bairro')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -107,7 +107,7 @@
 
             <div class="form-group col-12 col-sm-7 col-md-6">
               <label for="cidade" class="control-label">* Cidade</label>
-              <input type="text" name="cidade" class="form-control @error('cidade') is-invalid @enderror"  minlength="4" value="{{ old('cidade') }}" maxlength="100">
+              <input type="text" name="cidade" id="cidade" class="form-control @error('cidade') is-invalid @enderror"  minlength="4" value="{{ old('cidade') }}" maxlength="100">
               @error('cidade')
                 <div class="invalid-feedback">{{ $message }}</div>
               @enderror
@@ -115,7 +115,7 @@
 
             <div class="form-group col-12 col-sm-5 col-md-4">
               <label for="uf" class="control-label">* UF</label>
-              <select name="uf" class="form-control @error('uf') is-invalid @enderror" >
+              <select name="uf" id="uf" class="form-control @error('uf') is-invalid @enderror">
                 <option value="" {{ old('uf') == '' ? 'selected' : '' }}>Selecione</option>
                 @foreach ($ufs as $abrev => $uf)
                   <option value="{{ $abrev }}" {{ old('uf') == $abrev ? 'selected' : '' }}>{{ $uf }}</option>
@@ -175,12 +175,38 @@
 
 @endsection
 @section('extras-scripts')
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
     <script>
-        $(document).ready(function(){
-            // Selecionar todos os inputs com o atributo data-mask e aplicar a máscara
-            $('input[data-mask]').each(function(){
-                var mask = $(this).data('mask');
-                $(this).mask(mask);
+        $(document).ready(function() {
+            // Aplica a máscara ao campo CEP
+            $('#cep').mask('00000-000');
+
+            // Função para buscar endereço pelo CEP
+            $("#cep").blur(function() {
+                var cep = $(this).val().replace(/\D/g, '');
+                if (cep != "") {
+                    var validacep = /^[0-9]{8}$/;
+                    if(validacep.test(cep)) {
+                        $("#endereco").val("...");
+                        $("#bairro").val("...");
+                        $("#cidade").val("...");
+                        $("#uf").val("...");
+
+                        $.getJSON("https://viacep.com.br/ws/"+ cep +"/json/?callback=?", function(dados) {
+                            if (!("erro" in dados)) {
+                                $("#endereco").val(dados.logradouro);
+                                $("#bairro").val(dados.bairro);
+                                $("#cidade").val(dados.localidade);
+                                $("#uf").val(dados.uf);
+                            } else {
+                                alert("CEP não encontrado.");
+                            }
+                        });
+                    } else {
+                        alert("Formato de CEP inválido.");
+                    }
+                }
             });
         });
     </script>
