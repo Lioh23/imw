@@ -287,6 +287,7 @@
             }
         });
     });
+    
 </script>
 <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
 <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
