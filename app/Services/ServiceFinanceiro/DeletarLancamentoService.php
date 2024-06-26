@@ -16,6 +16,7 @@ class DeletarLancamentoService
             $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
             if ($lancamento->membro_id && in_array($lancamento->plano_conta_id, $planoContaIds)) {
                 $this->handleLivroGrade($lancamento->membro_id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id);
+                $lancamento->delete();
             }
         } else {
             if ($lancamento->instituicao_id == session()->get('session_perfil')->instituicao_id) {
