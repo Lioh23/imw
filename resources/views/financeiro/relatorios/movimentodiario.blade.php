@@ -171,8 +171,8 @@
         var dt_final = document.getElementById('dt_final').value;
         var caixa_id = document.getElementById('caixa_id').value;
 
-        if (!dt_inicial || !dt_final || !caixa_id) {
-            alert('Por favor, preencha todos os campos obrigatórios: Período (Inicial e Final) e Caixa.');
+        if (!dt_inicial || !dt_final) {
+            alert('Por favor, preencha todos os campos obrigatórios: Período (Inicial e Final)');
             return;
         }
 
