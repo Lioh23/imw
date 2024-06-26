@@ -170,6 +170,12 @@
         var dt_inicial = document.getElementById('dt_inicial').value;
         var dt_final = document.getElementById('dt_final').value;
         var caixa_id = document.getElementById('caixa_id').value;
+
+        if (!dt_inicial || !dt_final || !caixa_id) {
+            alert('Por favor, preencha todos os campos obrigatórios: Período (Inicial e Final) e Caixa.');
+            return;
+        }
+
         var url = `{{ route('financeiro.relatorio-movimento-diario-pdf') }}?dt_inicial=${dt_inicial}&dt_final=${dt_final}&caixa_id=${caixa_id}`;
         window.location.href = url;
     });
