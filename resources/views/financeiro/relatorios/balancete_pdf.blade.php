@@ -85,14 +85,18 @@
 </head>
 
 <body>
-    <div class="header">
-        <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
-        <div class="info">
-            <div class="title">BALANCETE - {{ session('session_perfil')->instituicao_nome }}</div>
-            <div class="period">Período de {{ request()->input('dt_inicial') }} a {{ request()->input('dt_final') }}</div>
+<div class="header">
+    <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
+    <div class="info">
+        <div class="title">BALANCETE - {{ session('session_perfil')->instituicao_nome }}</div>
+        <div class="period">
+            Período de {{ \Carbon\Carbon::parse(request()->input('dt_inicial'))->format('d/m/Y') }} 
+            a {{ \Carbon\Carbon::parse(request()->input('dt_final'))->format('d/m/Y') }}
         </div>
-        <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>
     </div>
+    <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>
+</div>
+
 
     <h4>Discriminação de saldos por caixa</h4>
     <table>
