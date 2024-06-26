@@ -13,6 +13,7 @@ class DeletarLancamentoService
     {
         $lancamento = FinanceiroLancamento::findOrFail($id);
         if ($lancamento->membro_id) {
+            dd($lancamento);
             $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
             if ($lancamento->membro_id && in_array($lancamento->plano_conta_id, $planoContaIds)) {
                 $this->handleLivroGrade($lancamento->membro_id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id);
