@@ -56,7 +56,7 @@ class FinanceiroRelatorioController extends Controller
         $data = app(MovimentoDiarioService::class)->execute($dataInicial, $dataFinal, $caixaId);
 
         $pdf = FacadePdf::loadView('financeiro.relatorios.movimento-diario-pdf', $data);
-        return $pdf->download('relatorio_movimento_diario.pdf');
+        return $pdf->stream('relatorio_movimento_diario.pdf');
     }
 
 
