@@ -94,47 +94,67 @@
             </div>
             <div class="widget-content widget-content-area">
                 <div class="table-responsive">
-                    <table class="table table-bordered table-hover mb-4">
-                        <thead>
-                            <tr>
-                                <th>DATA</th>
-                                <th>CAIXA</th>
-                                <th>PLANO DE CONTA</th>
-                                <th>ENTRADA</th>
-                                <th>SAÍDA</th>
-                                <th>PAGANTE</th>
-                                <th>BENEFICIÁRIO</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($lancamentosPorCaixa as $caixaDescricao => $lancamentos)
-                                @php $groupedLancamentos = $lancamentos->groupBy('data_movimento'); @endphp
-                                @foreach ($groupedLancamentos as $dataMovimento => $lancamentosData)
-                                    <tr>
-                                        <td rowspan="{{ count($lancamentosData) }}"><b>{{ \Carbon\Carbon::parse($dataMovimento)->format('d/m/Y') }}</b></td>
-                                        <td rowspan="{{ count($lancamentosData) }}"><b>{{ $caixaDescricao }}</b></td>
-                                        @foreach ($lancamentosData as $index => $lancamento)
-                                            @if ($index !== 0)
-                                                <tr>
-                                            @endif
-                                            <td>{{ $lancamento->planoConta->numeracao }} - {{ $lancamento->planoConta->nome }}</td>
-                                            <td style="{{ $lancamento->tipo_lancamento === 'E' ? 'color: green;' : 'color: red;' }}">
-                                                {{ $lancamento->tipo_lancamento === 'E' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
-                                            </td>
-                                            <td style="{{ $lancamento->tipo_lancamento === 'S' ? 'color: red;' : 'color: green;' }}">
-                                                {{ $lancamento->tipo_lancamento === 'S' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
-                                            </td>                                                                                        
-                                            <td>{{ $lancamento->tipo_lancamento === 'E' ? $lancamento->pagante_favorecido : '-' }}</td>
-                                            <td>{{ $lancamento->tipo_lancamento === 'S' ? $lancamento->pagante_favorecido : '-' }}</td>
-                                            @if ($index !== 0)
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                    </tr>
-                                @endforeach
-                            @endforeach
-                        </tbody>
-                    </table>
+                <table class="table table-bordered table-hover mb-4">
+    <thead>
+        <tr>
+            <th>DATA</th>
+            <th>PLANO DE CONTA</th>
+            <th>ENTRADA</th>
+            <th>SAÍDA</th>
+            <th>ORIGEM/DESTINO</th>
+            <th>PAGANTE/FAVORECIDO</th>
+        </tr>
+    </thead>
+    <tbody>
+        @php
+            // Combine all transactions into a single array
+            $allLancamentos = [];
+            foreach ($lancamentosPorCaixa as $caixaDescricao => $lancamentos) {
+                foreach ($lancamentos as $lancamento) {
+                    $lancamento->caixaDescricao = $caixaDescricao; // Add caixaDescricao to each transaction
+                    $allLancamentos[] = $lancamento;
+                }
+            }
+
+            // Sort all transactions by date
+            usort($allLancamentos, function ($a, $b) {
+                return strtotime($a->data_movimento) - strtotime($b->data_movimento);
+            });
+
+            // Group transactions by date
+            $groupedLancamentos = [];
+            foreach ($allLancamentos as $lancamento) {
+                $groupedLancamentos[$lancamento->data_movimento][] = $lancamento;
+            }
+        @endphp
+
+        @foreach ($groupedLancamentos as $dataMovimento => $lancamentosData)
+            <tr>
+                <td><b>{{ \Carbon\Carbon::parse($dataMovimento)->format('d/m/Y') }}</b></td>
+                <td><b>{{ $lancamentosData[0]->caixaDescricao }}</b></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            @foreach ($lancamentosData as $lancamento)
+                <tr>
+                    <td></td>
+                    <td>{{ $lancamento->planoConta->numeracao }} - {{ $lancamento->planoConta->nome }}</td>
+                    <td style="{{ $lancamento->tipo_lancamento === 'E' ? 'color: green;' : 'color: red;' }}">
+                        {{ $lancamento->tipo_lancamento === 'E' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
+                    </td>
+                    <td style="{{ $lancamento->tipo_lancamento === 'S' ? 'color: red;' : 'color: green;' }}">
+                        {{ $lancamento->tipo_lancamento === 'S' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
+                    </td>
+                    <td>{{ $lancamento->descricao }}</td>
+                    <td>{{ $lancamento->pagante_favorecido }}</td>
+                </tr>
+            @endforeach
+        @endforeach
+    </tbody>
+</table>
+
 
                 </div>
             </div>
