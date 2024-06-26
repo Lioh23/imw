@@ -161,7 +161,7 @@ Route::middleware(['auth'])->group(function () {
 
             //Relatorios
             Route::get('/relatorio/movimento-diario', [FinanceiroRelatorioController::class, 'movimentodiario'])->name('relatorio-movimento-diario')->middleware(['seguranca:menu-relatorios']);
-                Route::get('/relatorio/movimento-diario/pdf', [FinanceiroRelatorioController::class, 'movimentoDiarioPdf'])->name('financeiro.relatorio-movimento-diario-pdf')->middleware(['seguranca:menu-relatorios']);
+                Route::get('/relatorio/movimento-diario/pdf', [FinanceiroRelatorioController::class, 'movimentoDiarioPdf'])->name('relatorio-movimento-diario-pdf')->middleware(['seguranca:menu-relatorios']);
             
                 Route::get('/relatorio/livrorazao', [FinanceiroRelatorioController::class, 'livrorazao'])->name('relatorio-livrorazao')->middleware(['seguranca:menu-relatorios']);
             Route::get('/relatorio/livrocaixa', [FinanceiroRelatorioController::class, 'livrocaixa'])->name('relatorio-livrocaixa')->middleware(['seguranca:menu-relatorios']);
