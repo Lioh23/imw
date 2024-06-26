@@ -47,6 +47,18 @@ class FinanceiroRelatorioController extends Controller
         return view('financeiro.relatorios.movimentodiario', $data);
     }
 
+    public function movimentoDiarioPdf(Request $request)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(MovimentoDiarioService::class)->execute($dataInicial, $dataFinal, $caixaId);
+
+        $pdf = FacadePdf::loadView('financeiro.relatorios.movimento-diario-pdf', $data);
+        return $pdf->download('relatorio_movimento_diario.pdf');
+    }
+
 
     public function  livrocaixa(Request $request)
     {
