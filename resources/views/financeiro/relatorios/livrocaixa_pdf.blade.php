@@ -90,7 +90,7 @@
         <div class="info">
             <div class="title">LIVRO CAIXA - {{ session('session_perfil')->instituicao_nome }}</div>
             <div class="period">
-                Período de {{ \Carbon\Carbon::parse(request()->input('dt'))->format('m/Y') }}
+                Período de {{ request()->input('dt') }}
             </div>
         </div>
         <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>

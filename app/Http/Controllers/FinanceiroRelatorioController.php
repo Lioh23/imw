@@ -62,19 +62,12 @@ class FinanceiroRelatorioController extends Controller
         $dt = $request->input('dt');
         $caixaId = $request->input('caixa_id');
 
-        try {
-            // Convertendo a data do formato mm/yyyy para o formato correto
-            $date = Carbon::createFromFormat('m/Y', $dt)->startOfMonth();
-        } catch (\Exception $e) {
-            return back()->withErrors(['dt' => 'Formato de data inválido']);
-        }
+        $data = app(LivroCaixaService::class)->execute($dt, $caixaId);
 
-        $data = app(LivroCaixaService::class)->execute($date->format('Y-m-d'), $caixaId);
-
-        // Gera o PDF usando DomPDF
-        $pdf = FacadePdf::loadView('financeiro.relatorios.livrocaixa-pdf', $data);
-        return $pdf->inline('Livro_Caixa.pdf');
+        $pdf = FacadePdf::loadView('financeiro.relatorios.livrocaixa_pdf', $data);
+        return $pdf->stream('relatorio_livrocaixa.pdf');
     }
+
     public function livrogradepost(Request $request)
     {
         $ano = $request->input('ano');
