@@ -95,12 +95,9 @@ class DeletarLancamentoService
                     ->orWhere($mes, '!=', '0');
             })
             ->first();
-
-        dd($existingLancamentoOld);
-
-        $total = $existingLancamentoOld->$mes - $data['valor'];
        
         if ($existingLancamentoOld) {
+            $total = $existingLancamentoOld->$mes - $data['valor'];
             $existingLancamentoOld->update([$mes => $total]);
         }
     }
