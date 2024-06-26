@@ -57,6 +57,17 @@ class FinanceiroRelatorioController extends Controller
         return view('financeiro.relatorios.livrocaixa', $data);
     }
 
+    public function livrocaixaPdf(Request $request)
+    {
+        $dt = $request->input('dt');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(LivroCaixaService::class)->execute($dt, $caixaId);
+
+        $pdf = FacadePdf::loadView('financeiro.relatorios.livrocaixa_pdf', $data);
+        return $pdf->stream('relatorio_livrocaixa.pdf');
+    }
+
     public function livrogradepost(Request $request)
     {
         $ano = $request->input('ano');
