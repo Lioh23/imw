@@ -59,7 +59,7 @@
                         <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
                             <x-bx-search /> Buscar
                         </button>
-                        <button id="btn_relatorio" type="button" class="btn btn-secondary" onclick="window.location.href='{{ route('financeiro.relatorio-livrocaixa.pdf', ['dt' => request()->input('dt'), 'caixa_id' => request()->input('caixa_id')]) }}'">
+                        <button id="btn_relatorio" type="button" class="btn btn-secondary">
                             <i class="fa fa-file-pdf"></i> Relatório
                         </button>
                     </div>
@@ -260,34 +260,53 @@
         };
         $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
     });
+  
     $(document).ready(function() {
-        // Inicializar o Datepicker
-        $("#dt").datepicker({
-            dateFormat: "mm/yy", // Formato do calendário (mês/ano)
-            changeMonth: true, // Permitir a seleção do mês
-            changeYear: true, // Permitir a seleção do ano
-            showButtonPanel: true,
-            language: 'pt-BR', // Definir o idioma como português
-            onClose: function(dateText, inst) {
-                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker("setDate", new Date(year, month, 1));
-            }
-        }).focus(function() {
-            $(".ui-datepicker-calendar").hide();
-        });
-
-        $('#filter_form').submit(function(event) {
-            var dataInicial = $('#dt').val();
-
-            // Verificar se a data está preenchida
-            if (!dataInicial) {
-                event.preventDefault();
-                alert('Por favor, preencha o campo Mês/Ano.');
-            }
-        });
+    // Inicializar o Datepicker
+    $("#dt").datepicker({
+        dateFormat: "mm/yy", // Formato do calendário (mês/ano)
+        changeMonth: true, // Permitir a seleção do mês
+        changeYear: true, // Permitir a seleção do ano
+        showButtonPanel: true,
+        language: 'pt-BR', // Definir o idioma como português
+        onClose: function(dateText, inst) {
+            var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+            var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+            $(this).datepicker("setDate", new Date(year, month, 1));
+        }
+    }).focus(function() {
+        $(".ui-datepicker-calendar").hide();
     });
-    
+
+    $('#btn_relatorio').on('click', function() {
+        var dt = $('#dt').val();
+        var caixa_id = $('#caixa_id').val();
+
+        if (!dt) {
+            alert('Por favor, preencha o campo Mês/Ano.');
+            return;
+        }
+
+        // Formata a URL para a rota de PDF
+        var url = '{{ route("financeiro.relatorio-livrocaixa.pdf", ["dt" => "__dt__", "caixa_id" => "__caixa_id__"]) }}';
+        url = url.replace('__dt__', dt);
+        url = url.replace('__caixa_id__', caixa_id);
+
+        // Redireciona para a URL com os parâmetros corretos
+        window.location.href = url;
+    });
+
+    $('#filter_form').submit(function(event) {
+        var dataInicial = $('#dt').val();
+
+        // Verificar se a data está preenchida
+        if (!dataInicial) {
+            event.preventDefault();
+            alert('Por favor, preencha o campo Mês/Ano.');
+        }
+    });
+});
+
 </script>
 <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
 <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
