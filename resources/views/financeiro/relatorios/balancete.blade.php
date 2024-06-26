@@ -159,12 +159,6 @@
                             </table>
                         </div>
                     </div>
-                    {{-- <div class="row">
-                                <div class="col-12 text-center">
-                                    <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i
-                                            class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
-                                </div>
-                            </div> --}}
 
                     <div class="col-12 mt-3">
                         <h5>Discriminação dos Lançamentos por Conta</h5>
