@@ -62,6 +62,9 @@
                         <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
                             <x-bx-search /> Buscar
                         </button>
+                        <button id="btn_relatorio" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn" onclick="gerarRelatorio()">
+                            Relatório
+                        </button>
                     </div>
                 </div>
             </form>
@@ -291,6 +294,35 @@
         });
     });
 </script>
+<script>
+    function validarFormulario() {
+        const dataInicial = document.getElementById('dt_inicial').value;
+        const dataFinal = document.getElementById('dt_final').value;
+
+        if (!dataInicial || !dataFinal) {
+            alert('Por favor, preencha os campos de data inicial e data final.');
+            return false;
+        }
+
+        return true;
+    }
+
+    document.getElementById('btn_buscar').addEventListener('click', function(event) {
+        if (!validarFormulario()) {
+            event.preventDefault();
+        }
+    });
+
+    function gerarRelatorio() {
+        if (validarFormulario()) {
+            const form = document.getElementById('filter_form');
+            form.action = "{{ route('financeiro.relatorio-balancete-pdf') }}";
+            form.submit();
+        }
+    }
+</script>
+
+
 <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
 <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
 <script src="{{ asset('theme/assets/js/planilha/xlsx.full.min.js') }}"></script>
