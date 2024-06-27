@@ -7,8 +7,11 @@ use Illuminate\Http\Request;
 
 class MembresiaGeralController extends Controller
 {
-    public function visualizarHtml(MembresiaMembro $membro)
+    public function visualizarHtml($id)
     {
+        // Inclui registros que foram soft deleted
+        $membro = MembresiaMembro::withTrashed()->findOrFail($id);
+
         return view('membresiaGeral.visualizar', ['membro' => $membro]);
     }
 }

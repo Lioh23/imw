@@ -39,7 +39,7 @@
                     </p>
                     <p class="card-text">
                         <span class="text-center d-block" style="font-weight: bold">
-                            {{ $funcaoMinisterial->data_entrada ? $funcaoMinisterial->data_entrada->format('d/m/Y') : 'Sem informações' }}
+                            {{ $funcaoMinisterial->data_entrada ? \Carbon\Carbon::parse($funcaoMinisterial->data_entrada)->format('d/m/Y') : 'Sem informações' }}
                         </span>
                         <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">
                             Nomeação
@@ -47,7 +47,7 @@
                     </p>
                     <p class="card-text">
                         <span class="text-center d-block" style="font-weight: bold">
-                            {{ $funcaoMinisterial->data_saida ? $funcaoMinisterial->data_saida->format('d/m/Y') : 'Sem informações' }}
+                            {{ $funcaoMinisterial->data_saida ? \Carbon\Carbon::parse($funcaoMinisterial->data_saida)->format('d/m/Y') : 'Sem informações' }}
                         </span>
                         <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">
                             Exoneração

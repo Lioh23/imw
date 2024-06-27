@@ -23,7 +23,7 @@
                 <div class="card mb-3 mosaic">
                     <p class="card-text">
                         <span class="text-center d-block" style="font-weight: bold">
-                            {{ $rol->status == 'A' ? ($rol->dt_recepcao ? $rol->dt_recepcao->format('d/m/Y') : 'Sem informações') : ($rol->dt_exclusao ? $rol->dt_exclusao->format('d/m/Y') : 'Sem informações') }}
+                        {{ $rol->status == 'A' ? ($rol->dt_recepcao ? \Carbon\Carbon::parse($rol->dt_recepcao)->format('d/m/Y') : 'Sem informações') : ($rol->dt_exclusao ? \Carbon\Carbon::parse($rol->dt_exclusao)->format('d/m/Y') : 'Sem informações') }}
                         </span>
                         </span>
                         <span class="text-center d-block" style="font-size: .8rem; color: #6c757d" >Data</span>
