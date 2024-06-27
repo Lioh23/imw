@@ -28,7 +28,6 @@
             <p class="card-text">
                 <span class="text-center d-block" style="font-weight: bold">{{ $formacao->inicio ? \Carbon\Carbon::parse($formacao->inicio)->format('d/m/Y') : 'Sem informações' }}</span>
                 <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Início</span>
-
             </p>
 
 

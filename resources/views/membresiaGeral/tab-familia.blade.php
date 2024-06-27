@@ -42,7 +42,7 @@
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Histórico Familiar</span>
                 </p>
                 <p class="card-text">
-                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->familiar->data_Casamento ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-weight: bold">{{ $membro->familiar->data_Casamento ? \Carbon\Carbon::parse($membro->familiar->data_Casamento)->format('d/m/Y') : 'Sem informações' }}</span>
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Casamento</span>
                 </p>
             @endif
