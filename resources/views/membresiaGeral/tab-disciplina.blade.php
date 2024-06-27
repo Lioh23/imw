@@ -16,18 +16,19 @@
         border-radius: 10px;
     }
 </Style>
+
 <div class="tab-pane fade" id="border-top-disciplina" role="tabpanel" aria-labelledby="border-top-disciplina">
     <div class="card-body">
         <h5 class="card-title">{{ $membro['nome'] }}</h5>
         <div class="card mb-3 mosaic">
             @if (isset($membro['data_exclusao']))
-                <p class="card-text">Data de Exclusão: {{ $membro['data_exclusao'] }}</p>
+                <p class="card-text">Data de Exclusão: {{ $membro['data_exclusao'] ? \Carbon\Carbon::parse($membro['data_exclusao'])->format('d/m/Y') : 'Sem informações' }}</p>
             @endif
             @if (isset($membro['motivo_exclusao']))
                 <p class="card-text">Motivo da Exclusão: {{ $membro['motivo_exclusao'] }}</p>
             @endif
             @if (isset($membro['data_reconciliacao']))
-                <p class="card-text">Data de Reconciliação: {{ $membro['data_reconciliacao'] }}</p>
+                <p class="card-text">Data de Reconciliação: {{ $membro['data_reconciliacao'] ? \Carbon\Carbon::parse($membro['data_reconciliacao'])->format('d/m/Y') : 'Sem informações' }}</p>
             @endif
             @if (isset($membro['motivo_reconciliacao']))
                 <p class="card-text">Motivo da Reconciliação: {{ $membro['motivo_reconciliacao'] }}</p>
