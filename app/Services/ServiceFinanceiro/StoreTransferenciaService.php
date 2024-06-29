@@ -18,7 +18,7 @@ class StoreTransferenciaService
         $lancamento = [
             'caixa_id' => $data['caixa_origem_id'],
             'plano_conta_id' => $data['plano_conta_id'],
-            'valor' => str_replace(',', '.', $data['valor']),
+            'valor' => str_replace(',', '.', str_replace('.', '', $data['valor'])),
             'data_movimento' => $data['data_movimento'],
             'descricao' => $data['descricao'],
             'instituicao_id' => session()->get('session_perfil')->instituicao_id,
@@ -34,7 +34,7 @@ class StoreTransferenciaService
         $lancamento = [
             'caixa_id' => $data['caixa_destino_id'],
             'plano_conta_id' => $data['plano_conta_id'],
-            'valor' => str_replace(',', '.', $data['valor']),
+            'valor' => str_replace(',', '.', str_replace('.', '', $data['valor'])),
             'data_movimento' => $data['data_movimento'],
             'descricao' => $data['descricao'],
             'instituicao_id' => session()->get('session_perfil')->instituicao_id,
