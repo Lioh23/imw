@@ -30,11 +30,11 @@ class FinanceiroUpdateSaidaRequest extends FormRequest
             'data_movimento' => 'required',
             'descricao'      => 'nullable|string',
             'tipo_pagante_favorecido_id' => 'required',
-            'anexo1' => 'nullable|file|max:2048|mimes:pdf,doc,docx',
+            'anexo1' => 'nullable|file|max:2048|mimes:jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx',
             'descricao_anexo1' => 'nullable|string|max:255',
-            'anexo2' => 'nullable|file|max:2048|mimes:pdf,doc,docx',
+            'anexo2' => 'nullable|file|max:2048|mimes:jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx',
             'descricao_anexo2' => 'nullable|string|max:255',
-            'anexo3' => 'nullable|file|max:2048|mimes:pdf,doc,docx',
+            'anexo3' => 'nullable|file|max:2048|mimes:jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx',
             'descricao_anexo3' => 'nullable|string|max:255',
         ];
     }

@@ -24,7 +24,7 @@ class FinanceiroStoreNewAnexoRequest extends FormRequest
     public function rules()
     {
         return [
-            'anexo'           => 'required|file|max:2048|mimes:pdf,doc,docx',
+            'anexo'           => 'required|file|max:2048|mimes:jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx',
             'descricao_anexo' => 'nullable|string|max:255',
         ];
     }
