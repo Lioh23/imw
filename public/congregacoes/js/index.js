@@ -12,7 +12,7 @@ $(document).ready(function() {
         $('.btn-confirm-delete').on('click', function() {
             const formId = $(this).data('form-id')
             swal({
-                title: 'Deseja realmente deativar a congregação?',
+                title: 'Deseja realmente desativar a congregação?',
                 type: 'error',
                 showCancelButton: true,
                 confirmButtonText: "Desativar",
