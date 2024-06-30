@@ -147,7 +147,7 @@ WHERE
         }
 
         $sql .= "GROUP BY 
-        fc.id;";
+        fc.id";
 
 
         $params = [
