@@ -121,6 +121,7 @@ class FinanceiroController extends Controller
             $data = app(ConsolidacaoService::class)->execute();
             return view('financeiro.consolidarcaixa', $data);
         } catch(\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Não foi possível abrir a página');
         }
     }
