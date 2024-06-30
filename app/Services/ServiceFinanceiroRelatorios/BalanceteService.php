@@ -15,7 +15,7 @@ class BalanceteService
 
     public function execute($dataInicial, $dataFinal, $caixaId)
     {
-
+        
 
         if (empty($dataInicial)) {
             $dataInicial = Carbon::now()->format('Y-m-d');
@@ -61,11 +61,11 @@ class BalanceteService
                     financeiro_caixas fc ON fc.id = fl.caixa_id
                 WHERE 
                     fl.instituicao_id = :instituicaoID  ";
-
+    
         if ($caixaID !== 'all') {
             $sql .= "AND fl.caixa_id = :caixaId ";
         }
-
+    
         $sql .= "AND fl.deleted_at IS NULL 
                 AND fl.data_movimento BETWEEN :dataInicial AND :dataFinal
                 GROUP BY 
@@ -79,22 +79,22 @@ class BalanceteService
                     CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 2), '.', -1) AS UNSIGNED),
                     CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 3), '.', -1) AS UNSIGNED),
                     fpc.numeracao ";
-
+    
         $params = [
             'dataInicial' => $dataInicial,
             'dataFinal' => $dataFinal,
             'instituicaoID' => session()->get('session_perfil')->instituicao_id,
         ];
-
+    
         if ($caixaID !== 'all') {
             $params['caixaId'] = $caixaID;
         }
-
+    
         $lancamentos = DB::select($sql, $params);
-
+    
         return $lancamentos;
     }
-
+    
 
     private function handleCaixas($dataInicial, $dataFinal, $caixaId)
     {
@@ -147,7 +147,7 @@ WHERE
         }
 
         $sql .= "GROUP BY 
-        fc.id";
+        fc.id;";
 
 
         $params = [
