@@ -146,8 +146,7 @@ WHERE
             $sql .= "AND fc.id = :caixaId ";
         }
 
-        $sql .= "GROUP BY 
-        fc.id;";
+        $sql .= "GROUP BY fc.id";
 
 
         $params = [
