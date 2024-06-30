@@ -139,7 +139,7 @@ LEFT JOIN
 WHERE 
     fc.instituicao_id = :instituicaoID
     AND fc.deleted_at IS NULL
-    AND fl.deleted_at IS NULL";
+    AND fl.deleted_at IS NULL ";
 
         // Condição para selecionar apenas um caixa específico, se o caixaId não for 99
         if ($caixaId !== 'all') {
