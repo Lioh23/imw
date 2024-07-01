@@ -38,7 +38,7 @@ class UpdateLancamentoEntradaService
                 $campoId = 'membro_id';
 
                 $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
-                if ($paganteFavorecidoModel && in_array($lancamento->plano_conta_id, $planoContaIds)) {
+                if ($paganteFavorecidoModel && in_array($data['plano_conta_id'], $planoContaIds)) {
                     $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id);
                 }
 
