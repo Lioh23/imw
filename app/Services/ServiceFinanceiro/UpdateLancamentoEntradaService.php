@@ -87,16 +87,15 @@ class UpdateLancamentoEntradaService
             'Dec' => 'DEZ'
         ];
 
-        $mesLowercase = strtolower($mes); // Mês em minúsculas
-
         $data = [
             'lancamento_id' => $lancamentoID,
             'ano' => $ano,
             'membro_id' => $membroId,
-            'mes' => $monthsMap[$mes], // Mês em maiúsculas conforme o banco de dados
+            'mes' => strtolower($monthsMap[$mes]),
             'valor' => $valor,
             'dt' => $date 
         ];
+
 
         $this->handleLancamento($data);
     }
@@ -112,9 +111,8 @@ class UpdateLancamentoEntradaService
 
         $dtold = Carbon::parse($lancamento->data_movimento);
         $dtnow = Carbon::parse($data['dt']);
-
-        // Mapeamento dos meses para abreviações em português
-        $monthsMap = [
+            // Mapeamento dos meses para abreviações em português
+            $monthsMap = [
             'jan' => 'jan',
             'feb' => 'fev',
             'mar' => 'mar',
@@ -136,42 +134,48 @@ class UpdateLancamentoEntradaService
         $existingLancamentoOld = FinanceiroGrade::where('membro_id', $data['membro_id'])
             ->where('ano', $ano)
             ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
+            ->where(function ($query) use ($mes) {
+                $query->where($mes, '!=', null)
+                    ->orWhere($mes, '!=', '0');
+            })
             ->first();
 
-        // ATENÇÃO! MESMA DATA
+
+        //ATENÇÃO! MESMA DATA
         if ($dtold->format('Y-m') === $dtnow->format('Y-m')) {
-            // Converter o mês para minúsculas
-            $mesLowercase = strtolower($mes);
-
-            if ($existingLancamentoOld && ($existingLancamentoOld->$mesLowercase === 0 || $existingLancamentoOld->$mesLowercase === null)) {
-                $total = $data['valor'];
-            } else {
-                $total = $existingLancamentoOld->$mesLowercase - $lancamento->valor + $data['valor'];
+                
+                if ($existingLancamentoOld->$mes == 0 || $existingLancamentoOld->$mes == null){
+                    $total = $data['valor'];
+                  
+                } else {
+                    $total = $existingLancamentoOld->$mes - $lancamento->valor + $data['valor']; 
+                }
+                // ZERAR VALOR
+                if ($existingLancamentoOld) {
+                    $existingLancamentoOld->update([$mes => $total]);
             }
-
-            // ZERAR VALOR se existir no bloco acima
-            if ($existingLancamentoOld) {
-                $existingLancamentoOld->update([$mesLowercase => $total]);
-            }
+        //ATENÇÃO! DATAS DIFERENTES
         } else {
             // Diminuir no mês anterior.
-            $mesLowercase = strtolower($mes);
-            $total = $existingLancamentoOld->$mesLowercase - $lancamento->valor;
-            $existingLancamentoOld->update([$mesLowercase => $total]);
+            $total = $existingLancamentoOld->$mes - $lancamento->valor; 
+            $existingLancamentoOld->update([$mes => $total]);   
 
             $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
                 ->where('ano', $data['ano'])
                 ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
+                ->where(function ($query) use ($data) {
+                    $query->where($data['mes'], '!=', null)
+                        ->orWhere($data['mes'], '!=', '0.00');
+                })
                 ->first();
 
             // Se o registro já existe, atualize.
             if ($existingLancamento) {
-                $mesLowercase = strtolower($data['mes']);
-                $valorTotal = floatval($existingLancamento->$mesLowercase) + floatval($data['valor']);
-                $existingLancamento->update([$mesLowercase => $valorTotal]);
+                   $mes = $data['mes'];
+                   $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']);
+                   $existingLancamento->update([$data['mes'] => $valorTotal]);     
             } else {
-                // Criar novo registro
-                FinanceiroGrade::create([
+                 FinanceiroGrade::create([
                     'membro_id' => $data['membro_id'],
                     'ano' => $data['ano'],
                     $data['mes'] => $data['valor'],
