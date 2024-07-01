@@ -60,9 +60,10 @@
                             </button>
                         </p>
                     @endif
-                @else
-                    <span class="card-text">Sem informações</span>
-                @endif
+                @endforeach
+            @else
+                <span class="card-text">Sem informações</span>
+            @endif
         </div>
     </div>
 </div>
