@@ -96,6 +96,7 @@ class UpdateLancamentoEntradaService
             'dt' => $date 
         ];
 
+
         $this->handleLancamento($data);
     }
 
@@ -103,6 +104,7 @@ class UpdateLancamentoEntradaService
     {
         // Encontrar o lançamento antigo
         $lancamento = FinanceiroLancamento::findOrFail($data['lancamento_id']);
+
         // Extrair o ano e o mês da data de lançamento antigo
         $ano = Carbon::parse($lancamento->data_movimento)->year;
         $mes = strtolower(Carbon::parse($lancamento->data_movimento)->format('M'));
@@ -138,10 +140,15 @@ class UpdateLancamentoEntradaService
             })
             ->first();
 
-            
         //ATENÇÃO! MESMA DATA
         if ($dtold->format('Y-m') === $dtnow->format('Y-m')) {
-                $total = $existingLancamentoOld->$mes - $lancamento->valor + $data['valor']; 
+                
+                if ($existingLancamentoOld->$mes == 0 || $existingLancamentoOld->$mes == null){
+                    $total = $data['valor'];
+                  
+                } else {
+                    $total = $existingLancamentoOld->$mes - $lancamento->valor + $data['valor']; 
+                }
                 // ZERAR VALOR
                 if ($existingLancamentoOld) {
                     $existingLancamentoOld->update([$mes => $total]);
