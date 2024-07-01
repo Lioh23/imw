@@ -160,8 +160,11 @@ class LivroCaixaService
         }
     
         $sql .= "GROUP BY 
-                    fc.descricao,
-                    fc.id;"; // Adicionado fc.descricao à GROUP BY
+                    fc.id,
+                    fc.descricao
+                ORDER BY 
+                    fc.id, 
+                    fc.descricao ASC"; // Adicionado fc.descricao à GROUP BY
     
         $params = [
             'dt' => $dt,

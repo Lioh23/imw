@@ -151,7 +151,10 @@ class BalanceteService
 
         $sql .= "GROUP BY 
                     fc.id,
-                    fc.descricao";
+                    fc.descricao
+                ORDER BY 
+                    fc.id, 
+                    fc.descricao ASC";
 
         $params = [
             'dataInicial' => $dataInicial,
