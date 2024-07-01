@@ -129,7 +129,7 @@ class UpdateLancamentoEntradaService
 
         // Converter o mês para a abreviação em português
         $mes = $monthsMap[$mes] ?? $mes;
-
+        $mes = strtolower($mes);
         // Verificar se já existe um registro para o membro_id, ano e mês específico
         $existingLancamentoOld = FinanceiroGrade::where('membro_id', $data['membro_id'])
             ->where('ano', $ano)
