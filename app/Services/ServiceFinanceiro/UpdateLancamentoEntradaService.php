@@ -93,7 +93,7 @@ class UpdateLancamentoEntradaService
             'membro_id' => $membroId,
             'mes' => strtolower($monthsMap[$mes]),
             'valor' => $valor,
-            'dt' => $date 
+            'dt' => $date
         ];
 
 
@@ -111,8 +111,8 @@ class UpdateLancamentoEntradaService
 
         $dtold = Carbon::parse($lancamento->data_movimento);
         $dtnow = Carbon::parse($data['dt']);
-            // Mapeamento dos meses para abreviações em português
-            $monthsMap = [
+        // Mapeamento dos meses para abreviações em português
+        $monthsMap = [
             'jan' => 'jan',
             'feb' => 'fev',
             'mar' => 'mar',
@@ -140,50 +140,58 @@ class UpdateLancamentoEntradaService
             })
             ->first();
 
+        if (!$existingLancamentoOld) {
+            FinanceiroGrade::create([
+                'membro_id' => $data['membro_id'],
+                'ano' => $ano,
+                $mes => $data['valor'],
+                'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
+                'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
+                'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
+            ]);
+        } else {
+            //ATENÇÃO! MESMA DATA
+            if ($dtold->format('Y-m') === $dtnow->format('Y-m')) {
 
-        //ATENÇÃO! MESMA DATA
-        if ($dtold->format('Y-m') === $dtnow->format('Y-m')) {
-                
-                if ($existingLancamentoOld->$mes == 0 || $existingLancamentoOld->$mes == null){
+                if ($existingLancamentoOld->$mes == 0) {
                     $total = $data['valor'];
-                  
                 } else {
-                    $total = $existingLancamentoOld->$mes - $lancamento->valor + $data['valor']; 
+                    $total = $existingLancamentoOld->$mes - $lancamento->valor + $data['valor'];
                 }
                 // ZERAR VALOR
                 if ($existingLancamentoOld) {
                     $existingLancamentoOld->update([$mes => $total]);
-            }
-        //ATENÇÃO! DATAS DIFERENTES
-        } else {
-            // Diminuir no mês anterior.
-            $total = $existingLancamentoOld->$mes - $lancamento->valor; 
-            $existingLancamentoOld->update([$mes => $total]);   
-
-            $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
-                ->where('ano', $data['ano'])
-                ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
-                ->where(function ($query) use ($data) {
-                    $query->where($data['mes'], '!=', null)
-                        ->orWhere($data['mes'], '!=', '0.00');
-                })
-                ->first();
-
-            // Se o registro já existe, atualize.
-            if ($existingLancamento) {
-                   $mes = $data['mes'];
-                   $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']);
-                   $existingLancamento->update([$data['mes'] => $valorTotal]);     
+                }
+                //ATENÇÃO! DATAS DIFERENTES
             } else {
-                 FinanceiroGrade::create([
-                    'membro_id' => $data['membro_id'],
-                    'ano' => $data['ano'],
-                    $data['mes'] => $data['valor'],
-                    'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
-                    'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
-                    'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
-                ]);
+                // Diminuir no mês anterior.
+                $total = $existingLancamentoOld->$mes - $lancamento->valor;
+                $existingLancamentoOld->update([$mes => $total]);
 
+                $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
+                    ->where('ano', $data['ano'])
+                    ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
+                    ->where(function ($query) use ($data) {
+                        $query->where($data['mes'], '!=', null)
+                            ->orWhere($data['mes'], '!=', '0.00');
+                    })
+                    ->first();
+
+                // Se o registro já existe, atualize.
+                if ($existingLancamento) {
+                    $mes = $data['mes'];
+                    $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']);
+                    $existingLancamento->update([$data['mes'] => $valorTotal]);
+                } else {
+                    FinanceiroGrade::create([
+                        'membro_id' => $data['membro_id'],
+                        'ano' => $data['ano'],
+                        $data['mes'] => $data['valor'],
+                        'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
+                        'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
+                        'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
+                    ]);
+                }
             }
         }
     }
