@@ -140,6 +140,7 @@ class UpdateLancamentoEntradaService
             })
             ->first();
 
+
         //ATENÇÃO! MESMA DATA
         if ($dtold->format('Y-m') === $dtnow->format('Y-m')) {
                 
