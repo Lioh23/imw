@@ -38,7 +38,7 @@ class UpdateLancamentoEntradaService
                 $campoId = 'membro_id';
 
                 $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
-                if ($paganteFavorecidoModel && in_array($lancamento->plano_conta_id, $planoContaIds)) {
+                if ($paganteFavorecidoModel && in_array($data['plano_conta_id'], $planoContaIds)) {
                     $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id);
                 }
 
@@ -93,8 +93,9 @@ class UpdateLancamentoEntradaService
             'membro_id' => $membroId,
             'mes' => strtolower($monthsMap[$mes]),
             'valor' => $valor,
-            'dt' => $date 
+            'dt' => $date
         ];
+
 
         $this->handleLancamento($data);
     }
@@ -103,14 +104,15 @@ class UpdateLancamentoEntradaService
     {
         // Encontrar o lançamento antigo
         $lancamento = FinanceiroLancamento::findOrFail($data['lancamento_id']);
+
         // Extrair o ano e o mês da data de lançamento antigo
         $ano = Carbon::parse($lancamento->data_movimento)->year;
         $mes = strtolower(Carbon::parse($lancamento->data_movimento)->format('M'));
 
         $dtold = Carbon::parse($lancamento->data_movimento);
         $dtnow = Carbon::parse($data['dt']);
-            // Mapeamento dos meses para abreviações em português
-            $monthsMap = [
+        // Mapeamento dos meses para abreviações em português
+        $monthsMap = [
             'jan' => 'jan',
             'feb' => 'fev',
             'mar' => 'mar',
@@ -138,44 +140,58 @@ class UpdateLancamentoEntradaService
             })
             ->first();
 
-            
-        //ATENÇÃO! MESMA DATA
-        if ($dtold->format('Y-m') === $dtnow->format('Y-m')) {
-                $total = $existingLancamentoOld->$mes - $lancamento->valor + $data['valor']; 
+        if (!$existingLancamentoOld) {
+            FinanceiroGrade::create([
+                'membro_id' => $data['membro_id'],
+                'ano' => $ano,
+                $mes => $data['valor'],
+                'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
+                'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
+                'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
+            ]);
+        } else {
+            //ATENÇÃO! MESMA DATA
+            if ($dtold->format('Y-m') === $dtnow->format('Y-m')) {
+
+                if ($existingLancamentoOld->$mes == 0) {
+                    $total = $data['valor'];
+                } else {
+                    $total = $existingLancamentoOld->$mes - $lancamento->valor + $data['valor'];
+                }
                 // ZERAR VALOR
                 if ($existingLancamentoOld) {
                     $existingLancamentoOld->update([$mes => $total]);
-            }
-        //ATENÇÃO! DATAS DIFERENTES
-        } else {
-            // Diminuir no mês anterior.
-            $total = $existingLancamentoOld->$mes - $lancamento->valor; 
-            $existingLancamentoOld->update([$mes => $total]);   
-
-            $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
-                ->where('ano', $data['ano'])
-                ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
-                ->where(function ($query) use ($data) {
-                    $query->where($data['mes'], '!=', null)
-                        ->orWhere($data['mes'], '!=', '0.00');
-                })
-                ->first();
-
-            // Se o registro já existe, atualize.
-            if ($existingLancamento) {
-                   $mes = $data['mes'];
-                   $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']);
-                   $existingLancamento->update([$data['mes'] => $valorTotal]);     
+                }
+                //ATENÇÃO! DATAS DIFERENTES
             } else {
-                 FinanceiroGrade::create([
-                    'membro_id' => $data['membro_id'],
-                    'ano' => $data['ano'],
-                    $data['mes'] => $data['valor'],
-                    'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
-                    'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
-                    'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
-                ]);
+                // Diminuir no mês anterior.
+                $total = $existingLancamentoOld->$mes - $lancamento->valor;
+                $existingLancamentoOld->update([$mes => $total]);
 
+                $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
+                    ->where('ano', $data['ano'])
+                    ->where('igreja_id', session()->get('session_perfil')->instituicao_id)
+                    ->where(function ($query) use ($data) {
+                        $query->where($data['mes'], '!=', null)
+                            ->orWhere($data['mes'], '!=', '0.00');
+                    })
+                    ->first();
+
+                // Se o registro já existe, atualize.
+                if ($existingLancamento) {
+                    $mes = $data['mes'];
+                    $valorTotal = floatval($existingLancamento->$mes) + floatval($data['valor']);
+                    $existingLancamento->update([$data['mes'] => $valorTotal]);
+                } else {
+                    FinanceiroGrade::create([
+                        'membro_id' => $data['membro_id'],
+                        'ano' => $data['ano'],
+                        $data['mes'] => $data['valor'],
+                        'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
+                        'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
+                        'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
+                    ]);
+                }
             }
         }
     }

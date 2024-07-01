@@ -12,12 +12,14 @@ class DeletarLancamentoService
     public function execute($id)
     {
         $lancamento = FinanceiroLancamento::findOrFail($id);
-        if ($lancamento->membro_id) {
-            $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
-            if ($lancamento->membro_id && in_array($lancamento->plano_conta_id, $planoContaIds)) {
-                $this->handleLivroGrade($lancamento->membro_id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id);
-            }
+        
+        // Verificar se $lancamento->membro_id existe e se o plano_conta_id está na lista permitida
+        $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
+        if ($lancamento->membro_id && in_array($lancamento->plano_conta_id, $planoContaIds)) {
+            $this->handleLivroGrade($lancamento->membro_id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id);
+            $lancamento->delete();
         } else {
+            // Verificar permissão para excluir o lançamento baseado na instituicao_id da sessão
             if ($lancamento->instituicao_id == session()->get('session_perfil')->instituicao_id) {
                 $lancamento->delete();
             } else {
@@ -94,10 +96,9 @@ class DeletarLancamentoService
                     ->orWhere($mes, '!=', '0');
             })
             ->first();
-
-        $total = $existingLancamentoOld->$mes - $data['valor'];
        
         if ($existingLancamentoOld) {
+            $total = $existingLancamentoOld->$mes - $data['valor'];
             $existingLancamentoOld->update([$mes => $total]);
         }
     }

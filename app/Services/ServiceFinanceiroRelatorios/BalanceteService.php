@@ -104,14 +104,15 @@ class BalanceteService
         $anoMes = $ano . str_pad($mes, 2, '0', STR_PAD_LEFT);
 
         $sql = "SELECT 
+            fc.id,
             fc.descricao AS caixa,
-            MAX(COALESCE(fscm.saldo_final, 0.00)) AS saldo_final,
+            COALESCE(MAX(fscm.saldo_final), 0.00) AS saldo_final,
             COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_entradas,
             COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total_saidas,
             COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_transferencias_entrada,
             COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total_transferencias_saida,
             COALESCE((
-                (MAX(fscm.saldo_final) +  
+                (MAX(fscm_max.saldo_final) +  
                 COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) +
                 COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0)
                 ) -
@@ -120,32 +121,42 @@ class BalanceteService
                 COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0)
                 )
             ), 0) AS saldo_atual
-        FROM 
-            financeiro_caixas fc
-        LEFT JOIN 
-            financeiro_lancamentos fl ON fc.id = fl.caixa_id AND 
-            fl.data_movimento BETWEEN :dataInicial AND :dataFinal
-        LEFT JOIN 
-            (SELECT caixa_id, MAX(saldo_final) AS saldo_final
-            FROM financeiro_saldo_consolidado_mensal
-            WHERE ano * 100 + mes < :ano_mes
-            GROUP BY caixa_id) fscm ON fc.id = fscm.caixa_id
-        WHERE 
-            fc.instituicao_id = :instituicaoID
-            AND fc.deleted_at IS NULL
-            AND fl.deleted_at IS NULL ";
+            FROM 
+                financeiro_caixas fc
+            LEFT JOIN 
+                financeiro_lancamentos fl ON fc.id = fl.caixa_id AND fl.data_movimento BETWEEN :dataInicial AND :dataFinal
+            LEFT JOIN 
+                (
+                SELECT 
+                    fscm_interno.caixa_id,
+                    fscm_interno.saldo_final
+                FROM 
+                    financeiro_saldo_consolidado_mensal fscm_interno
+                WHERE 
+                    fscm_interno.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal)
+                    AND fscm_interno.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal))
+                ) fscm_max ON fc.id = fscm_max.caixa_id
+            LEFT JOIN 
+                financeiro_saldo_consolidado_mensal fscm ON fc.id = fscm.caixa_id 
+                    AND fscm.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal) 
+                    AND fscm.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal))
+            WHERE 
+                fc.instituicao_id = :instituicaoID
+                AND fc.deleted_at IS NULL
+                AND fl.deleted_at IS NULL ";
 
-        // Condição para selecionar apenas um caixa específico, se o caixaId não for 99
         if ($caixaId !== 'all') {
             $sql .= "AND fc.id = :caixaId ";
         }
 
         $sql .= "GROUP BY 
-        fc.id, fc.descricao;";
-
+                    fc.id,
+                    fc.descricao
+                ORDER BY 
+                    fc.id, 
+                    fc.descricao ASC";
 
         $params = [
-            'ano_mes' => $anoMes,
             'dataInicial' => $dataInicial,
             'dataFinal' => $dataFinal,
             'instituicaoID' => session()->get('session_perfil')->instituicao_id,
@@ -156,6 +167,7 @@ class BalanceteService
         }
 
         $caixas = DB::select($sql, $params);
+
 
         return $caixas;
     }

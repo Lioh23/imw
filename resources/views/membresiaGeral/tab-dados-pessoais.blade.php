@@ -24,7 +24,8 @@
             @if ($membro)
                 <p type='date' class="card-text">
                     <span class="text-center d-block" style="font-weight: bold">
-                        {{ old('data_nascimento', optional($membro->data_nascimento)->format('d/m/Y')) ?? 'Sem informações' }}
+                        {{ old('data_nascimento', $membro->data_nascimento ? \Carbon\Carbon::parse($membro->data_nascimento)->format('d/m/Y') : null) ?? 'Sem informações' }}
+
                     </span>
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de Nascimento</span>
                 </p>
@@ -115,7 +116,7 @@
                 @if ($membro->data_conversao)
                     <p class="card-text">
                         <span class="text-center d-block" style="font-weight: bold">
-                            {{ $membro->data_conversao ? Carbon\Carbon::parse($membro->data_conversao)->format('d/m/Y') : 'sem informações' }}
+                            {{ $membro->data_conversao ? \Carbon\Carbon::parse($membro->data_conversao)->format('d/m/Y') : 'sem informações' }}
                         </span>
                         <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de
                             Conversão</span>
@@ -124,7 +125,7 @@
                 @if ($membro->data_batismo)
                     <p class="card-text">
                         <span class="text-center d-block"
-                            style="font-weight: bold">{{ $membro->data_batismo->format('d/m/Y') }}</span>
+                            style="font-weight: bold">{{ $membro->data_batismo ? \Carbon\Carbon::parse($membro->data_batismo)->format('d/m/Y') : 'sem informações' }}</span>
                         <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Data de
                             Batismo</span>
                     </p>

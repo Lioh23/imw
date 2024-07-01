@@ -67,10 +67,13 @@ trait FinanceiroUtils
         }
 
         return $query->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
-            ->where('conciliado', 0)
-            ->orWhereNull('conciliado')
+            ->where(function ($query) {
+                $query->where('conciliado', 0)
+                      ->orWhereNull('conciliado');
+            })
             ->orderBy('data_movimento', 'desc')
             ->get();
+
     }
 
     public static function caixas()
@@ -107,10 +110,6 @@ trait FinanceiroUtils
         $saldo = $query->orderBy('ano', 'desc')
             ->orderBy('mes', 'desc')
             ->first();
-
-       /*  if ($saldo) {
-            return str_pad($saldo->mes, 2, '0', STR_PAD_LEFT) . '/' . $saldo->ano;
-        } */
         
         if ($saldo) {
             return Carbon::createFromFormat('Y-m', $saldo->ano . '-' . str_pad($saldo->mes, 2, '0', STR_PAD_LEFT));

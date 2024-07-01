@@ -121,6 +121,7 @@ class FinanceiroController extends Controller
             $data = app(ConsolidacaoService::class)->execute();
             return view('financeiro.consolidarcaixa', $data);
         } catch(\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Não foi possível abrir a página');
         }
     }
@@ -260,6 +261,7 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.movimento.caixa')->with('success', 'Lançamento de entrada atualizado.'); 
         } catch(\Exception $e) {
             DB::rollback();
+            dd($e);
             return redirect()->route('financeiro.movimento.caixa')->with('error', $e->getMessage()); 
         }
     }

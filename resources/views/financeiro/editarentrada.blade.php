@@ -216,7 +216,7 @@
                     placeholder: 'Selecione',
                     allowClear: true
                 });
-            }    else if (tipoPaganteFavorecido == 3) {
+            }   else if (tipoPaganteFavorecido == 3) {
                         var clerigos = {!! json_encode($clerigos) !!};
                         var selectHtml =
                             `<div class="col-12">
@@ -229,7 +229,7 @@
 
                         clerigos.forEach(function(clerigo) {
                             selectHtml += '<option value="' + clerigo.id + '"';
-                            if (clerigo.id == {{ $saida->clerigo_id ?? 0 }}) {
+                            if (clerigo.id == {{ $entrada->clerigo_id ?? 0 }}) {
                                 selectHtml += ' selected';
                             }
                             selectHtml += '>' + clerigo.nome + '</option>';
