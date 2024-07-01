@@ -261,6 +261,7 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.movimento.caixa')->with('success', 'Lançamento de entrada atualizado.'); 
         } catch(\Exception $e) {
             DB::rollback();
+            dd($e);
             return redirect()->route('financeiro.movimento.caixa')->with('error', $e->getMessage()); 
         }
     }
