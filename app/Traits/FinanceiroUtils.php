@@ -67,10 +67,13 @@ trait FinanceiroUtils
         }
 
         return $query->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
-            ->where('conciliado', 0)
-            ->orWhereNull('conciliado')
+            ->where(function ($query) {
+                $query->where('conciliado', 0)
+                      ->orWhereNull('conciliado');
+            })
             ->orderBy('data_movimento', 'desc')
             ->get();
+
     }
 
     public static function caixas()
