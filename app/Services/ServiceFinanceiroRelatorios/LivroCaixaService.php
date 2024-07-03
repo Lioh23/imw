@@ -148,10 +148,15 @@ class LivroCaixaService
                 FROM 
                     financeiro_saldo_consolidado_mensal fscm_interno
                 WHERE 
-                    (fscm_interno.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal) AND fscm_interno.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal)))
+                    fscm_interno.instituicao_id = :instituicaoID
+                    AND (fscm_interno.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal WHERE instituicao_id = :instituicaoID) 
+                    AND fscm_interno.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal WHERE instituicao_id = :instituicaoID)))
                 ) fscm_max ON fc.id = fscm_max.caixa_id
             LEFT JOIN 
-                financeiro_saldo_consolidado_mensal fscm ON fc.id = fscm.caixa_id AND fscm.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal) AND fscm.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal))
+                financeiro_saldo_consolidado_mensal fscm ON fc.id = fscm.caixa_id 
+                AND fscm.instituicao_id = :instituicaoID
+                AND fscm.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal WHERE instituicao_id = :instituicaoID) 
+                AND fscm.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal WHERE instituicao_id = :instituicaoID))
             WHERE 
                 fc.instituicao_id = :instituicaoID
                 AND fc.deleted_at IS NULL ";
@@ -181,6 +186,7 @@ class LivroCaixaService
         
         return $caixas;
     }
+    
     
     
 }
