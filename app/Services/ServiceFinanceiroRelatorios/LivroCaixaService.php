@@ -40,16 +40,17 @@ class LivroCaixaService
         list($mes, $ano) = explode('/', $dt);
         $anoMes = $ano . '-' . str_pad($mes, 2, '0', STR_PAD_LEFT);
 
-        $results = FinanceiroPlanoConta::select('id', 'nome', 'numeracao')
-            ->selectSub(function ($query) use ($anoMes) {
-                $query->select(DB::raw('SUM(valor)'))
-                    ->from('financeiro_lancamentos')
-                    ->whereRaw('DATE_FORMAT(data_movimento, "%Y-%m") = ?', [$anoMes])
-                    ->whereColumn('plano_conta_id', 'financeiro_plano_contas.id');
-            }, 'total_mes')
-            ->where('essencial', 1)
-            ->havingRaw('total_mes IS NULL OR total_mes = 0')
-            ->get();
+        $results = DB::table('financeiro_plano_contas as fpc')
+        ->select('fpc.nome', 'fpc.numeracao')
+        ->where('essencial', 1)
+        ->whereNotIn('fpc.id', function ($query) use ($anoMes) {
+            $query->select('fl.plano_conta_id')
+                ->from('financeiro_lancamentos as fl')
+                ->where('fl.instituicao_id', session()->get('session_perfil')->instituicao_id)
+                ->whereRaw('DATE_FORMAT(fl.data_movimento, "%Y-%m") = ?', [$anoMes]);
+        })
+        ->get();
+
 
         return $results;
     }
