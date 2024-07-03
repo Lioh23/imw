@@ -50,6 +50,7 @@ class LivroCaixaService
                 ->whereRaw('DATE_FORMAT(fl.data_movimento, "%Y-%m") = ?', [$anoMes]);
         })
         ->get();
+        
 
 
         return $results;
