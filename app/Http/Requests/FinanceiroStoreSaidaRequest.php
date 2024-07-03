@@ -49,8 +49,6 @@ class FinanceiroStoreSaidaRequest extends FormRequest
             $mes = $data->month;
             $ano = $data->year;
 
-            $instituicaoId = session('instituicao_id'); // Pegar o instituicao_id da sessão
-
             $consolidado = DB::table('financeiro_salinstituicaoIddo_consolidado_mensal')
                 ->where('mes', $mes)
                 ->where('ano', $ano)
