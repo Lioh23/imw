@@ -39,11 +39,12 @@ class UpdateUsuarioLocalRequest extends FormRequest
             ],
             'password' => 'nullable|string|min:6|confirmed',
             'perfil_id' => 'required',
-            'cpf' => [
+           'cpf' => [
                 'required',
-                function ($attribute, $value, $fail) {
-                    $cpfSemMascara = $this->removeMascaraCPF($value); // Use $this para chamar métodos dentro da classe
-                    if (User::where('cpf', $cpfSemMascara)->exists()) {
+                function ($attribute, $value, $fail) use ($userId) {
+                    $cpfSemMascara = $this->removeMascaraCPF($value);
+                    $user = User::where('cpf', $cpfSemMascara)->where('id', '!=', $userId)->first();
+                    if ($user) {
                         $fail('O CPF já está sendo utilizado por outra pessoa.');
                     }
                 },
@@ -51,9 +52,10 @@ class UpdateUsuarioLocalRequest extends FormRequest
             ],
             'telefone' => [
                 'required',
-                function ($attribute, $value, $fail) {
-                    $telefoneSemMascara = $this->removeMascaraTelefone($value); // Use $this para chamar métodos dentro da classe
-                    if (User::where('telefone', $telefoneSemMascara)->exists()) {
+                function ($attribute, $value, $fail) use ($userId) {
+                    $telefoneSemMascara = $this->removeMascaraTelefone($value);
+                    $user = User::where('telefone', $telefoneSemMascara)->where('id', '!=', $userId)->first();
+                    if ($user) {
                         $fail('O telefone já está sendo utilizado por outra pessoa.');
                     }
                 },
