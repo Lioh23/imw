@@ -79,8 +79,8 @@ class VisitantesController extends Controller
     {
         try {
             $request->validate([
-                'birth_date' => ['required', 'date', new ValidDateOfBirth($request->input('conversion_date'))],
-                'conversion_date' => 'required|date',
+                'birth_date' => ['nullable', 'date', new ValidDateOfBirth($request->input('conversion_date'))],
+                'conversion_date' => 'nullable|date',
             ]);
             DB::beginTransaction();
             app(StoreVisitanteService::class)->execute($request->all());
