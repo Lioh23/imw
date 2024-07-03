@@ -153,8 +153,7 @@ class LivroCaixaService
                     financeiro_saldo_consolidado_mensal fscm ON fc.id = fscm.caixa_id AND fscm.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal) AND fscm.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal))
                 WHERE 
                     fc.instituicao_id = :instituicaoID
-                    AND fc.deleted_at IS NULL
-                    AND fl.deleted_at IS NULL ";
+                    AND fc.deleted_at IS NULL ";
     
         // Condição para selecionar apenas um caixa específico, se o caixaId não for 99
         if ($caixaId !== 'all') {
