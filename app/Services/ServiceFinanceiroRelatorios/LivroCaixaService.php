@@ -142,18 +142,6 @@ class LivroCaixaService
                 LEFT JOIN 
                     financeiro_lancamentos fl ON fc.id = fl.caixa_id AND DATE_FORMAT(fl.data_movimento, '%m/%Y') = '$dt' AND fl.deleted_at IS NULL
                 LEFT JOIN 
-                    (
-                    SELECT 
-                        fscm_interno.caixa_id,
-                        fscm_interno.saldo_final
-                    FROM 
-                        financeiro_saldo_consolidado_mensal fscm_interno
-                    WHERE 
-                        fscm_interno.instituicao_id = '$instituicaoID'
-                        AND (fscm_interno.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal WHERE instituicao_id = '$instituicaoID') 
-                        AND fscm_interno.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal WHERE instituicao_id = '$instituicaoID')))
-                    ) fscm_max ON fc.id = fscm_max.caixa_id
-                LEFT JOIN 
                     financeiro_saldo_consolidado_mensal fscm ON fc.id = fscm.caixa_id 
                     AND fscm.instituicao_id = '$instituicaoID'
                     AND fscm.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal WHERE instituicao_id = '$instituicaoID') 
