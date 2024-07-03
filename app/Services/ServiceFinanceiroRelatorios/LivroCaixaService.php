@@ -140,7 +140,7 @@ class LivroCaixaService
                 FROM 
                     financeiro_caixas fc
                 LEFT JOIN 
-                    financeiro_lancamentos fl ON fc.id = fl.caixa_id AND DATE_FORMAT(fl.data_movimento, '%Y/%m') = '$dt' AND fl.deleted_at IS NULL
+                    financeiro_lancamentos fl ON fc.id = fl.caixa_id AND DATE_FORMAT(fl.data_movimento, '%m/%Y') = '$dt' AND fl.deleted_at IS NULL
                 LEFT JOIN 
                     financeiro_saldo_consolidado_mensal fscm ON fc.id = fscm.caixa_id 
                     AND fscm.instituicao_id = '$instituicaoID'
