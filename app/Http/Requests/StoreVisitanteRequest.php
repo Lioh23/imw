@@ -50,7 +50,7 @@ class StoreVisitanteRequest extends FormRequest
                         $fail('A data de conversão deve ser após a data de nascimento.');
                     }
                     if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
-                        $fail('A data de conversão deve ser após a data de nascimento e a data atual.');
+                        $fail('A data de conversão deve ser posterior à data de nascimento.');
                     }
                 },
             ],

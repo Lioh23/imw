@@ -1,4 +1,4 @@
-$(document).ready(function() {
+$(document).ready(function () {
     // pega os valores dos parametros de pesquisa
     function getSearchParameters() {
         return {
@@ -20,8 +20,8 @@ $(document).ready(function() {
                 cancelButtonText: "Cancelar",
                 cancelButtonColor: "#3085d6",
                 padding: '2em'
-            }).then(function(result) {
-                if(result.value) document.getElementById(formId).submit()
+            }).then(function (result) {
+                if (result.value) document.getElementById(formId).submit()
             })
         })
     }
@@ -35,8 +35,14 @@ $(document).ready(function() {
             }
         },
         columns: [
-            {data: 'nome', name: 'nome'},
-            {data: 'congregacao', name: 'congregacao'},
+            { data: 'nome', name: 'nome' },
+            {
+                data: 'congregacao',
+                name: 'congregacao',
+                render: function (data, type, row, meta) {
+                    return data ? data.nome : 'N/A';
+                }
+            },
         ],
         columnDefs: [
             {
@@ -66,13 +72,13 @@ $(document).ready(function() {
     const dataTable = initDataTable(
         '#datatable', // selector
         optionsDataTable, // options
-        function() { // drawCallback
+        function () { // drawCallback
             activeActions();
         }
     );
 
     // atrela a pesquisa pelo formulário ao datatable
-    $('#searchForm').on('submit', function(e) {
+    $('#searchForm').on('submit', function (e) {
         e.preventDefault();
         dataTable.ajax.reload();
     });
