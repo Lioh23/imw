@@ -41,6 +41,7 @@ class VisitantesController extends Controller
             DB::commit();
             return redirect()->route('visitante.editar', ['id' => $id])->with('success', 'Visitante atualizado com sucesso.');
         } catch (\Exception $e) {
+            dd($e);
             DB::rollback();
             return redirect()->route('visitante.editar', ['id' => $id])->with('error', 'Falha ao atualizar o visitante.');
         }
