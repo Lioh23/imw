@@ -49,7 +49,7 @@ class FinanceiroStoreSaidaRequest extends FormRequest
             $mes = $data->month;
             $ano = $data->year;
 
-            $consolidado = DB::table('financeiro_salinstituicaoIddo_consolidado_mensal')
+            $consolidado = DB::table('financeiro_saldo_consolidado_mensal')
                 ->where('mes', $mes)
                 ->where('ano', $ano)
                 ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
