@@ -15,16 +15,15 @@ class BalanceteService
 
     public function execute($dataInicial, $dataFinal, $caixaId)
     {
-        
+
 
         if (empty($dataInicial)) {
-            $dataInicial = Carbon::now()->format('Y-m-d');
+            $dataInicial = Carbon::now()->format('m/Y');
         }
 
         if (empty($dataFinal)) {
-            $dataFinal = Carbon::now()->format('Y-m-d');
+            $dataFinal = Carbon::now()->format('m/Y');
         }
-
 
         $caixasSelect  = $this->handleListaCaixas();
 
@@ -46,8 +45,15 @@ class BalanceteService
             ->get();
     }
 
-    private function handleLancamentos($dataInicial, $dataFinal, $caixaID)
+
+    private function handleLancamentos($dt_inicial, $dt_final, $caixaID)
     {
+        // Usando Carbon para manipulação de datas
+        $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
+        $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
+
+        $instituicaoID = session()->get('session_perfil')->instituicao_id;
+
         $sql = "SELECT 
                     fpc.numeracao,
                     MAX(fpc.nome) AS nome,
@@ -60,14 +66,13 @@ class BalanceteService
                 JOIN 
                     financeiro_caixas fc ON fc.id = fl.caixa_id
                 WHERE 
-                    fl.instituicao_id = :instituicaoID  ";
-    
+                    fl.instituicao_id = '$instituicaoID' ";
+
         if ($caixaID !== 'all') {
-            $sql .= "AND fl.caixa_id = :caixaId ";
+            $sql .= "AND fc.id = '$caixaID' ";
         }
-    
         $sql .= "AND fl.deleted_at IS NULL 
-                AND fl.data_movimento BETWEEN :dataInicial AND :dataFinal
+                AND fl.data_movimento BETWEEN '$dataInicial' AND '$dataFinal'
                 GROUP BY 
                     fc.descricao,
                     CAST(SUBSTRING_INDEX(fpc.numeracao, '.', 1) AS UNSIGNED),  
@@ -78,35 +83,35 @@ class BalanceteService
                     CAST(SUBSTRING_INDEX(fpc.numeracao, '.', 1) AS UNSIGNED),
                     CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 2), '.', -1) AS UNSIGNED),
                     CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 3), '.', -1) AS UNSIGNED),
-                    fpc.numeracao ";
-    
-        $params = [
-            'dataInicial' => $dataInicial,
-            'dataFinal' => $dataFinal,
-            'instituicaoID' => session()->get('session_perfil')->instituicao_id,
-        ];
-    
-        if ($caixaID !== 'all') {
-            $params['caixaId'] = $caixaID;
+                    fpc.numeracao";
+
+        try {
+            $lancamentos = DB::select($sql);
+        } catch (\Exception $e) {
+            throw $e;
         }
-    
-        $lancamentos = DB::select($sql, $params);
-    
+
         return $lancamentos;
     }
-    
 
-    private function handleCaixas($dataInicial, $dataFinal, $caixaId)
+
+    private function handleCaixas($dt_inicial, $dt_final, $caixaId)
     {
+        // Usando Carbon para manipulação de datas
+        $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
+        $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
 
-        // Dividindo a data em mês e ano
-        list($ano, $mes, $dia) = explode('-', $dataInicial);
-        $anoMes = $ano . str_pad($mes, 2, '0', STR_PAD_LEFT);
+        $instituicaoID = session()->get('session_perfil')->instituicao_id;
 
+        // Calculando o mês anterior usando Carbon
+        $dataMesAnterior = Carbon::createFromFormat('m/Y', $dt_inicial)->subMonth();
+        $mesAnterior = $dataMesAnterior->format('m');
+        $anoAnterior = $dataMesAnterior->format('Y');
+
+        // Construção da query com as variáveis diretamente
         $sql = "SELECT 
-            fc.id,
-            fc.descricao AS caixa,
-            COALESCE(MAX(fscm.saldo_final), 0.00) AS saldo_final,
+            fc.descricao AS caixa, fc.id,
+            COALESCE(MAX(fscm_max.saldo_final), 0.00) AS saldo_final,
             COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_entradas,
             COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total_saidas,
             COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_transferencias_entrada,
@@ -121,53 +126,43 @@ class BalanceteService
                 COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0)
                 )
             ), 0) AS saldo_atual
+        FROM 
+            financeiro_caixas fc
+            LEFT JOIN 
+            financeiro_lancamentos fl ON fc.id = fl.caixa_id AND fl.deleted_at IS NULL 
+            AND fl.data_movimento BETWEEN '$dataInicial' AND '$dataFinal'
+        LEFT JOIN 
+        (
+        SELECT 
+                fscm_interno.caixa_id,
+                fscm_interno.saldo_final
             FROM 
-                financeiro_caixas fc
-            LEFT JOIN 
-                financeiro_lancamentos fl ON fc.id = fl.caixa_id AND fl.data_movimento BETWEEN :dataInicial AND :dataFinal
-            LEFT JOIN 
-                (
-                SELECT 
-                    fscm_interno.caixa_id,
-                    fscm_interno.saldo_final
-                FROM 
-                    financeiro_saldo_consolidado_mensal fscm_interno
-                WHERE 
-                    fscm_interno.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal)
-                    AND fscm_interno.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal))
-                ) fscm_max ON fc.id = fscm_max.caixa_id
-            LEFT JOIN 
-                financeiro_saldo_consolidado_mensal fscm ON fc.id = fscm.caixa_id 
-                    AND fscm.ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal) 
-                    AND fscm.mes = (SELECT MAX(mes) FROM financeiro_saldo_consolidado_mensal WHERE ano = (SELECT MAX(ano) FROM financeiro_saldo_consolidado_mensal))
+                financeiro_saldo_consolidado_mensal fscm_interno
             WHERE 
-                fc.instituicao_id = :instituicaoID
-                AND fc.deleted_at IS NULL
-                AND fl.deleted_at IS NULL ";
+                fscm_interno.instituicao_id = '$instituicaoID'
+                AND fscm_interno.ano = '$anoAnterior'
+                AND fscm_interno.mes = '$mesAnterior'
+        ) fscm_max on fc.id=fscm_max.caixa_id
+        WHERE 
+            fc.instituicao_id = '$instituicaoID'
+            AND fc.deleted_at IS NULL ";
 
         if ($caixaId !== 'all') {
-            $sql .= "AND fc.id = :caixaId ";
+            $sql .= "AND fc.id = '$caixaId' ";
         }
 
         $sql .= "GROUP BY 
-                    fc.id,
-                    fc.descricao
-                ORDER BY 
-                    fc.id, 
-                    fc.descricao ASC";
+                fc.id,
+                fc.descricao
+            ORDER BY 
+                fc.id";
 
-        $params = [
-            'dataInicial' => $dataInicial,
-            'dataFinal' => $dataFinal,
-            'instituicaoID' => session()->get('session_perfil')->instituicao_id,
-        ];
 
-        if ($caixaId !== 'all') {
-            $params['caixaId'] = $caixaId;
+        try {
+            $caixas = DB::select($sql);
+        } catch (\Exception $e) {
+            throw $e;
         }
-
-        $caixas = DB::select($sql, $params);
-
 
         return $caixas;
     }

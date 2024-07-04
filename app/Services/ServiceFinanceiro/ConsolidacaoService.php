@@ -1,11 +1,7 @@
 <?php
 
 namespace App\Services\ServiceFinanceiro;
-
-use App\Models\FinanceiroFornecedores;
-use App\Models\FinanceiroTipoPaganteFavorecido;
-use App\Models\MembresiaMembro;
-use App\Services\ServiceFinanceiroRelatorios\LivroCaixaService;
+use App\Services\ServiceFinanceiroRelatorios\SaldoCaixaService;
 use App\Traits\FinanceiroUtils;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
@@ -22,8 +18,8 @@ class ConsolidacaoService
          // Clone a instância de Carbon para preservar $oldCaixa
         $formattedDate = $oldCaixa instanceof Carbon ? $oldCaixa->copy()->addMonth()->format('m/Y') : null;
 
-        // Capture o array retornado por LivroCaixaService
-        $data = app(LivroCaixaService::class)->execute($formattedDate, 'all');
+        // Capture o array retornado por SaldoCaixaService
+        $data = app(SaldoCaixaService::class)->execute($formattedDate, 'all');
         
         // Adicione o novo item ao array
         $data['ultimoCaixa'] = $oldCaixa;

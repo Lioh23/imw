@@ -29,13 +29,18 @@
             <form class="form-vertical" id="filter_form" method="GET">
                 <div class="form-group row mb-4" id="filtros_data">
                     <div class="col-lg-2 text-right">
-                        <label class="control-label">* Período (Inicial e Final):</label>
+                        <label class="control-label">* Mês Inicial:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required placeholder="ex: 31/12/2000">
+                        <input type="text" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" placeholder="mm/yyyy" required>
+                    </div>
+                </div>
+                <div class="form-group row mb-4" id="filtros_data">
+                    <div class="col-lg-2 text-right">
+                        <label class="control-label">* Mês Final:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" placeholder="ex: 31/12/2000" required>
+                        <input type="text" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" placeholder="mm/yyyy" required>
                     </div>
                 </div>
 
@@ -86,7 +91,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>CAIXA</th>
-                                        <th width="300" style="text-align: right">SALDO ANTERIOR CONSOLIDADO</th>
+                                        <th width="300" style="text-align: right">SALDO ANTERIOR</th>
                                         <th width="120" style="text-align: right">TOTAIS DE ENTRADAS</th>
                                         <th width="120" style="text-align: right">TOTAIS DE SAÍDAS</th>
                                         <th width="120" style="text-align: right">TRANSF. ENTRADAS</th>
@@ -258,7 +263,22 @@
     });
     $(document).ready(function() {
         // Inicializar o Datepicker
-        $("#dt").datepicker({
+        $("#dt_inicial").datepicker({
+            dateFormat: "mm/yy", // Formato do calendário (mês/ano)
+            changeMonth: true, // Permitir a seleção do mês
+            changeYear: true, // Permitir a seleção do ano
+            showButtonPanel: true,
+            language: 'pt-BR', // Definir o idioma como português
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker("setDate", new Date(year, month, 1));
+            }
+        }).focus(function() {
+            $(".ui-datepicker-calendar").hide();
+        });
+
+        $("#dt_final").datepicker({
             dateFormat: "mm/yy", // Formato do calendário (mês/ano)
             changeMonth: true, // Permitir a seleção do mês
             changeYear: true, // Permitir a seleção do ano
@@ -289,7 +309,7 @@
                 // Impedir o envio do formulário
                 event.preventDefault();
                 // Exibir uma mensagem de erro
-                alert('A data final não pode ser menor que a data inicial.');
+                alert('O mês final não pode ser menor que o mês inicial.');
             }
         });
     });
@@ -300,7 +320,7 @@
         const dataFinal = document.getElementById('dt_final').value;
 
         if (!dataInicial || !dataFinal) {
-            alert('Por favor, preencha os campos de data inicial e data final.');
+            alert('Por favor, preencha os campos de mês inicial e mês final.');
             return false;
         }
 
