@@ -109,7 +109,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar')->middleware(['seguranca:visitantes-atualizar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
             Route::post('/visitante/{id}', [VisitantesController::class, 'update'])->name('update')->middleware(['seguranca:visitantes-atualizar']);
             Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar')->middleware(['seguranca:visitantes-excluir']);
-
         });
 
         // Grupo de rotas para 'congregado'
@@ -121,12 +120,13 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store', [CongregadosController::class, 'store'])->name('store')->middleware(['seguranca:congregados-cadastrar']);
             Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar')->middleware(['seguranca:congregados-excluir']);
             Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar')->middleware(['seguranca:congregados-editar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
+            Route::get('visualizar-html/{membro}', [CongregadosController::class, 'visualizarHtml'])->name('visualizar-html');
         });
 
         Route::prefix('membresia-geral')->name('membresia-geral.')->group(function () {
             Route::get('visualizar-html/{membro}', [MembresiaGeralController::class, 'visualizarHtml'])->name('visualizar-html');
         });
-        
+
         /* Por enquanto somente visualiações */
         Route::prefix('financeiro')->name('financeiro.')->group(function () {
             Route::get('/movimento-caixa', [FinanceiroController::class, 'movimentocaixa'])->name('movimento.caixa')->middleware(['seguranca:financeiro-movimentocaixa-index']);
@@ -162,7 +162,7 @@ Route::middleware(['auth'])->group(function () {
             //Relatorios
             Route::get('/relatorio/movimento-diario', [FinanceiroRelatorioController::class, 'movimentodiario'])->name('relatorio-movimento-diario')->middleware(['seguranca:menu-relatorios']);
                 Route::get('/relatorio/movimento-diario/pdf', [FinanceiroRelatorioController::class, 'movimentoDiarioPdf'])->name('relatorio-movimento-diario-pdf')->middleware(['seguranca:menu-relatorios']);
-            
+
                 Route::get('/relatorio/livrorazao', [FinanceiroRelatorioController::class, 'livrorazao'])->name('relatorio-livrorazao')->middleware(['seguranca:menu-relatorios']);
             Route::get('/relatorio/livrocaixa', [FinanceiroRelatorioController::class, 'livrocaixa'])->name('relatorio-livrocaixa')->middleware(['seguranca:menu-relatorios']);
                 Route::get('/relatorio/livrocaixa/pdf', [FinanceiroRelatorioController::class, 'livrocaixaPdf'])->name('relatorio-livrocaixa.pdf')->middleware(['seguranca:menu-relatorios']);

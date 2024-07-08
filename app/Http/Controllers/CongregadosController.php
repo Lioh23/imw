@@ -21,6 +21,14 @@ class CongregadosController extends Controller
         $data = app(IdentificaDadosIndexService::class)->execute();
         return view('congregados.index', $data);
     }
+    public function visualizarHtml($id)
+    {
+        try {
+            return view('congregados.visualizar', ['congregado' => MembresiaMembro::VINCULO_CONGREGADO::findOrFail($id)]);
+        } catch(\Exception $e) {
+            return response()->json(['message' => 'Erro ao visualizar dados desta pessoa.'], 500);
+        }
+    }
 
     public function list(Request $request) {
         try {
