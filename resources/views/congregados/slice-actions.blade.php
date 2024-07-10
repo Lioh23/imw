@@ -11,7 +11,7 @@
         </svg>
     </a>
     <button class="btn btn-sm btn-info mr-2 btn-rounded btn-visualizar bs-tooltip" title="Visualizar dados da pessoa"
-        data-membro-id="{{ $congregado->membro_id }}">
+        data-membro-id="{{ $congregado->id }}">
         <x-bx-show />
     </button>
     <a href="{{ route('congregado.editar', $congregado->id) }}" title="Editar"

@@ -25,12 +25,12 @@ $(document).ready(function () {
             })
         })
 
-        $('.btn-visualizar').on('click', function () {
-            const congregadoId = $(this).data('id');
+        $('.btn-visualizar').click(function () {
             $('#visualizarCongregadoModal').modal('show')
+            console.log($(this).data('membro-id'),"id")
             $.ajax({
                 type: "get",
-                url: "/congregado/visualizar-html/" + $(this).data('congregado-id'),
+                url: "/membresia-geral/visualizar-html/" + $(this).data('membro-id'),
                 beforeSend: function () {
                     $('#visualizarCongregadoModal .modal-content').html('<div class="modal-body" style="min-height: 200px"></div>');
                     $('.loadable').block({

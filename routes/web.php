@@ -120,7 +120,6 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/store', [CongregadosController::class, 'store'])->name('store')->middleware(['seguranca:congregados-cadastrar']);
             Route::delete('/deletar/{id}', [CongregadosController::class, 'deletar'])->name('deletar')->middleware(['seguranca:congregados-excluir']);
             Route::get('/editar/{id}', [CongregadosController::class, 'editar'])->name('editar')->middleware(['seguranca:congregados-editar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
-            Route::get('visualizar-html/{membro}', [CongregadosController::class, 'visualizarHtml'])->name('visualizar-html');
         });
 
         Route::prefix('membresia-geral')->name('membresia-geral.')->group(function () {
