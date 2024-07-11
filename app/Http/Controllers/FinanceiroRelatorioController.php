@@ -7,6 +7,7 @@ use App\Services\ServiceFinanceiroRelatorios\LivroCaixaService;
 use App\Services\ServiceFinanceiroRelatorios\LivroGradeService;
 use App\Services\ServiceFinanceiroRelatorios\SalvarLivroGradeService;
 use App\Services\ServiceFinanceiroRelatorios\MovimentoDiarioService;
+use App\Services\ServiceFinanceiroRelatorios\LivroRazaoService;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
@@ -106,9 +107,28 @@ class FinanceiroRelatorioController extends Controller
     }
 
 
-    public function  livrorazao()
+    public function livroRazao(Request $request)
     {
-        return view('financeiro.relatorios.livrorazao');
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(LivroRazaoService::class)->execute($dataInicial, $dataFinal, $caixaId);
+
+        return view('financeiro.relatorios.livrorazao', $data);
+    }
+
+    public function livrorazaoPdf(Request $request)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+
+        $data = app(LivroRazaoService::class)->execute($dataInicial, $dataFinal, $caixaId);
+
+        $pdf = FacadePdf::loadView('financeiro.relatorios.livrorazao_pdf', $data);
+        return $pdf->stream('relatorio_livrorazao.pdf');
     }
 
     public function  livrograde()
