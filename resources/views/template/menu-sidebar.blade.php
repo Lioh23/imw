@@ -188,6 +188,11 @@
                                    <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
                                @endif
                            </li>
+                           <li>
+                               @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrorazao'))
+                                   <a href="{{ route('financeiro.relatorio-livrorazao') }}">Livro Razão</a>
+                               @endif
+                           </li>
 
                        </ul>
                    </li>
@@ -200,6 +205,7 @@
                         <x-bx-church />
                         <span>Congregações</span>
                     </div>
+                    </a>
                 </li>
                 @endif
                 <li class="menu menu-heading">
