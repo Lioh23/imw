@@ -120,6 +120,14 @@
             </div>
         </div>
     </div>
+    {{-- modal de visualizar congregado --}}
+    <div class="modal fade" tabindex="-1" id="visualizarCongregadoModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-xl" >
+            <div class="modal-content loadable">
+            <div class="modal-body" style="min-height: 200px"></div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @section('extras-scripts')

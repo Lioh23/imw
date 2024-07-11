@@ -109,7 +109,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar')->middleware(['seguranca:visitantes-atualizar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
             Route::post('/visitante/{id}', [VisitantesController::class, 'update'])->name('update')->middleware(['seguranca:visitantes-atualizar']);
             Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar')->middleware(['seguranca:visitantes-excluir']);
-
         });
 
         // Grupo de rotas para 'congregado'

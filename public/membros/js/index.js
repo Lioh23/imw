@@ -6,7 +6,7 @@ $(document).ready(function() {
             status: $('input[name="status"]:checked').val(),
         }
     }
-    
+
     // ativa as ações dos botões
     function activeActions() {
         $('.btn-cancel-notificacao-transferencia').on('click', function () {
@@ -27,13 +27,13 @@ $(document).ready(function() {
 
         $('.btn-visualizar').click(function () {
             $('#visualizarMembroModal').modal('show')
-    
+
             $.ajax({
                 type: "get",
                 url: "/membresia-geral/visualizar-html/" + $(this).data('membro-id'),
                 beforeSend: function () {
                     $('#visualizarMembroModal .modal-content').html('<div class="modal-body" style="min-height: 200px"></div>');
-    
+
                     $('.loadable').block({
                         message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
                         // timeout: 2000, //unblock after 2 seconds
@@ -62,7 +62,7 @@ $(document).ready(function() {
                 complete: function () {
                     $('.loadable').unblock();
                 }
-            });        
+            });
         })
     }
 
@@ -92,7 +92,7 @@ $(document).ready(function() {
                     } else if (row.has_errors) {
                         return `<span class="badge badge-warning"> ${row.membro} </span>`
                     } else if (row.notificacao_transferencia_ativa) {
-                        return `<span class="font-italic text-secondary">${row.membro} (Em transferência para ${row.notificacao_transferencia_ativa.igreja_destino.nome})</span>` 
+                        return `<span class="font-italic text-secondary">${row.membro} (Em transferência para ${row.notificacao_transferencia_ativa.igreja_destino.nome})</span>`
                     } else {
                         return row.membro
                     }

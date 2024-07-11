@@ -48,7 +48,7 @@ class MembrosController extends Controller
         return view('membros.index', $data);
     }
 
-    public function list(Request $request) 
+    public function list(Request $request)
     {
         try {
             return app(RolMembroDatatable::class)->execute($request->all());
