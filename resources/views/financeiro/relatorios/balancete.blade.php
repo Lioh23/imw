@@ -29,16 +29,12 @@
             <form class="form-vertical" id="filter_form" method="GET">
                 <div class="form-group row mb-4" id="filtros_data">
                     <div class="col-lg-2 text-right">
-                        <label class="control-label">* Mês Inicial:</label>
+                        <label class="control-label">* Período (Inicial e Final):</label>
                     </div>
                     <div class="col-lg-3">
                         <input type="text" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" placeholder="mm/yyyy" required>
                     </div>
-                </div>
-                <div class="form-group row mb-4" id="filtros_data">
-                    <div class="col-lg-2 text-right">
-                        <label class="control-label">* Mês Final:</label>
-                    </div>
+                
                     <div class="col-lg-3">
                         <input type="text" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" placeholder="mm/yyyy" required>
                     </div>
@@ -67,7 +63,7 @@
                         <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
                             <x-bx-search /> Buscar
                         </button>
-                        <button id="btn_relatorio" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn" onclick="gerarRelatorio()">
+                        <button id="btn_relatorio" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn">
                             Relatório
                         </button>
                     </div>
@@ -292,6 +288,24 @@
         }).focus(function() {
             $(".ui-datepicker-calendar").hide();
         });
+
+        $('#btn_relatorio').on('click', function() {
+            var dataInicial = $('#dt_inicial').val();
+            var dataFinal = $('#dt_final').val();
+            var caixaId = $('#caixa_id').val();
+
+            if (!dataInicial || !dataFinal) {
+                alert('Por favor, preencha os campos de data inicial e data final.');
+                return;
+            }
+
+            var url = '{{ url("/financeiro/relatorio-balancete-pdf") }}' +
+                      '?dt_inicial=' + encodeURIComponent(dataInicial) +
+                      '&dt_final=' + encodeURIComponent(dataFinal) +
+                      '&caixa_id=' + encodeURIComponent(caixaId);
+
+            window.open(url, '_blank');
+        });
     });
 </script>
 <script>
@@ -341,7 +355,6 @@
         }
     }
 </script>
-
 
 <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
 <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
