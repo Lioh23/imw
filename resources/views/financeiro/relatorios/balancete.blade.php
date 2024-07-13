@@ -299,7 +299,7 @@
                 return;
             }
 
-            var url = '{{ url("/financeiro/relatorio-balancete-pdf") }}' +
+            var url = '{{ url("/financeiro/relatorio/balancete-pdf") }}' +
                       '?dt_inicial=' + encodeURIComponent(dataInicial) +
                       '&dt_final=' + encodeURIComponent(dataFinal) +
                       '&caixa_id=' + encodeURIComponent(caixaId);
