@@ -24,6 +24,7 @@ class IdentificaDadosTransferenciaPorExclusaoService
         return InstituicoesInstituicao::where('tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
         ->where('id', '<>', Identifiable::fetchSessionIgrejaLocal()->id)
         ->where('ativo', 1)
+        ->where('instituicao_pai_id', 23)
         ->orderBy('nome', 'asc')
         ->get();
     
