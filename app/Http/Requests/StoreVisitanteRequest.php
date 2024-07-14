@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\RangeDateRule;
 use App\Rules\VisitanteExistenteRule;
+use App\Rules\ValidDateOfBirth;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreVisitanteRequest extends FormRequest
@@ -29,7 +30,6 @@ class StoreVisitanteRequest extends FormRequest
         $minDate = '1910-01-01';
         $currentDate = date('Y-m-d');
 
-
         return [
             'nome' => ['required', new VisitanteExistenteRule($this->input('data_nascimento'))],
             'sexo' => 'required',
@@ -54,6 +54,8 @@ class StoreVisitanteRequest extends FormRequest
                     }
                 },
             ],
+            'birth_date' => ['nullable', 'date', new ValidDateOfBirth($this->input('conversion_date'))],
+            'conversion_date' => 'nullable|date',
             'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if ($value) {
                     if (!preg_match('/@.*\.\w{2,}$/', $value)) {
@@ -61,7 +63,6 @@ class StoreVisitanteRequest extends FormRequest
                     }
                 }
             }],
-
             'email_alternativo' => 'email|nullable',
             'telefone_preferencial' => 'nullable|string|min:10',
             'congregacao_id' => 'nullable|exists:congregacoes_congregacoes,id'

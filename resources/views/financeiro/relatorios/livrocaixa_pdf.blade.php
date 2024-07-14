@@ -101,7 +101,7 @@
         <thead>
             <tr>
                 <th>CAIXA</th>
-                <th class="text-right">SALDO ANTERIOR CONSOLIDADO</th>
+                <th class="text-right">SALDO ANTERIOR</th>
                 <th class="text-right">TOTAIS DE ENTRADAS</th>
                 <th class="text-right">TOTAIS DE SAÍDAS</th>
                 <th class="text-right">TRANSF. ENTRADAS</th>

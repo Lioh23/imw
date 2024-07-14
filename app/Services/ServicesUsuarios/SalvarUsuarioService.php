@@ -15,6 +15,8 @@ class SalvarUsuarioService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'cpf'  => preg_replace('/[^0-9]/', '', $data['cpf']),
+            'telefone' => preg_replace('/[^0-9]/', '', $data['telefone']),
         ]);
 
         foreach ($data['perfil_id'] as $key => $perfilId) {

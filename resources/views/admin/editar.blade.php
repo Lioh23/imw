@@ -52,6 +52,37 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="row mt-4">
+                    <div class="col-lg-5" id="col-perfil">
+                        <div class="form-group">
+                            <label>* CPF</label>
+                            <div class="input-group">
+                                <input type="text" name="cpf" id="cpf"
+                                       class="form-control @error('cpf') is-invalid @enderror" autocomplete="off"
+                                       value="{{ $user->cpf }}" />
+                            </div>
+                            @error('cpf')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+
+                    <div class="col-lg-5" id="col-perfil">
+                        <div class="form-group">
+                            <label>* Telefone</label>
+                            <div class="input-group">
+                                <input type="text" name="telefone" id="telefone"
+                                       class="form-control @error('telefone') is-invalid @enderror" autocomplete="off"
+                                       value="{{ $user->telefone }}" />
+                            </div>
+                            @error('telefone')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
+                </div>
+
                 <div class="row mt-4">
                     <div class="col-lg-5">
                         <div class="form-group">
@@ -312,6 +343,12 @@
                 console.error("Botão atual não definido.");
             }
         });
+    });
+</script>
+<script>
+    $(document).ready(function() {
+        $('#telefone').mask('(00) 00000-0000');
+        $('#cpf').mask('000.000.000-00');
     });
 </script>
 @endsection

@@ -90,11 +90,11 @@
     <div class="info">
         <div class="title">BALANCETE - {{ session('session_perfil')->instituicao_nome }}</div>
         <div class="period">
-            Período de {{ \Carbon\Carbon::parse(request()->input('dt_inicial'))->format('d/m/Y') }} 
-            a {{ \Carbon\Carbon::parse(request()->input('dt_final'))->format('d/m/Y') }}
+            Período de {{ request()->input('dt_inicial') }} 
+            a {{ request()->input('dt_final') }}
         </div>
     </div>
-    <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>
+    <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('m/Y') }}</div>
 </div>
 
 
@@ -103,7 +103,7 @@
         <thead>
             <tr>
                 <th>CAIXA</th>
-                <th class="text-right">SALDO ANTERIOR CONSOLIDADO</th>
+                <th class="text-right">SALDO ANTERIOR</th>
                 <th class="text-right">TOTAIS DE ENTRADAS</th>
                 <th class="text-right">TOTAIS DE SAÍDAS</th>
                 <th class="text-right">TRANSF. ENTRADAS</th>

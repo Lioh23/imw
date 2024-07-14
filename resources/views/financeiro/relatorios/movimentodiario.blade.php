@@ -177,7 +177,7 @@
         }
 
         var url = `{{ route('financeiro.relatorio-movimento-diario-pdf') }}?dt_inicial=${dt_inicial}&dt_final=${dt_final}&caixa_id=${caixa_id}`;
-        window.location.href = url;
+        window.open(url, '_blank');
     });
 </script>
 

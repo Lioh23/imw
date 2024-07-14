@@ -270,8 +270,6 @@ code {
   box-shadow: 0 10px 30px 0 rgba(31, 45, 61, 0.1);
   background: #fafafa; }
   .navbar .navbar-item .nav-item.dropdown .dropdown-menu.show {
-    /* Alterado */
-    width: 240px;
     top: 93% !important; }
 
 .navbar .language-dropdown {
@@ -628,7 +626,6 @@ code {
   display: none; }
 
 .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu {
-  width: 240px;
   z-index: 9999;
   max-width: 13rem;
   padding: 0 11px;
@@ -1191,7 +1188,6 @@ code {
     .navbar .navbar-item .nav-item.dropdown.notification-dropdown .dropdown-menu:after {
       right: 42px; }
   .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu {
-    width: 240px;
     right: 1px; }
     .navbar .navbar-item .nav-item.user-profile-dropdown .dropdown-menu::after {
       right: 3px; } }

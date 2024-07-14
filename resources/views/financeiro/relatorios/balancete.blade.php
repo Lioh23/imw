@@ -32,10 +32,11 @@
                         <label class="control-label">* Período (Inicial e Final):</label>
                     </div>
                     <div class="col-lg-3">
-                        <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required placeholder="ex: 31/12/2000">
+                        <input type="text" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" placeholder="mm/yyyy" required>
                     </div>
+                
                     <div class="col-lg-3">
-                        <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" placeholder="ex: 31/12/2000" required>
+                        <input type="text" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" placeholder="mm/yyyy" required>
                     </div>
                 </div>
 
@@ -62,7 +63,7 @@
                         <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
                             <x-bx-search /> Buscar
                         </button>
-                        <button id="btn_relatorio" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn" onclick="gerarRelatorio()">
+                        <button id="btn_relatorio" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn">
                             Relatório
                         </button>
                     </div>
@@ -86,7 +87,7 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>CAIXA</th>
-                                        <th width="300" style="text-align: right">SALDO ANTERIOR CONSOLIDADO</th>
+                                        <th width="300" style="text-align: right">SALDO ANTERIOR</th>
                                         <th width="120" style="text-align: right">TOTAIS DE ENTRADAS</th>
                                         <th width="120" style="text-align: right">TOTAIS DE SAÍDAS</th>
                                         <th width="120" style="text-align: right">TRANSF. ENTRADAS</th>
@@ -258,7 +259,7 @@
     });
     $(document).ready(function() {
         // Inicializar o Datepicker
-        $("#dt").datepicker({
+        $("#dt_inicial").datepicker({
             dateFormat: "mm/yy", // Formato do calendário (mês/ano)
             changeMonth: true, // Permitir a seleção do mês
             changeYear: true, // Permitir a seleção do ano
@@ -271,6 +272,39 @@
             }
         }).focus(function() {
             $(".ui-datepicker-calendar").hide();
+        });
+
+        $("#dt_final").datepicker({
+            dateFormat: "mm/yy", // Formato do calendário (mês/ano)
+            changeMonth: true, // Permitir a seleção do mês
+            changeYear: true, // Permitir a seleção do ano
+            showButtonPanel: true,
+            language: 'pt-BR', // Definir o idioma como português
+            onClose: function(dateText, inst) {
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                $(this).datepicker("setDate", new Date(year, month, 1));
+            }
+        }).focus(function() {
+            $(".ui-datepicker-calendar").hide();
+        });
+
+        $('#btn_relatorio').on('click', function() {
+            var dataInicial = $('#dt_inicial').val();
+            var dataFinal = $('#dt_final').val();
+            var caixaId = $('#caixa_id').val();
+
+            if (!dataInicial || !dataFinal) {
+                alert('Por favor, preencha os campos de data inicial e data final.');
+                return;
+            }
+
+            var url = '{{ url("/financeiro/relatorio/balancete-pdf") }}' +
+                      '?dt_inicial=' + encodeURIComponent(dataInicial) +
+                      '&dt_final=' + encodeURIComponent(dataFinal) +
+                      '&caixa_id=' + encodeURIComponent(caixaId);
+
+            window.open(url, '_blank');
         });
     });
 </script>
@@ -289,7 +323,7 @@
                 // Impedir o envio do formulário
                 event.preventDefault();
                 // Exibir uma mensagem de erro
-                alert('A data final não pode ser menor que a data inicial.');
+                alert('O mês final não pode ser menor que o mês inicial.');
             }
         });
     });
@@ -300,7 +334,7 @@
         const dataFinal = document.getElementById('dt_final').value;
 
         if (!dataInicial || !dataFinal) {
-            alert('Por favor, preencha os campos de data inicial e data final.');
+            alert('Por favor, preencha os campos de mês inicial e mês final.');
             return false;
         }
 
@@ -321,7 +355,6 @@
         }
     }
 </script>
-
 
 <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
 <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>

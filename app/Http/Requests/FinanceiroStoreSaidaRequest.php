@@ -52,6 +52,7 @@ class FinanceiroStoreSaidaRequest extends FormRequest
             $consolidado = DB::table('financeiro_saldo_consolidado_mensal')
                 ->where('mes', $mes)
                 ->where('ano', $ano)
+                ->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
                 ->count();
 
             if ($consolidado > 0) {

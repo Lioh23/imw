@@ -42,13 +42,21 @@ class FinanceiroStoreEntradaRequest extends FormRequest
             $mes = $data->month;
             $ano = $data->year;
 
-            $consolidado = DB::table('financeiro_saldo_consolidado_mensal')
-                ->where('mes', $mes)
-                ->where('ano', $ano)
-                ->count();
+            $instituicaoId = session()->get('session_perfil')->instituicao_id;
 
-            if ($consolidado > 0) {
-                $validator->errors()->add('data_movimento', 'Este mês já foi consolidado.');
+            // Obter a última data consolidada para a instituição
+            $ultimaDataConsolidada = DB::table('financeiro_saldo_consolidado_mensal')
+                ->where('instituicao_id', $instituicaoId)
+                ->orderBy('ano', 'desc')
+                ->orderBy('mes', 'desc')
+                ->first(['mes', 'ano']);
+
+            if ($ultimaDataConsolidada) {
+                $ultimoMesConsolidado = Carbon::create($ultimaDataConsolidada->ano, $ultimaDataConsolidada->mes, 1);
+
+                if ($data->lessThanOrEqualTo($ultimoMesConsolidado)) {
+                    $validator->errors()->add('data_movimento', 'A data de movimento deve ser superior ao último mês consolidado.');
+                }
             }
         });
     }

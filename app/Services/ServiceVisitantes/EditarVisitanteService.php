@@ -23,7 +23,6 @@ class EditarVisitanteService
         if ($contato) {
             $updateData = [
                 'telefone_preferencial' => preg_replace('/[^0-9]/', '', $data['telefone_preferencial']),
-                'telefone_whatsapp'     => preg_replace('/[^0-9]/', '', $data['telefone_whatsapp']),
                 'email_preferencial'    => $data['email_preferencial'],
             ];
 
