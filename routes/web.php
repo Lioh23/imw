@@ -13,6 +13,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\MembresiaGeralController;
 use App\Http\Controllers\MembrosController;
+use App\Http\Controllers\NotificacoesTranferenciaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\UsuarioController;
@@ -124,6 +125,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('membresia-geral')->name('membresia-geral.')->group(function () {
             Route::get('visualizar-html/{membro}', [MembresiaGeralController::class, 'visualizarHtml'])->name('visualizar-html');
+        });
+
+        Route::prefix('notificacoes-tranferencia')->name('notificacoes-tranferencia.')->controller(NotificacoesTranferenciaController::class)->group(function(){
+            Route::get('', 'index')->name('index');
         });
 
         /* Por enquanto somente visualiações */
