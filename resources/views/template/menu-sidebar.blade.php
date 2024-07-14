@@ -1,3 +1,9 @@
+ <style>
+     #sidebar ul.menu-categories li.menu>#notificacao {
+         background-color: inherit !important;
+         color: inherit !important;
+     }
+ </style>
  <!--  BEGIN SIDEBAR  -->
  <div class="sidebar-wrapper sidebar-theme" style="overflow-y: scroll; scrollbar-width: thin; ">
      <nav id="sidebar">
@@ -49,13 +55,12 @@
                  </a>
              </li>
              @if ($baseParams->notificacoesTransferencia->count())
-                 <li class="menu container-fluid">
+                 <li class="menu container-fluid col-xs-4">
                      <a href="{{ route('notificacoes-tranferencia.index') }}" aria-expanded="false"
-                         class="dropdown-toggle">
-                         <div class="">
-                             <span class="badge-secondary" style="padding: 8px; border-radius: 12px;">Nova
-                                 Notificação</span>
-                         </div>
+                         class="dropdown-toggle" id="notificacao">
+                         <span class="badge badge-secondary" style="padding: 6px; border-radius: 6px;">Nova
+                             Notificação
+                         </span>
                      </a>
                  </li>
              @endif
