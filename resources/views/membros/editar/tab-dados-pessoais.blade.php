@@ -477,7 +477,7 @@
                     <label class="control-label">Congregação:</label>
                     <select id="congregacao_id" name="congregacao_id"
                         class="form-control @error('congregacao_id') is-invalid @enderror">
-                        <option value="" {{ !$pessoa->congregacao_id ? 'selected' : '' }}>Selecione
+                        <option value="{{ null }}" {{ !$pessoa->congregacao_id ? 'selected' : '' }}>Selecione
                         </option>
                         @foreach ($congregacoes as $congregacao)
                             <option value="{{ $congregacao->id }}"
