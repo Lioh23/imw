@@ -29,26 +29,20 @@
                 <form class="form-vertical" id="filter_form" method="GET">
                     <div class="form-group row mb-4" id="filtros_data">
                         <div class="col-lg-2 text-right">
-                            <label class="control-label">* Período (Inicial e Final):</label>
+                            <label class="control-label">* Data Inicial:</label>
                         </div>
                         <div class="col-lg-3">
                             <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required>
-                            @error('dt_inicial')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <div class="col-lg-2 text-right">
+                            <label class="control-label">* Data Final:</label>
                         </div>
                         <div class="col-lg-3">
                             <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" required>
-                            @error('dt_final')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
-
                     <div class="form-group row mb-4">
                         <div class="col-lg-2 text-right">
                             <label class="control-label">Caixa:</label>
@@ -56,17 +50,12 @@
                         <div class="col-lg-6">
                             <select id="caixa_id" name="caixa_id" class="form-control @error('caixa_id') is-invalid @enderror">
                                 <option value="all" {{ request()->input('caixa_id') == 'all' ? 'selected' : '' }}>Todos</option>
-                                @foreach ($caixas as $caixa)
-                                    <option value="{{ $caixa->id }}" {{ request()->input('caixa_id') == $caixa->id ? 'selected' : '' }}>
-                                        {{ $caixa->descricao }}
+                                @foreach ($caixas as $cx)
+                                    <option value="{{ $cx->id }}" {{ request()->input('caixa_id') == $cx->id ? 'selected' : '' }}>
+                                        {{ $cx->descricao }}
                                     </option>
                                 @endforeach
                             </select>
-                            @error('caixa_id')
-                            <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
-                            @enderror
                         </div>
                     </div>
                     <div class="form-group row mb-4">
@@ -75,7 +64,7 @@
                             <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
                                 <x-bx-search /> Buscar
                             </button>
-                            <button id="btn_relatorio" type="button" class="btn btn-secondary btn ml-4">
+                            <button id="btn_relatorio" type="button" class="btn btn-secondary">
                                 <i class="fa fa-file-pdf"></i> Relatório
                             </button>
                         </div>
@@ -174,18 +163,46 @@
                     </div>
                 </div>
 
-                <div class="row mt-4">
-                <div class="col-12 text-center">
-                    <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
+                    </div>
                 </div>
             </div>
-        </div>
-    @endif
+            @endif
 
-    <script src="{{asset('theme/assets/js/planilha/papaparse.min.js')}}"></script>
-    <script src="{{asset('theme/assets/js/planilha/FileSaver.min.js')}}"></script>
-    <script src="{{asset('theme/assets/js/planilha/xlsx.full.min.js')}}"></script>
-    <script src="{{asset('theme/assets/js/planilha/planilha.js')}}"></script>
-    <script src="{{asset('theme/assets/js/pages/movimentocaixa.js')}}"></script>
+    @section('extras-scripts')
+        <script>
+            $(document).ready(function() {
+                $('#btn_relatorio').on('click', function() {
+                    var dt_inicial = $('#dt_inicial').val();
+                    var dt_final = $('#dt_final').val();
+                    var caixa_id = $('#caixa_id').val();
 
+                    if (!dt_inicial || !dt_final) {
+                        alert('Por favor, preencha todos os campos obrigatórios.');
+                        return;
+                    }
+
+                    var url = '{{ url("financeiro/relatorio/livrorazao/pdf") }}' + '?dt_inicial=' + dt_inicial + '&dt_final=' + dt_final + '&caixa_id=' + caixa_id;
+                    window.open(url, '_blank');
+                });
+
+                $('#filter_form').submit(function(event) {
+                    var dt_inicial = $('#dt_inicial').val();
+                    var dt_final = $('#dt_final').val();
+
+                    if (!dt_inicial || !dt_final) {
+                        event.preventDefault();
+                        alert('Por favor, preencha todos os campos obrigatórios.');
+                    }
+                });
+            });
+        </script>
+        <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
+        <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
+        <script src="{{ asset('theme/assets/js/planilha/xlsx.full.min.js') }}"></script>
+        <script src="{{ asset('theme/assets/js/planilha/planilha.js') }}"></script>
+        <script src="{{ asset('theme/assets/js/pages/movimentocaixa.js') }}"></script>
+    @endsection
 @endsection

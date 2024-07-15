@@ -87,6 +87,10 @@
             color: green;
         }
 
+        .red {
+            color: red;
+        }
+
         .blue {
             color: blue;
         }
@@ -117,16 +121,17 @@
 <table>
     <thead>
     <tr>
-        <th>CONTA/DATA/ORIGEM/DESTINO</th>
-        <th class="text-right">ENTRADA</th>
-        <th class="text-right">SAÍDA</th>
-        <th class="text-right">TOTAIS</th>
+        <th>CONTA</th>
+        <th>DATA</th>
+        <th>ORIGEM/DESTINO</th>
+        <th>ENTRADA</th>
+        <th>SAÍDA</th>
     </tr>
     </thead>
     <tbody>
     @foreach ($lancamentosPorCaixa as $caixa => $lancamentos)
         <tr>
-            <td colspan="4" class="bold">{{ $caixa }}</td>
+            <td colspan="6" class="bold">{{ $caixa }}</td>
         </tr>
         @php
             $totalEntradas = 0;
@@ -135,13 +140,18 @@
 
         @foreach ($lancamentos as $lancamento)
             <tr>
-                <td>{{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }} {{ $lancamento->descricao }}</td>
-                <td class="text-right green">{{ $lancamento->valor > 0 ? number_format($lancamento->valor, 2, ',', '.') : '' }}</td>
-                <td class="text-right">{{ $lancamento->valor < 0 ? number_format(abs($lancamento->valor), 2, ',', '.') : '' }}</td>
-                <td class="text-right"></td>
+                <td>{{ $lancamento->planoConta->numeracao }} - {{ $lancamento->planoConta->nome }}</td>
+                <td>{{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}</td>
+                <td>{{ $lancamento->pagante_favorecido }}</td>
+                <td class="text-right {{ $lancamento->tipo_lancamento === 'E' ? 'green' : '' }}">
+                    {{ $lancamento->tipo_lancamento === 'E' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
+                </td>
+                <td class="text-right {{ $lancamento->tipo_lancamento === 'S' ? 'red' : '' }}">
+                    {{ $lancamento->tipo_lancamento === 'S' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
+                </td>
             </tr>
             @php
-                if ($lancamento->valor > 0) {
+                if ($lancamento->tipo_lancamento === 'E') {
                     $totalEntradas += $lancamento->valor;
                 } else {
                     $totalSaidas += abs($lancamento->valor);
@@ -150,11 +160,13 @@
         @endforeach
         <tr class="bold">
             <td>Total {{ $caixa }}</td>
+            <td></td>
+            <td></td>
             <td class="text-right">{{ number_format($totalEntradas, 2, ',', '.') }}</td>
             <td class="text-right">{{ number_format($totalSaidas, 2, ',', '.') }}</td>
-            <td class="text-right">{{ number_format($totalEntradas - $totalSaidas, 2, ',', '.') }}</td>
         </tr>
         <tr>
+            <td></td>
             <td></td>
             <td></td>
             <td></td>
