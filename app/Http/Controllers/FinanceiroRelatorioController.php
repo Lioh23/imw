@@ -76,7 +76,6 @@ class FinanceiroRelatorioController extends Controller
         $caixaId = $request->input('caixa_id');
 
         $data = app(LivroCaixaService::class)->execute($dt, $caixaId);
-        dd($data);
 
         $pdf = FacadePdf::loadView('financeiro.relatorios.livrocaixa_pdf', $data);
         return $pdf->stream('relatorio_livrocaixa.pdf');
