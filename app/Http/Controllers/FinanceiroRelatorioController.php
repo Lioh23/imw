@@ -114,7 +114,9 @@ class FinanceiroRelatorioController extends Controller
         $dataFinal = $request->input('dt_final');
         $caixaId = $request->input('caixa_id');
 
-        $data = app(LivroRazaoService::class)->execute($dataInicial, $dataFinal, $caixaId);
+        // Chama o serviço para obter os dados necessários
+        $service = app(LivroRazaoService::class);
+        $data = $service->execute($dataInicial, $dataFinal, $caixaId);
 
         return view('financeiro.relatorios.livrorazao', $data);
     }
@@ -125,8 +127,9 @@ class FinanceiroRelatorioController extends Controller
         $dataFinal = $request->input('dt_final');
         $caixaId = $request->input('caixa_id');
 
-
-        $data = app(LivroRazaoService::class)->execute($dataInicial, $dataFinal, $caixaId);
+        // Chama o serviço para obter os dados necessários
+        $service = app(LivroRazaoService::class);
+        $data = $service->execute($dataInicial, $dataFinal, $caixaId);
 
         $pdf = FacadePdf::loadView('financeiro.relatorios.livrorazao_pdf', $data);
         return $pdf->stream('relatorio_livrorazao.pdf');
