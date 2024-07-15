@@ -86,6 +86,10 @@ class UpdateMembroService
             'has_errors'      => 0
         ];
 
+        if(isset($data['congregacao_id']) === false){
+            $result['congregacao_id'] = null;
+        }
+
         if(isset($data['congregacao_id'])) {
             $result['congregacao_id'] = $data['congregacao_id'];
         }
