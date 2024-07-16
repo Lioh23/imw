@@ -23,6 +23,7 @@
             <div class="card h-100">
                 <div class="card-body">
                     <h6 class="card-title"><b>Membros</b></h6>
+                    {{session()->get('session_perfil')}}
                     <p class="card-text">Total: {{ $activeMembrosCount }}</p>
                 </div>
             </div>
