@@ -179,6 +179,7 @@
     </div>
 @endif
 </div>
+</div>
 
 
 <!-- Incluir scripts para os gráficos (por exemplo, Chart.js) -->
