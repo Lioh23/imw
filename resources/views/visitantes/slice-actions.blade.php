@@ -1,3 +1,7 @@
+    <button class="btn btn-sm btn-info mr-2 btn-rounded btn-visualizar bs-tooltip" title="Visualizar dados da pessoa"
+        data-membro-id="{{ $visitante->id }}">
+        <x-bx-show />
+    </button>
 @if (!$visitante->deleted_at)
     <a  href="{{ route('congregado.editar', $visitante->id) }}"
         title="Tornar Congregado"
@@ -9,10 +13,6 @@
             <line x1="23" y1="11" x2="17" y2="11"></line>
         </svg>
     </a>
-    <button class="btn btn-sm btn-info mr-2 btn-rounded btn-visualizar bs-tooltip" title="Visualizar dados da pessoa"
-        data-membro-id="{{ $visitante->id }}">
-        <x-bx-show />
-    </button>
     <a  href="{{ route('visitante.editar', $visitante->id) }}"
         title="Editar"
         class="btn btn-sm btn-dark mr-2 btn-rounded bs-tooltip">
