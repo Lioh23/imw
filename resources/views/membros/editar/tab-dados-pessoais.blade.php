@@ -15,7 +15,7 @@
       <div class="col-xl-9">
           <div class="form-group @error('nome') has-error @enderror">
             <div class="row mb-4">
-              <div class="col-xl-6">
+              <div class="col-xl-5">
                 <label for="nome">* Nome</label>
                 <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" value="{{ old('nome', $pessoa->nome) }}" maxlength="100">
                 @error('nome')
@@ -43,6 +43,14 @@
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
+
+              <div class="col-xl-1">
+                        <label for="rol_atual">Nº Roll</label>
+                        <input type="text" class="form-control @error('rol_atual') is-invalid @enderror" id="rol_atual" name="rol_atual" value="{{ old('rol_atual', $pessoa->rol_atual) }}" maxlength="100">
+                    @error('rol_atual')
+                        <span class="help-block text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
 
             <div class="row mb-4">

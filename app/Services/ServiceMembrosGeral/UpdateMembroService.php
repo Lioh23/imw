@@ -65,6 +65,7 @@ class UpdateMembroService
         $cpf = preg_replace('/[^0-9]/', '', $data['cpf']);
         $result = [
             'membro_id' => $data['membro_id'],
+            'rol_atual' => $data['rol_atual'] ?? null,
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
             'data_nascimento' => Carbon::createFromFormat('Y-m-d', $data['data_nascimento']),
