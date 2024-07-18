@@ -74,6 +74,7 @@ class HomeController extends Controller
 
         $instituicao = InstituicoesInstituicao::where('id', session()->get('session_perfil')->instituicao_id)->first();
 
+        
         return view('dashboard', [
             'activeMembrosCount' => $activeMembrosCount,
             'activeCongregadosCount' => $activeCongregadosCount,
