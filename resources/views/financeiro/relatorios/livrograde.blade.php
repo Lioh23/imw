@@ -52,7 +52,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Relatório Livro Grade - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}
+                        <h4>Relatório Livro Grade - {{ session('session_perfil')->instituicao_nome }}
                         </h4>
                     </div>
                 </div>
