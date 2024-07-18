@@ -80,7 +80,7 @@
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                     <h4 style="text-transform: uppercase">Movimento Financeiro -
-                        {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}
+                            {{ session('session_perfil')->instituicao_nome }}
                     </h4>
                     <p class="pl-3">Período de {{ \Carbon\Carbon::parse(request()->input('dt_inicial'))->format('d/m/Y') }} a {{ \Carbon\Carbon::parse(request()->input('dt_final'))->format('d/m/Y') }}
                 </div>

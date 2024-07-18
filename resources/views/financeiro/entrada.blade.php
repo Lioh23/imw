@@ -98,13 +98,23 @@
                         <label for="tipo_pagante_favorecido_id">* Tipo de Pagante</label>
                         <select class="form-control @error('tipo_pagante_favorecido_id') is-invalid @enderror" id="tipo_pagante_favorecido_id" name="tipo_pagante_favorecido_id" required>
                             <option value="" selected disabled hidden>Selecione</option>
-                            @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
-                                @if ($tipoPaganteFavorecido->id != 2)
-                                    <option value="{{ $tipoPaganteFavorecido->id }}">
-                                        {{ $tipoPaganteFavorecido->nome }}
-                                    </option>
-                                @endif
-                            @endforeach
+                            @if($tipoInstituicao->tipoInstituicao->sigla == 'I')
+                                @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
+                                    @if ($tipoPaganteFavorecido->id != 2)
+                                        <option value="{{ $tipoPaganteFavorecido->id }}">
+                                            {{ $tipoPaganteFavorecido->nome }}
+                                        </option>
+                                    @endif
+                                @endforeach
+                            @else 
+                                @foreach ($tiposPagantesFavorecidos as $tipoPaganteFavorecido)
+                                        @if (($tipoPaganteFavorecido->id != 1) && ($tipoPaganteFavorecido->id != 2) && ($tipoPaganteFavorecido->id != 3))
+                                            <option value="{{ $tipoPaganteFavorecido->id }}">
+                                                {{ $tipoPaganteFavorecido->nome }}
+                                            </option>
+                                        @endif
+                                @endforeach
+                            @endif
                         </select>
                         @error('tipo_pagante_favorecido_id')
                             <span class="help-block text-danger">{{ $message }}</span>

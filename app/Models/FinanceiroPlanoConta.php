@@ -39,4 +39,9 @@ class FinanceiroPlanoConta extends Model
             ->where('conciliado', 0)
             ->sum('valor');
     }
+
+    public function tiposInstituicoes()
+    {
+        return $this->hasMany(FinanceiroPlanoContaTipoInstituicao::class, 'plano_conta_id');
+    }
 }
