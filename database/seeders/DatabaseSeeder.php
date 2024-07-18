@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(RegrasExtrasTableSeeder::class);
         $this->call(PerfilRegraTableSeeder::class);
         $this->call(UserSeeder::class);
+        $this->call(FinanceiroPlanoContaTipoInstituicaoSeeder::class);
     }
 }
