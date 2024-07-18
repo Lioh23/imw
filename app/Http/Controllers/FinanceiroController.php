@@ -42,6 +42,7 @@ class FinanceiroController extends Controller
     
             return view('financeiro.movimentocaixa', $data);
         } catch(\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Não foi possível abrir a página de Movimento de Caixa');
         }
     }

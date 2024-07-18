@@ -16,4 +16,9 @@ class FinanceiroPlanoContaTipoInstituicao extends Model
         'plano_conta_id',
         'tipo_instituicao_id',
     ];
+
+    public function planoConta()
+    {
+        return $this->belongsTo(FinanceiroPlanoConta::class, 'plano_conta_id');
+    }
 }
