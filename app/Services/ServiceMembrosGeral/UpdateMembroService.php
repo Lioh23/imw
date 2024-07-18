@@ -33,7 +33,9 @@ class UpdateMembroService
         $this->handleUpdateFamiliar($dataFamiliar, $membroID);
         $this->handleUpdateFormacoes($dataFormacoes, $membroID);
         $this->handleUpdateMinisteriais($dataMinisteriais, $membroID);
-        $this->updateMembroRol($data['rol_atual'], $membroID);
+        if(isset($data['rol_atual'])){
+            $this->updateMembroRol($data['rol_atual'], $membroID);
+        }
 
         if (isset($data['foto'])) {
             $this->handlePhotoUpload($data['foto'], $membroID, 'I');
@@ -246,12 +248,12 @@ class UpdateMembroService
     {
             $rolPermanente = MembresiaRolPermanente::where('membro_id', $membroId)->where('lastrec', 1)->first();
             if ($rolPermanente) {
-                $rolPermanente->numero_rol = $rolAtual;
+                $rolPermanente->numero_rol = $rolAtual ?? null;
                 $rolPermanente->save();
             } else {
                 MembresiaRolPermanente::create([
                     'membro_id' => $membroId,
-                    'numero_rol' => $rolAtual,
+                    'numero_rol' => $rolAtual ?? null,
                     'lastrec' => 1
                 ]);
             }
