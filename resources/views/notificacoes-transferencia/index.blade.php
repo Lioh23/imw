@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Notificações de Tranfêrencia', 'url' => '', 'active' => true],
+        ['text' => 'Notificações de Transferências', 'url' => '', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -22,7 +22,7 @@
 
 @section('content')
     @include('extras.alerts')
-    <h1 class="col-md-12">Notificações de Tranferências</h1>
+    <h1 class="col-md-12">Notificações de Transferências</h1>
 
     @if ($baseParams->notificacoesTransferencia && $baseParams->notificacoesTransferencia->count())
         @foreach ($baseParams->notificacoesTransferencia as $notificacao)
@@ -51,6 +51,9 @@
                                             @endphp
                                             <p class="meta-time">
                                                 {{ $dtAbertura ? $dtAbertura->format($format) : 'Sem informações' }}
+                                            </p>
+                                            <p class="meta-time">
+                                                {{ $notificacao->igrejaOrigem->nome }}
                                             </p>
                                         </div>
                                     </div>
