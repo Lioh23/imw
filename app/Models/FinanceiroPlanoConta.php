@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
 class FinanceiroPlanoConta extends Model
 {
     use HasFactory, SoftDeletes, Identifiable;
@@ -47,5 +46,10 @@ class FinanceiroPlanoConta extends Model
         return $this->hasMany(FinanceiroLancamento::class, 'plano_conta_id')
             ->where('instituicao_id', Identifiable::fetchSessionIgrejaLocal()->id);
 
+    }
+
+    public function tiposInstituicoes()
+    {
+        return $this->hasMany(FinanceiroPlanoContaTipoInstituicao::class, 'plano_conta_id');
     }
 }

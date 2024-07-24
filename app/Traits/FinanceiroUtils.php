@@ -7,6 +7,7 @@ use App\Models\FinanceiroFornecedores;
 use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
 use App\Models\FinanceiroSaldoConsolidadoMensal;
+use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaMembro;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
@@ -37,9 +38,14 @@ trait FinanceiroUtils
 
     public static function planoContas($tipo = null)
     {
+        $tpinstituicao = InstituicoesInstituicao::where('id', session()->get('session_perfil')->instituicao_id)->first();
+        $tpinstituicao = $tpinstituicao->tipo_instituicao_id;
+
         return FinanceiroPlanoConta::orderBy('numeracao')
             ->when((bool) $tipo, fn ($query) => $query->where('tipo', $tipo))
-            ->get();
+            ->whereHas('tiposInstituicoes', fn ($query) => $query->where('tipo_instituicao_id', $tpinstituicao))
+            ->get(); 
+        
     }
 
     public static function lancamentos($filters)
