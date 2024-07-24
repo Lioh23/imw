@@ -121,28 +121,35 @@
 <table>
     <thead>
     <tr>
-        <th>CONTA</th>
-        <th>DATA</th>
-        <th>ORIGEM/DESTINO</th>
-        <th>ENTRADA</th>
-        <th>SAÍDA</th>
+        <th>CONTA/DATA/ORIGEM/DESTINO</th>
+        <th></th>
+        <th></th>
+        <th>ENTRADA </th>
+        <th class="text-right">SAÍDA</th>
     </tr>
     </thead>
     <tbody>
-    @foreach ($lancamentosPorCaixa as $caixa => $lancamentos)
-        <tr>
-            <td colspan="6" class="bold">{{ $caixa }}</td>
+    @foreach ($lancamentosPorConta as $planoConta)
+        <tr style="font-weight: bold">
+            <td colspan="4">{{ $planoConta->numeracao }} - {{ $planoConta->nome }}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total: {{ $planoConta->lancamentosPorIgreja->whereBetween('data_lancamento', [request()->input('dt_inicial'), request()->input('dt_final')])->sum('valor') }}</td>
         </tr>
         @php
             $totalEntradas = 0;
             $totalSaidas = 0;
         @endphp
 
-        @foreach ($lancamentos as $lancamento)
+        @foreach ($planoConta->lancamentosPorIgreja->whereBetween('data_lancamento', [request()->input('dt_inicial'), request()->input('dt_final')]) as $lancamento)
+
             <tr>
-                <td>{{ $lancamento->planoConta->numeracao }} - {{ $lancamento->planoConta->nome }}</td>
-                <td>{{ \Carbon\Carbon::parse($lancamento->data_movimento)->format('d/m/Y') }}</td>
-                <td>{{ $lancamento->pagante_favorecido }}</td>
+                <td colspan="3">
+                    {{ \Carbon\Carbon::parse($lancamento->data_lancamento)->format('d/m/Y') }} -
+                    {{ $lancamento->caixa->descricao }} -
+                    {{ $lancamento->pagante_favorecido }}
+                </td>
                 <td class="text-right {{ $lancamento->tipo_lancamento === 'E' ? 'green' : '' }}">
                     {{ $lancamento->tipo_lancamento === 'E' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
                 </td>
@@ -159,18 +166,11 @@
             @endphp
         @endforeach
         <tr class="bold">
-            <td>Total {{ $caixa }}</td>
+            {{-- <td>Total {{ $conta }}</td> --}}
             <td></td>
             <td></td>
             <td class="text-right">{{ number_format($totalEntradas, 2, ',', '.') }}</td>
             <td class="text-right">{{ number_format($totalSaidas, 2, ',', '.') }}</td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td></td>
         </tr>
     @endforeach
     </tbody>
