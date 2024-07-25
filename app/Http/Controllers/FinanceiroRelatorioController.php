@@ -128,7 +128,7 @@ class FinanceiroRelatorioController extends Controller
 
         // Chama o serviço para obter os dados necessários
         $service = app(LivroRazaoService::class);
-        $data = $service->execute($dataInicial, $dataFinal, $caixaId);
+        $data = $service->execute($dataInicial, $dataFinal, $contaId);
 
         $pdf = FacadePdf::loadView('financeiro.relatorios.livrorazao_pdf', $data);
         return $pdf->stream('relatorio_livrorazao.pdf');
