@@ -19,9 +19,9 @@ class RegrasDistritoTableSeeder extends Seeder
         DB::table('regras')->insert([
             // Relatórios Distritos
             ['id' => 74 ,'nome' => 'distrito-relatorio-livro-razao-geral'],
-            ['id' => 75 ,'nome' =>  'distrito-relatorio-orcamento'],
-            ['id' => 76 ,'nome' =>  'distrito-relatorio-variacao-financeira'],
-            ['id' => 77 ,'nome' =>  'distrito-relatorio-lancamento-das-igrejas'],
+            ['id' => 75 ,'nome' => 'distrito-relatorio-orcamento'],
+            ['id' => 76 ,'nome' => 'distrito-relatorio-variacao-financeira'],
+            ['id' => 77 ,'nome' => 'distrito-relatorio-lancamento-das-igrejas'],
         ]);
 
         // Inserir registros na tabela 'perfil_regra'
