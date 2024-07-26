@@ -204,6 +204,47 @@
              </li>
              @endif
 
+             @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-relatorio'))
+             <li class="menu">
+                 <a href="#financeiro-distrito" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                     <div class="">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign">
+                             <line x1="12" y1="1" x2="12" y2="23"></line>
+                             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                         </svg>
+                         <span>Relatório Distrito</span>
+                     </div>
+                     <div>
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                             <polyline points="9 18 15 12 9 6"></polyline>
+                         </svg>
+                     </div>
+                 </a>
+                 <ul class="collapse submenu list-unstyled" id="financeiro-distrito" data-parent="#financeiro-distrito">
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-livro-razao-geral'))
+                         <a href="{{ route('distrito.relatorio.livrorazaogeral') }}">Livro Razão Geral</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-orcamento'))
+                         <a href="{{ route('distrito.relatorio.orcamento') }}">Livro Razão Geral</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-variacao-financeira'))
+                         <a href="{{ route('distrito.relatorio.variacaofinanceira') }}">Livro Razão Geral</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-lancamento-das-igrejas'))
+                         <a href="{{ route('distrito.relatorio.lancamentodasigrejas') }}">Livro Razão Geral</a>
+                         @endif
+                     </li>
+                 </ul>
+             </li>
+             @endif
+
              @if (auth()->check() && auth()->user()->hasPerfilRegra('congregacao-index'))
              <li class="menu">
                  <a href="/congregacao" aria-expanded="false" class="dropdown-toggle">
