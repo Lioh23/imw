@@ -23,15 +23,25 @@ class RegrasDistritoTableSeeder extends Seeder
             ['id' => 76 ,'nome' => 'distrito-relatorio-variacao-financeira'],
             ['id' => 77 ,'nome' => 'distrito-relatorio-lancamento-das-igrejas'],
             ['id' => 78 ,'nome' => 'distrito-menu-relatorio'],
+            ['id' => 79 ,'nome' => 'distrito-relatorio-saldo-das-igrejas'],
         ]);
 
         // Inserir registros na tabela 'perfil_regra'
         DB::table('perfil_regra')->insert([
+            //Admin distrito
             ['perfil_id' => 2, 'regra_id' => 74, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 2, 'regra_id' => 75, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 2, 'regra_id' => 76, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 2, 'regra_id' => 77, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 2, 'regra_id' => 78, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 2, 'regra_id' => 79, 'created_at' => null, 'updated_at' => null],
+            //Tesoureiro distrito
+            ['perfil_id' => 9, 'regra_id' => 74, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 9, 'regra_id' => 75, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 9, 'regra_id' => 76, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 9, 'regra_id' => 77, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 9, 'regra_id' => 78, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 9, 'regra_id' => 79, 'created_at' => null, 'updated_at' => null],
         ]);
     }
 }
