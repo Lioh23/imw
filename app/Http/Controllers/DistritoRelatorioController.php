@@ -30,7 +30,15 @@ class DistritoRelatorioController extends Controller
     }
 
     public function livrorazaogeralPdf(Request $request) {
-        dd($request->all());
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+
+        $data = app(LivroRazaoGeralService::class)->execute($dataInicial, $dataFinal);
+
+        $pdf = FacadePdf::loadView('distrito.relatorios.livrorazaogeral_pdf', $data)
+        ->setPaper('a4', 'landscape'); 
+
+        return $pdf->stream('relatorio_livrorazaogeral.pdf' . date('YmdHis'));
     }
 
     public function saldodasigrejas(Request $request)

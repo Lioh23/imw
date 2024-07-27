@@ -37,9 +37,9 @@ class LivroRazaoGeralService
                 ii.nome AS instituicao_nome,
                 pc.numeracao,
                 pc.nome AS plano_conta_nome,
-                FORMAT(COALESCE(SUM(CASE WHEN fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0), 2, 'de_DE') AS total_entradas,
-                FORMAT(COALESCE(SUM(CASE WHEN fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0), 2, 'de_DE') AS total_saidas,
-                FORMAT(COALESCE(SUM(CASE WHEN fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END) - SUM(CASE WHEN fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0), 2, 'de_DE') AS total
+                COALESCE(SUM(CASE WHEN fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_entradas,
+                COALESCE(SUM(CASE WHEN fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total_saidas,
+                COALESCE(SUM(CASE WHEN fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END) - SUM(CASE WHEN fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total
             FROM 
                 instituicoes_instituicoes ii
             LEFT JOIN 
@@ -60,7 +60,26 @@ class LivroRazaoGeralService
             ORDER BY 
                 pc.numeracao ASC
         ", [$dataInicial, $dataFinal]);
-
-        return $result;
+    
+        $grouped = [];
+        foreach ($result as $item) {
+            $key = $item->numeracao . ' - ' . $item->plano_conta_nome;
+            if (!isset($grouped[$key])) {
+                $grouped[$key] = [
+                    'total_entradas' => 0,
+                    'total_saidas' => 0,
+                    'total' => 0,
+                    'movimentos' => []
+                ];
+            }
+            $grouped[$key]['total_entradas'] += $item->total_entradas;
+            $grouped[$key]['total_saidas'] += $item->total_saidas;
+            $grouped[$key]['total'] = $grouped[$key]['total_entradas'] - $grouped[$key]['total_saidas'];
+            $grouped[$key]['movimentos'][] = $item;
+        }
+    
+        return $grouped;
     }
+    
+    
 }

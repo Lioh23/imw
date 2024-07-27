@@ -72,23 +72,37 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h5 class="mt-3">Discriminação de saldos por caixa</h5>
+                            <h5 class="mt-3">LIVRO RAZÃO GERAL - {{ session('session_perfil')->instituicao_nome }}</h5>
+                            <p>Período de {{ \Carbon\Carbon::parse(request()->input('dt_inicial'))->format('d/m/Y') }} a {{ \Carbon\Carbon::parse(request()->input('dt_final'))->format('d/m/Y') }}</p>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>CAIXA</th>
-                                        <th width="300" style="text-align: right">SALDO ANTERIOR</th>
-                                        <th width="120" style="text-align: right">TOTAIS DE ENTRADAS</th>
-                                        <th width="120" style="text-align: right">TOTAIS DE SAÍDAS</th>
-                                        <th width="120" style="text-align: right">TRANSF. ENTRADAS</th>
-                                        <th width="120" style="text-align: right">TRANSF. SAÍDAS</th>
-                                        <th width="120" style="text-align: right">SALDO ATUAL</th>
+                                        <th width="200" style="text-align: left">CONTAS</th>
+                                        <th width="100" style="text-align: right">ENTRADAS</th>
+                                        <th width="100" style="text-align: right">SAÍDAS</th>
+                                        <th width="100" style="text-align: right">TOTAIS</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach($lancamentos as $key => $group)
+                                    <tr style="font-weight: bold;">
+                                        <td colspan="3">{{ $key }}</td>
+                                        <td style="text-align: right">R$ {{ number_format($group['total'], 2, ',', '.') }}</td>
+                                    </tr>
+                                    @foreach($group['movimentos'] as $lancamento)
+                                    @if($lancamento->total_entradas > 0 || $lancamento->total_saidas > 0)
+                                    <tr>
+                                        <td>{{ $lancamento->data_movimentacao }} - {{ $lancamento->instituicao_nome }}</td>
+                                        <td style="text-align: right">R$ {{ number_format($lancamento->total_entradas, 2, ',', '.') }}</td>
+                                        <td style="text-align: right">R$ {{ number_format($lancamento->total_saidas, 2, ',', '.') }}</td>
+                                        <td style="text-align: right"></td>
+                                    </tr>
+                                    @endif
+                                    @endforeach
+                                    @endforeach
                                 </tbody>
                             </table>
+
                         </div>
                     </div>
                 </div>
@@ -106,7 +120,6 @@
 
 @section('extras-scripts')
 <script>
-   
     $(document).ready(function() {
 
         $('#btn_relatorio').on('click', function(event) {
