@@ -69,10 +69,10 @@
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th width="300" style="text-align: left">IGREJA</th>
-                                        <th width="70" style="text-align: right">SALDO CAIXA PRINCIPAL</th>
-                                        <th width="70" style="text-align: right">SALDO CAIXA CONGREGAÇÕES</th>
-                                        <th width="70" style="text-align: right">SALDO OUTROS CAIXAS</th>
+                                        <th width="150" style="text-align: left">IGREJA</th>
+                                        <th width="150" style="text-align: right">SALDO CAIXA PRINCIPAL</th>
+                                        <th width="180" style="text-align: right">SALDO CAIXA CONGREGAÇÕES</th>
+                                        <th width="150" style="text-align: right">SALDO OUTROS CAIXAS</th>
                                         <th width="70" style="text-align: right">TOTAL</th>
                                     </tr>
                                 </thead>
