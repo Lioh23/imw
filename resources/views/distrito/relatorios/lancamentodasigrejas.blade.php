@@ -45,9 +45,9 @@
                     <div class="col-lg-6">
                         <select class="selectpicker" data-actions-box="true" data-header="{{ session('session_perfil')->instituicao_nome }}" multiple data-live-search="true" id="igreja_id" name="igrejas[]" data-width="100%">
                             @foreach ($igrejaSelect as $igreja)
-                                <option value="{{ $igreja->id }}" {{ in_array($igreja->id, request()->input('igrejas', [])) ? 'selected' : '' }}>
-                                    {{ $igreja->descricao }}
-                                </option>
+                            <option value="{{ $igreja->id }}" {{ in_array($igreja->id, request()->input('igrejas', [])) ? 'selected' : '' }}>
+                                {{ $igreja->descricao }}
+                            </option>
                             @endforeach
                         </select>
                     </div>
@@ -87,7 +87,7 @@
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
-                                     <!--    <th width="300" style="text-align: left">DISTRITO</th> -->
+                                        <!--    <th width="300" style="text-align: left">DISTRITO</th> -->
                                         <th width="300" style="text-align: left">IGREJA</th>
                                         <th width="50" style="text-align: right">JAN</th>
                                         <th width="50" style="text-align: right">FEV</th>
@@ -105,22 +105,22 @@
                                 </thead>
                                 <tbody>
                                     @foreach($lancamentos as $lancamento)
-                                        <tr>
-                                           <!--  <td>{{ $lancamento->instituicao_pai_nome}}</td> -->
-                                            <td>{{ $lancamento->instituicao_nome }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->janeiro, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->fevereiro, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->marco, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->abril, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->maio, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->junho, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->julho, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->agosto, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->setembro, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->outubro, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->novembro, 2, ',', '.') }}</td>
-                                            <td style="text-align: right">{{ number_format($lancamento->dezembro, 2, ',', '.') }}</td>
-                                        </tr>
+                                    <tr>
+                                        <!--  <td>{{ $lancamento->instituicao_pai_nome}}</td> -->
+                                        <td>{{ $lancamento->instituicao_nome }}</td>
+                                        <td style="text-align: right">{{ $lancamento->janeiro }}</td>
+                                        <td style="text-align: right">{{ $lancamento->fevereiro }}</td>
+                                        <td style="text-align: right">{{ $lancamento->marco }}</td>
+                                        <td style="text-align: right">{{ $lancamento->abril }}</td>
+                                        <td style="text-align: right">{{ $lancamento->maio }}</td>
+                                        <td style="text-align: right">{{ $lancamento->junho }}</td>
+                                        <td style="text-align: right">{{ $lancamento->julho }}</td>
+                                        <td style="text-align: right">{{ $lancamento->agosto }}</td>
+                                        <td style="text-align: right">{{ $lancamento->setembro }}</td>
+                                        <td style="text-align: right">{{ $lancamento->outubro }}</td>
+                                        <td style="text-align: right">{{ $lancamento->novembro }}</td>
+                                        <td style="text-align: right">{{ $lancamento->dezembro }}</td>
+                                    </tr>
                                     @endforeach
                                 </tbody>
                             </table>
