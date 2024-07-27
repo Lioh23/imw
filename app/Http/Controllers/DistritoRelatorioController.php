@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ServiceDistritoRelatorios\LancamentoIgrejasService;
+use App\Services\ServiceDistritoRelatorios\LivroRazaoGeralService;
 use App\Services\ServiceDistritoRelatorios\SaldoIgrejasService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -16,6 +17,15 @@ class DistritoRelatorioController extends Controller
 
         $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejasID);
         return view('distrito.relatorios.lancamentodasigrejas', $data);
+    }
+
+    public function livrorazaogeral(Request $request)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+
+        $data = app(LivroRazaoGeralService::class)->execute($dataInicial, $dataFinal);
+        return view('distrito.relatorios.livrorazaogeral', $data);
     }
 
     public function saldodasigrejas(Request $request)
