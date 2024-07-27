@@ -2,10 +2,10 @@
 
 @section('breadcrumb')
 <x-breadcrumb :breadcrumbs="[
-        ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Relatórios Distritais', 'url' => '#', 'active' => false],
-        ['text' => 'Lançamento das Igrejas', 'url' => '#', 'active' => true],
-    ]"></x-breadcrumb>
+    ['text' => 'Home', 'url' => '/', 'active' => false],
+    ['text' => 'Relatórios Distritais', 'url' => '#', 'active' => false],
+    ['text' => 'Lançamento das Igrejas', 'url' => '#', 'active' => true],
+]"></x-breadcrumb>
 @endsection
 
 @section('extras-css')
@@ -43,7 +43,7 @@
                         <label class="control-label">* Igrejas:</label>
                     </div>
                     <div class="col-lg-6">
-                        <select class="selectpicker" data-actions-box="true" data-header="Lista de Igrejas" multiple data-live-search="true" id="igreja_id" name="distritos[]" data-width="100%">
+                        <select class="selectpicker" data-actions-box="true" data-header="{{ session('session_perfil')->instituicao_nome }}" multiple data-live-search="true" id="igreja_id" name="igrejas[]" data-width="100%">
                             @foreach ($igrejaSelect as $igreja)
                             <option value="{{ $igreja->id }}" {{ request()->input('igreja_id') == $igreja->id ? 'selected' : '' }}>
                                 {{ $igreja->descricao }}
@@ -65,6 +65,11 @@
                     </div>
                 </div>
             </form>
+            <form id="report_form" action="{{ url('distrito/relatorio/lancamentodasigrejas/pdf') }}" method="POST" target="_blank" style="display: none;">
+                @csrf
+                <input type="hidden" name="dtano" id="report_dtano">
+                <input type="hidden" name="igrejas" id="report_igrejas">
+            </form>
         </div>
     </div>
 </div>
@@ -78,28 +83,45 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h5 class="mt-3">LANÇAMENTOS DAS IGREJAS </h5>
+                            <h6 class="mt-3">LANÇAMENTOS DAS IGREJAS - {{ session('session_perfil')->instituicao_nome }}</h6>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th>CAIXA</th>
-                                        <th width="300" style="text-align: right">IGREJA</th>
-                                        <th width="120" style="text-align: right">JAN</th>
-                                        <th width="120" style="text-align: right">FEV</th>
-                                        <th width="120" style="text-align: right">MAR</th>
-                                        <th width="120" style="text-align: right">ABR</th>
-                                        <th width="120" style="text-align: right">MAI</th>
-                                        <th width="120" style="text-align: right">JUN</th>
-                                        <th width="120" style="text-align: right">JUL</th>
-                                        <th width="120" style="text-align: right">AGO</th>
-                                        <th width="120" style="text-align: right">SET</th>
-                                        <th width="120" style="text-align: right">OUT</th>
-                                        <th width="120" style="text-align: right">NOV</th>
-                                        <th width="120" style="text-align: right">DEZ</th>
+                                        <th width="300" style="text-align: left">DISTRITO</th>
+                                        <th width="300" style="text-align: left">IGREJA</th>
+                                        <th width="50" style="text-align: right">JAN</th>
+                                        <th width="50" style="text-align: right">FEV</th>
+                                        <th width="50" style="text-align: right">MAR</th>
+                                        <th width="50" style="text-align: right">ABR</th>
+                                        <th width="50" style="text-align: right">MAI</th>
+                                        <th width="50" style="text-align: right">JUN</th>
+                                        <th width="50" style="text-align: right">JUL</th>
+                                        <th width="50" style="text-align: right">AGO</th>
+                                        <th width="50" style="text-align: right">SET</th>
+                                        <th width="50" style="text-align: right">OUT</th>
+                                        <th width="50" style="text-align: right">NOV</th>
+                                        <th width="50" style="text-align: right">DEZ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-
+                                    @foreach($lancamentos as $lancamento)
+                                        <tr>
+                                            <td>{{ $lancamento->instituicao_pai_nome}}</td>
+                                            <td>{{ $lancamento->instituicao_nome }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->janeiro, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->fevereiro, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->marco, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->abril, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->maio, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->junho, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->julho, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->agosto, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->setembro, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->outubro, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->novembro, 2, ',', '.') }}</td>
+                                            <td style="text-align: right">{{ number_format($lancamento->dezembro, 2, ',', '.') }}</td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
@@ -170,31 +192,28 @@
             $(".ui-datepicker-calendar").hide();
         });
 
-        $('#btn_relatorio').on('click', function() {
+        $('#btn_relatorio').on('click', function(event) {
             var dataAno = $('#dtano').val();
-            var igreja = $('#igreja_id').val();
+            var igrejas = $('#igreja_id').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno || !igreja || igreja.length === 0) {
+            if (!dataAno || !igrejas || igrejas.length === 0) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
-                // Formata a URL para a rota de PDF
-                var url = '{{ url("financeiro/relatorio/livrocaixa/pdf") }}' + '?dt=' + dtano + '&igreja_id=' + igreja_id;
-
-                // Abre a URL em uma nova aba com os parâmetros corretos
-                window.open(url, '_blank');
+                // Preencher e submeter o formulário oculto
+                $('#report_dtano').val(dataAno);
+                $('#report_igrejas').val(JSON.stringify(igrejas));
+                $('#report_form').submit();
             }
-
-
         });
 
         $('#filter_form').submit(function(event) {
             var dataAno = $('#dtano').val();
-            var igreja = $('#igreja_id').val();
+            var igrejas = $('#igreja_id').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno || !igreja || igreja.length === 0) {
+            if (!dataAno || !igrejas || igrejas.length === 0) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             }

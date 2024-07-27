@@ -184,6 +184,8 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('distrito')->name('distrito.')->group(function () {
             Route::get('/relatorio/lancamentodasigrejas', [DistritoRelatorioController::class, 'lancamentodasigrejas'])->name('relatorio.lancamentodasigrejas')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/lancamentodasigrejas/pdf', [DistritoRelatorioController::class, 'lancamentodasigrejasPdf'])->name('relatorio.lancamentodasigrejas-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+           
             Route::get('/relatorio/orcamento', [DistritoRelatorioController::class, 'orcamento'])->name('relatorio.orcamento')->middleware(['seguranca:distrito-menu-relatorio']);
             Route::get('/relatorio/livrorazaogeral', [DistritoRelatorioController::class, 'livrorazaogeral'])->name('relatorio.livrorazaogeral')->middleware(['seguranca:distrito-menu-relatorio']);
             Route::get('/relatorio/variacaofinanceira', [DistritoRelatorioController::class, 'variacaofinanceira'])->name('relatorio.variacaofinanceira')->middleware(['seguranca:distrito-menu-relatorio']);
