@@ -103,7 +103,7 @@
                 <th width="200" style="text-align: left">CONTAS</th>
                 <th width="100" style="text-align: right">ENTRADAS</th>
                 <th width="100" style="text-align: right">SAÍDAS</th>
-                <th width="100" style="text-align: right">TOTAIS</th>
+                <th width="100" style="text-align: right">TOTAL</th>
             </tr>
         </thead>
         <tbody>
