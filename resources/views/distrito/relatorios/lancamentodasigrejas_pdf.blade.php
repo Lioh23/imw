@@ -99,7 +99,7 @@
 <table>
         <thead>
             <tr>
-                <th width="100">DISTRITO</th>
+       <!--          <th width="100">DISTRITO</th> -->
                 <th width="100">IGREJA</th>
                 <th width="30" class="text-right">JAN</th>
                 <th width="30" class="text-right">FEV</th>
@@ -118,7 +118,7 @@
         <tbody>
             @foreach($lancamentos as $lancamento)
             <tr>
-                <td>{{ $lancamento->instituicao_pai_nome}}</td>
+<!--                 <td>{{ $lancamento->instituicao_pai_nome}}</td> -->
                 <td>{{ $lancamento->instituicao_nome }}</td>
                 <td class="text-right">{{ number_format($lancamento->janeiro, 2, ',', '.') }}</td>
                 <td class="text-right">{{ number_format($lancamento->fevereiro, 2, ',', '.') }}</td>
