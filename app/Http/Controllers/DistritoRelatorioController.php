@@ -10,9 +10,9 @@ class DistritoRelatorioController extends Controller
     public function  lancamentodasigrejas(Request $request)
     {
         $dt = $request->input('dtano');
-        $distritoID = $request->input('distrito_id');
+        $igrejasID = $request->input('igreja_id');
 
-        $data = app(LancamentoIgrejasService::class)->execute($dt, $distritoID);
+        $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejasID);
         return view('distrito.relatorios.lancamentodasigrejas', $data);
     }
 }

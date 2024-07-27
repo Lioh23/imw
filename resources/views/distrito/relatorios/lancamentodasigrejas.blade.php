@@ -37,16 +37,16 @@
                     </div>
                 </div>
 
-                {{-- Distritos --}}
+                {{-- Igrejas --}}
                 <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
-                        <label class="control-label">* Distritos:</label>
+                        <label class="control-label">* Igrejas:</label>
                     </div>
                     <div class="col-lg-6">
-                        <select class="selectpicker" data-actions-box="true" multiple data-live-search="true" id="distrito_id" name="distritos[]" data-width="75%">
-                            @foreach ($distritoSelect as $distrito)
-                            <option value="{{ $distrito->id }}" {{ request()->input('distrito_id') == $distrito->id ? 'selected' : '' }}>
-                                {{ $distrito->descricao }}
+                        <select class="selectpicker" data-actions-box="true" data-header="Lista de Igrejas" multiple data-live-search="true" id="igreja_id" name="distritos[]" data-width="100%">
+                            @foreach ($igrejaSelect as $igreja)
+                            <option value="{{ $igreja->id }}" {{ request()->input('igreja_id') == $igreja->id ? 'selected' : '' }}>
+                                {{ $igreja->descricao }}
                             </option>
                             @endforeach
                         </select>
@@ -69,7 +69,7 @@
     </div>
 </div>
 
-@if(request()->input('dtano'))
+@if(request()->input('dtano') && request()->input('igrejas'))
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
@@ -78,17 +78,24 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h5 class="mt-3">Discriminação de saldos por caixa</h5>
+                            <h5 class="mt-3">LANÇAMENTOS DAS IGREJAS </h5>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>CAIXA</th>
-                                        <th width="300" style="text-align: right">DISTRITO</th>
-                                        <th width="120" style="text-align: right">IGREJA</th>
+                                        <th width="300" style="text-align: right">IGREJA</th>
                                         <th width="120" style="text-align: right">JAN</th>
-                                        <th width="120" style="text-align: right">TRANSF. ENTRADAS</th>
-                                        <th width="120" style="text-align: right">TRANSF. SAÍDAS</th>
-                                        <th width="120" style="text-align: right">SALDO ATUAL</th>
+                                        <th width="120" style="text-align: right">FEV</th>
+                                        <th width="120" style="text-align: right">MAR</th>
+                                        <th width="120" style="text-align: right">ABR</th>
+                                        <th width="120" style="text-align: right">MAI</th>
+                                        <th width="120" style="text-align: right">JUN</th>
+                                        <th width="120" style="text-align: right">JUL</th>
+                                        <th width="120" style="text-align: right">AGO</th>
+                                        <th width="120" style="text-align: right">SET</th>
+                                        <th width="120" style="text-align: right">OUT</th>
+                                        <th width="120" style="text-align: right">NOV</th>
+                                        <th width="120" style="text-align: right">DEZ</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -97,13 +104,6 @@
                             </table>
                         </div>
                     </div>
-                    {{-- <div class="row">
-                                <div class="col-12 text-center">
-                                    <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i
-                                            class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
-                                </div>
-                            </div> --}}
-
                 </div>
             </div>
             <div class="row">
@@ -171,33 +171,35 @@
         });
 
         $('#btn_relatorio').on('click', function() {
-            var dtano = $('#dtano').val();
-            var distrito_id = $('#distrito_id').val();
+            var dataAno = $('#dtano').val();
+            var igreja = $('#igreja_id').val();
 
-            if (!dtano) {
-                alert('Por favor, preencha o campo Ano.');
-                return;
+            // Verificar se a data está preenchida
+            if (!dataAno || !igreja || igreja.length === 0) {
+                event.preventDefault();
+                alert('Por favor, preencha todos os campos.');
+            } else {
+                // Formata a URL para a rota de PDF
+                var url = '{{ url("financeiro/relatorio/livrocaixa/pdf") }}' + '?dt=' + dtano + '&igreja_id=' + igreja_id;
+
+                // Abre a URL em uma nova aba com os parâmetros corretos
+                window.open(url, '_blank');
             }
 
-            // Formata a URL para a rota de PDF
-            var url = '{{ url("financeiro/relatorio/livrocaixa/pdf") }}' + '?dt=' + dtano + '&distrito_id=' + distrito_id;
 
-            // Abre a URL em uma nova aba com os parâmetros corretos
-            window.open(url, '_blank');
         });
 
         $('#filter_form').submit(function(event) {
             var dataAno = $('#dtano').val();
+            var igreja = $('#igreja_id').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno) {
+            if (!dataAno || !igreja || igreja.length === 0) {
                 event.preventDefault();
-                alert('Por favor, preencha o campo Ano.');
+                alert('Por favor, preencha todos os campos.');
             }
         });
     });
 </script>
-
-
 @endsection
 @endsection
