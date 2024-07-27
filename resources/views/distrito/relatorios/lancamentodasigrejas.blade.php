@@ -11,7 +11,7 @@
 @section('extras-css')
 <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
-
+<link rel="stylesheet" type="text/css" href="{{ asset('theme/plugins/bootstrap-select/bootstrap-select.min.css') }}" rel="stylesheet" type="text/css" />
 @endsection
 
 @include('extras.alerts')
@@ -33,7 +33,7 @@
                         <label class="control-label">* Ano:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input type="text" class="form-control @error('dtano') is-invalid @enderror" id="dtanoano" name="dtano" value="{{ request()->input('dtano') }}" placeholder="Exemplo: 2024" required>
+                        <input type="text" class="form-control @error('dtano') is-invalid @enderror" id="dtano" name="dtano" value="{{ request()->input('dtano') }}" placeholder="Exemplo: 2024" required>
                     </div>
                 </div>
 
@@ -42,9 +42,8 @@
                     <div class="col-lg-2 text-right">
                         <label class="control-label">* Distritos:</label>
                     </div>
-                    <div class="col-lg-6 select-container">
-                        <select id="distrito_id" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror">
-                            <option value="all" {{ request()->input('distrito_id') == 'all' ? 'selected' : '' }}>Todos</option>
+                    <div class="col-lg-6">
+                        <select class="selectpicker" data-actions-box="true" multiple data-live-search="true" id="distrito_id" name="distritos[]" data-width="75%">
                             @foreach ($distritoSelect as $distrito)
                             <option value="{{ $distrito->id }}" {{ request()->input('distrito_id') == $distrito->id ? 'selected' : '' }}>
                                 {{ $distrito->descricao }}
@@ -70,7 +69,7 @@
     </div>
 </div>
 
-@if(request()->input('dt'))
+@if(request()->input('dtano'))
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
@@ -84,79 +83,16 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>CAIXA</th>
-                                        <th width="300" style="text-align: right">SALDO ANTERIOR</th>
-                                        <th width="120" style="text-align: right">TOTAIS DE ENTRADAS</th>
-                                        <th width="120" style="text-align: right">TOTAIS DE SAÍDAS</th>
+                                        <th width="300" style="text-align: right">DISTRITO</th>
+                                        <th width="120" style="text-align: right">IGREJA</th>
+                                        <th width="120" style="text-align: right">JAN</th>
                                         <th width="120" style="text-align: right">TRANSF. ENTRADAS</th>
                                         <th width="120" style="text-align: right">TRANSF. SAÍDAS</th>
                                         <th width="120" style="text-align: right">SALDO ATUAL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                    $totalSaldoFinal = 0;
-                                    $totalEntradas = 0;
-                                    $totalSaidas = 0;
-                                    $totalTransferenciasEntrada = 0;
-                                    $totalTransferenciasSaida = 0;
-                                    $totalSaldoAtual = 0;
-                                    @endphp
 
-
-                                    @foreach ($caixas as $caixa)
-                                    <tr>
-                                        <td style="text-align: left">{{ $caixa->caixa }}</td>
-                                        <td style="text-align: right">
-                                            {{ 'R$ ' . number_format($caixa->saldo_final, 2, ',', '.') }}
-                                        </td>
-                                        <td style="text-align: right">
-                                            {{ 'R$ ' . number_format($caixa->total_entradas, 2, ',', '.') }}
-                                        </td>
-                                        <td style="text-align: right">
-                                            {{ 'R$ ' . ($caixa->total_saidas > 0 ? '-' : '') . number_format(abs($caixa->total_saidas), 2, ',', '.') }}
-                                        </td>
-                                        <td style="text-align: right">
-                                            {{ 'R$ ' . number_format($caixa->total_transferencias_entrada, 2, ',', '.') }}
-                                        </td>
-                                        <td style="text-align: right">
-                                            {{ 'R$ ' . ($caixa->total_transferencias_saida > 0 ? '-' : '') . number_format(abs($caixa->total_transferencias_saida), 2, ',', '.') }}
-                                        </td>
-                                        <td style="text-align: right">
-                                            {{ 'R$ ' . number_format($caixa->saldo_atual, 2, ',', '.') }}
-                                        </td>
-                                    </tr>
-                                    @php
-                                    $totalSaldoFinal += $caixa->saldo_final;
-                                    $totalEntradas += $caixa->total_entradas;
-                                    $totalSaidas += $caixa->total_saidas;
-                                    $totalTransferenciasEntrada += $caixa->total_transferencias_entrada;
-                                    $totalTransferenciasSaida += $caixa->total_transferencias_saida;
-                                    $totalSaldoAtual += $caixa->saldo_atual;
-                                    @endphp
-                                    @endforeach
-
-                                    {{-- Total de cada caixa --}}
-                                    <tr>
-                                        <td style="text-align: left"><strong>Total dos Caixas</strong></td>
-                                        <td style="text-align: right">
-                                            <strong>{{ 'R$ ' . number_format($totalSaldoFinal, 2, ',', '.') }}</strong>
-                                        </td>
-                                        <td style="text-align: right">
-                                            <strong>{{ 'R$ ' . number_format($totalEntradas, 2, ',', '.') }}</strong>
-                                        </td>
-                                        <td style="text-align: right">
-                                            <strong>{{ 'R$ ' . ($totalSaidas > 0 ? '-' : '') . number_format(abs($totalSaidas), 2, ',', '.') }}</strong>
-                                        </td>
-                                        <td style="text-align: right">
-                                            <strong>{{ 'R$ ' . number_format($totalTransferenciasEntrada, 2, ',', '.') }}</strong>
-                                        </td>
-                                        <td style="text-align: right">
-                                            <strong>{{ 'R$ ' . ($totalTransferenciasSaida > 0 ? '-' : '') . number_format(abs($totalTransferenciasSaida), 2, ',', '.') }}</strong>
-                                        </td>
-                                        <td style="text-align: right">
-                                            <strong>{{ 'R$ ' . number_format($totalSaldoAtual, 2, ',', '.') }}</strong>
-                                        </td>
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -168,58 +104,6 @@
                                 </div>
                             </div> --}}
 
-                    <div class="col-12 mt-3">
-                        <h5>Discriminação dos Lançamentos por Conta</h5>
-                    </div>
-                    <div class="col-12">
-                        <table class="table" style="font-size: 90%; margin-top: 15px;">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>CONTA</th>
-                                    <th>CAIXA</th>
-                                    <th width="100" style="text-align: right;">TOTAL</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                $numerosJaExibidos = [];
-                                $somasPorNumeracao = [];
-                                @endphp
-
-                                {{-- Calcular a soma total para cada numeracao --}}
-                                @foreach ($lancamentos as $lancamento)
-                                @php
-                                if (!isset($somasPorNumeracao[$lancamento->numeracao])) {
-                                $somasPorNumeracao[$lancamento->numeracao] = 0;
-                                }
-                                $somasPorNumeracao[$lancamento->numeracao] += $lancamento->total;
-                                @endphp
-                                @endforeach
-
-                                {{-- Renderizar a tabela --}}
-                                @foreach ($lancamentos as $index => $lancamento)
-                                @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
-                                <tr>
-                                    <td style="width: 100px;">{{ $lancamento->numeracao }}</td>
-                                    <td style="font-weight: bold;">
-                                        {{ $lancamento->nome }}
-                                    </td>
-                                    <td style="text-align: right; font-weight: bold;">
-                                        R$ {{ number_format($somasPorNumeracao[$lancamento->numeracao], 2, ',', '.') }}
-                                    </td>
-                                </tr>
-                                @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
-                                @endif
-                                <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">{{ $lancamento->caixa }}</td>
-                                    <td style="text-align: right;">R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-
-                    </div>
                 </div>
             </div>
             <div class="row">
@@ -234,6 +118,12 @@
 @endif
 
 @section('extras-scripts')
+<script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
+<script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
+<script src="{{ asset('theme/assets/js/planilha/xlsx.full.min.js') }}"></script>
+<script src="{{ asset('theme/assets/js/planilha/planilha.js') }}"></script>
+<script src="{{ asset('theme/assets/js/pages/movimentocaixa.js') }}"></script>
+<script src="{{ asset('theme/plugins/bootstrap-select/bootstrap-select.min.js') }}"></script>
 <script>
     jQuery(function($) {
         $.datepicker.regional['pt-BR'] = {
@@ -263,6 +153,8 @@
     });
 
     $(document).ready(function() {
+        $('.selectpicker').selectpicker();
+
         // Inicializar o Datepicker
         $("#dtano").datepicker({
             dateFormat: "yy", // Formato do calendário (apenas ano)
@@ -282,7 +174,7 @@
             var dtano = $('#dtano').val();
             var distrito_id = $('#distrito_id').val();
 
-            if (!dt) {
+            if (!dtano) {
                 alert('Por favor, preencha o campo Ano.');
                 return;
             }
@@ -306,10 +198,6 @@
     });
 </script>
 
-<script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
-<script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
-<script src="{{ asset('theme/assets/js/planilha/xlsx.full.min.js') }}"></script>
-<script src="{{ asset('theme/assets/js/planilha/planilha.js') }}"></script>
-<script src="{{ asset('theme/assets/js/pages/movimentocaixa.js') }}"></script>
+
 @endsection
 @endsection

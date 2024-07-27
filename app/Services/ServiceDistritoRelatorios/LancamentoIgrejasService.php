@@ -13,11 +13,11 @@ class LancamentoIgrejasService
     use FinanceiroUtils;
     use Identifiable;
 
-    public function execute($dt, $distritoID)
+    public function execute($dtano, $distritoID)
     {
-        if (empty($dt)) {
-            $dt = Carbon::now()->format('Y');
-        }
+        if (empty($dtano)) {
+            $dtano = Carbon::now()->format('Y');
+        } 
 
         $distritoSelect  = $this->handleListaDistritos();
 
