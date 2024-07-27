@@ -45,9 +45,9 @@
                     <div class="col-lg-6">
                         <select class="selectpicker" data-actions-box="true" data-header="{{ session('session_perfil')->instituicao_nome }}" multiple data-live-search="true" id="igreja_id" name="igrejas[]" data-width="100%">
                             @foreach ($igrejaSelect as $igreja)
-                            <option value="{{ $igreja->id }}" {{ request()->input('igreja_id') == $igreja->id ? 'selected' : '' }}>
-                                {{ $igreja->descricao }}
-                            </option>
+                                <option value="{{ $igreja->id }}" {{ in_array($igreja->id, request()->input('igrejas', [])) ? 'selected' : '' }}>
+                                    {{ $igreja->descricao }}
+                                </option>
                             @endforeach
                         </select>
                     </div>
