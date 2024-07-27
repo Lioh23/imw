@@ -34,37 +34,37 @@ class LancamentoIgrejasService
 
     private function handleLancamentos($dtano, $igrejasID)
     {
-        $query = DB::table('instituicoes_instituicoes as ii')
-            ->leftJoin('financeiro_saldo_consolidado_mensal as cm', function($join) use ($dtano) {
-                $join->on('ii.id', '=', 'cm.instituicao_id')
-                     ->whereYear('cm.data_hora', '=', $dtano);
+        $result = DB::table('instituicoes_instituicoes as ii')
+            ->leftJoin('financeiro_lancamentos as fl', function($join) use ($dtano) {
+                $join->on('ii.id', '=', 'fl.instituicao_id')
+                     ->whereYear('fl.data_lancamento', '=', $dtano);
             })
             ->leftJoin('instituicoes_instituicoes as parent', 'ii.instituicao_pai_id', '=', 'parent.id')
             ->select(
                 'ii.nome as instituicao_nome',
                 'parent.nome as instituicao_pai_nome',
                 'ii.id',
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 1 THEN cm.saldo_final ELSE 0 END), 0) AS janeiro'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 2 THEN cm.saldo_final ELSE 0 END), 0) AS fevereiro'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 3 THEN cm.saldo_final ELSE 0 END), 0) AS marco'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 4 THEN cm.saldo_final ELSE 0 END), 0) AS abril'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 5 THEN cm.saldo_final ELSE 0 END), 0) AS maio'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 6 THEN cm.saldo_final ELSE 0 END), 0) AS junho'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 7 THEN cm.saldo_final ELSE 0 END), 0) AS julho'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 8 THEN cm.saldo_final ELSE 0 END), 0) AS agosto'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 9 THEN cm.saldo_final ELSE 0 END), 0) AS setembro'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 10 THEN cm.saldo_final ELSE 0 END), 0) AS outubro'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 11 THEN cm.saldo_final ELSE 0 END), 0) AS novembro'),
-                DB::raw('COALESCE(SUM(CASE WHEN cm.mes = 12 THEN cm.saldo_final ELSE 0 END), 0) AS dezembro')
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 1 THEN 1 END) AS janeiro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 2 THEN 1 END) AS fevereiro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 3 THEN 1 END) AS marco'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 4 THEN 1 END) AS abril'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 5 THEN 1 END) AS maio'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 6 THEN 1 END) AS junho'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 7 THEN 1 END) AS julho'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 8 THEN 1 END) AS agosto'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 9 THEN 1 END) AS setembro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 10 THEN 1 END) AS outubro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 11 THEN 1 END) AS novembro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 12 THEN 1 END) AS dezembro')
             )
             ->whereIn('ii.id', $igrejasID)
             ->groupBy('ii.id', 'ii.nome', 'parent.nome')
-            ->orderBy('ii.id');
-
-        $result = $query->get();
+            ->orderBy('ii.id')
+            ->get();
 
         return $result;
     }
+
 
     private function handleListaIgrejas()
     {
