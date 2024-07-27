@@ -90,7 +90,7 @@
         <div class="info">
             <div class="title">SALDO DAS IGREJAS - {{ session('session_perfil')->instituicao_nome }}</div>
             <div class="period" style="margin-top:4px">
-                Ano: {{ request()->input('dt') }}
+                Data: {{ request()->input('dt') }}
             </div>
         </div>
         <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('m/Y') }}</div>
