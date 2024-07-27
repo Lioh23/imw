@@ -25,7 +25,12 @@ class DistritoRelatorioController extends Controller
         $dataFinal = $request->input('dt_final');
 
         $data = app(LivroRazaoGeralService::class)->execute($dataInicial, $dataFinal);
+
         return view('distrito.relatorios.livrorazaogeral', $data);
+    }
+
+    public function livrorazaogeralPdf(Request $request) {
+        dd($request->all());
     }
 
     public function saldodasigrejas(Request $request)

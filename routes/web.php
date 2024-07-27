@@ -191,6 +191,7 @@ Route::middleware(['auth'])->group(function () {
             
             //Construindo
             Route::get('/relatorio/livrorazaogeral', [DistritoRelatorioController::class, 'livrorazaogeral'])->name('relatorio.livrorazaogeral')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/livrorazaogeral/pdf', [DistritoRelatorioController::class, 'livrorazaogeralPdf'])->name('relatorio.livrorazaogeral-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
             
             //A Desenvolver
             Route::get('/relatorio/orcamento', [DistritoRelatorioController::class, 'orcamento'])->name('relatorio.orcamento')->middleware(['seguranca:distrito-menu-relatorio']);
