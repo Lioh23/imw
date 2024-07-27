@@ -69,7 +69,7 @@
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th width="300" style="text-align: right">IGREJA</th>
+                                        <th width="300" style="text-align: left">IGREJA</th>
                                         <th width="120" style="text-align: right">SALDO CAIXA PRINCIPAL</th>
                                         <th width="120" style="text-align: right">SALDO CAIXA CONGREGAÇÕES</th>
                                         <th width="120" style="text-align: right">SALDO CAIXA SECUNDÁRIO</th>
@@ -77,7 +77,15 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                            
+                                @foreach($lancamentos as $lancamento)
+                                    <tr>
+                                        <td>{{ $lancamento->instituicao_nome }}</td>
+                                        <td style="text-align: right">{{ number_format($lancamento->saldocxprincipal, 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format($lancamento->saldocxcongregacoes, 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format($lancamento->saldocxsecundado, 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format($lancamento->total, 2, ',', '.') }}</td>
+                                    </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
                         </div>
