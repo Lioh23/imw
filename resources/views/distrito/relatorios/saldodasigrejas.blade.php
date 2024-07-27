@@ -48,7 +48,7 @@
                     </div>
                 </div>
             </form>
-            <form id="report_form" action="{{ url('distrito//relatorio/saldodasigrejas/pdf') }}" method="POST" target="_blank" style="display: none;">
+            <form id="report_form" action="{{ url('distrito/relatorio/saldodasigrejas/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
                 <input type="hidden" name="dt" id="report_dt">
             </form>
@@ -65,7 +65,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                        <h6 class="mt-3">SALDO DAS IGREJAS - {{ session('session_perfil')->instituicao_nome }}</h6>
+                            <h6 class="mt-3">SALDO DAS IGREJAS - {{ session('session_perfil')->instituicao_nome }}</h6>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
@@ -77,7 +77,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($lancamentos as $lancamento)
+                                    @foreach($lancamentos as $lancamento)
                                     <tr>
                                         <td>{{ $lancamento->instituicao_nome }}</td>
                                         <td style="text-align: right">{{ number_format($lancamento->saldocxprincipal, 2, ',', '.') }}</td>

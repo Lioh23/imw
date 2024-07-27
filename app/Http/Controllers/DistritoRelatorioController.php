@@ -26,6 +26,17 @@ class DistritoRelatorioController extends Controller
         return view('distrito.relatorios.saldodasigrejas', $data);
     }
 
+    public function saldodasigrejasPdf(Request $request)
+    {
+            $dt = $request->input('dt');
+            $data = app(SaldoIgrejasService::class)->execute($dt);
+
+            $pdf = FacadePdf::loadView('distrito.relatorios.saldodasigrejas_pdf', $data)
+            ->setPaper('a4', 'landscape'); 
+
+            return $pdf->stream('relatorio_saldodasigrejas.pdf' . date('YmdHis'));
+    }
+
     public function lancamentodasigrejasPdf(Request $request)
     {
       
