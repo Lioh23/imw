@@ -33,11 +33,7 @@ class OrcamentoService
             ->leftJoin('financeiro_lancamentos as fl', function ($join) use ($ano) {
                 $join->on('ii.id', '=', 'fl.instituicao_id')
                     ->whereYear('fl.data_movimento', '=', $ano)
-                    ->whereIn('fl.plano_conta_id', function ($query) {
-                        $query->select('id')
-                            ->from('financeiro_plano_contas')
-                            ->whereIn('numeracao', ['1.01.01', '1.01.02', '1.02.01']);
-                    })
+                    ->whereIn('fl.plano_conta_id', [4, 5, 8])
                     ->where('fl.conciliado', '=', 1);
             })
             ->select(
