@@ -32,14 +32,13 @@ class DistritoRelatorioController extends Controller
     {
       
             $dt = $request->input('dtano');
-            $igrejasID = json_decode($request->input('igrejas'), true);
 
             $data = app(OrcamentoService::class)->execute($dt);
 
-            $pdf = FacadePdf::loadView('distrito.relatorios.lancamentodasigrejas_pdf', $data)
+            $pdf = FacadePdf::loadView('distrito.relatorios.orcamento_pdf', $data)
             ->setPaper('a4', 'landscape'); 
 
-            return $pdf->stream('relatorio_lancamentodasigrejas.pdf' . date('YmdHis'));
+            return $pdf->stream('relatorio_orcamento.pdf' . date('YmdHis'));
       
     }
 
