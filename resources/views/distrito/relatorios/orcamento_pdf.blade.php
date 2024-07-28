@@ -99,19 +99,19 @@
     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
     <thead class="thead-dark">
         <tr>
-            <th width="300" style="text-align: left">IGREJA</th>
-            <th width="50" style="text-align: right">JAN</th>
-            <th width="50" style="text-align: right">FEV</th>
-            <th width="50" style="text-align: right">MAR</th>
-            <th width="50" style="text-align: right">ABR</th>
-            <th width="50" style="text-align: right">MAI</th>
-            <th width="50" style="text-align: right">JUN</th>
-            <th width="50" style="text-align: right">JUL</th>
-            <th width="50" style="text-align: right">AGO</th>
-            <th width="50" style="text-align: right">SET</th>
-            <th width="50" style="text-align: right">OUT</th>
-            <th width="50" style="text-align: right">NOV</th>
-            <th width="50" style="text-align: right">DEZ</th>
+            <th width="180px" style="text-align: left">IGREJA</th>
+            <th width="50px" style="text-align: right">JAN</th>
+            <th width="50px" style="text-align: right">FEV</th>
+            <th width="50px" style="text-align: right">MAR</th>
+            <th width="50px" style="text-align: right">ABR</th>
+            <th width="50px" style="text-align: right">MAI</th>
+            <th width="50px" style="text-align: right">JUN</th>
+            <th width="50px" style="text-align: right">JUL</th>
+            <th width="50px" style="text-align: right">AGO</th>
+            <th width="50px" style="text-align: right">SET</th>
+            <th width="50px" style="text-align: right">OUT</th>
+            <th width="50px" style="text-align: right">NOV</th>
+            <th width="50px" style="text-align: right">DEZ</th>
         </tr>
     </thead>
     <tbody>
