@@ -31,6 +31,7 @@ class LivroRazaoGeralService
 
     private function handleLancamentos($dataInicial, $dataFinal)
     {
+        $instituicaoPaiId = session()->get('session_perfil')->instituicao_id;
         $result = DB::select("
             SELECT 
                 DATE_FORMAT(fl.data_movimento, '%d/%m/%Y') AS data_movimentacao,
@@ -44,12 +45,12 @@ class LivroRazaoGeralService
                 instituicoes_instituicoes ii
             LEFT JOIN 
                 financeiro_lancamentos fl ON ii.id = fl.instituicao_id 
-                AND fl.data_movimento BETWEEN ? AND ?
+                AND fl.data_movimento BETWEEN :dataInicial AND :dataFinal
             LEFT JOIN 
                 financeiro_plano_contas pc ON fl.plano_conta_id = pc.id
             WHERE 
                 ii.tipo_instituicao_id = 1
-                AND ii.instituicao_pai_id = 1765
+                AND ii.instituicao_pai_id = :instituicaoPaiId
             GROUP BY 
                 fl.data_movimento,
                 ii.nome,
@@ -59,7 +60,8 @@ class LivroRazaoGeralService
                 total_entradas > 0 OR total_saidas > 0 OR total > 0
             ORDER BY 
                 pc.numeracao ASC
-        ", [$dataInicial, $dataFinal]);
+        ",
+        ['dataInicial' => $dataInicial, 'dataFinal' => $dataFinal, 'instituicaoPaiId' => $instituicaoPaiId]);
     
         $grouped = [];
         foreach ($result as $item) {

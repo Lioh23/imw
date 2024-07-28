@@ -188,11 +188,14 @@ Route::middleware(['auth'])->group(function () {
            
             Route::get('/relatorio/saldodasigrejas', [DistritoRelatorioController::class, 'saldodasigrejas'])->name('relatorio.saldodasigrejas')->middleware(['seguranca:distrito-menu-relatorio']);
             Route::post('/relatorio/saldodasigrejas/pdf', [DistritoRelatorioController::class, 'saldodasigrejasPdf'])->name('relatorio.saldodasigrejas-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
-            
-            //Construindo
+
             Route::get('/relatorio/livrorazaogeral', [DistritoRelatorioController::class, 'livrorazaogeral'])->name('relatorio.livrorazaogeral')->middleware(['seguranca:distrito-menu-relatorio']);
             Route::post('/relatorio/livrorazaogeral/pdf', [DistritoRelatorioController::class, 'livrorazaogeralPdf'])->name('relatorio.livrorazaogeral-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
-            
+                                
+            //Construindo
+            Route::get('/relatorio/orcamento', [DistritoRelatorioController::class, 'orcamento'])->name('relatorio.orcamento')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/orcamento/pdf', [DistritoRelatorioController::class, 'orcamentoPdf'])->name('relatorio.orcamento-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+               
             //A Desenvolver
             Route::get('/relatorio/orcamento', [DistritoRelatorioController::class, 'orcamento'])->name('relatorio.orcamento')->middleware(['seguranca:distrito-menu-relatorio']);
             Route::get('/relatorio/variacaofinanceira', [DistritoRelatorioController::class, 'variacaofinanceira'])->name('relatorio.variacaofinanceira')->middleware(['seguranca:distrito-menu-relatorio']);
