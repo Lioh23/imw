@@ -315,7 +315,7 @@
                                                     </svg>
                                                 </a>
                                             @endif
-                                        
+
                                             @if ($lancamento->tipo_lancamento == 'S')
                                                 <button type="button" title="Anexos"
                                                     class="btn btn-sm btn-info mr-2 btn-rounded btn-anexos btn-sm-custom"
@@ -333,9 +333,9 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        <!-- <button class="btn btn-success btn-rounded btn-responsive mb-2" onclick="exportReportToExcel();">
-                                <i class="fa fa-file-excel" aria-hidden="true"></i> Exportar
-                        </button> -->
+                        <button class="btn btn-success btn-rounded btn-responsive mb-2" onclick="exportReportToExcel();">
+                            <i class="fa fa-file-excel" aria-hidden="true"></i> Exportar
+                        </button>
                     </div>
                 </div>
             </div>
@@ -375,7 +375,7 @@
                 success: function(response) {
                     let anexosList = $('#anexosList');
                     anexosList.empty();
-                    
+
                     if (response.length === 0) {
                         anexosList.append('<li>Nenhum anexo encontrado</li>');
                     } else {
