@@ -34,7 +34,7 @@
                     <div class="col-lg-3">
                         <input type="text" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" placeholder="mm/yyyy" required>
                     </div>
-                
+
                     <div class="col-lg-3">
                         <input type="text" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" placeholder="mm/yyyy" required>
                     </div>
@@ -84,7 +84,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                @foreach($lancamentos as $lancamento)
+                                    @foreach($lancamentos as $lancamento)
                                     <tr>
                                         <td>{{ $lancamento->instituicao_nome }}</td>
                                         <td style="text-align: right">{{ number_format($lancamento->saldo_anterior, 2, ',', '.') }}</td>
@@ -115,7 +115,7 @@
 
 @section('extras-scripts')
 <script>
-       jQuery(function($) {
+    jQuery(function($) {
         $.datepicker.regional['pt-BR'] = {
             closeText: 'Aplicar',
             prevText: '&#x3c;Anterior',
@@ -142,8 +142,8 @@
         $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
     });
     $(document).ready(function() {
-          // Inicializar o Datepicker
-          $("#dt_inicial").datepicker({
+        // Inicializar o Datepicker
+        $("#dt_inicial").datepicker({
             dateFormat: "mm/yy", // Formato do calendário (mês/ano)
             changeMonth: true, // Permitir a seleção do mês
             changeYear: true, // Permitir a seleção do ano
@@ -228,7 +228,6 @@
             event.preventDefault();
         }
     });
-
 </script>
 
 <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
