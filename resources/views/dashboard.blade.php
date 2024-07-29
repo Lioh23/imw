@@ -99,11 +99,7 @@
                         Você está acessando uma área distrital. Aqui você pode:
                         <ul class="text-left" style="display: inline-block;">
                             <li>Visualizar relatórios distritais detalhados</li>
-                            <li>Acessar informações de todas as congregações do distrito</li>
-                            <li>Gerenciar eventos e atividades, incluindo calendários e inscrições</li>
-                            <li>Consultar dados de membros, congregados e visitantes</li>
-                            <li>Comunicar-se com outros membros e líderes distritais</li>
-                            <li>Atualizar e manter o banco de dados da instituição</li>
+                            <li>Acessar informações financeiras do distrito</li>
                             <li>Verificar estatísticas e análises de crescimento</li>
                             <li>Acessar recursos e materiais de apoio</li>
                         </ul>
