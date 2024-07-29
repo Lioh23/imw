@@ -6,6 +6,7 @@ use App\Services\ServiceDistritoRelatorios\LancamentoIgrejasService;
 use App\Services\ServiceDistritoRelatorios\LivroRazaoGeralService;
 use App\Services\ServiceDistritoRelatorios\OrcamentoService;
 use App\Services\ServiceDistritoRelatorios\SaldoIgrejasService;
+use App\Services\ServiceDistritoRelatorios\VariacaoFinanceiraService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
@@ -20,6 +21,31 @@ class DistritoRelatorioController extends Controller
         return view('distrito.relatorios.lancamentodasigrejas', $data);
     }
 
+
+    public function variacaofinanceira(Request $request)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+
+        $data = app(VariacaoFinanceiraService::class)->execute($dataInicial, $dataFinal);
+
+        return view('distrito.relatorios.variacaofinanceira', $data);
+    }
+
+    public function variacaofinanceiraPdf(Request $request)
+    {
+
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+
+        $data = app(VariacaoFinanceiraService::class)->execute($dataInicial, $dataFinal);
+
+        $pdf = FacadePdf::loadView('distrito.relatorios.variacaofinanceira_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_variacaofinanceira.pdf' . date('YmdHis'));
+    }
+
     public function orcamento(Request $request)
     {
         $dt = $request->input('dtano');
@@ -30,16 +56,15 @@ class DistritoRelatorioController extends Controller
 
     public function orcamentoPdf(Request $request)
     {
-      
-            $dt = $request->input('dtano');
 
-            $data = app(OrcamentoService::class)->execute($dt);
+        $dt = $request->input('dtano');
 
-            $pdf = FacadePdf::loadView('distrito.relatorios.orcamento_pdf', $data)
-            ->setPaper('a4', 'landscape'); 
+        $data = app(OrcamentoService::class)->execute($dt);
 
-            return $pdf->stream('relatorio_orcamento.pdf' . date('YmdHis'));
-      
+        $pdf = FacadePdf::loadView('distrito.relatorios.orcamento_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_orcamento.pdf' . date('YmdHis'));
     }
 
 
@@ -53,14 +78,15 @@ class DistritoRelatorioController extends Controller
         return view('distrito.relatorios.livrorazaogeral', $data);
     }
 
-    public function livrorazaogeralPdf(Request $request) {
+    public function livrorazaogeralPdf(Request $request)
+    {
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
 
         $data = app(LivroRazaoGeralService::class)->execute($dataInicial, $dataFinal);
 
         $pdf = FacadePdf::loadView('distrito.relatorios.livrorazaogeral_pdf', $data)
-        ->setPaper('a4', 'landscape'); 
+            ->setPaper('a4', 'landscape');
 
         return $pdf->stream('relatorio_livrorazaogeral.pdf' . date('YmdHis'));
     }
@@ -75,27 +101,26 @@ class DistritoRelatorioController extends Controller
 
     public function saldodasigrejasPdf(Request $request)
     {
-            $dt = $request->input('dt');
-            $data = app(SaldoIgrejasService::class)->execute($dt);
+        $dt = $request->input('dt');
+        $data = app(SaldoIgrejasService::class)->execute($dt);
 
-            $pdf = FacadePdf::loadView('distrito.relatorios.saldodasigrejas_pdf', $data)
-            ->setPaper('a4', 'landscape'); 
+        $pdf = FacadePdf::loadView('distrito.relatorios.saldodasigrejas_pdf', $data)
+            ->setPaper('a4', 'landscape');
 
-            return $pdf->stream('relatorio_saldodasigrejas.pdf' . date('YmdHis'));
+        return $pdf->stream('relatorio_saldodasigrejas.pdf' . date('YmdHis'));
     }
 
     public function lancamentodasigrejasPdf(Request $request)
     {
-      
-            $dt = $request->input('dtano');
-            $igrejasID = json_decode($request->input('igrejas'), true);
 
-            $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejasID);
+        $dt = $request->input('dtano');
+        $igrejasID = json_decode($request->input('igrejas'), true);
 
-            $pdf = FacadePdf::loadView('distrito.relatorios.lancamentodasigrejas_pdf', $data)
-            ->setPaper('a4', 'landscape'); 
+        $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejasID);
 
-            return $pdf->stream('relatorio_lancamentodasigrejas.pdf' . date('YmdHis'));
-      
+        $pdf = FacadePdf::loadView('distrito.relatorios.lancamentodasigrejas_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_lancamentodasigrejas.pdf' . date('YmdHis'));
     }
 }
