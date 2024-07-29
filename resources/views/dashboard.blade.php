@@ -12,6 +12,20 @@
     .swal2-popup .swal2-styled.swal2-cancel {
         color: white !important;
     }
+    .card-title {
+        font-size: 1.25rem;
+    }
+    .card-text {
+        font-size: 1rem;
+    }
+    .card-body ul li {
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    .card-body ul li i {
+        font-size: 1.25rem;
+    }
 </style>
 @endsection
 
@@ -90,24 +104,36 @@
         </div>
     </div>
 @elseif($instituicao->tipoInstituicao->sigla == 'D')
-    <div class="row flex-fill mt-4">
-        <div class="col-12 text-center">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h6 class="card-title"><b>Bem-vindo(a) à Área Distrital!</b></h6>
-                    <p class="card-text">
-                        Você está acessando uma área distrital. Aqui você pode:
-                        <ul class="text-left" style="display: inline-block;">
-                            <li>Visualizar relatórios distritais detalhados</li>
-                            <li>Acessar informações financeiras do distrito</li>
-                            <li>Verificar estatísticas e análises de crescimento</li>
-                            <li>Acessar recursos e materiais de apoio</li>
-                        </ul>
-                    </p>
-                </div>
+<div class="row flex-fill mt-4">
+    <div class="col-12 text-center">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title mb-3"><b>Bem-vindo(a) ao {{ session('session_perfil')->instituicao_nome }}!</b></h6>
+                <p class="card-text">
+                    Você está acessando uma área distrital. Aqui você pode:
+                </p>
+                <ul class="text-left" style="display: inline-block; list-style: none; padding: 0;">
+                    <li class="mb-2">
+                        <i class="fas fa-chart-line mr-2 text-primary"></i>
+                        Visualizar relatórios distritais detalhados
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-dollar-sign mr-2 text-success"></i>
+                        Acessar informações financeiras do distrito
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-chart-bar mr-2 text-info"></i>
+                        Verificar estatísticas e análises de crescimento
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-book-open mr-2 text-warning"></i>
+                        Acessar recursos e materiais de apoio
+                    </li>
+                </ul>
             </div>
         </div>
     </div>
+</div>
 @elseif($instituicao->tipoInstituicao->sigla == 'G')
     <div class="row flex-fill mt-4">
         <div class="col-12 text-center">
