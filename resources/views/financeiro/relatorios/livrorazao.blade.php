@@ -71,24 +71,27 @@
                 </div>
                 <div class="widget-content widget-content-area">
                     <div class="table-responsive">
-                        <table>
+                        <table class="table table-bordered">
                             <thead>
                             <tr>
-                                <th>CONTA/DATA/ORIGEM/DESTINO</th>
-                                <th></th>
-                                <th></th>
+                                <th colspan="3">CONTA/DATA/ORIGEM/DESTINO</th>
                                 <th>ENTRADA </th>
                                 <th class="text-right">SAÍDA</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach ($lancamentosPorConta as $planoConta)
-                                <tr style="font-weight: bold">
-                                    <td colspan="4">{{ $planoConta->numeracao }} - {{ $planoConta->nome }}</td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td>Total: {{ $planoConta->lancamentosPorIgreja->whereBetween('data_lancamento', [request()->input('dt_inicial'), request()->input('dt_final')])->sum('valor') }}</td>
+                                <tr style="font-weight: bold; background-color: #f3effc">
+                                    <td colspan="5">
+                                        <div class="d-flex justify-content-between">
+                                            <span>
+                                                {{ $planoConta->numeracao }} - {{ $planoConta->nome }}
+                                            </span>
+                                            <span>
+                                                Total: {{ $planoConta->lancamentosPorIgreja->whereBetween('data_lancamento', [request()->input('dt_inicial'), request()->input('dt_final')])->sum('valor') }}
+                                            </span>
+                                        </div>
+                                    </td>
                                 </tr>
                                 @php
                                     $totalEntradas = 0;
@@ -118,13 +121,6 @@
                                         }
                                     @endphp
                                 @endforeach
-                                <tr class="bold">
-                                    {{-- <td>Total {{ $conta }}</td> --}}
-                                    <td></td>
-                                    <td></td>
-                                    <td class="text-right">{{ number_format($totalEntradas, 2, ',', '.') }}</td>
-                                    <td class="text-right">{{ number_format($totalSaidas, 2, ',', '.') }}</td>
-                                </tr>
                             @endforeach
                             </tbody>
                         </table>
