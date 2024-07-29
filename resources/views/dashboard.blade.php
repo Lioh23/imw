@@ -135,18 +135,49 @@
     </div>
 </div>
 @elseif($instituicao->tipoInstituicao->sigla == 'G')
-    <div class="row flex-fill mt-4">
-        <div class="col-12 text-center">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h6 class="card-title"><b>Bem-vindo(a) à Área Geral!</b></h6>
-                    <p class="card-text">
-                        Você está acessando a área geral da instituição. Aqui você pode gerenciar informações globais, acessar relatórios gerais e muito mais.
-                    </p>
+<div class="row flex-fill mt-4">
+    <div class="col-12 text-center">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title mb-3"><b>Bem-vindo(a) à Área Geral!</b></h6>
+                <p class="card-text mb-4">
+                    Você está acessando a área geral da instituição. Aqui você pode gerenciar informações globais, acessar relatórios gerais e muito mais.
+                </p>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-box d-flex align-items-center">
+                            <i class="fas fa-cogs fa-2x text-primary mr-3"></i>
+                            <div>
+                                <h6 class="feature-title mb-0">Gerenciar Informações</h6>
+                                <small class="text-muted">Administre dados essenciais</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-box d-flex align-items-center">
+                            <i class="fas fa-chart-pie fa-2x text-success mr-3"></i>
+                            <div>
+                                <h6 class="feature-title mb-0">Relatórios Gerais</h6>
+                                <small class="text-muted">Acesse dados detalhados</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-box d-flex align-items-center">
+                            <i class="fas fa-users fa-2x text-info mr-3"></i>
+                            <div>
+                                <h6 class="feature-title mb-0">Gerenciamento de Usuários</h6>
+                                <small class="text-muted">Controle de acessos</small>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+                <button class="btn btn-primary mt-3">Explorar Mais</button>
             </div>
         </div>
     </div>
+</div>
+
 @elseif($instituicao->tipoInstituicao->sigla == 'O')
     <div class="row flex-fill mt-4">
         <div class="col-12 text-center">
