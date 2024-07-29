@@ -106,7 +106,7 @@
                 <th width="50px" style="text-align: right">TRANSF. ENTRADAS</th>
                 <th width="50px" style="text-align: right">SAÍDAS</th>
                 <th width="50px" style="text-align: right">TRANSF. SAÍDAS</th>
-                <th width="50px" style="text-align: right">SALDO ATUAL</th>
+                <th width="50px" style="text-align: right">SALDO FINAL</th>
             </tr>
         </thead>
         <tbody>
