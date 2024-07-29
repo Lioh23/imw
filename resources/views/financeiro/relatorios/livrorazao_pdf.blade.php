@@ -117,64 +117,64 @@
     <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('d/m/Y') }}</div>
 </div>
 
-<h4 class="blue">Discriminação de saldos por caixa</h4>
-<table>
-    <thead>
-    <tr>
-        <th>CONTA/DATA/ORIGEM/DESTINO</th>
-        <th></th>
-        <th></th>
-        <th>ENTRADA </th>
-        <th class="text-right">SAÍDA</th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach ($lancamentosPorConta as $planoConta)
-        <tr style="font-weight: bold">
-            <td colspan="4">{{ $planoConta->numeracao }} - {{ $planoConta->nome }}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Total: {{ $planoConta->lancamentosPorIgreja->whereBetween('data_lancamento', [request()->input('dt_inicial'), request()->input('dt_final')])->sum('valor') }}</td>
-        </tr>
-        @php
-            $totalEntradas = 0;
-            $totalSaidas = 0;
-        @endphp
-
-        @foreach ($planoConta->lancamentosPorIgreja->whereBetween('data_lancamento', [request()->input('dt_inicial'), request()->input('dt_final')]) as $lancamento)
-
+<h4 class="blue">Discriminação de saldos por conta</h4>
+<div class="widget-content widget-content-area">
+    <div class="table-responsive">
+        <table class="table table-bordered">
+            <thead>
             <tr>
-                <td colspan="3">
-                    {{ \Carbon\Carbon::parse($lancamento->data_lancamento)->format('d/m/Y') }} -
-                    {{ $lancamento->caixa->descricao }} -
-                    {{ $lancamento->pagante_favorecido }}
-                </td>
-                <td class="text-right {{ $lancamento->tipo_lancamento === 'E' ? 'green' : '' }}">
-                    {{ $lancamento->tipo_lancamento === 'E' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
-                </td>
-                <td class="text-right {{ $lancamento->tipo_lancamento === 'S' ? 'red' : '' }}">
-                    {{ $lancamento->tipo_lancamento === 'S' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
-                </td>
+                <th colspan="3">CONTA/DATA/ORIGEM/DESTINO</th>
+                <th>ENTRADA </th>
+                <th class="text-right">SAÍDA</th>
             </tr>
-            @php
-                if ($lancamento->tipo_lancamento === 'E') {
-                    $totalEntradas += $lancamento->valor;
-                } else {
-                    $totalSaidas += abs($lancamento->valor);
-                }
-            @endphp
-        @endforeach
-        <tr class="bold">
-            {{-- <td>Total {{ $conta }}</td> --}}
-            <td></td>
-            <td></td>
-            <td class="text-right">{{ number_format($totalEntradas, 2, ',', '.') }}</td>
-            <td class="text-right">{{ number_format($totalSaidas, 2, ',', '.') }}</td>
-        </tr>
-    @endforeach
-    </tbody>
-</table>
+            </thead>
+            <tbody>
+            @foreach ($lancamentosPorConta as $planoConta)
+                <tr style="font-weight: bold; background-color: #f3effc">
+                    <td colspan="5">
+                        <div class="d-flex justify-content-between">
+                            <span>
+                                {{ $planoConta->numeracao }} - {{ $planoConta->nome }}
+                            </span>
+                            <span class="d-flex align-items-center">
+                                Total: {{ $planoConta->lancamentosPorIgreja->whereBetween('data_lancamento', [request()->input('dt_inicial'), request()->input('dt_final')])->sum('valor') }}
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                @php
+                    $totalEntradas = 0;
+                    $totalSaidas = 0;
+                @endphp
+
+                @foreach ($planoConta->lancamentosPorIgreja->whereBetween('data_lancamento', [request()->input('dt_inicial'), request()->input('dt_final')]) as $lancamento)
+
+                    <tr>
+                        <td colspan="3">
+                            {{ \Carbon\Carbon::parse($lancamento->data_lancamento)->format('d/m/Y') }} -
+                            {{ $lancamento->caixa->descricao }} -
+                            {{ $lancamento->pagante_favorecido }}
+                        </td>
+                        <td class="text-right {{ $lancamento->tipo_lancamento === 'E' ? 'green' : '' }}">
+                            {{ $lancamento->tipo_lancamento === 'E' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
+                        </td>
+                        <td class="text-right {{ $lancamento->tipo_lancamento === 'S' ? 'red' : '' }}">
+                            {{ $lancamento->tipo_lancamento === 'S' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
+                        </td>
+                    </tr>
+                    @php
+                        if ($lancamento->tipo_lancamento === 'E') {
+                            $totalEntradas += $lancamento->valor;
+                        } else {
+                            $totalSaidas += abs($lancamento->valor);
+                        }
+                    @endphp
+                @endforeach
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+</div>
 </body>
 
 </html>
