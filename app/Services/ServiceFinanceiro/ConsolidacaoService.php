@@ -15,8 +15,8 @@ class ConsolidacaoService
     {
         $oldCaixa = FinanceiroUtils::ultimoCaixaConciliado();
         
-         // Clone a instância de Carbon para preservar $oldCaixa
-        $formattedDate = $oldCaixa instanceof Carbon ? $oldCaixa->copy()->addMonth()->format('m/Y') : null;
+        // Clone a instância de Carbon para preservar $oldCaixa
+        $formattedDate = $oldCaixa instanceof Carbon ? $oldCaixa->copy()->addMonthsNoOverflow(1)->format('m/Y') : null;
 
         // Capture o array retornado por SaldoCaixaService
         $data = app(SaldoCaixaService::class)->execute($formattedDate, 'all');
