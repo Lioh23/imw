@@ -181,9 +181,12 @@
 
                         <form class="mt-4" method="post" action="{{ route('financeiro.consolidar.store') }}" id="form_consolidacao_automatica">
                             @csrf
-                            <input type="hidden" name="ano" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->year }}" />
-                            <input type="hidden" name="mes" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->month }}" />
-                            <button data-form-id="form_consolidacao_automatica" class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;" type="button">CONSOLIDAR {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY') }}</button>
+                            <input type="hidden" name="ano" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonthsNoOverflow(1)->year }}" />
+                            <input type="hidden" name="mes" value="{{ \Carbon\Carbon::parse($ultimoCaixa)->addMonthsNoOverflow(1)->month }}" />
+                            <button data-form-id="form_consolidacao_automatica" class="btn btn-success p-2 btn-rounded btn-confirm" style="text-transform: uppercase;" type="button">
+                                CONSOLIDAR {{ \Carbon\Carbon::parse($ultimoCaixa)->addMonthsNoOverflow(1)->isoFormat('MMMM [de] YYYY') }}
+                            </button>
+
                         </form>
 
 
