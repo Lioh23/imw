@@ -116,10 +116,11 @@ trait FinanceiroUtils
         $saldo = $query->orderBy('ano', 'desc')
             ->orderBy('mes', 'desc')
             ->first();
-        
-        if ($saldo) {
-            return Carbon::createFromFormat('Y-m', $saldo->ano . '-' . str_pad($saldo->mes, 2, '0', STR_PAD_LEFT));
-        }
+
+            
+       if ($saldo) {
+            return Carbon::create($saldo->ano, $saldo->mes, 1);
+        } 
 
         return null;
     }

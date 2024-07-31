@@ -23,7 +23,7 @@ class ConsolidacaoService
         
         // Adicione o novo item ao array
         $data['ultimoCaixa'] = $oldCaixa;
-
+        
         // Retorne o array modificado
         return $data;
     }
