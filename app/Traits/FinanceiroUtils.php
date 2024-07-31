@@ -28,7 +28,7 @@ trait FinanceiroUtils
             ->where('l.conciliado', 0)
             ->where('l.instituicao_id', '=', session()->get('session_perfil')->instituicao_id)
             ->groupBy('pc.numeracao', 'pc.nome', 'c.descricao')
-            ->havingRaw('total_lancamentos > 0') 
+            ->havingRaw('total_lancamentos > 0')
             ->orderBy('pc.numeracao')
             ->orderBy('pc.nome')
             ->orderBy('c.descricao')
@@ -44,8 +44,7 @@ trait FinanceiroUtils
         return FinanceiroPlanoConta::orderBy('numeracao')
             ->when((bool) $tipo, fn ($query) => $query->where('tipo', $tipo))
             ->whereHas('tiposInstituicoes', fn ($query) => $query->where('tipo_instituicao_id', $tpinstituicao))
-            ->get(); 
-        
+            ->get();
     }
 
     public static function lancamentos($filters)
@@ -75,11 +74,10 @@ trait FinanceiroUtils
         return $query->where('instituicao_id', session()->get('session_perfil')->instituicao_id)
             ->where(function ($query) {
                 $query->where('conciliado', 0)
-                      ->orWhereNull('conciliado');
+                    ->orWhereNull('conciliado');
             })
             ->orderBy('data_movimento', 'desc')
             ->get();
-
     }
 
     public static function caixas()
@@ -116,9 +114,9 @@ trait FinanceiroUtils
         $saldo = $query->orderBy('ano', 'desc')
             ->orderBy('mes', 'desc')
             ->first();
-        
+
         if ($saldo) {
-            return Carbon::createFromFormat('Y-m', $saldo->ano . '-' . str_pad($saldo->mes, 2, '0', STR_PAD_LEFT));
+            return Carbon::create($saldo->ano, $saldo->mes, 1);
         }
 
         return null;
