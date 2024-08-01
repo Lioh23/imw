@@ -16,6 +16,10 @@
 
 @include('extras.alerts')
 
+@php
+use Carbon\Carbon;
+@endphp
+
 @section('content')
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -30,10 +34,18 @@
             <form class="form-vertical" id="filter_form" method="GET">
                 <div class="form-group row mb-4" id="filtros_data">
                     <div class="col-lg-2 text-right">
-                        <label class="control-label">* Ano:</label>
+                        <label class="control-label">* Data Inicial:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input type="text" class="form-control @error('dtano') is-invalid @enderror" id="dtano" name="dtano" value="{{ request()->input('dtano') }}" placeholder="Exemplo: 2024" required>
+                        <input type="date" class="form-control @error('data_inicial') is-invalid @enderror" id="data_inicial" name="data_inicial" value="{{ request()->input('data_inicial') }}" required>
+                    </div>
+                </div>
+                <div class="form-group row mb-4" id="filtros_data">
+                    <div class="col-lg-2 text-right">
+                        <label class="control-label">* Data Final:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="date" class="form-control @error('data_final') is-invalid @enderror" id="data_final" name="data_final" value="{{ request()->input('data_final') }}" required>
                     </div>
                 </div>
                 <div class="form-group row mb-4">
@@ -50,14 +62,15 @@
             </form>
             <form id="report_form" action="{{ url('distrito/relatorio/membrosministerio/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
-                <input type="hidden" name="dtano" id="report_dtano">
+                <input type="hidden" name="data_inicial" id="report_data_inicial">
+                <input type="hidden" name="data_final" id="report_data_final">
                 <input type="hidden" name="igrejas" id="report_igrejas">
             </form>
         </div>
     </div>
 </div>
 
-@if(request()->input('dtano'))
+@if(request()->input('data_inicial') && request()->input('data_final'))
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
@@ -67,67 +80,117 @@
                     <div class="row">
                         <div class="col-12">
                             <h6 class="mt-3">MEMBROS POR MINISTÉRIO - {{ session('session_perfil')->instituicao_nome }}</h6>
-                            <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th width="300" style="text-align: left">IGREJA</th>
-                                        <th width="50" style="text-align: right">KIDS</th>
-                                        <th width="50" style="text-align: right">CONEXÃO</th>
-                                        <th width="50" style="text-align: right">FIRE</th>
-                                        <th width="50" style="text-align: right">MOVE</th>
-                                        <th width="50" style="text-align: right">HOMENS</th>
-                                        <th width="50" style="text-align: right">Mulheres</th>
-                                        <th width="50" style="text-align: right">60+</th>
-                                        <th width="50" style="text-align: right">TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                    $totalKids = 0;
-                                    $totalConexao = 0;
-                                    $totalFire = 0;
-                                    $totalMove = 0;
-                                    $totalHomens = 0;
-                                    $totalMulheres = 0;
-                                    $total60 = 0;
-                                    $totalGeral = 0;
-                                    @endphp
-                                    @foreach($lancamentos as $lancamento)
-                                    @php
-                                    $totalKids += $lancamento->Kids;
-                                    $totalConexao += $lancamento->Conexao;
-                                    $totalFire += $lancamento->Fire;
-                                    $totalMove += $lancamento->Move;
-                                    $totalHomens += $lancamento->Homens;
-                                    $totalMulheres += $lancamento->Mulheres;
-                                    $total60 += $lancamento->{'60+'};
-                                    $totalGeral += $lancamento->Kids + $lancamento->Conexao + $lancamento->Fire + $lancamento->Move + $lancamento->Homens + $lancamento->Mulheres + $lancamento->{'60+'};
-                                    @endphp
-                                    <tr>
-                                        <td style="text-align: left">{{ $lancamento->nome }}</td>
-                                        <td style="text-align: right">{{ $lancamento->Kids }}</td>
-                                        <td style="text-align: right">{{ $lancamento->Conexao }}</td>
-                                        <td style="text-align: right">{{ $lancamento->Fire }}</td>
-                                        <td style="text-align: right">{{ $lancamento->Move }}</td>
-                                        <td style="text-align: right">{{ $lancamento->Homens }}</td>
-                                        <td style="text-align: right">{{ $lancamento->Mulheres }}</td>
-                                        <td style="text-align: right">{{ $lancamento->{'60+'} }}</td>
-                                        <td style="text-align: right">{{ $lancamento->Kids + $lancamento->Conexao + $lancamento->Fire + $lancamento->Move + $lancamento->Homens + $lancamento->Mulheres + $lancamento->{'60+'} }}</td>
-                                    </tr>
-                                    @endforeach
-                                    <tr class="thead-dark">
-                                        <th style="text-align: left">ROL ATUAL [{{request()->input('dtano')}}]</th>
-                                        <th style="text-align: right">{{ $totalKids }}</th>
-                                        <th style="text-align: right">{{ $totalConexao }}</th>
-                                        <th style="text-align: right">{{ $totalFire }}</th>
-                                        <th style="text-align: right">{{ $totalMove }}</th>
-                                        <th style="text-align: right">{{ $totalHomens }}</th>
-                                        <th style="text-align: right">{{ $totalMulheres }}</th>
-                                        <th style="text-align: right">{{ $total60 }}</th>
-                                        <th style="text-align: right">{{ $totalGeral }}</th>
-                                    </tr>
-                                </tbody>
-                            </table>
+                            <div class="table-responsive">
+                                <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th width="500px" style="text-align: left" rowspan="2">IGREJA</th>
+                                            <th width="60px" style="text-align: center" colspan="2">KIDS</th>
+                                            <th width="60px" style="text-align: center" colspan="2">CONEXÃO</th>
+                                            <th width="60px" style="text-align: center" colspan="2">FIRE</th>
+                                            <th width="60px" style="text-align: center" colspan="2">MOVE</th>
+                                            <th width="60px" style="text-align: center" colspan="2">HOMENS</th>
+                                            <th width="60px" style="text-align: center" colspan="2">MULHERES</th>
+                                            <th width="60px" style="text-align: center" colspan="2">60+</th>
+                                            <th width="60px" style="text-align: center" colspan="2">TOTAL</th>
+                                        </tr>
+                                        <tr>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+                                            <th width="50px" style="text-align: right">{{ Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                        $totalKids_X = 0;
+                                        $totalKids_Y = 0;
+                                        $totalConexao_X = 0;
+                                        $totalConexao_Y = 0;
+                                        $totalFire_X = 0;
+                                        $totalFire_Y = 0;
+                                        $totalMove_X = 0;
+                                        $totalMove_Y = 0;
+                                        $totalHomens_X = 0;
+                                        $totalHomens_Y = 0;
+                                        $totalMulheres_X = 0;
+                                        $totalMulheres_Y = 0;
+                                        $totalSessenta_X = 0;
+                                        $totalSessenta_Y = 0;
+                                        @endphp
+                                        @foreach($lancamentos as $lancamento)
+                                        @php
+                                        $totalKids_X += $lancamento->Kids_X;
+                                        $totalKids_Y += $lancamento->Kids_Y;
+                                        $totalConexao_X += $lancamento->Conexao_X;
+                                        $totalConexao_Y += $lancamento->Conexao_Y;
+                                        $totalFire_X += $lancamento->Fire_X;
+                                        $totalFire_Y += $lancamento->Fire_Y;
+                                        $totalMove_X += $lancamento->Move_X;
+                                        $totalMove_Y += $lancamento->Move_Y;
+                                        $totalHomens_X += $lancamento->Homens_X;
+                                        $totalHomens_Y += $lancamento->Homens_Y;
+                                        $totalMulheres_X += $lancamento->Mulheres_X;
+                                        $totalMulheres_Y += $lancamento->Mulheres_Y;
+                                        $totalSessenta_X += $lancamento->Sessenta_X;
+                                        $totalSessenta_Y += $lancamento->Sessenta_Y;
+                                        @endphp
+                                        <tr>
+                                            <td style="text-align: left; min-width: 250px;">{{ $lancamento->nome }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Kids_X }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Kids_Y }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Conexao_X }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Conexao_Y }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Fire_X }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Fire_Y }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Move_X }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Move_Y }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Homens_X }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Homens_Y }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Mulheres_X }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Mulheres_Y }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Sessenta_X }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Sessenta_Y }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Kids_X + $lancamento->Conexao_X + $lancamento->Fire_X + $lancamento->Move_X + $lancamento->Homens_X + $lancamento->Mulheres_X + $lancamento->Sessenta_X }}</td>
+                                            <td style="text-align: right">{{ $lancamento->Kids_Y + $lancamento->Conexao_Y + $lancamento->Fire_Y + $lancamento->Move_Y + $lancamento->Homens_Y + $lancamento->Mulheres_Y + $lancamento->Sessenta_Y }}</td>
+                                        </tr>
+                                        @endforeach
+                                        <tr class="thead-dark">
+                                            <th style="text-align: left">TOTAL</th>
+                                            <th style="text-align: right">{{ $totalKids_X }}</th>
+                                            <th style="text-align: right">{{ $totalKids_Y }}</th>
+                                            <th style="text-align: right">{{ $totalConexao_X }}</th>
+                                            <th style="text-align: right">{{ $totalConexao_Y }}</th>
+                                            <th style="text-align: right">{{ $totalFire_X }}</th>
+                                            <th style="text-align: right">{{ $totalFire_Y }}</th>
+                                            <th style="text-align: right">{{ $totalMove_X }}</th>
+                                            <th style="text-align: right">{{ $totalMove_Y }}</th>
+                                            <th style="text-align: right">{{ $totalHomens_X }}</th>
+                                            <th style="text-align: right">{{ $totalHomens_Y }}</th>
+                                            <th style="text-align: right">{{ $totalMulheres_X }}</th>
+                                            <th style="text-align: right">{{ $totalMulheres_Y }}</th>
+                                            <th style="text-align: right">{{ $totalSessenta_X }}</th>
+                                            <th style="text-align: right">{{ $totalSessenta_Y }}</th>
+                                            <th style="text-align: right">{{ $totalKids_X + $totalConexao_X + $totalFire_X + $totalMove_X + $totalHomens_X + $totalMulheres_X + $totalSessenta_X }}</th>
+                                            <th style="text-align: right">{{ $totalKids_Y + $totalConexao_Y + $totalFire_Y + $totalMove_Y + $totalHomens_Y + $totalMulheres_Y + $totalSessenta_Y }}</th>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+
                         </div>
                     </div>
                 </div>
@@ -151,70 +214,28 @@
 <script src="{{ asset('theme/assets/js/pages/movimentocaixa.js') }}"></script>
 <script src="{{ asset('theme/plugins/bootstrap-select/bootstrap-select.min.js') }}"></script>
 <script>
-    jQuery(function($) {
-        $.datepicker.regional['pt-BR'] = {
-            closeText: 'Aplicar',
-            prevText: '&#x3c;Anterior',
-            nextText: 'Pr&oacute;ximo&#x3e;',
-            currentText: 'Hoje',
-            monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho',
-                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-            ],
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-                'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-            ],
-            dayNames: ['Domingo', 'Segunda-feira', 'Ter&ccedil;a-feira', 'Quarta-feira', 'Quinta-feira',
-                'Sexta-feira', 'Sabado'
-            ],
-            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            weekHeader: 'Sm',
-            dateFormat: 'yy',
-            firstDay: 0,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: ''
-        };
-        $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
-    });
-
     $(document).ready(function() {
         $('.selectpicker').selectpicker();
 
-        // Inicializar o Datepicker
-        $("#dtano").datepicker({
-            dateFormat: "yy", // Formato do calendário (apenas ano)
-            changeYear: true, // Permitir a seleção do ano
-            showButtonPanel: true,
-            language: 'pt-BR', // Definir o idioma como português
-            onClose: function(dateText, inst) {
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker("setDate", new Date(year, 0, 1));
-            }
-        }).focus(function() {
-            $(".ui-datepicker-month").hide();
-            $(".ui-datepicker-calendar").hide();
-        });
-
         $('#btn_relatorio').on('click', function(event) {
-            var dataAno = $('#dtano').val();
+            var dataInicial = $('#data_inicial').val();
+            var dataFinal = $('#data_final').val();
 
-            // Verificar se a data está preenchida
-            if (!dataAno) {
+            if (!dataInicial || !dataFinal) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
-                // Preencher e submeter o formulário oculto
-                $('#report_dtano').val(dataAno);
+                $('#report_data_inicial').val(dataInicial);
+                $('#report_data_final').val(dataFinal);
                 $('#report_form').submit();
             }
         });
 
         $('#filter_form').submit(function(event) {
-            var dataAno = $('#dtano').val();
+            var dataInicial = $('#data_inicial').val();
+            var dataFinal = $('#data_final').val();
 
-            // Verificar se a data está preenchida
-            if (!dataAno) {
+            if (!dataInicial || !dataFinal) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             }
