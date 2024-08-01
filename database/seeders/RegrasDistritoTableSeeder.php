@@ -24,6 +24,9 @@ class RegrasDistritoTableSeeder extends Seeder
             ['id' => 77 ,'nome' => 'distrito-relatorio-lancamento-das-igrejas'],
             ['id' => 78 ,'nome' => 'distrito-menu-relatorio'],
             ['id' => 79 ,'nome' => 'distrito-relatorio-saldo-das-igrejas'],
+            ['id' => 80 ,'nome' => 'distrito-relatorio-membros-ministerio'],
+            ['id' => 81 ,'nome' => 'distrito-relatorio-quantidade-membros'],
+            ['id' => 82 ,'nome' => 'distrito-relatorio-estatistica-genero'],
         ]);
 
         // Inserir registros na tabela 'perfil_regra'
@@ -35,6 +38,10 @@ class RegrasDistritoTableSeeder extends Seeder
             ['perfil_id' => 2, 'regra_id' => 77, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 2, 'regra_id' => 78, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 2, 'regra_id' => 79, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 2, 'regra_id' => 80, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 2, 'regra_id' => 81, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 2, 'regra_id' => 82, 'created_at' => null, 'updated_at' => null],
+            
             //Tesoureiro distrito
             ['perfil_id' => 9, 'regra_id' => 74, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 9, 'regra_id' => 75, 'created_at' => null, 'updated_at' => null],
@@ -42,6 +49,9 @@ class RegrasDistritoTableSeeder extends Seeder
             ['perfil_id' => 9, 'regra_id' => 77, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 9, 'regra_id' => 78, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 9, 'regra_id' => 79, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 9, 'regra_id' => 80, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 9, 'regra_id' => 81, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 9, 'regra_id' => 82, 'created_at' => null, 'updated_at' => null],
         ]);
     }
 }
