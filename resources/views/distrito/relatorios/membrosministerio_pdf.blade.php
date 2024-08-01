@@ -93,8 +93,9 @@ use Carbon\Carbon;
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
             <div class="title">MEMBROS POR MINISTÉRIO - {{ session('session_perfil')->instituicao_nome }}</div>
-            <div class="period" style="margin-top:4px">
-                Ano: {{ request()->input('dtano') }}
+            <div class="period">
+                Período de {{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}
+                a {{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}
             </div>
         </div>
         <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('m/Y') }}</div>
