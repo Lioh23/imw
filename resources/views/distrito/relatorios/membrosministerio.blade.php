@@ -71,20 +71,63 @@
                                 <thead class="thead-dark">
                                     <tr>
                                         <th width="300" style="text-align: left">IGREJA</th>
-                                        <th width="50" style="text-align: right">CRIANÇAS</th>
-                                        <th width="50" style="text-align: right">PRÉ</th>
-                                        <th width="50" style="text-align: right">ADOLESCENTES</th>
-                                        <th width="50" style="text-align: right">JOVENS</th>
-                                        <th width="50" style="text-align: right">ADULTOS</th>
-                                        <th width="50" style="text-align: right">INDEFINIDOS</th>
+                                        <th width="50" style="text-align: right">KIDS</th>
+                                        <th width="50" style="text-align: right">CONEXÃO</th>
+                                        <th width="50" style="text-align: right">FIRE</th>
+                                        <th width="50" style="text-align: right">MOVE</th>
+                                        <th width="50" style="text-align: right">HOMENS</th>
+                                        <th width="50" style="text-align: right">Mulheres</th>
+                                        <th width="50" style="text-align: right">60+</th>
                                         <th width="50" style="text-align: right">TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                  
+                                    @php
+                                    $totalKids = 0;
+                                    $totalConexao = 0;
+                                    $totalFire = 0;
+                                    $totalMove = 0;
+                                    $totalHomens = 0;
+                                    $totalMulheres = 0;
+                                    $total60 = 0;
+                                    $totalGeral = 0;
+                                    @endphp
+                                    @foreach($lancamentos as $lancamento)
+                                    @php
+                                    $totalKids += $lancamento->Kids;
+                                    $totalConexao += $lancamento->Conexao;
+                                    $totalFire += $lancamento->Fire;
+                                    $totalMove += $lancamento->Move;
+                                    $totalHomens += $lancamento->Homens;
+                                    $totalMulheres += $lancamento->Mulheres;
+                                    $total60 += $lancamento->{'60+'};
+                                    $totalGeral += $lancamento->Kids + $lancamento->Conexao + $lancamento->Fire + $lancamento->Move + $lancamento->Homens + $lancamento->Mulheres + $lancamento->{'60+'};
+                                    @endphp
+                                    <tr>
+                                        <td style="text-align: left">{{ $lancamento->nome }}</td>
+                                        <td style="text-align: right">{{ $lancamento->Kids }}</td>
+                                        <td style="text-align: right">{{ $lancamento->Conexao }}</td>
+                                        <td style="text-align: right">{{ $lancamento->Fire }}</td>
+                                        <td style="text-align: right">{{ $lancamento->Move }}</td>
+                                        <td style="text-align: right">{{ $lancamento->Homens }}</td>
+                                        <td style="text-align: right">{{ $lancamento->Mulheres }}</td>
+                                        <td style="text-align: right">{{ $lancamento->{'60+'} }}</td>
+                                        <td style="text-align: right">{{ $lancamento->Kids + $lancamento->Conexao + $lancamento->Fire + $lancamento->Move + $lancamento->Homens + $lancamento->Mulheres + $lancamento->{'60+'} }}</td>
+                                    </tr>
+                                    @endforeach
+                                    <tr class="thead-dark">
+                                        <th style="text-align: left">ROL ATUAL [{{request()->input('dtano')}}]</th>
+                                        <th style="text-align: right">{{ $totalKids }}</th>
+                                        <th style="text-align: right">{{ $totalConexao }}</th>
+                                        <th style="text-align: right">{{ $totalFire }}</th>
+                                        <th style="text-align: right">{{ $totalMove }}</th>
+                                        <th style="text-align: right">{{ $totalHomens }}</th>
+                                        <th style="text-align: right">{{ $totalMulheres }}</th>
+                                        <th style="text-align: right">{{ $total60 }}</th>
+                                        <th style="text-align: right">{{ $totalGeral }}</th>
+                                    </tr>
                                 </tbody>
                             </table>
-
                         </div>
                     </div>
                 </div>

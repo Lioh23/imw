@@ -18,8 +18,20 @@ class DistritoRelatorioController extends Controller
     //Membresia
     public function membrosministerio(Request $request) {
         $dt = $request->input('dtano');
-        $data = app(MembrosMinisterioService::class)->execute($dt);
+        $tipo = $request->input('tipo');
+        $data = app(MembrosMinisterioService::class)->execute($dt, $tipo);
         return view('distrito.relatorios.membrosministerio', $data);
+    }
+
+    public function membrosministerioPdf(Request $request) {
+        $dt = $request->input('dtano');
+        $tipo = $request->input('tipo');
+        $data = app(MembrosMinisterioService::class)->execute($dt, $tipo);
+        
+        $pdf = FacadePdf::loadView('distrito.relatorios.membrosministerio_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_membrosministerio.pdf' . date('YmdHis'));
     }
 
 
