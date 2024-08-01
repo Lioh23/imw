@@ -224,6 +224,11 @@
                      </div>
                  </a>
                  <ul class="collapse submenu list-unstyled" id="financeiro-distrito" data-parent="#financeiro-distrito">
+                     <li class="submenu-fixo mt-3 mb-3">
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-relatorio'))
+                            <span>Financeiro</span>
+                         @endif
+                     </li>
                      <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-lancamento-das-igrejas'))
                          <a href="{{ route('distrito.relatorio.lancamentodasigrejas') }}">Lançamento das Igrejas</a>
@@ -250,6 +255,26 @@
                          @endif
                      </li>
 
+                     <li class="submenu-fixo mt-3 mb-3">
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-relatorio'))
+                            <span>Membresia</span>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-membros-ministerio'))
+                         <a href="{{ route('distrito.relatorio.membrosministerio') }}">Membros por Ministério</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-quantidade-membros'))
+                         <a href="{{ route('distrito.relatorio.quantidademembros') }}">Quantidade de Membros</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-estatistica-genero'))
+                         <a href="{{ route('distrito.relatorio.estatisticagenero') }}">Estatística por Gênero</a>
+                         @endif
+                     </li>
                  </ul>
              </li>
              @endif

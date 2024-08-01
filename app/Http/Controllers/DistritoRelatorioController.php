@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ServiceDistritoRelatorios\EstatisticaGeneroService;
 use App\Services\ServiceDistritoRelatorios\LancamentoIgrejasService;
 use App\Services\ServiceDistritoRelatorios\LivroRazaoGeralService;
+use App\Services\ServiceDistritoRelatorios\MembrosMinisterioService;
 use App\Services\ServiceDistritoRelatorios\OrcamentoService;
+use App\Services\ServiceDistritoRelatorios\QuantidadeMembrosService;
 use App\Services\ServiceDistritoRelatorios\SaldoIgrejasService;
 use App\Services\ServiceDistritoRelatorios\VariacaoFinanceiraService;
 use Illuminate\Http\Request;
@@ -12,6 +15,29 @@ use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
 class DistritoRelatorioController extends Controller
 {
+    //Membresia
+    public function membrosministerio(Request $request) {
+        $dt = $request->input('dtano');
+        $data = app(MembrosMinisterioService::class)->execute($dt);
+        return view('distrito.relatorios.membrosministerio', $data);
+    }
+
+
+    public function quantidademembros(Request $request) {
+        $dt = $request->input('dtano');
+        $data = app(QuantidadeMembrosService::class)->execute($dt);
+        return view('distrito.relatorios.quantidademembros', $data);
+    }
+
+
+    public function estatisticagenero(Request $request) {
+        $dt = $request->input('dtano');
+        $data = app(EstatisticaGeneroService::class)->execute($dt);
+        return view('distrito.relatorios.estatisticagenero', $data);
+    }
+
+
+    //Financeiro
     public function lancamentodasigrejas(Request $request)
     {
         $dt = $request->input('dtano');

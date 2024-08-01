@@ -198,6 +198,18 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/variacaofinanceira', [DistritoRelatorioController::class, 'variacaofinanceira'])->name('relatorio.variacaofinanceira')->middleware(['seguranca:distrito-menu-relatorio']);
             Route::post('/relatorio/variacaofinanceira/pdf', [DistritoRelatorioController::class, 'variacaofinanceiraPdf'])->name('relatorio.variacaofinanceira-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
           
+
+            //Membresia DEV
+            Route::get('/relatorio/membrosministerio', [DistritoRelatorioController::class, 'membrosministerio'])->name('relatorio.membrosministerio')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/membrosministerio/pdf', [DistritoRelatorioController::class, 'membrosministerioPdf'])->name('relatorio.membrosministerio-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+          
+            //
+            Route::get('/relatorio/quantidademembros', [DistritoRelatorioController::class, 'quantidademembros'])->name('relatorio.quantidademembros')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/quantidademembros/pdf', [DistritoRelatorioController::class, 'quantidademembrosPdf'])->name('relatorio.quantidademembros-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+            
+            Route::get('/relatorio/estatisticagenero', [DistritoRelatorioController::class, 'estatisticagenero'])->name('relatorio.estatisticagenero')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/estatisticagenero/pdf', [DistritoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+
         });
 
         // Crud congregações
