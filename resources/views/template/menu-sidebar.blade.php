@@ -290,7 +290,7 @@
              </li>
              @endif
 
-             @if (auth()->check() && auth()->user()->hasPerfilRegra('igreja-index'))
+             @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-gestao-igrejas'))
              <li class="menu">
                   <a href="/igreja" aria-expanded="false" class="dropdown-toggle">
                   <div class="">

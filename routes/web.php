@@ -227,9 +227,9 @@ Route::middleware(['auth'])->group(function () {
 
         // Crud igrejas
         Route::prefix('igreja')->name('igreja.')->controller(IgrejasController::class)->group(function () {
-            Route::get('/', 'index')->name('index')->middleware(['seguranca:igreja-index']);
-            Route::get('/list', 'list')->name('list')->middleware(['seguranca:igreja-index']);
-            Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico')->middleware(['seguranca:igreja-index']);
+            Route::get('/', 'index')->name('index')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('/list', 'list')->name('list')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico')->middleware(['seguranca:distrito-gestao-igrejas']);
         });
 
          /* Por enquanto somente visualiações */

@@ -27,6 +27,9 @@ class RegrasDistritoTableSeeder extends Seeder
             ['id' => 80 ,'nome' => 'distrito-relatorio-membros-ministerio'],
             ['id' => 81 ,'nome' => 'distrito-relatorio-quantidade-membros'],
             ['id' => 82 ,'nome' => 'distrito-relatorio-estatistica-genero'],
+
+            // distrito igreja
+            ['id' => 83 ,'nome' => 'distrito-gestao-igrejas'],
         ]);
 
         // Inserir registros na tabela 'perfil_regra'
@@ -41,6 +44,7 @@ class RegrasDistritoTableSeeder extends Seeder
             ['perfil_id' => 2, 'regra_id' => 80, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 2, 'regra_id' => 81, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 2, 'regra_id' => 82, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 2, 'regra_id' => 83, 'created_at' => null, 'updated_at' => null],
             
             //Tesoureiro distrito
             ['perfil_id' => 9, 'regra_id' => 74, 'created_at' => null, 'updated_at' => null],
