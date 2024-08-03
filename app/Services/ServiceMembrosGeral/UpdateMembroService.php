@@ -37,30 +37,28 @@ class UpdateMembroService
             $this->updateMembroRol($data['rol_atual'], $membroID);
         }
 
-        if (isset($data['foto'])) {
-            $this->handlePhotoUpload($data['foto'], $membroID, 'I');
+        if (isset($data['foto']) && $data['foto']) {
+            $this->handlePhotoUpload($data['foto'], $membroID);
         } else {
-            $this->handlePhotoUpload(NULL, $membroID, 'E');
+            $this->handlePhotoUpload(null, $membroID, false);
         }
     }
 
-    private function handlePhotoUpload($photo, $membroId, $acao)
+    private function handlePhotoUpload($photo, $membroId, $isNew = true)
     {
-        if($acao == 'I'){
-            $filePath = $photo->store('fotos', 'minio');
-            Storage::disk('minio')->setVisibility($filePath, 'public');
-
-            $membro = MembresiaMembro::find($membroId);
-            if ($membro) {
+        $membro = MembresiaMembro::find($membroId);
+        if ($membro) {
+            if ($isNew && $photo) {
+                // Fazer upload da nova foto
+                $filePath = $photo->store('fotos', 'minio');
+                Storage::disk('minio')->setVisibility($filePath, 'public');
                 $membro->foto = Storage::disk('minio')->url($filePath);
-                $membro->save();
+            } elseif ($photo === null && !$isNew) {
+                // Não atualizar a foto, apenas manter a existente
+                // No caso de `false`, a foto atual não é removida
+                // Você pode ajustar esta lógica conforme necessário
             }
-        } else {
-            $membro = MembresiaMembro::find($membroId);
-            if ($membro) {
-                $membro->foto = '';
-                $membro->save();
-            }
+            $membro->save();
         }
     }
 
