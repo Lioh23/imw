@@ -210,10 +210,10 @@
                 @endif
                @if (auth()->check() && auth()->user()->hasPerfilRegra('igreja-index'))
                <li class="menu">
-                    <a href="/congregacao" aria-expanded="false" class="dropdown-toggle">
+                    <a href="/igreja" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <x-bx-church />
-                        <span>Congregações</span>
+                        <span>Igrejas</span>
                     </div>
                     </a>
                 </li>

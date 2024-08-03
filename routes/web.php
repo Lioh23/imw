@@ -190,14 +190,9 @@ Route::middleware(['auth'])->group(function () {
 
         // Crud igrejas
         Route::prefix('igreja')->name('igreja.')->controller(IgrejasController::class)->group(function () {
-            Route::get('/', 'index')->name('index')->middleware(['seguranca:igrejas-index']);
-            Route::get('/list', 'list')->name('list')->middleware(['seguranca:igrejas-index']);
-            Route::get('/novo', 'novo')->name('novo')->middleware(['seguranca:igrejas-cadastrar']);
-            Route::post('/store', 'store')->name('store')->middleware(['seguranca:igrejas-cadastrar']);
-            Route::get('/editar/{igreja}', 'editar')->name('editar')->middleware(['seguranca:igrejas-editar'])->can('checkSameChurch', 'igreja');
-            Route::put('/update/{igreja}', 'update')->name('update')->middleware(['seguranca:igrejas-atualizar']);
-            Route::delete('/desativar/{igreja}', 'desativar')->name('desativar')->middleware(['seguranca:igrejas-excluir']);
-            Route::put('/restaurar/{id}', 'restaurar')->name('restaurar')->middleware(['seguranca:igrejas-editar']);
+            Route::get('/', 'index')->name('index')->middleware(['seguranca:igreja-index']);
+            Route::get('/list', 'list')->name('list')->middleware(['seguranca:igreja-index']);
+            Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico')->middleware(['seguranca:igreja-index']);
         });
 
          /* Por enquanto somente visualiações */

@@ -22,19 +22,6 @@
 
 @section('content')
 @include('extras.alerts')
-<div class="container-fluid d-flex justify-content-between">
-    {{-- esquerda --}}
-    <div>
-        <a href="{{ route('igreja.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
-                <circle cx="12" cy="12" r="10"></circle>
-                <line x1="12" y1="8" x2="12" y2="16"></line>
-                <line x1="8" y1="12" x2="16" y2="12"></line>
-            </svg>
-            <span class="ml-2">INCLUIR IGREJA</span>
-        </a>
-    </div>
-</div>
 <!-- TABELA -->
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -59,7 +46,6 @@
                 <table class="table table-bordered table-striped table-hover mb-4" id="datatable" data-url="{{ route('igreja.list') }}">
                     <thead>
                         <tr>
-                            <th>DISTRITO</th>
                             <th>CIDADE</th>
                             <th>IGREJA</th>
                             <th>PASTOR</th>

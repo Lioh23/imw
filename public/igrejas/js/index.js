@@ -52,13 +52,23 @@ $(document).ready(function() {
             }
         },
         columns: [
-            {data: 'distrito', name: 'distrito'}, 
             {data: 'cidade', name: 'cidade'}, 
             {data: 'nome', name: 'igreja'},  
             {data: 'pastor', name: 'pastor'},
             {data: 'actions', name: 'Ações'},
         ],
         columnDefs: [
+            {
+                targets: 1,
+                orderable: 1,
+                render: function (data, type, row, meta) {
+                    if (row.deleted_at) {
+                        return `<span class="badge badge-danger"> ${row.nome} </span>`
+                    } else {
+                        return row.nome
+                    }
+                }
+            },
             {
                 targets: 0,
                 orderable: 1,

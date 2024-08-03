@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(CreateViewsSeeder::class);
         $this->call(MembresiaTipoAtuacaoSeeder::class);
         $this->call(MembresiaSituacaoSeeder::class);
         $this->call(MembresiaSetorSeeder::class);

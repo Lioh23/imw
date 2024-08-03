@@ -10,4 +10,8 @@ class VwIgreja extends Model
     use HasFactory;
 
     protected $table = 'vw_igrejas';
+
+    protected $casts = [
+        'deleted_at' => 'datetime',
+    ];
 }
