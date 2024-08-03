@@ -1,11 +1,16 @@
 CREATE OR REPLACE VIEW vw_rol_membros AS
-	SELECT
+SELECT
 		 mr.numero_rol
 		,mr.membro_id
 		,mm.nome membro
 		,mr.regiao_id
 		,mr.distrito_id
 		,mr.igreja_id
+		,rol_atual.igreja_id rol_atual_igreja_id
+		,CASE 
+			WHEN rol_atual.igreja_id <> mr.igreja_id THEN 1
+			ELSE 0
+		END transferido
 		,mm.congregacao_id
 		,cc.nome congregacao
 		,mr.status
@@ -22,6 +27,11 @@ CREATE OR REPLACE VIEW vw_rol_membros AS
 INNER JOIN membresia_membros mm
 	    ON mm.id = mr.membro_id
 	   AND mm.vinculo = 'M'
+	   
+LEFT JOIN membresia_rolpermanente rol_atual
+	   ON mm.id = rol_atual.membro_id
+	  AND rol_atual.lastrec = 1
+	
 	   
  LEFT JOIN congregacoes_congregacoes cc 
  		ON cc.id = mm.congregacao_id 
