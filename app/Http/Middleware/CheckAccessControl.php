@@ -15,7 +15,7 @@ class CheckAccessControl
         if (!$user) {
             abort(403, 'Acesso não autorizado');
         }
-
+        
         if (!$user->hasPerfilRegra($regraNome)) {
             abort(403, 'Acesso não autorizado');
         }

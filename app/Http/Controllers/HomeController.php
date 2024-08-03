@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaMembro;
 use App\Models\PerfilUser;
 use App\Services\ServicePerfil\IdentificaPerfilService;
@@ -71,6 +72,9 @@ class HomeController extends Controller
             $visitantesPorMesCompleto[$month] = $count;
         }
 
+        $instituicao = InstituicoesInstituicao::where('id', session()->get('session_perfil')->instituicao_id)->first();
+
+        
         return view('dashboard', [
             'activeMembrosCount' => $activeMembrosCount,
             'activeCongregadosCount' => $activeCongregadosCount,
@@ -78,6 +82,7 @@ class HomeController extends Controller
             'totalAtivos' => $totalAtivos,
             'totalInativos' => $totalInativos,
             'visitantesPorMes' => $visitantesPorMesCompleto,
+            'instituicao' => $instituicao
         ]);
     }
 

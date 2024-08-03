@@ -42,7 +42,8 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h5 class="mt-3">SALDO {{ strtoupper(\Carbon\Carbon::parse($ultimoCaixa)->addMonth()->isoFormat('MMMM [de] YYYY')) }}</h5>
+                        <h5 class="mt-3">SALDO {{ strtoupper(\Carbon\Carbon::parse($ultimoCaixa)->addMonthsNoOverflow(1)->isoFormat('MMMM [de] YYYY')) }}</h5>
+
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>

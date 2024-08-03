@@ -12,13 +12,30 @@
     .swal2-popup .swal2-styled.swal2-cancel {
         color: white !important;
     }
+    .card-title {
+        font-size: 1.25rem;
+    }
+    .card-text {
+        font-size: 1rem;
+    }
+    .card-body ul li {
+        font-size: 1rem;
+        display: flex;
+        align-items: center;
+    }
+    .card-body ul li i {
+        font-size: 1.25rem;
+    }
 </style>
 @endsection
 
 @section('content')
 @include('extras.alerts')
 <div class="container-fluid h-100">
-     <div class="row flex-fill mt-4">
+<div class="container-fluid h-100">
+@if($instituicao->tipoInstituicao->sigla == 'I')
+    <div class="row flex-fill mt-4">
+        <!-- Conteúdo para tipoInstituicao 'I' -->
         <div class="col-md-4">
             <div class="card h-100">
                 <div class="card-body">
@@ -50,32 +67,173 @@
     <!-- Gráficos -->
     <div class="row flex-fill mt-4">
          <!-- Gráfico de Membros Ativos vs Inativos -->
-    <div class="col-md-6">
-        <div class="card h-100">
-            <div class="card-body">
-                <h6 class="card-title">Gráfico de Membros Ativos vs Inativos</h6>
-                <div class="chart-container">
-                    <canvas id="membrosChart"></canvas>
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Gráfico de Membros Ativos vs Inativos</h6>
+                    <div class="chart-container">
+                        <canvas id="membrosChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráfico de Visitantes por Mês -->
+        <div class="col-md-6">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title">Gráfico de Visitantes por Mês</h6>
+                    <div class="chart-container">
+                        <canvas id="visitantesChart"></canvas>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- Gráfico de Visitantes por Mês -->
-    <div class="col-md-6">
-        <div class="card h-100">
-            <div class="card-body">
-                <h6 class="card-title">Gráfico de Visitantes por Mês</h6>
-                <div class="chart-container">
-                    <canvas id="visitantesChart"></canvas>
+@elseif($instituicao->tipoInstituicao->sigla == 'R')
+    <div class="row flex-fill mt-4">
+        <div class="col-12 text-center">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title"><b>Bem-vindo(a) à Área Regional!</b></h6>
+                    <p class="card-text">
+                        Aqui você pode acessar informações e gerenciar atividades da região. Explore recursos, eventos e relatórios regionais.
+                    </p>
                 </div>
             </div>
         </div>
     </div>
+@elseif($instituicao->tipoInstituicao->sigla == 'D')
+<div class="row flex-fill mt-4">
+    <div class="col-12 text-center">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title mb-3"><b>Bem-vindo(a) ao {{ session('session_perfil')->instituicao_nome }}!</b></h6>
+                <p class="card-text">
+                    Você está acessando uma área distrital. Aqui você pode:
+                </p>
+                <ul class="text-left" style="display: inline-block; list-style: none; padding: 0;">
+                    <li class="mb-2">
+                        <i class="fas fa-chart-line mr-2 text-primary"></i>
+                        Visualizar relatórios distritais detalhados
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-dollar-sign mr-2 text-success"></i>
+                        Acessar informações financeiras do distrito
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-chart-bar mr-2 text-info"></i>
+                        Verificar estatísticas e análises de crescimento
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-book-open mr-2 text-warning"></i>
+                        Acessar recursos e materiais de apoio
+                    </li>
+                </ul>
+            </div>
+        </div>
     </div>
-
-  
 </div>
+@elseif($instituicao->tipoInstituicao->sigla == 'G')
+<div class="row flex-fill mt-4">
+    <div class="col-12 text-center">
+        <div class="card h-100 shadow-sm">
+            <div class="card-body">
+                <h6 class="card-title mb-3"><b>Bem-vindo(a) à Área Geral!</b></h6>
+                <p class="card-text mb-4">
+                    Você está acessando a área geral da instituição. Aqui você pode gerenciar informações globais, acessar relatórios gerais e muito mais.
+                </p>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-box d-flex align-items-center">
+                            <i class="fas fa-cogs fa-2x text-primary mr-3"></i>
+                            <div>
+                                <h6 class="feature-title mb-0">Gerenciar Informações</h6>
+                                <small class="text-muted">Administre dados essenciais</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-box d-flex align-items-center">
+                            <i class="fas fa-chart-pie fa-2x text-success mr-3"></i>
+                            <div>
+                                <h6 class="feature-title mb-0">Relatórios Gerais</h6>
+                                <small class="text-muted">Acesse dados detalhados</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <div class="feature-box d-flex align-items-center">
+                            <i class="fas fa-users fa-2x text-info mr-3"></i>
+                            <div>
+                                <h6 class="feature-title mb-0">Gerenciamento de Usuários</h6>
+                                <small class="text-muted">Controle de acessos</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <button class="btn btn-primary mt-3">Explorar Mais</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@elseif($instituicao->tipoInstituicao->sigla == 'O')
+    <div class="row flex-fill mt-4">
+        <div class="col-12 text-center">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title"><b>Bem-vindo(a) ao Órgão Geral!</b></h6>
+                    <p class="card-text">
+                        Você está acessando a área do órgão geral da instituição. Aqui você pode gerenciar atividades e recursos a nível de órgão.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+@elseif($instituicao->tipoInstituicao->sigla == 'E')
+    <div class="row flex-fill mt-4">
+        <div class="col-12 text-center">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title"><b>Bem-vindo(a) à Área de Estatísticas!</b></h6>
+                    <p class="card-text">
+                        Aqui você pode visualizar e analisar estatísticas detalhadas sobre a instituição. Acesse gráficos, relatórios e mais.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+@elseif($instituicao->tipoInstituicao->sigla == 'S')
+    <div class="row flex-fill mt-4">
+        <div class="col-12 text-center">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title"><b>Bem-vindo(a) à Secretaria!</b></h6>
+                    <p class="card-text">
+                        Você está acessando a área da secretaria. Aqui você pode gerenciar documentos, comunicados e outras informações importantes.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+@else 
+    <div class="row flex-fill mt-4">
+        <div class="col-12 text-center">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h6 class="card-title"><b>Bem-vindo(a)!</b></h6>
+                    <p class="card-text">
+                        Bem-vindo(a) ao nosso sistema. Navegue pelos menus para acessar as diferentes funcionalidades disponíveis.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+@endif
+</div>
+</div>
+
 
 <!-- Incluir scripts para os gráficos (por exemplo, Chart.js) -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

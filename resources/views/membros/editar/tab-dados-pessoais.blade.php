@@ -386,7 +386,7 @@
                 @enderror
               </div>
 
-              <div class="col-xl-6">
+              <div class="col-xl-3">
                 <label for="funcao_eclesiastica_id">Função Eclesiástica</label>
                 <select class="form-control" name="funcao_eclesiastica_id" id="funcao_eclesiastica_id">
                   <option value="">Selecione</option>
@@ -401,6 +401,13 @@
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
+                <div class="col-xl-3">
+                        <label for="rol_atual">Nº Rol</label>
+                        <input type="text" class="form-control @error('rol_atual') is-invalid @enderror" id="rol_atual" name="rol_atual" value="{{ old('rol_atual', $pessoa->rol_atual) }}" maxlength="100">
+                    @error('rol_atual')
+                        <span class="help-block text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
 
             <div class="row mb-4">
@@ -477,7 +484,8 @@
                     <label class="control-label">Congregação:</label>
                     <select id="congregacao_id" name="congregacao_id"
                         class="form-control @error('congregacao_id') is-invalid @enderror">
-                        <option value="" {{ !$pessoa->congregacao_id ? 'selected' : '' }}>Selecione
+                        <option value="{{ null }}" {{ !$pessoa->congregacao_id ? 'selected' : '' }}>
+                            Sede
                         </option>
                         @foreach ($congregacoes as $congregacao)
                             <option value="{{ $congregacao->id }}"

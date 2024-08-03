@@ -2,19 +2,20 @@
 
 namespace App\Services\ServiceMembrosGeral;
 
-use App\Exceptions\MembroNotFoundException;
-use App\Models\MembresiaContato;
+use Carbon\Carbon;
 use App\Models\MembresiaCurso;
+use App\Models\MembresiaSetor;
+use App\Models\MembresiaMembro;
+use App\Models\MembresiaContato;
 use App\Models\MembresiaFamiliar;
 use App\Models\MembresiaFormacao;
-use App\Models\MembresiaFormacaoEclesiastica;
-use App\Models\MembresiaFuncaoEclesiastica;
-use App\Models\MembresiaFuncaoMinisterial;
-use App\Models\MembresiaMembro;
-use App\Models\MembresiaSetor;
 use App\Models\MembresiaTipoAtuacao;
+use App\Models\MembresiaRolPermanente;
 use Illuminate\Support\Facades\Storage;
-use Carbon\Carbon;
+use App\Models\MembresiaFuncaoMinisterial;
+use App\Exceptions\MembroNotFoundException;
+use App\Models\MembresiaFuncaoEclesiastica;
+use App\Models\MembresiaFormacaoEclesiastica;
 
 class UpdateMembroService
 {
@@ -32,6 +33,9 @@ class UpdateMembroService
         $this->handleUpdateFamiliar($dataFamiliar, $membroID);
         $this->handleUpdateFormacoes($dataFormacoes, $membroID);
         $this->handleUpdateMinisteriais($dataMinisteriais, $membroID);
+        if(isset($data['rol_atual'])){
+            $this->updateMembroRol($data['rol_atual'], $membroID);
+        }
 
         if (isset($data['foto'])) {
             $this->handlePhotoUpload($data['foto'], $membroID, 'I');
@@ -65,6 +69,7 @@ class UpdateMembroService
         $cpf = preg_replace('/[^0-9]/', '', $data['cpf']);
         $result = [
             'membro_id' => $data['membro_id'],
+            'rol_atual' => $data['rol_atual'] ?? null,
             'nome'            => $data['nome'],
             'sexo'            => $data['sexo'],
             'data_nascimento' => Carbon::createFromFormat('Y-m-d', $data['data_nascimento']),
@@ -85,6 +90,10 @@ class UpdateMembroService
             'vinculo'         => $vinculo,
             'has_errors'      => 0
         ];
+
+        if(isset($data['congregacao_id']) === false){
+            $result['congregacao_id'] = null;
+        }
 
         if(isset($data['congregacao_id'])) {
             $result['congregacao_id'] = $data['congregacao_id'];
@@ -233,5 +242,20 @@ class UpdateMembroService
         MembresiaFuncaoMinisterial::where('membro_id', $membroId)
             ->whereNotIn('id', $updatedMinisterialIds)
             ->delete();
+    }
+
+    private function updateMembroRol($rolAtual, $membroId)
+    {
+            $rolPermanente = MembresiaRolPermanente::where('membro_id', $membroId)->where('lastrec', 1)->first();
+            if ($rolPermanente) {
+                $rolPermanente->numero_rol = $rolAtual ?? null;
+                $rolPermanente->save();
+            } else {
+                MembresiaRolPermanente::create([
+                    'membro_id' => $membroId,
+                    'numero_rol' => $rolAtual ?? null,
+                    'lastrec' => 1
+                ]);
+            }
     }
 }
