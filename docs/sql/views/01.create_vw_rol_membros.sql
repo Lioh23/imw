@@ -7,6 +7,7 @@ CREATE OR REPLACE VIEW vw_rol_membros AS
 		,mr.distrito_id
 		,mr.igreja_id
 		,mm.congregacao_id
+		,cc.nome congregacao
 		,mr.status
 		,mm.data_nascimento
 		,mr.dt_recepcao 
