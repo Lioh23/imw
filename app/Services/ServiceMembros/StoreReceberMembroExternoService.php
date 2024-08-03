@@ -76,7 +76,7 @@ class StoreReceberMembroExternoService
     private function handleCreateNewRol($membro, $params)
     {
         MembresiaRolPermanente::create([
-            'status'           => MembresiaRolPermanente::STATUS_TRANSFERENCIA,
+            'status'           => MembresiaRolPermanente::STATUS_RECEBIMENTO,
             'numero_rol'       => $params['numero_rol'],
             'dt_recepcao'      => $params['dt_resposta'],
             'clerigo_id'       => $params['clerigo_id'],
