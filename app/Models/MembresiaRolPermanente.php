@@ -72,7 +72,7 @@ class MembresiaRolPermanente extends Model
                 return 'INATIVO';
 
             case 'T':
-                return 'TRANSFERÊNCIA';
-        }
+                return 'TRANSFERÊNCIA';            
+            }
     }
 }
