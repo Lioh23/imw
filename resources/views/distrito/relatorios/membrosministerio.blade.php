@@ -32,20 +32,32 @@ use Carbon\Carbon;
         </div>
         <div class="widget-content widget-content-area">
             <form class="form-vertical" id="filter_form" method="GET">
-                <div class="form-group row mb-4" id="filtros_data">
-                    <div class="col-lg-2 text-right">
+                <div class="form-group row mb-4" id="filtros_data_inicial">
+                    <div class="col-lg-3 text-right">
                         <label class="control-label">* Data Inicial:</label>
                     </div>
                     <div class="col-lg-3">
                         <input type="date" class="form-control @error('data_inicial') is-invalid @enderror" id="data_inicial" name="data_inicial" value="{{ request()->input('data_inicial') }}" required>
                     </div>
                 </div>
-                <div class="form-group row mb-4" id="filtros_data">
-                    <div class="col-lg-2 text-right">
+                <div class="form-group row mb-4" id="filtros_data_final">
+                    <div class="col-lg-3 text-right">
                         <label class="control-label">* Data Final:</label>
                     </div>
                     <div class="col-lg-3">
                         <input type="date" class="form-control @error('data_final') is-invalid @enderror" id="data_final" name="data_final" value="{{ request()->input('data_final') }}" required>
+                    </div>
+                </div>
+                <div class="form-group row mb-4" id="filtros_congregados">
+                    <div class="col-lg-3 text-right">
+                        <label class="control-label">* Incluir Congregados:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="tipo" name="tipo">
+                            <option value="">Selecione</option>
+                            <option value="C" {{ request()->input('tipo') == 'C' ? 'selected' : '' }}>Sim</option>
+                            <option value="M" {{ request()->input('tipo') == 'M' ? 'selected' : '' }}>Não</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row mb-4">
@@ -60,6 +72,7 @@ use Carbon\Carbon;
                     </div>
                 </div>
             </form>
+
             <form id="report_form" action="{{ url('distrito/relatorio/membrosministerio/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
                 <input type="hidden" name="data_inicial" id="report_data_inicial">
@@ -220,8 +233,9 @@ use Carbon\Carbon;
         $('#btn_relatorio').on('click', function(event) {
             var dataInicial = $('#data_inicial').val();
             var dataFinal = $('#data_final').val();
+            var tipo = $('#tipo').val();
 
-            if (!dataInicial || !dataFinal) {
+            if (!dataInicial || !dataFinal || !tipo) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
@@ -234,8 +248,9 @@ use Carbon\Carbon;
         $('#filter_form').submit(function(event) {
             var dataInicial = $('#data_inicial').val();
             var dataFinal = $('#data_final').val();
+            var tipo = $('#tipo').val();
 
-            if (!dataInicial || !dataFinal) {
+            if (!dataInicial || !dataFinal || !tipo) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             }
