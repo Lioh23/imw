@@ -1,11 +1,16 @@
 CREATE OR REPLACE VIEW vw_rol_membros AS
-	SELECT
+SELECT
 		 mr.numero_rol
 		,mr.membro_id
 		,mm.nome membro
 		,mr.regiao_id
 		,mr.distrito_id
 		,mr.igreja_id
+		,rol_atual.igreja_id rol_atual_igreja_id
+		,CASE 
+			WHEN rol_atual.igreja_id <> mr.igreja_id THEN 1
+			ELSE 0
+		END transferido
 		,mm.congregacao_id
 		,cc.nome congregacao
 		,mr.status
@@ -15,12 +20,18 @@ CREATE OR REPLACE VIEW vw_rol_membros AS
 		,nt.id notificacao_transferencia_id
 		,mm.has_errors
 	
-  	  FROM  membresia_rolpermanente mr
-		
+ FROM (	SELECT *, ROW_NUMBER() OVER (PARTITION BY membro_id, igreja_id ORDER BY dt_recepcao DESC) as rn
+				FROM membresia_rolpermanente
+			) mr
+
 INNER JOIN membresia_membros mm
 	    ON mm.id = mr.membro_id
 	   AND mm.vinculo = 'M'
-	   AND mr.lastrec = 1
+	   
+LEFT JOIN membresia_rolpermanente rol_atual
+	   ON mm.id = rol_atual.membro_id
+	  AND rol_atual.lastrec = 1
+	
 	   
  LEFT JOIN congregacoes_congregacoes cc 
  		ON cc.id = mm.congregacao_id 
@@ -32,4 +43,6 @@ INNER JOIN membresia_membros mm
  	   AND nt.deleted_at IS NULL
  
 LEFT JOIN instituicoes_instituicoes nt_id
-	   ON nt_id.id = nt.igreja_destino_id;
+	   ON nt_id.id = nt.igreja_destino_id
+
+WHERE rn = 1;

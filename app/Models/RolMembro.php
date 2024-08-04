@@ -37,6 +37,11 @@ class RolMembro extends Model
         return $this->belongsTo(CongregacoesCongregacao::class, 'congregacao_id');
     }
 
+    public function igrejaRolAtual() 
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'rol_atual_igreja_id');
+    }
+
     public function notificacaoTransferenciaAtiva()
     {
         return $this->belongsTo(NotificacaoTransferencia::class, 'notificacao_transferencia_id');
