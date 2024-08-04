@@ -35,7 +35,7 @@ class MembrosMinisterioService
 
     private function handleLancamentos($dataInicial, $dataFinal, $tipo)
     {
-        $instituicaoPaiId = 1769; // Substitua conforme necessário
+        $instituicaoPaiId = session()->get('session_perfil')->instituicao_id; 
 
         $vinculoCondition = $tipo === 'C' ? ['C', 'M'] : ['M'];
 
