@@ -104,7 +104,33 @@ use Carbon\Carbon;
                                         </tr>
                                     </thead>
                                     <tbody>
-                                      
+                                        @php
+                                        $totalMasculino = 0;
+                                        $totalFeminino = 0;
+                                        $totalGeral = 0;
+                                        @endphp
+
+                                        @foreach($lancamentos as $lancamento)
+                                        <tr>
+                                            <td style="text-align: left; min-width: 250px;">{{ $lancamento->nome }}</td>
+                                            <td style="text-align: left; min-width: 250px;">{{ $lancamento->total_masculino }}</td>
+                                            <td style="text-align: left; min-width: 250px;">{{ $lancamento->total_feminino }}</td>
+                                            <td style="text-align: left; min-width: 50px;">{{ $lancamento->total }}</td>
+                                        </tr>
+                                        @php
+                                        $totalMasculino += $lancamento->total_masculino;
+                                        $totalFeminino += $lancamento->total_feminino;
+                                        $totalGeral += $lancamento->total;
+                                        @endphp
+                                        @endforeach
+
+                                        <tr>
+                                            <th style="text-align: left">TOTAL GERAL</th>
+                                            <th width="100px" style="text-align: left">{{ $totalMasculino }}</th>
+                                            <th width="100px" style="text-align: left">{{ $totalFeminino }}</th>
+                                            <th width="100px" style="text-align: left">{{ $totalGeral }}</th>
+                                        </tr>
+                                    </tbody>
                                 </table>
 
                             </div>

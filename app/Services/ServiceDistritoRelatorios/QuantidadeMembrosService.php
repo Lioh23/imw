@@ -48,7 +48,6 @@ class QuantidadeMembrosService
                     ->where('mm.status', 'A')
                     ->whereIn('mm.vinculo', $vinculoCondition)
                     ->whereColumn('mr.igreja_id', 'ii.id')
-                    ->where('mr.lastrec', 1)
                     ->where('mr.dt_recepcao', '<=', $dataFinal)
                     ->where(function ($query) use ($dataFinal) {
                         $query->where('mr.dt_exclusao', '<=', $dataFinal)

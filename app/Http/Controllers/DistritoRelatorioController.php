@@ -67,6 +67,18 @@ class DistritoRelatorioController extends Controller
         return view('distrito.relatorios.estatisticagenero', $data);
     }
 
+    public function estatisticageneroPdf(Request $request) {
+        $dataInicial = $request->input('data_inicial');
+        $dataFinal = $request->input('data_final');
+        $tipo = $request->input('tipo');
+        $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo);
+        
+        $pdf = FacadePdf::loadView('distrito.relatorios.estatisticagenero_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_estatisticagenero.pdf' . date('YmdHis'));
+    }
+
 
     //Financeiro
     public function lancamentodasigrejas(Request $request)
