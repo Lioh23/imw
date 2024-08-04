@@ -14,13 +14,13 @@
         <x-bx-group />
     </a>
     
-    <a  href="{{ route('igreja.balancete') }}" 
+    <a  href="{{ route('igreja.balancete', ['igreja' => $igreja->id]) }}" 
         title="Balancete" 
         class="btn btn-sm btn-primary mr-2 btn-rounded bs-tooltip">
         <x-bx-wallet />
     </a>
 
-    <a  href="#" 
+    <a  href="{{ route('igreja.movimento-diario', ['igreja' => $igreja->id]) }}" 
         title="Movimentação diária"
         class="btn btn-sm btn-info mr-2 btn-rounded bs-tooltip">
         <x-bx-calendar />

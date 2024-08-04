@@ -21,31 +21,12 @@
         <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4>Relatório Balancete</h4>
+                    <h4>Relatório Balancete - {{ $instituicao->nome }}</h4>
                 </div>
             </div>
         </div>
         <div class="widget-content widget-content-area">
             <form class="form-vertical" id="filter_form" method="GET">
-                 {{-- igreja --}}
-                 <div class="form-group row mb-4">
-                  <div class="col-lg-2 text-right">
-                      <label class="control-label">Igreja:</label>
-                  </div>
-                  <div class="col-lg-6">
-                    <select id="igreja_id" name="igreja_id" class="form-control @error('igreja_id') is-invalid @enderror">
-                        <option value="" {{ !request()->input('igreja_id') ? 'selected' : '' }} hidden disabled>
-                          Selecione
-                        </option>
-                        @foreach ($igrejas as $igreja)
-                        <option value="{{ $igreja->id }}" {{ request()->input('igreja_id') == $igreja->id ? 'selected' : '' }}>
-                            {{ $igreja->nome }}
-                        </option>
-                        @endforeach
-                    </select>
-                  </div>
-                </div>
-
                 <div class="form-group row mb-4" id="filtros_data">
                     <div class="col-lg-2 text-right">
                         <label class="control-label">* Período (Inicial e Final):</label>
@@ -83,7 +64,7 @@
                         <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
                             <x-bx-search /> Buscar
                         </button>
-                        <button id="btn_relatorio" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn">
+                        <button id="btn_relatorio" data-url="{{ route('igreja.balancete-pdf', ['igreja' => $instituicao->id]) }}" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn">
                             Relatório
                         </button>
                     </div>
@@ -314,23 +295,16 @@
             var dataInicial = $('#dt_inicial').val();
             var dataFinal = $('#dt_final').val();
             var caixaId = $('#caixa_id').val();
-            var igrejaId = $('#igreja_id').val();
 
             if (!dataInicial || !dataFinal) {
                 alert('Por favor, preencha os campos de data inicial e data final.');
                 return;
             }
 
-            if (!igrejaId) {
-                alert('Por favor, selecione a igreja.');
-                return;
-            }
-
-            var url = '{{ url("/igreja/balancete-pdf") }}' +
+            var url = $(this).data('url') +
                       '?dt_inicial=' + encodeURIComponent(dataInicial) +
                       '&dt_final=' + encodeURIComponent(dataFinal) +
-                      '&caixa_id=' + encodeURIComponent(caixaId) +
-                      '&igreja_id=' + encodeURIComponent(igrejaId);
+                      '&caixa_id=' + encodeURIComponent(caixaId);
 
             window.open(url, '_blank');
         });
@@ -341,7 +315,6 @@
         $('#filter_form').submit(function(event) {
             var dataInicial = $('#dt_inicial').val();
             var dataFinal = $('#dt_final').val();
-            var igrejaId = $('#igreja_id').val();
 
             // Converter as datas para objetos Date
             var dateInicial = new Date(dataInicial);
@@ -354,79 +327,8 @@
                 // Exibir uma mensagem de erro
                 alert('O mês final não pode ser menor que o mês inicial.');
             }
-
-            if (!igrejaId) {
-                // Impedir o envio do formulário
-                event.preventDefault();
-                // Exibir uma mensagem de erro
-                alert('Por favor, selecione a igreja.');
-            }
         });
     });
-</script>
-<script>
-    function validarFormulario() {
-        const dataInicial = document.getElementById('dt_inicial').value;
-        const dataFinal = document.getElementById('dt_final').value;
-
-        if (!dataInicial || !dataFinal) {
-            alert('Por favor, preencha os campos de mês inicial e mês final.');
-            return false;
-        }
-
-        return true;
-    }
-
-    document.getElementById('btn_buscar').addEventListener('click', function(event) {
-        if (!validarFormulario()) {
-            event.preventDefault();
-        }
-    });
-
-    function gerarRelatorio() {
-        if (validarFormulario()) {
-            const form = document.getElementById('filter_form');
-            form.action = "{{ route('financeiro.relatorio-balancete-pdf') }}";
-            form.submit();
-        }
-    }
-</script>
-<script>
-  // lógica para troca de igrejas
-  $('#igreja_id').change(function() {
-    const igrejaId = $(this).val();
-
-    // limpar o campo caixa_id
-    $('#caixa_id').val('');
-
-    // listar todos os caixas via ajax
-    $.ajax({
-      url: `/igreja/lista-caixas/${igrejaId}`,
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      },
-      method: 'GET',
-      beforeSend: function() {
-        $('#caixa_id').attr('disabled', true);
-        $('#caixa_id').html('<option value="" selected>Carregando...</option>');
-      },
-      error: function(xhr) {
-        toastr.error('Erro ao carregar caixas');
-        $('#caixa_id').empty();
-      },
-      success: function(data) {
-        // limpar o campo caixa_id
-        $('#caixa_id').removeAttr('disabled');
-        $('#caixa_id').empty();
-        $('#caixa_id').append('<option value="all" selected>Todos</option>');
-
-        // preencher o campo caixa_id
-        $.each(data, function(index, caixa) {
-          $('#caixa_id').append(`<option value="${caixa.id}">${caixa.descricao}</option>`);
-        });
-      }
-    });
-});
 </script>
 
 <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>

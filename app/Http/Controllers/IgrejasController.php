@@ -6,14 +6,14 @@ use App\Models\InstituicoesInstituicao;
 use App\Services\ServiceDatatable\IgrejasDataTable;
 use App\Services\ServiceIgrejas\BalanceteService;
 use App\Services\ServiceIgrejas\GetEstatisticaAnoEclesiasticoService;
-use App\Traits\BalanceteUtils;
+use App\Services\ServiceIgrejas\MovimentoDiarioService;
 use App\Traits\LocationUtils;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
 
 class IgrejasController extends Controller
 {
-    use LocationUtils, BalanceteUtils;
+    use LocationUtils;
 
     public function index()
     {
@@ -39,33 +39,49 @@ class IgrejasController extends Controller
         }
     }
 
-    public function balancete(Request $request)
+    public function balancete(Request $request, InstituicoesInstituicao $igreja)
     {
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
         $caixaId = $request->input('caixa_id');
-        $igrejaId = $request->input('igreja_id');
 
-        $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId, $igrejaId);
+        $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
 
         return view('igrejas.balancete', $data);
     }
 
-    public function balancetePdf(Request $request)
+    public function balancetePdf(Request $request, InstituicoesInstituicao $igreja)
     {
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
         $caixaId = $request->input('caixa_id');
-        $igrejaId = $request->input('igreja_id');
 
-        $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId, $igrejaId);
+        $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
 
         $pdf = FacadePdf::loadView('financeiro.relatorios.balancete_pdf', $data);
         return $pdf->stream('balancete.pdf');
     }
 
-    public function listaCaixas(InstituicoesInstituicao $igreja)
+    public function movimentoDiario(Request $request, InstituicoesInstituicao $igreja)
     {
-        return response()->json($igreja->caixas);
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(MovimentoDiarioService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
+
+        return view('igrejas.movimentodiario', $data);
+    }
+
+    public function movimentoDiarioPdf(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(MovimentoDiarioService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
+
+        $pdf = FacadePdf::loadView('financeiro.relatorios.movimento-diario-pdf', $data);
+        return $pdf->stream('relatorio_movimento_diario.pdf');
     }
 }
