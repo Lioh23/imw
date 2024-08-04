@@ -77,7 +77,7 @@ use Carbon\Carbon;
                 @csrf
                 <input type="hidden" name="data_inicial" id="report_data_inicial">
                 <input type="hidden" name="data_final" id="report_data_final">
-                <input type="hidden" name="igrejas" id="report_igrejas">
+                <input type="hidden" name="tipo" id="report_tipo">
             </form>
         </div>
     </div>
@@ -241,6 +241,7 @@ use Carbon\Carbon;
             } else {
                 $('#report_data_inicial').val(dataInicial);
                 $('#report_data_final').val(dataFinal);
+                $('#report_tipo').val(tipo);
                 $('#report_form').submit();
             }
         });

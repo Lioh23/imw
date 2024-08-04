@@ -59,8 +59,11 @@ class DistritoRelatorioController extends Controller
 
 
     public function estatisticagenero(Request $request) {
-        $dt = $request->input('dtano');
-        $data = app(EstatisticaGeneroService::class)->execute($dt);
+        $dataInicial = $request->input('data_inicial');
+        $dataFinal = $request->input('data_final');
+        $tipo = $request->input('tipo');
+
+        $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo);
         return view('distrito.relatorios.estatisticagenero', $data);
     }
 

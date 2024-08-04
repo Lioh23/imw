@@ -16,6 +16,10 @@
 
 @include('extras.alerts')
 
+@php
+use Carbon\Carbon;
+@endphp
+
 @section('content')
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
@@ -28,12 +32,32 @@
         </div>
         <div class="widget-content widget-content-area">
             <form class="form-vertical" id="filter_form" method="GET">
-                <div class="form-group row mb-4" id="filtros_data">
-                    <div class="col-lg-2 text-right">
-                        <label class="control-label">* Ano:</label>
+                <div class="form-group row mb-4" id="filtros_data_inicial">
+                    <div class="col-lg-3 text-right">
+                        <label class="control-label">* Data Inicial:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input type="text" class="form-control @error('dtano') is-invalid @enderror" id="dtano" name="dtano" value="{{ request()->input('dtano') }}" placeholder="Exemplo: 2024" required>
+                        <input type="date" class="form-control @error('data_inicial') is-invalid @enderror" id="data_inicial" name="data_inicial" value="{{ request()->input('data_inicial') }}" required>
+                    </div>
+                </div>
+                <div class="form-group row mb-4" id="filtros_data_final">
+                    <div class="col-lg-3 text-right">
+                        <label class="control-label">* Data Final:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <input type="date" class="form-control @error('data_final') is-invalid @enderror" id="data_final" name="data_final" value="{{ request()->input('data_final') }}" required>
+                    </div>
+                </div>
+                <div class="form-group row mb-4" id="filtros_congregados">
+                    <div class="col-lg-3 text-right">
+                        <label class="control-label">* Incluir Congregados:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="tipo" name="tipo">
+                            <option value="">Selecione</option>
+                            <option value="C" {{ request()->input('tipo') == 'C' ? 'selected' : '' }}>Sim</option>
+                            <option value="M" {{ request()->input('tipo') == 'M' ? 'selected' : '' }}>Não</option>
+                        </select>
                     </div>
                 </div>
                 <div class="form-group row mb-4">
@@ -48,16 +72,18 @@
                     </div>
                 </div>
             </form>
+
             <form id="report_form" action="{{ url('distrito/relatorio/estatisticagenero/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
-                <input type="hidden" name="dtano" id="report_dtano">
-                <input type="hidden" name="igrejas" id="report_igrejas">
+                <input type="hidden" name="data_inicial" id="report_data_inicial">
+                <input type="hidden" name="data_final" id="report_data_final">
+                <input type="hidden" name="tipo" id="report_tipo">
             </form>
         </div>
     </div>
 </div>
 
-@if(request()->input('dtano'))
+@if(request()->input('data_inicial') && request()->input('data_final'))
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
@@ -66,21 +92,23 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">ESTATÍSTICA POR GÊNERO - {{ session('session_perfil')->instituicao_nome }}</h6>
-                            <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th width="300" style="text-align: left">IGREJA</th>
-                                        <th width="50" style="text-align: right">MASCULINO</th>
-                                        <th width="50" style="text-align: right">FEMININO</th>
-                                        <th width="50" style="text-align: right">INDEFINIDO</th>
-                                        <th width="50" style="text-align: right">TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                  
-                                </tbody>
-                            </table>
+                            <h6 class="mt-3">QUANTIDADE DE MEMBROS - {{ session('session_perfil')->instituicao_nome }}</h6>
+                            <div class="table-responsive">
+                                <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th style="text-align: left">IGREJA</th>
+                                            <th width="100px" style="text-align: left">MASCULINO</th>
+                                            <th width="100px" style="text-align: left">FEMININO</th>
+                                            <th width="100px" style="text-align: left">TOTAL</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      
+                                </table>
+
+                            </div>
+
 
                         </div>
                     </div>
@@ -105,70 +133,31 @@
 <script src="{{ asset('theme/assets/js/pages/movimentocaixa.js') }}"></script>
 <script src="{{ asset('theme/plugins/bootstrap-select/bootstrap-select.min.js') }}"></script>
 <script>
-    jQuery(function($) {
-        $.datepicker.regional['pt-BR'] = {
-            closeText: 'Aplicar',
-            prevText: '&#x3c;Anterior',
-            nextText: 'Pr&oacute;ximo&#x3e;',
-            currentText: 'Hoje',
-            monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho',
-                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-            ],
-            monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-                'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-            ],
-            dayNames: ['Domingo', 'Segunda-feira', 'Ter&ccedil;a-feira', 'Quarta-feira', 'Quinta-feira',
-                'Sexta-feira', 'Sabado'
-            ],
-            dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-            weekHeader: 'Sm',
-            dateFormat: 'yy',
-            firstDay: 0,
-            isRTL: false,
-            showMonthAfterYear: false,
-            yearSuffix: ''
-        };
-        $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
-    });
-
     $(document).ready(function() {
         $('.selectpicker').selectpicker();
 
-        // Inicializar o Datepicker
-        $("#dtano").datepicker({
-            dateFormat: "yy", // Formato do calendário (apenas ano)
-            changeYear: true, // Permitir a seleção do ano
-            showButtonPanel: true,
-            language: 'pt-BR', // Definir o idioma como português
-            onClose: function(dateText, inst) {
-                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                $(this).datepicker("setDate", new Date(year, 0, 1));
-            }
-        }).focus(function() {
-            $(".ui-datepicker-month").hide();
-            $(".ui-datepicker-calendar").hide();
-        });
-
         $('#btn_relatorio').on('click', function(event) {
-            var dataAno = $('#dtano').val();
+            var dataInicial = $('#data_inicial').val();
+            var dataFinal = $('#data_final').val();
+            var tipo = $('#tipo').val();
 
-            // Verificar se a data está preenchida
-            if (!dataAno) {
+            if (!dataInicial || !dataFinal || !tipo) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
-                // Preencher e submeter o formulário oculto
-                $('#report_dtano').val(dataAno);
+                $('#report_data_inicial').val(dataInicial);
+                $('#report_data_final').val(dataFinal);
+                $('#report_tipo').val(tipo);
                 $('#report_form').submit();
             }
         });
 
         $('#filter_form').submit(function(event) {
-            var dataAno = $('#dtano').val();
+            var dataInicial = $('#data_inicial').val();
+            var dataFinal = $('#data_final').val();
+            var tipo = $('#tipo').val();
 
-            // Verificar se a data está preenchida
-            if (!dataAno) {
+            if (!dataInicial || !dataFinal || !tipo) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             }
