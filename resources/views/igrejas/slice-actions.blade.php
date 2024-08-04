@@ -14,7 +14,7 @@
         <x-bx-group />
     </a>
     
-    <a  href="#" 
+    <a  href="{{ route('igreja.balancete') }}" 
         title="Balancete" 
         class="btn btn-sm btn-primary mr-2 btn-rounded bs-tooltip">
         <x-bx-wallet />
