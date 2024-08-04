@@ -17,8 +17,8 @@ class DistritoRelatorioController extends Controller
 {
     //Membresia
     public function membrosministerio(Request $request) {
-        $dataInicial = $request->input('dt_inicial');
-        $dataFinal = $request->input('dt_final');
+        $dataInicial = $request->input('data_inicial');
+        $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
         $data = app(MembrosMinisterioService::class)->execute($dataInicial, $dataFinal, $tipo);
         return view('distrito.relatorios.membrosministerio', $data);
@@ -38,16 +38,45 @@ class DistritoRelatorioController extends Controller
 
 
     public function quantidademembros(Request $request) {
-        $dt = $request->input('dtano');
-        $data = app(QuantidadeMembrosService::class)->execute($dt);
+        $dataInicial = $request->input('data_inicial');
+        $dataFinal = $request->input('data_final');
+        $tipo = $request->input('tipo');
+        $data = app(QuantidadeMembrosService::class)->execute($dataInicial, $dataFinal, $tipo);
         return view('distrito.relatorios.quantidademembros', $data);
+    }
+
+    public function quantidademembrosPdf(Request $request) {
+        $dataInicial = $request->input('data_inicial');
+        $dataFinal = $request->input('data_final');
+        $tipo = $request->input('tipo');
+        $data = app(QuantidadeMembrosService::class)->execute($dataInicial, $dataFinal, $tipo);
+        
+        $pdf = FacadePdf::loadView('distrito.relatorios.quantidademembros_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_quantidademembros.pdf' . date('YmdHis'));
     }
 
 
     public function estatisticagenero(Request $request) {
-        $dt = $request->input('dtano');
-        $data = app(EstatisticaGeneroService::class)->execute($dt);
+        $dataInicial = $request->input('data_inicial');
+        $dataFinal = $request->input('data_final');
+        $tipo = $request->input('tipo');
+
+        $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo);
         return view('distrito.relatorios.estatisticagenero', $data);
+    }
+
+    public function estatisticageneroPdf(Request $request) {
+        $dataInicial = $request->input('data_inicial');
+        $dataFinal = $request->input('data_final');
+        $tipo = $request->input('tipo');
+        $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo);
+        
+        $pdf = FacadePdf::loadView('distrito.relatorios.estatisticagenero_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_estatisticagenero.pdf' . date('YmdHis'));
     }
 
 
