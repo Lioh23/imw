@@ -59,6 +59,13 @@ $(document).ready(function() {
         ],
         columnDefs: [
             {
+                targets: 0,
+                orderable: 1,
+                render: function (data, type, row, meta) {
+                    return row.cidade
+                }
+            },
+            {
                 targets: 1,
                 orderable: 1,
                 render: function (data, type, row, meta) {
