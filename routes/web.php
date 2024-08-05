@@ -4,12 +4,14 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\CongregacoesController;
 use App\Http\Controllers\CongregadosController;
+use App\Http\Controllers\DistritoRelatorioController;
 use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\FinanceiroPlanoContaController;
 use App\Http\Controllers\FinanceiroRelatorioController;
 use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\IgrejasController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\MembresiaGeralController;
 use App\Http\Controllers\MembrosController;
@@ -180,6 +182,37 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
+
+        Route::prefix('distrito')->name('distrito.')->group(function () {
+            Route::get('/relatorio/lancamentodasigrejas', [DistritoRelatorioController::class, 'lancamentodasigrejas'])->name('relatorio.lancamentodasigrejas')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/lancamentodasigrejas/pdf', [DistritoRelatorioController::class, 'lancamentodasigrejasPdf'])->name('relatorio.lancamentodasigrejas-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+           
+            Route::get('/relatorio/saldodasigrejas', [DistritoRelatorioController::class, 'saldodasigrejas'])->name('relatorio.saldodasigrejas')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/saldodasigrejas/pdf', [DistritoRelatorioController::class, 'saldodasigrejasPdf'])->name('relatorio.saldodasigrejas-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+
+            Route::get('/relatorio/livrorazaogeral', [DistritoRelatorioController::class, 'livrorazaogeral'])->name('relatorio.livrorazaogeral')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/livrorazaogeral/pdf', [DistritoRelatorioController::class, 'livrorazaogeralPdf'])->name('relatorio.livrorazaogeral-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+                                
+            Route::get('/relatorio/orcamento', [DistritoRelatorioController::class, 'orcamento'])->name('relatorio.orcamento')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/orcamento/pdf', [DistritoRelatorioController::class, 'orcamentoPdf'])->name('relatorio.orcamento-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+               
+            Route::get('/relatorio/variacaofinanceira', [DistritoRelatorioController::class, 'variacaofinanceira'])->name('relatorio.variacaofinanceira')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/variacaofinanceira/pdf', [DistritoRelatorioController::class, 'variacaofinanceiraPdf'])->name('relatorio.variacaofinanceira-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+          
+
+            //Membresia DEV
+            Route::get('/relatorio/membrosministerio', [DistritoRelatorioController::class, 'membrosministerio'])->name('relatorio.membrosministerio')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/membrosministerio/pdf', [DistritoRelatorioController::class, 'membrosministerioPdf'])->name('relatorio.membrosministerio-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+          
+            //
+            Route::get('/relatorio/quantidademembros', [DistritoRelatorioController::class, 'quantidademembros'])->name('relatorio.quantidademembros')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/quantidademembros/pdf', [DistritoRelatorioController::class, 'quantidademembrosPdf'])->name('relatorio.quantidademembros-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+            
+            Route::get('/relatorio/estatisticagenero', [DistritoRelatorioController::class, 'estatisticagenero'])->name('relatorio.estatisticagenero')->middleware(['seguranca:distrito-menu-relatorio']);
+            Route::post('/relatorio/estatisticagenero/pdf', [DistritoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+
+        });
+
         // Crud congregações
         Route::prefix('congregacao')->name('congregacao.')->group(function () {
             Route::get('/', [CongregacoesController::class, 'index'])->name('index')->middleware(['seguranca:congregacao-index']);
@@ -192,6 +225,16 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/restaurar/{id}', [CongregacoesController::class, 'restaurar'])->name('restaurar')->middleware(['seguranca:congregacao-editar']);
         });
 
+        // Crud igrejas
+        Route::prefix('igreja')->name('igreja.')->controller(IgrejasController::class)->group(function () {
+            Route::get('/', 'index')->name('index')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('/list', 'list')->name('list')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('balancete/{igreja}', 'balancete')->name('balancete')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('balancete-pdf/{igreja}', 'balancetePdf')->name('balancete-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('movimento-diario/{igreja}', 'movimentoDiario')->name('movimento-diario')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
+        });
 
          /* Por enquanto somente visualiações */
          Route::prefix('fornecedor')->name('fornecedor.')->group(function () {

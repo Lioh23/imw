@@ -24,7 +24,7 @@
     @endif
 @endif
 
-@if ($rolMembro->status == \App\Models\MembresiaMembro::STATUS_INATIVO)
+@if ($rolMembro->status == \App\Models\MembresiaMembro::STATUS_INATIVO && $rolMembro->transferido == 0)
     <a href="{{ route('membro.reintegrar', $rolMembro->membro_id) }}" title="Reintegrar membro" class="btn btn-sm btn-secondary mr-2 btn-rounded bs-tooltip">
         <x-bx-log-in-circle />
     </a>

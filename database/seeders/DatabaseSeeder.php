@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        $this->call(CreateViewsSeeder::class);
         $this->call(MembresiaTipoAtuacaoSeeder::class);
         $this->call(MembresiaSituacaoSeeder::class);
         $this->call(MembresiaSetorSeeder::class);
@@ -32,5 +33,7 @@ class DatabaseSeeder extends Seeder
         $this->call(PerfilRegraTableSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(FinanceiroPlanoContaTipoInstituicaoSeeder::class);
+        //Regras Distritos
+        $this->call(RegrasDistritoTableSeeder::class);
     }
 }

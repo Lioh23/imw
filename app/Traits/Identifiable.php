@@ -5,6 +5,7 @@ namespace App\Traits;
 use App\Exceptions\CongregadoNotFoundException;
 use App\Exceptions\FetchRolAtualException;
 use App\Exceptions\MembroNotFoundException;
+use App\Exceptions\MissingSessionDistritoException;
 use App\Exceptions\MissingSessionIgrejaLocalException;
 use App\Exceptions\VisitanteNotFoundException;
 use App\Models\CongregacoesCongregacao;
@@ -86,6 +87,15 @@ trait Identifiable
         if (!$igrejaLocal) throw new MissingSessionIgrejaLocalException();
 
         return $igrejaLocal;
+    }
+
+    public static function fetchtSessionDistrito(): InstituicoesInstituicao
+    {
+        $distrito = session('session_perfil')->instituicoes->distrito;
+
+        if (!$distrito) throw new MissingSessionDistritoException();
+
+        return $distrito;
     }
 
     public static function fetchRolAtual($membroId, $numeroRol)

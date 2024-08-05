@@ -30,7 +30,6 @@ trait CsvImportUtils
         try {
             $collection->each(function ($item, $index) use ($conn, $controle, $total) {
                 $current = $index + 1;
-                dump("$current of $total");
                 $conn->table($controle->target_table)->updateOrInsert($item);
             });
             $conn->table('controle_importacoes_csv')->where('id', $controle->id)->update(['executed' => true]);

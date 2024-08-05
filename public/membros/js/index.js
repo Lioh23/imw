@@ -87,7 +87,9 @@ $(document).ready(function() {
                 targets: 1,
                 orderable: 1,
                 render: function (data, type, row, meta) {
-                    if (row.dt_exclusao) {
+                    if (row.dt_exclusao && row.transferido) {
+                        return `<span class="badge badge-secondary"> ${row.membro} (transferido(a) para ${row.igreja_rol_atual})</span>`
+                    } else if (row.dt_exclusao) {
                         return `<span class="badge badge-danger"> ${row.membro} </span>`
                     } else if (row.has_errors) {
                         return `<span class="badge badge-warning"> ${row.membro} </span>`

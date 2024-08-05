@@ -94,6 +94,13 @@ class RegrasTableSeeder extends Seeder
              ['nome' => 'congregacao-atualizar'],
              ['nome' => 'congregacao-editar'],
              ['nome' => 'congregacao-excluir'],
+
+             // igrejas
+             ['nome' => 'igreja-index'],
+             ['nome' => 'igreja-cadastrar'],
+             ['nome' => 'igreja-atualizar'],
+             ['nome' => 'igreja-editar'],
+             ['nome' => 'igreja-excluir'],
         ]);
     }
 }

@@ -53,4 +53,9 @@ class InstituicoesInstituicao extends Model
     {
         return $this->belongsTo(InstituicoesTipoInstituicao::class, 'tipo_instituicao_id');
     }
+
+    public function caixas()
+    {
+        return $this->hasMany(FinanceiroCaixa::class, 'instituicao_id')->orderBy('id', 'asc');
+    }
 }

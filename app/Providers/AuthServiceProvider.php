@@ -5,8 +5,10 @@ namespace App\Providers;
 // use Illuminate\Support\Facades\Gate;
 
 use App\Models\CongregacoesCongregacao;
+use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaMembro;
 use App\Policies\CongregacoesCongregacaoPolicy;
+use App\Policies\InstituicoesInstituicaoPolicy;
 use App\Policies\MembresiaMembroPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -21,6 +23,7 @@ class AuthServiceProvider extends ServiceProvider
         // 'App\Models\Model' => 'App\Policies\ModelPolicy',
         CongregacoesCongregacao::class => CongregacoesCongregacaoPolicy::class,
         MembresiaMembro::class         => MembresiaMembroPolicy::class,
+        InstituicoesInstituicao::class => InstituicoesInstituicaoPolicy::class
     ];
 
     /**
@@ -31,7 +34,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        //
     }
 }

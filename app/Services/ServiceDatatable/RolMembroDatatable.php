@@ -53,6 +53,9 @@ class RolMembroDatatable extends Datatable implements DatatableInterface
             ->addColumn('actions', function (RolMembro $rolMembro) {
                 return view('membros.slice-actions', ['rolMembro' => $rolMembro]);
             })
+            ->addColumn('igreja_rol_atual', function (RolMembro $rolMembro) {
+                return optional($rolMembro->igrejaRolAtual)->nome;
+            })
             ->make(true);
     }
 }
