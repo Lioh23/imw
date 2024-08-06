@@ -33,10 +33,12 @@ class UpdateMembroService
         $this->handleUpdateFamiliar($dataFamiliar, $membroID);
         $this->handleUpdateFormacoes($dataFormacoes, $membroID);
         $this->handleUpdateMinisteriais($dataMinisteriais, $membroID);
-        if(isset($data['rol_atual'])){
+        if(isset($data['rol_atual']) && $data['rol_atual'] ) {
             $this->updateMembroRol($data['rol_atual'], $membroID);
         }
-
+        if(isset($data['dt_recepcao']) && $data['dt_recepcao'] ) {
+            $this->UpdateDtRecepcao($data['dt_recepcao'], $membroID);
+        }
         if (isset($data['foto']) && $data['foto']) {
             $this->handlePhotoUpload($data['foto'], $membroID);
         } else {
@@ -255,5 +257,13 @@ class UpdateMembroService
                     'lastrec' => 1
                 ]);
             }
+    }
+    private function UpdateDtRecepcao($dtRecepcao, $membroId)
+    {
+        $rolPermanente = MembresiaRolPermanente::where('membro_id', $membroId)->where('lastrec', 1)->first();
+        if ($rolPermanente) {
+            $rolPermanente->dt_recepcao = Carbon::parse($dtRecepcao);
+            $rolPermanente->save();
+        }
     }
 }

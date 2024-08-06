@@ -123,7 +123,7 @@ class MembrosController extends Controller
 
     public function storeReceberNovo(StoreReceberNovoMembroRequest $request, $id)
     {
-        try {
+        try {   
             app(StoreReceberNovoMembroService::class)->execute($request->all(), $id);
 
             return redirect()->route('membro.editar', ['id' => $id])->with('success', 'Novo membro recebido com sucesso!');
