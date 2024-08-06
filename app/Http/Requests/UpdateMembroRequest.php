@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests;
 
-use App\Rules\RangeDateRule;
 use App\Rules\ValidaCPF;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -79,6 +78,18 @@ class UpdateMembroRequest extends FormRequest
                         $fail('A data de batismo no Espírito deve ser após a data de nascimento e a data atual.');
                     }
                 },
+                'dt_recepcao' => [
+                    'sometimes',
+                    'date',
+                    function ($attribute, $value, $fail) use ($dataNascimento, $minDate, $currentDate) {
+                        if (strtotime($value) <= strtotime($dataNascimento)) {
+                            $fail('A data de recepção deve ser após a data de nascimento.');
+                        }
+                        if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
+                            $fail('A data de recepção deve ser após a data de nascimento e a data atual.');
+                        }
+                    },
+                ],
             ],
             'estado_civil' => 'required',
             'nacionalidade' => 'required',
@@ -101,7 +112,7 @@ class UpdateMembroRequest extends FormRequest
                     if ($query->exists()) {
                         $fail('Este CPF já está sendo utilizado por outra pessoa');
                     }
-                }
+                },
             ],
             'email_preferencial' => ['nullable', 'email', function ($attribute, $value, $fail) {
                 if ($value) {
@@ -111,9 +122,9 @@ class UpdateMembroRequest extends FormRequest
                 }
             }],
             'email_alternativo' => 'email|nullable',
-            'telefone_preferencial' => ['nullable',  'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_alternativo' => ['nullable',  'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
-            'telefone_whatsapp' => ['nullable',  'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'telefone_preferencial' => ['nullable', 'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'telefone_alternativo' => ['nullable', 'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
+            'telefone_whatsapp' => ['nullable', 'regex:/^(\+\d{2}\s?)?\(?\d{2}\)?\s?\d{4,5}-?\d{4}$/', 'min:10'],
             'data_casamento' => [
                 'nullable',
                 'date',
