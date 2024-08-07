@@ -110,13 +110,13 @@ use Carbon\Carbon;
             <th colspan="2" style="text-align: center">TOTAL</th>
         </tr>
         <tr>
-            <th width="200px" style="text-align: left">IGREJA</th>
-            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
-            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
-            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
-            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
-            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
-            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+            <th width="200px" style="text-align: center">IGREJA</th>
+            <th width="100px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
         </tr>
     </thead>
     <tbody>
@@ -130,13 +130,13 @@ use Carbon\Carbon;
         @endphp
         @foreach($lancamentos as $lancamento)
         <tr>
-            <td style="text-align: left; min-width: 100px;">{{ $lancamento->nome }}</td>
-            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_masculino_x }}</td>
-            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_masculino_y }}</td>
-            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_feminino_x }}</td>
-            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_feminino_y }}</td>
-            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_x }}</td>
-            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_y }}</td>
+            <td style="text-align: center; min-width: 100px;">{{ $lancamento->nome }}</td>
+            <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_masculino_x }}</td>
+            <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_masculino_y }}</td>
+            <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_feminino_x }}</td>
+            <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_feminino_y }}</td>
+            <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_x }}</td>
+            <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_y }}</td>
         </tr>
         @php
             $totalMasculinoX += $lancamento->total_masculino_x;
@@ -150,13 +150,13 @@ use Carbon\Carbon;
     </tbody>
     <tfoot>
         <tr>
-            <th style="text-align: left;">Total Geral</th>
-            <th style="text-align: left;">{{ $totalMasculinoX }}</th>
-            <th style="text-align: left;">{{ $totalMasculinoY }}</th>
-            <th style="text-align: left;">{{ $totalFemininoX }}</th>
-            <th style="text-align: left;">{{ $totalFemininoY }}</th>
-            <th style="text-align: left;">{{ $totalX }}</th>
-            <th style="text-align: left;">{{ $totalY }}</th>
+            <th style="text-align: center;">Total Geral</th>
+            <th style="text-align: center;">{{ $totalMasculinoX }}</th>
+            <th style="text-align: center;">{{ $totalMasculinoY }}</th>
+            <th style="text-align: center;">{{ $totalFemininoX }}</th>
+            <th style="text-align: center;">{{ $totalFemininoY }}</th>
+            <th style="text-align: center;">{{ $totalX }}</th>
+            <th style="text-align: center;">{{ $totalY }}</th>
         </tr>
     </tfoot>
 </table>
