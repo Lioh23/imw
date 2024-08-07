@@ -59,7 +59,8 @@ class LivroRazaoGeralService
             HAVING
                 total_entradas > 0 OR total_saidas > 0 OR total > 0
             ORDER BY 
-                pc.numeracao ASC
+                pc.numeracao ASC,
+                ii.nome ASC
         ",
         ['dataInicial' => $dataInicial, 'dataFinal' => $dataFinal, 'instituicaoPaiId' => $instituicaoPaiId]);
     
