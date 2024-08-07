@@ -72,7 +72,8 @@
                                         <th width="150" style="text-align: left">IGREJA</th>
                                         <th width="150" style="text-align: right">SALDO CAIXA PRINCIPAL</th>
                                         <th width="180" style="text-align: right">SALDO CAIXA CONGREGAÇÕES</th>
-                                        <th width="150" style="text-align: right">SALDO OUTROS CAIXAS</th>
+                                        <th width="150" style="text-align: right">SALDO CAIXA SECUNDÁRIO</th>
+                                        <th width="150" style="text-align: right">SALDO CAIXA BANCOS</th>
                                         <th width="70" style="text-align: right">TOTAL</th>
                                     </tr>
                                 </thead>
@@ -83,6 +84,8 @@
                                         <td style="text-align: right">{{ number_format($lancamento->saldocxprincipal, 2, ',', '.') }}</td>
                                         <td style="text-align: right">{{ number_format($lancamento->saldocxcongregacoes, 2, ',', '.') }}</td>
                                         <td style="text-align: right">{{ number_format($lancamento->saldocxsecundado, 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format($lancamento->saldocxbancos, 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format($lancamento->saldocxoutros, 2, ',', '.') }}</td>
                                         <td style="text-align: right">{{ number_format($lancamento->total, 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach

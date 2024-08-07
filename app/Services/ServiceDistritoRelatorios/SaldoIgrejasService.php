@@ -42,6 +42,8 @@ class SaldoIgrejasService
                     COALESCE(SUM(CASE WHEN fc.tipo = 'P' THEN fscm.saldo_final ELSE 0 END), 0) AS saldocxprincipal,
                     COALESCE(SUM(CASE WHEN fc.tipo = 'C' THEN fscm.saldo_final ELSE 0 END), 0) AS saldocxcongregacoes,
                     COALESCE(SUM(CASE WHEN fc.tipo = 'S' THEN fscm.saldo_final ELSE 0 END), 0) AS saldocxsecundado,
+                    COALESCE(SUM(CASE WHEN fc.tipo = 'B' THEN fscm.saldo_final ELSE 0 END), 0) AS saldocxbancos,
+                    COALESCE(SUM(CASE WHEN fc.tipo = 'D' THEN fscm.saldo_final ELSE 0 END), 0) AS saldocxoutros,
                     COALESCE(SUM(fscm.saldo_final), 0) AS total
                 FROM 
                     instituicoes_instituicoes ii
