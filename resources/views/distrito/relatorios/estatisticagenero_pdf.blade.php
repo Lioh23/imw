@@ -102,43 +102,65 @@ use Carbon\Carbon;
     </div>
 
     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
-        <thead class="thead-dark">
-            <tr>
-                <th style="text-align: left">IGREJA</th>
-                <th width="100px" style="text-align: left">MASCULINO</th>
-                <th width="100px" style="text-align: left">FEMININO</th>
-                <th width="100px" style="text-align: left">TOTAL</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php
-            $totalMasculino = 0;
-            $totalFeminino = 0;
-            $totalGeral = 0;
-            @endphp
+    <thead class="thead-dark">
+        <tr>
+            <th width="200px" style="text-align: left"></th>
+            <th colspan="2" style="text-align: center">TOTAL MASCULINO</th>
+            <th colspan="2" style="text-align: center">TOTAL FEMININO</th>
+            <th colspan="2" style="text-align: center">TOTAL</th>
+        </tr>
+        <tr>
+            <th width="200px" style="text-align: left">IGREJA</th>
+            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
+            <th width="100px" style="text-align: left">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
+        </tr>
+    </thead>
+    <tbody>
+        @php
+            $totalMasculinoX = 0;
+            $totalMasculinoY = 0;
+            $totalFemininoX = 0;
+            $totalFemininoY = 0;
+            $totalX = 0;
+            $totalY = 0;
+        @endphp
+        @foreach($lancamentos as $lancamento)
+        <tr>
+            <td style="text-align: left; min-width: 100px;">{{ $lancamento->nome }}</td>
+            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_masculino_x }}</td>
+            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_masculino_y }}</td>
+            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_feminino_x }}</td>
+            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_feminino_y }}</td>
+            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_x }}</td>
+            <td style="text-align: left; min-width: 100px;">{{ $lancamento->total_y }}</td>
+        </tr>
+        @php
+            $totalMasculinoX += $lancamento->total_masculino_x;
+            $totalMasculinoY += $lancamento->total_masculino_y;
+            $totalFemininoX += $lancamento->total_feminino_x;
+            $totalFemininoY += $lancamento->total_feminino_y;
+            $totalX += $lancamento->total_x;
+            $totalY += $lancamento->total_y;
+        @endphp
+        @endforeach
+    </tbody>
+    <tfoot>
+        <tr>
+            <th style="text-align: left;">Total Geral</th>
+            <th style="text-align: left;">{{ $totalMasculinoX }}</th>
+            <th style="text-align: left;">{{ $totalMasculinoY }}</th>
+            <th style="text-align: left;">{{ $totalFemininoX }}</th>
+            <th style="text-align: left;">{{ $totalFemininoY }}</th>
+            <th style="text-align: left;">{{ $totalX }}</th>
+            <th style="text-align: left;">{{ $totalY }}</th>
+        </tr>
+    </tfoot>
+</table>
 
-            @foreach($lancamentos as $lancamento)
-            <tr>
-                <td style="text-align: left; min-width: 250px;">{{ $lancamento->nome }}</td>
-                <td style="text-align: left; min-width: 250px;">{{ $lancamento->total_masculino }}</td>
-                <td style="text-align: left; min-width: 250px;">{{ $lancamento->total_feminino }}</td>
-                <td style="text-align: left; min-width: 50px;">{{ $lancamento->total }}</td>
-            </tr>
-            @php
-            $totalMasculino += $lancamento->total_masculino;
-            $totalFeminino += $lancamento->total_feminino;
-            $totalGeral += $lancamento->total;
-            @endphp
-            @endforeach
-
-            <tr>
-                <th style="text-align: left">TOTAL GERAL</th>
-                <th width="100px" style="text-align: left">{{ $totalMasculino }}</th>
-                <th width="100px" style="text-align: left">{{ $totalFeminino }}</th>
-                <th width="100px" style="text-align: left">{{ $totalGeral }}</th>
-            </tr>
-        </tbody>
-    </table>
 
 </body>
 
