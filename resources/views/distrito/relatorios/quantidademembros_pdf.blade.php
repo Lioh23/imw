@@ -104,20 +104,28 @@ use Carbon\Carbon;
     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
         <thead class="thead-dark">
             <tr>
-                <th style="text-align: left" >IGREJA</th>
-                <th style="text-align: left" width="100px;" >TOTAL</th>
+                <th style="text-align: left" rowspan="2">IGREJA</th>
+                <th width="100px" style="text-align: left" rowspan="2">
+                    TOTAL EM {{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}
+                </th>
+                <th width="100px" style="text-align: left" rowspan="2">
+                    TOTAL EM {{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}
+                </th>
             </tr>
         </thead>
         <tbody>
             @php
-            $totalGeral = 0;
+            $totalGeralInicial = 0;
+            $totalGeralFinal = 0;
             @endphp
             @foreach($lancamentos as $lancamento)
             <tr>
                 <td style="text-align: left;">{{ $lancamento->nome }}</td>
-                <td style="text-align: left;">{{ $lancamento->total }}</td>
+                <td style="text-align: left;">{{ $lancamento->total_ate_datainicial }}</td>
+                <td style="text-align: left;">{{ $lancamento->total_ate_datafinal }}</td>
                 @php
-                $totalGeral += $lancamento->total;
+                $totalGeralInicial += $lancamento->total_ate_datainicial;
+                $totalGeralFinal += $lancamento->total_ate_datafinal;
                 @endphp
             </tr>
             @endforeach
@@ -125,7 +133,8 @@ use Carbon\Carbon;
         <tfoot>
             <tr>
                 <th style="text-align: left;">Total Geral</th>
-                <th style="text-align: left;">{{ $totalGeral }}</th>
+                <th style="text-align: left;">{{ $totalGeralInicial }}</th>
+                <th style="text-align: left;">{{ $totalGeralFinal }}</th>
             </tr>
         </tfoot>
     </table>
