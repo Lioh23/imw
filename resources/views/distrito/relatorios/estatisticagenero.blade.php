@@ -103,7 +103,7 @@ use Carbon\Carbon;
                                             <th colspan="2" style="text-align: center">TOTAL</th>
                                         </tr>
                                         <tr>
-                                            <th width="200px" style="text-align: center">IGREJA</th>
+                                            <th width="200px" style="text-align: left">IGREJA</th>
                                             <th width="140px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
                                             <th width="140px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
                                             <th width="140px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
@@ -123,7 +123,7 @@ use Carbon\Carbon;
                                         @endphp
                                         @foreach($lancamentos as $lancamento)
                                         <tr>
-                                            <td style="text-align: center; min-width: 100px;">{{ $lancamento->nome }}</td>
+                                            <td style="text-align: left; min-width: 100px;">{{ $lancamento->nome }}</td>
                                             <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_masculino_x }}</td>
                                             <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_masculino_y }}</td>
                                             <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_feminino_x }}</td>
