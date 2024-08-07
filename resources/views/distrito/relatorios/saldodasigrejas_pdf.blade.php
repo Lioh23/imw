@@ -99,13 +99,13 @@
     <table>
         <thead>
             <tr>
-                <th width="150" style="text-align: left">IGREJA</th>
-                <th width="150" style="text-align: right">SALDO CAIXA PRINCIPAL</th>
-                <th width="180" style="text-align: right">SALDO CAIXA CONGREGAÇÕES</th>
-                <th width="150" style="text-align: right">SALDO CAIXA SECUNDÁRIO</th>
-                <th width="150" style="text-align: right">SALDO CAIXA BANCOS</th>
-                <th width="150" style="text-align: right">SALDO OUTROS CAIXAS</th>
-                <th width="70" style="text-align: right">TOTAL</th>
+                <th width="150px" style="text-align: left">IGREJA</th>
+                <th width="70px" style="text-align: right">SALDO CAIXA PRINCIPAL</th>
+                <th width="70px" style="text-align: right">SALDO CAIXA CONGREGAÇÕES</th>
+                <th width="70px" style="text-align: right">SALDO CAIXA SECUNDÁRIO</th>
+                <th width="70px" style="text-align: right">SALDO CAIXA BANCOS</th>
+                <th width="70px" style="text-align: right">SALDO OUTROS CAIXAS</th>
+                <th width="70px" style="text-align: right">TOTAL</th>
             </tr>
         </thead>
         <tbody>
