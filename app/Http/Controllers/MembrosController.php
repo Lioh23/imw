@@ -98,6 +98,7 @@ class MembrosController extends Controller
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
         } catch(\Exception $e) {
             DB::rollback();
+            dd($e);
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
         }
     }
