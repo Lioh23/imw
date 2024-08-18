@@ -49,6 +49,12 @@
                 <td class="text-center">{{ $mr->total }}</td>
               </tr>
             @endforeach
+            <tr>
+              <td>TOTAL</td>
+              <td class="text-center">{{ $membrosRecebidos->sum(fn($item) => $item->sexo_masculino) }}</td>
+              <td class="text-center">{{ $membrosRecebidos->sum(fn($item) => $item->sexo_feminino) }}</td>
+              <td class="text-center">{{ $membrosRecebidos->sum(fn($item) => $item->total) }}</td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -72,6 +78,12 @@
                 <td class="text-center">{{ $me->total }}</td>
               </tr>
             @endforeach
+            <tr>
+              <td>TOTAL</td>
+              <td class="text-center">{{ $membrosExcluidos->sum(fn($item) => $item->sexo_masculino) }}</td>
+              <td class="text-center">{{ $membrosExcluidos->sum(fn($item) => $item->sexo_feminino) }}</td>
+              <td class="text-center">{{ $membrosExcluidos->sum(fn($item) => $item->total) }}</td>
+            </tr>
           </tbody>
         </table>
       </div>

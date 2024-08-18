@@ -12,11 +12,11 @@ class GetEstatisticaAnoEclesiasticoService
         $ano ??= date('Y');
 
         return [
-            'igreja' => $igreja,
-            'ano' => $ano,
+            'igreja'           => $igreja,
+            'ano'              => $ano,
             'membrosRecebidos' => $this->handleEstatisticaRecepcao($igreja->id, $ano),
             'membrosExcluidos' => $this->handleEstatisticaExclusao($igreja->id, $ano),
-            'rolAtual' => $this->handleTotalRolAtual($igreja->id)
+            'rolAtual'         => $this->handleTotalRolAtual($igreja->id)
         ];
     }
 
@@ -53,7 +53,7 @@ class GetEstatisticaAnoEclesiasticoService
         WHERE ms.tipo  = 'R'
           AND deleted_at IS NULL";
 
-          return DB::select($query);
+        return collect(DB::select($query));
     }
 
     private function handleEstatisticaExclusao($igrejaId, $ano)
@@ -89,7 +89,7 @@ class GetEstatisticaAnoEclesiasticoService
         WHERE ms.tipo  = 'E'
           AND deleted_at IS NULL";
 
-        return DB::select($query);
+        return collect(DB::select($query));
     }
 
     private function handleTotalRolatual($igrejaId)
