@@ -28,16 +28,16 @@
 @endsection
 
 @php
+if (!function_exists('formatarCpf')) {
     function formatarCpf($cpf)
     {
-        // Remover todos os caracteres não numéricos do CPF
+        // Remove todos os caracteres não numéricos do CPF
         $cpf = preg_replace('/\D/', '', $cpf);
-
-        // Formatar o CPF com a máscara padrão ###.###.###-##
+        // Formata o CPF no padrão ###.###.###-##
         return preg_replace('/(\d{3})(\d{3})(\d{3})(\d{2})/', '$1.$2.$3-$4', $cpf);
     }
-
-    
+}
+   
 @endphp
 
 
@@ -60,7 +60,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Lista de Usuários - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
+                        <h4>Lista de Usuários - {{ session('session_perfil')->instituicao_nome }}</h4>
                     </div>
                 </div>
             </div>
@@ -127,7 +127,7 @@
                                             @csrf
                                             @method('DELETE')
                                             <button type="button"
-                                                title="Remover o vínculo deste usuário na {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+                                                title="Remover o vínculo deste usuário na {{ session('session_perfil')->instituicao_nome }}"
                                                 class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
                                                 data-form-id="form_delete_usuario_{{ $index }}">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
