@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(CreateViewsSeeder::class);
+        /* $this->call(CreateViewsSeeder::class);
         $this->call(MembresiaTipoAtuacaoSeeder::class);
         $this->call(MembresiaSituacaoSeeder::class);
         $this->call(MembresiaSetorSeeder::class);
@@ -26,14 +26,13 @@ class DatabaseSeeder extends Seeder
         $this->call(ImportacoesCsvSeeder::class);
         $this->call(FornecedoresTableSeeder::class);
         $this->call(FinanceiroTiposPagantesFavorecidosSeeder::class);
-        //Regras de Segurança
         $this->call(PerfilsTableSeeder::class);
         $this->call(RegrasTableSeeder::class);
         $this->call(RegrasExtrasTableSeeder::class);
         $this->call(PerfilRegraTableSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(FinanceiroPlanoContaTipoInstituicaoSeeder::class);
-        //Regras Distritos
-        $this->call(RegrasDistritoTableSeeder::class);
+        $this->call(RegrasDistritoTableSeeder::class); */
+        $this->call(RegrasRegiaoTableSeeder::class);
     }
 }

@@ -226,7 +226,7 @@
                  <ul class="collapse submenu list-unstyled" id="financeiro-distrito" data-parent="#financeiro-distrito">
                      <li class="submenu-fixo mt-3 mb-3">
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-relatorio'))
-                            <span>Financeiro</span>
+                         <span>Financeiro</span>
                          @endif
                      </li>
                      <li>
@@ -257,7 +257,7 @@
 
                      <li class="submenu-fixo mt-3 mb-3">
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-relatorio'))
-                            <span>Membresia</span>
+                         <span>Membresia</span>
                          @endif
                      </li>
                      <li>
@@ -279,6 +279,81 @@
              </li>
              @endif
 
+             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+             <li class="menu">
+                 <a href="#financeiro-regiao" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                     <div class="">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file-text">
+                             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                             <polyline points="14 2 14 8 20 8"></polyline>
+                             <line x1="16" y1="13" x2="8" y2="13"></line>
+                             <line x1="16" y1="17" x2="8" y2="17"></line>
+                             <polyline points="10 9 9 9 8 9"></polyline>
+                         </svg>
+                         <span>Relatórios Regionais</span>
+                     </div>
+                     <div>
+                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right">
+                             <polyline points="9 18 15 12 9 6"></polyline>
+                         </svg>
+                     </div>
+                 </a>
+                 <ul class="collapse submenu list-unstyled" id="financeiro-regiao" data-parent="#financeiro-regiao">
+                     <li class="submenu-fixo mt-3 mb-3">
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                         <span>Financeiro</span>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-lancamento-das-igrejas'))
+                         <a href="{{ route('regiao.relatorio.lancamentodasigrejas') }}">Lançamento das Igrejas</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-saldo-das-igrejas'))
+                         <a href="{{ route('regiao.relatorio.saldodasigrejas') }}">Saldo das Igrejas</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-livro-razao-geral'))
+                         <a href="{{ route('regiao.relatorio.livrorazaogeral') }}">Livro Razão Geral</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-orcamento'))
+                         <a href="{{ route('regiao.relatorio.orcamento') }}">Orçamento</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-variacao-financeira'))
+                         <a href="{{ route('regiao.relatorio.variacaofinanceira') }}">Variação Financeira</a>
+                         @endif
+                     </li>
+
+                     <li class="submenu-fixo mt-3 mb-3">
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                         <span>Membresia</span>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-membros-ministerio'))
+                         <a href="{{ route('regiao.relatorio.membrosministerio') }}">Membros por Ministério</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-quantidade-membros'))
+                         <a href="{{ route('regiao.relatorio.quantidademembros') }}">Quantidade de Membros</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
+                         <a href="{{ route('regiao.relatorio.estatisticagenero') }}">Estatística por Gênero</a>
+                         @endif
+                     </li>
+                 </ul>
+             </li>
+             @endif
+
              @if (auth()->check() && auth()->user()->hasPerfilRegra('congregacao-index'))
              <li class="menu">
                  <a href="/congregacao" aria-expanded="false" class="dropdown-toggle">
@@ -292,14 +367,24 @@
 
              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-gestao-igrejas'))
              <li class="menu">
-                  <a href="/igreja" aria-expanded="false" class="dropdown-toggle">
-                  <div class="">
-                      <x-bx-church />
-                      <span>Igrejas</span>
-                  </div>
-                  </a>
-              </li>
-              @endif
+                 <a href="/igreja" aria-expanded="false" class="dropdown-toggle">
+                     <div class="">
+                         <x-bx-church />
+                         <span>Igrejas</span>
+                     </div>
+                 </a>
+             </li>
+             @endif
+             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-gestao-igrejas'))
+             <li class="menu">
+                 <a href="/igreja" aria-expanded="false" class="dropdown-toggle">
+                     <div class="">
+                         <x-bx-church />
+                         <span>Igrejas</span>
+                     </div>
+                 </a>
+             </li>
+             @endif
              <li class="menu menu-heading">
                  <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-circle">
                          <circle cx="12" cy="12" r="10"></circle>
@@ -341,17 +426,25 @@
                      </li>
 
                      @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-usuarios-instituicao'))
+                     @php
+                     // Obtém o perfil_id da sessão
+                     $perfilID = session('session_perfil')->perfil_id;
+
+                     // Recupera o nível do perfil baseado no perfil_id
+                     $perfilUsuario = \App\Models\Perfil::where('id', $perfilID)->first();
+
+                     // Verifica o nível do perfil
+                     $hrefRoute = ($perfilUsuario && $perfilUsuario->nivel === 'S') ? route('admin.index') : route('usuarios.index');
+                     @endphp
+
                      <li>
-                         <a href="{{ route('usuarios.index') }}"> Usuários (Local)</a>
+                         <a href="{{ $hrefRoute }}"> Gerenciar usuários</a>
                      </li>
                      @endif
-                     @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-todos-usuarios'))
-                     <li>
-                         <a href="{{ route('admin.index') }}"> Usuários (Geral)</a>
-                     </li>
-                     @endif
+
                  </ul>
              </li>
+
          </ul>
 
      </nav>
