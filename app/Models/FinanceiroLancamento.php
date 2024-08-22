@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\Identifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -140,5 +141,13 @@ class FinanceiroLancamento extends Model
     public function anexos()
     {
         return $this->hasMany(Anexo::class, 'lancamento_id');
+    }
+
+    public function scopeWhereInstituicao($query, $instituicaoId = null)
+    {
+        return $query->when($instituicaoId,
+            fn($q) => $q->where('instituicao_id', $instituicaoId),
+            fn($q) => $q->where('instituicao_id', Identifiable::fetchSessionIgrejaLocal()->id)
+        );
     }
 }

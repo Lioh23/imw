@@ -49,7 +49,7 @@
                             <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
                                 <x-bx-search /> Buscar
                             </button>
-                            <button id="btn_relatorio" type="button" class="btn btn-secondary">
+                            <button id="btn_relatorio" type="button" class="btn btn-secondary" data-url={{ route('igreja.livrorazao-pdf', ['igreja' => $instituicao->id]) }}>
                                 <i class="fa fa-file-pdf"></i> Relatório
                             </button>
                         </div>
@@ -142,13 +142,14 @@
                 $('#btn_relatorio').on('click', function() {
                     var dt_inicial = $('#dt_inicial').val();
                     var dt_final = $('#dt_final').val();
+                    var caixa_id = $('#caixa_id').val();
 
                     if (!dt_inicial || !dt_final) {
                         alert('Por favor, preencha todos os campos obrigatórios.');
                         return;
-                    }
+                    }                    
 
-                    var url = '{{ url("financeiro/relatorio/livrorazao/pdf") }}' + '?dt_inicial=' + dt_inicial + '&dt_final=' + dt_final;
+                    var url = $(this).data('url') + '?dt_inicial=' + dt_inicial + '&dt_final=' + dt_final;
                     window.open(url, '_blank');
                 });
 

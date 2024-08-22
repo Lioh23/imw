@@ -234,6 +234,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('balancete-pdf/{igreja}', 'balancetePdf')->name('balancete-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
             Route::get('movimento-diario/{igreja}', 'movimentoDiario')->name('movimento-diario')->middleware(['seguranca:distrito-gestao-igrejas']);
             Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('livrorazao/{igreja}', 'livrorazao')->name('livrorazao')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
         });
 
          /* Por enquanto somente visualiações */
