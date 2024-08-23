@@ -26,4 +26,9 @@
         <x-bx-calendar />
     </a>
 
+    <a  href="{{ route('igreja.livrorazao', ['igreja' => $igreja->id]) }}" 
+        title="Livro Razão"
+        class="btn btn-sm btn-success mr-2 btn-rounded bs-tooltip">
+        <x-bx-book-alt />
+    </a>
 @endif

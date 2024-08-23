@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Traits\Identifiable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class FinanceiroPlanoConta extends Model
@@ -28,9 +29,9 @@ class FinanceiroPlanoConta extends Model
         'essencial',
     ];
 
-    public function lancamentos()
+    public function lancamentos(): HasMany
     {
-        return $this->hasMany(FinanceiroLancamento::class, 'caixa_id');
+        return $this->hasMany(FinanceiroLancamento::class, 'plano_conta_id');
     }
 
 

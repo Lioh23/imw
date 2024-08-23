@@ -49,14 +49,13 @@ return [
 
         'minio' => [
             'driver' => 's3',
-            'key' => env('MINIO_ACCESS_KEY'),
-            'secret' => env('MINIO_SECRET_KEY'),
-            'region' => 'us-east-1',
-            'bucket' => env('MINIO_BUCKET'),
-            'endpoint' => env('MINIO_ENDPOINT'),
-            'use_path_style_endpoint' => true,
+            'key' => env('AWS_ACCESS_KEY_ID'),
+            'secret' => env('AWS_SECRET_ACCESS_KEY'),
+            'region' => env('AWS_DEFAULT_REGION'),
+            'bucket' => env('AWS_BUCKET'),
+            'url' => null, // Não é necessário definir um endpoint customizado
+            'endpoint' => null, // Remova isso para usar o endpoint padrão da Amazon S3
         ],
-
     ],
 
     /*

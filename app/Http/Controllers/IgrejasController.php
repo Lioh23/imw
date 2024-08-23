@@ -6,6 +6,7 @@ use App\Models\InstituicoesInstituicao;
 use App\Services\ServiceDatatable\IgrejasDataTable;
 use App\Services\ServiceIgrejas\BalanceteService;
 use App\Services\ServiceIgrejas\GetEstatisticaAnoEclesiasticoService;
+use App\Services\ServiceIgrejas\LivroRazaoService;
 use App\Services\ServiceIgrejas\MovimentoDiarioService;
 use App\Traits\LocationUtils;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -46,7 +47,6 @@ class IgrejasController extends Controller
         $caixaId = $request->input('caixa_id');
 
         $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
-
         return view('igrejas.balancete', $data);
     }
 
@@ -57,7 +57,6 @@ class IgrejasController extends Controller
         $caixaId = $request->input('caixa_id');
 
         $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
-
         $pdf = FacadePdf::loadView('financeiro.relatorios.balancete_pdf', $data);
         return $pdf->stream('balancete.pdf');
     }
@@ -69,7 +68,6 @@ class IgrejasController extends Controller
         $caixaId = $request->input('caixa_id');
 
         $data = app(MovimentoDiarioService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
-
         return view('igrejas.movimentodiario', $data);
     }
 
@@ -80,8 +78,28 @@ class IgrejasController extends Controller
         $caixaId = $request->input('caixa_id');
 
         $data = app(MovimentoDiarioService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
-
         $pdf = FacadePdf::loadView('financeiro.relatorios.movimento-diario-pdf', $data);
         return $pdf->stream('relatorio_movimento_diario.pdf');
+    }
+
+    public function livrorazao(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+
+        // Chama o serviço para obter os dados necessários
+        $data = app(LivroRazaoService::class)->execute($dataInicial, $dataFinal, $igreja);
+        return view('igrejas.livrorazao', $data);
+    }
+
+    public function livrorazaoPdf(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+
+        // Chama o serviço para obter os dados necessários
+        $data = app(LivroRazaoService::class)->execute($dataInicial, $dataFinal, $igreja);
+        $pdf = FacadePdf::loadView('financeiro.relatorios.livrorazao_pdf', $data);
+        return $pdf->stream('relatorio_livrorazao.pdf');
     }
 }
