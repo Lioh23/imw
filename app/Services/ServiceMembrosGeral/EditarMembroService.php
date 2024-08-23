@@ -10,6 +10,8 @@ use App\Models\MembresiaMembro;
 use App\Models\MembresiaSetor;
 use App\Models\MembresiaTipoAtuacao;
 use App\Traits\Identifiable;
+use Illuminate\Support\Facades\Storage;
+use Carbon\Carbon;
 
 
 class EditarMembroService
@@ -23,6 +25,13 @@ class EditarMembroService
             ->firstOr(function () {
                 throw new MembroNotFoundException('Registro não encontrado', 404);
             });
+
+        // Gerar URL temporária para a foto se estiver presente e o bucket for privado
+        if ($pessoa->foto) {
+            $disk = Storage::disk('s3');
+            $pessoa->foto = $disk->temporaryUrl($pessoa->foto, Carbon::now()->addMinutes(15));
+        }
+
 
         $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
         $funcoes = MembresiaTipoAtuacao::orderBy('descricao', 'asc')->get();

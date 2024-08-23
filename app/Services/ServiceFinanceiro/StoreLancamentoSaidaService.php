@@ -8,6 +8,7 @@ use App\Models\FinanceiroLancamento;
 use App\Models\MembresiaMembro;
 use App\Models\PessoasPessoa;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\Storage;
 use Ramsey\Uuid\Uuid;
 
 class StoreLancamentoSaidaService
@@ -65,28 +66,40 @@ class StoreLancamentoSaidaService
         $lancamento = FinanceiroLancamento::create($lancamentos);
 
         // Upload dos anexos
-        $anexos = [];
+        $anexos = []; // Inicializa a lista de anexos
+
         for ($i = 1; $i <= 3; $i++) {
             $campoAnexo = "anexo{$i}";
             $campoDescricao = "descricao_anexo{$i}";
-
+        
             if (isset($data[$campoAnexo]) && $data[$campoAnexo]->isValid()) {
+                // Gerar um UUID para o nome do arquivo
                 $fileName = Uuid::uuid4()->toString() . '.' . $data[$campoAnexo]->getClientOriginalExtension();
-                $filePath = $data[$campoAnexo]->storeAs('anexos', $fileName, 's3');
-
+                
+                // Caminho do arquivo no bucket
+                $filePath = 'anexos/' . $fileName;
+        
+                // Fazer upload do arquivo para o S3
+                Storage::disk('s3')->put($filePath, file_get_contents($data[$campoAnexo]));
+        
+                // Opcional: Gerar URL temporária se necessário
+                // $url = Storage::disk('s3')->temporaryUrl($filePath, Carbon::now()->addMinutes(5));
+        
                 $anexo = [
                     'nome' => $fileName,
                     'caminho' => $filePath,
                     'descricao' => $data[$campoDescricao],
                     'lancamento_id' => $lancamento->id,
                 ];
-
+        
                 $anexos[] = $anexo;
             } elseif (isset($data[$campoAnexo]) && !$data[$campoAnexo]->isValid()) {
                 // Tratar erro de arquivo inválido
-                // Por exemplo, retornar uma mensagem de erro ou registrar um log
             }
         }
+        
+        // Opcional: Processar ou salvar os anexos conforme necessário
+        
 
         // Salvar os anexos no banco de dados
         foreach ($anexos as $anexo) {

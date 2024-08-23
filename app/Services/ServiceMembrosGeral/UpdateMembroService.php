@@ -16,6 +16,7 @@ use App\Models\MembresiaFuncaoMinisterial;
 use App\Exceptions\MembroNotFoundException;
 use App\Models\MembresiaFuncaoEclesiastica;
 use App\Models\MembresiaFormacaoEclesiastica;
+use Ramsey\Uuid\Uuid;
 
 class UpdateMembroService
 {
@@ -33,10 +34,10 @@ class UpdateMembroService
         $this->handleUpdateFamiliar($dataFamiliar, $membroID);
         $this->handleUpdateFormacoes($dataFormacoes, $membroID);
         $this->handleUpdateMinisteriais($dataMinisteriais, $membroID);
-        if(isset($data['rol_atual']) && $data['rol_atual'] ) {
+        if (isset($data['rol_atual']) && $data['rol_atual']) {
             $this->updateMembroRol($data['rol_atual'], $membroID);
         }
-        if(isset($data['dt_recepcao']) && $data['dt_recepcao'] ) {
+        if (isset($data['dt_recepcao']) && $data['dt_recepcao']) {
             $this->UpdateDtRecepcao($data['dt_recepcao'], $membroID);
         }
         if (isset($data['foto']) && $data['foto']) {
@@ -51,18 +52,36 @@ class UpdateMembroService
         $membro = MembresiaMembro::find($membroId);
         if ($membro) {
             if ($isNew && $photo) {
-                // Fazer upload da nova foto
-                $filePath = $photo->store('fotos', 's3');
-                Storage::disk('s3')->setVisibility($filePath, 'public');
-                $membro->foto = Storage::disk('s3')->url($filePath);
+                if ($photo->isValid()) {
+                    try {
+                        // Gerar um UUID para o nome do arquivo
+                        $filename = Uuid::uuid4()->toString() . '.' . $photo->getClientOriginalExtension();
+    
+                        // Caminho do arquivo no bucket
+                        $filePath = 'fotos/' . $filename;
+    
+                        // Fazer upload do arquivo para o S3
+                        Storage::disk('s3')->put($filePath, file_get_contents($photo));
+    
+                        // Atualizar o caminho do arquivo no modelo
+                        $membro->foto = $filePath;
+    
+                    } catch (\Exception $e) {
+                        \Log::error("Erro ao fazer upload da foto: " . $e->getMessage());
+                        throw new \Exception("Erro ao armazenar a foto: " . $e->getMessage());
+                    }
+                } else {
+                    throw new \Exception("Foto inválida ou não fornecida.");
+                }
             } elseif ($photo === null && !$isNew) {
-                // Não atualizar a foto, apenas manter a existente
-                // No caso de `false`, a foto atual não é removida
-                // Você pode ajustar esta lógica conforme necessário
+                \Log::info("Foto não fornecida e não é uma nova foto. Mantendo a existente.");
             }
             $membro->save();
+        } else {
+            throw new MembroNotFoundException("Membro não encontrado.");
         }
     }
+
 
     private function prepareMembroData(array $data, $vinculo): array
     {
@@ -91,11 +110,11 @@ class UpdateMembroService
             'has_errors'      => 0
         ];
 
-        if(isset($data['congregacao_id']) === false){
+        if (isset($data['congregacao_id']) === false) {
             $result['congregacao_id'] = null;
         }
 
-        if(isset($data['congregacao_id'])) {
+        if (isset($data['congregacao_id'])) {
             $result['congregacao_id'] = $data['congregacao_id'];
         }
 
@@ -246,17 +265,17 @@ class UpdateMembroService
 
     private function updateMembroRol($rolAtual, $membroId)
     {
-            $rolPermanente = MembresiaRolPermanente::where('membro_id', $membroId)->where('lastrec', 1)->first();
-            if ($rolPermanente) {
-                $rolPermanente->numero_rol = $rolAtual ?? null;
-                $rolPermanente->save();
-            } else {
-                MembresiaRolPermanente::create([
-                    'membro_id' => $membroId,
-                    'numero_rol' => $rolAtual ?? null,
-                    'lastrec' => 1
-                ]);
-            }
+        $rolPermanente = MembresiaRolPermanente::where('membro_id', $membroId)->where('lastrec', 1)->first();
+        if ($rolPermanente) {
+            $rolPermanente->numero_rol = $rolAtual ?? null;
+            $rolPermanente->save();
+        } else {
+            MembresiaRolPermanente::create([
+                'membro_id' => $membroId,
+                'numero_rol' => $rolAtual ?? null,
+                'lastrec' => 1
+            ]);
+        }
     }
     private function UpdateDtRecepcao($dtRecepcao, $membroId)
     {
