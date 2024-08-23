@@ -213,7 +213,7 @@ class FinanceiroController extends Controller
     public function downloadAnexo(Anexo $anexo)
     {
         try {
-            $fileContent = Storage::disk('minio')->get($anexo->caminho);
+            $fileContent = Storage::disk('s3')->get($anexo->caminho);
         
             return response($fileContent)
                 ->header('Content-Type', "application/{$anexo->mime}")

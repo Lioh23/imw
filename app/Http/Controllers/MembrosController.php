@@ -91,16 +91,16 @@ class MembrosController extends Controller
 
     public function update(UpdateMembroRequest $request, $id)
     {
-        try {
+        /* try { */
             DB::beginTransaction();
             app(UpdateMembroService::class)->execute($request->all(), MembresiaMembro::VINCULO_MEMBRO);
             DB::commit();
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
-        } catch(\Exception $e) {
+       /*  } catch(\Exception $e) {
             DB::rollback();
             dd($e);
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
-        }
+        } */
     }
 
     public function receberNovo($id)

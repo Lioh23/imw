@@ -19,7 +19,7 @@ class StoreNewAnexoService
     public function handleStoreAnexo(UploadedFile $file): array
     {
         $fileName = Uuid::uuid4()->toString() . '.' . $file->getClientOriginalExtension();
-        $filePath = $file->storeAs('anexos', $fileName, 'minio');
+        $filePath = $file->storeAs('anexos', $fileName, 's3');
 
         return [
             'nome'    => $fileName,

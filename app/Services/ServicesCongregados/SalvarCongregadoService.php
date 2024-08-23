@@ -38,12 +38,12 @@ class SalvarCongregadoService
 
     private function handlePhotoUpload($photo, $membroId)
     {
-        $filePath = $photo->store('fotos', 'minio');
-        Storage::disk('minio')->setVisibility($filePath, 'public');
+        $filePath = $photo->store('fotos', 's3');
+        Storage::disk('s3')->setVisibility($filePath, 'public');
 
         $membro = MembresiaMembro::find($membroId);
         if ($membro) {
-            $membro->foto = Storage::disk('minio')->url($filePath);
+            $membro->foto = Storage::disk('s3')->url($filePath);
             $membro->save();
         }
     }

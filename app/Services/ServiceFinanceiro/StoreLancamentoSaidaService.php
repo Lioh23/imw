@@ -72,7 +72,7 @@ class StoreLancamentoSaidaService
 
             if (isset($data[$campoAnexo]) && $data[$campoAnexo]->isValid()) {
                 $fileName = Uuid::uuid4()->toString() . '.' . $data[$campoAnexo]->getClientOriginalExtension();
-                $filePath = $data[$campoAnexo]->storeAs('anexos', $fileName, 'minio');
+                $filePath = $data[$campoAnexo]->storeAs('anexos', $fileName, 's3');
 
                 $anexo = [
                     'nome' => $fileName,

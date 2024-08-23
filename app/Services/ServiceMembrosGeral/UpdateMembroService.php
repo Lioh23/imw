@@ -52,9 +52,9 @@ class UpdateMembroService
         if ($membro) {
             if ($isNew && $photo) {
                 // Fazer upload da nova foto
-                $filePath = $photo->store('fotos', 'minio');
-                Storage::disk('minio')->setVisibility($filePath, 'public');
-                $membro->foto = Storage::disk('minio')->url($filePath);
+                $filePath = $photo->store('fotos', 's3');
+                Storage::disk('s3')->setVisibility($filePath, 'public');
+                $membro->foto = Storage::disk('s3')->url($filePath);
             } elseif ($photo === null && !$isNew) {
                 // Não atualizar a foto, apenas manter a existente
                 // No caso de `false`, a foto atual não é removida
