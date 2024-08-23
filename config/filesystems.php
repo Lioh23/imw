@@ -53,9 +53,8 @@ return [
             'secret' => env('AWS_SECRET_ACCESS_KEY'),
             'region' => env('AWS_DEFAULT_REGION'),
             'bucket' => env('AWS_BUCKET'),
-            'url' => env('AWS_URL'),
-            'endpoint' => env('AWS_ENDPOINT'), 
-            'visibility' => 'private',
+            'url' => null, // Não é necessário definir um endpoint customizado
+            'endpoint' => null, // Remova isso para usar o endpoint padrão da Amazon S3
         ],
     ],
 
