@@ -56,19 +56,23 @@ class UpdateMembroService
                     try {
                         // Gerar um UUID para o nome do arquivo
                         $filename = Uuid::uuid4()->toString() . '.' . $photo->getClientOriginalExtension();
-    
-                        // Caminho do arquivo no bucket
-                        $filePath = 'fotos/' . $filename;
-    
-                        // Fazer upload do arquivo para o S3
-                        Storage::disk('s3')->put($filePath, file_get_contents($photo));
-    
-                        // Atualizar o caminho do arquivo no modelo
-                        $membro->foto = $filePath;
-    
+
+                        // Fazer upload do arquivo para o S3 usando o método storeAs
+                        $filePath = $photo->storeAs('fotos', $filename, 's3');
+
+                        // Verifique se o caminho foi gerado corretamente
+                        if ($filePath) {
+                            // Atualizar o caminho do arquivo no modelo
+                            $membro->foto = $filePath;
+
+                            // Salvar as mudanças no banco de dados
+                            $membro->save();
+                        } else {
+                            throw new \Exception("Falha ao armazenar o arquivo.");
+                        }
                     } catch (\Exception $e) {
-                        \Log::error("Erro ao fazer upload da foto: " . $e->getMessage());
-                        throw new \Exception("Erro ao armazenar a foto: " . $e->getMessage());
+                        // Tratamento de erro, caso o upload falhe
+                        return response()->json(['error' => $e->getMessage()], 500);
                     }
                 } else {
                     throw new \Exception("Foto inválida ou não fornecida.");
