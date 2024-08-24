@@ -56,20 +56,15 @@ class UpdateMembroService
                     try {
                         // Gerar um UUID para o nome do arquivo
                         $filename = Uuid::uuid4()->toString() . '.' . $photo->getClientOriginalExtension();
-
+                        
                         // Fazer upload do arquivo para o S3 usando o método storeAs
                         $filePath = $photo->storeAs('fotos', $filename, 's3');
-
-                        // Verifique se o caminho foi gerado corretamente
-                        if ($filePath) {
-                            // Atualizar o caminho do arquivo no modelo
-                            $membro->foto = $filePath;
-
-                            // Salvar as mudanças no banco de dados
-                            $membro->save();
-                        } else {
-                            throw new \Exception("Falha ao armazenar o arquivo.");
-                        }
+                        
+                        // Atualizar o caminho da foto no modelo
+                        $membro->foto = $filePath;
+                        
+                        // Salvar as mudanças no banco de dados
+                        $membro->save();
                     } catch (\Exception $e) {
                         // Tratamento de erro, caso o upload falhe
                         return response()->json(['error' => $e->getMessage()], 500);
@@ -78,11 +73,13 @@ class UpdateMembroService
                     throw new \Exception("Foto inválida ou não fornecida.");
                 }
             } elseif ($photo === null && !$isNew) {
-                \Log::info("Foto não fornecida e não é uma nova foto. Mantendo a existente.");
+                // Se a foto for nula e não for uma nova entrada, remover a foto existente
+                $membro->foto = null;
+                $membro->save();
             }
+        
+            // Salvar as mudanças no banco de dados, caso outras alterações tenham sido feitas
             $membro->save();
-        } else {
-            throw new MembroNotFoundException("Membro não encontrado.");
         }
     }
 
