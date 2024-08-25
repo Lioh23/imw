@@ -34,6 +34,19 @@
         <table class="table mb-4">
           <thead>
             <tr>
+              <th style="width: 90%; position: relative; bottom: 15px;">ROL ANTERIOR</th>
+              <th class="text-center">MAS {{ $rolAnterior->sexo_masculino }}</th>
+              <th class="text-center">FEM {{ $rolAnterior->sexo_feminino }}</th>
+              <th class="text-center">TOTAL {{ $rolAnterior->total }}</th>
+            </tr>
+          </thead>
+        </table>
+      </div>
+
+      <div class="table-responsive mb-4">
+        <table class="table mb-4">
+          <thead>
+            <tr>
               <th style="width: 90%">MEMBROS RECEBIDOS</th>
               <th class="text-center">MAS</th>
               <th class="text-center">FEM</th>
@@ -92,7 +105,7 @@
         <table class="table mb-4">
           <thead>
             <tr>
-              <th style="width: 90%">ROL ATUAL</th>
+              <th style="width: 90%; position: relative; bottom: 15px;">ROL ATUAL</th>
               <th class="text-center">MAS {{ $rolAtual->sexo_masculino }}</th>
               <th class="text-center">FEM {{ $rolAtual->sexo_feminino }}</th>
               <th class="text-center">TOTAL {{ $rolAtual->total }}</th>
