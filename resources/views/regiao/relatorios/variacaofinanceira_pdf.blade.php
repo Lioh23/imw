@@ -88,7 +88,7 @@
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
-            <div class="title">VARIAÇÃO FINANCEIRA - {{ session('session_perfil')->instituicao_nome }}</div>
+            <div class="title">VARIAÇÃO FINANCEIRA - {{ $instituicao->nome }}</div>
             <div class="period">
                 Período de {{ request()->input('dt_inicial') }}
                 a {{ request()->input('dt_final') }}

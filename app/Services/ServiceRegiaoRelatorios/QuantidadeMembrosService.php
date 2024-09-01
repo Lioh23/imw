@@ -2,6 +2,7 @@
 
 namespace App\Services\ServiceRegiaoRelatorios;
 
+use App\Models\InstituicoesInstituicao;
 use App\Traits\Identifiable;
 use App\Traits\QuantidadeMembrosUtils;
 use Carbon\Carbon;
@@ -23,7 +24,8 @@ class QuantidadeMembrosService
 
         return [
             'lancamentos' => QuantidadeMembrosUtils::fetch($dataInicial, $dataFinal, $tipo, $distritoId),
-            'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id)
+            'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
+            'instituicao' => InstituicoesInstituicao::find($distritoId)
         ];
     }
 }

@@ -79,7 +79,9 @@ class RegiaoRelatorioController extends Controller
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
-        $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo);
+        $distritoId = $request->input('distrito');
+
+        $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo, $distritoId);
         
         $pdf = FacadePdf::loadView('regiao.relatorios.estatisticagenero_pdf', $data)
             ->setPaper('a4', 'landscape');
@@ -171,15 +173,18 @@ class RegiaoRelatorioController extends Controller
     public function saldodasigrejas(Request $request)
     {
         $dt = $request->input('dt');
+        $distrtoId = $request->input('distrito');
 
-        $data = app(SaldoIgrejasService::class)->execute($dt);
+        $data = app(SaldoIgrejasService::class)->execute($dt, $distrtoId);
         return view('regiao.relatorios.saldodasigrejas', $data);
     }
 
     public function saldodasigrejasPdf(Request $request)
     {
         $dt = $request->input('dt');
-        $data = app(SaldoIgrejasService::class)->execute($dt);
+        $distrtoId = $request->input('distrito');
+
+        $data = app(SaldoIgrejasService::class)->execute($dt, $distrtoId);
 
         $pdf = FacadePdf::loadView('regiao.relatorios.saldodasigrejas_pdf', $data)
             ->setPaper('a4', 'landscape');

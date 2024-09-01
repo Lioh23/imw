@@ -92,7 +92,7 @@ use Carbon\Carbon;
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
-            <div class="title">QUANTIDADE DE MEMBROS - {{ session('session_perfil')->instituicao_nome }}</div>
+            <div class="title">QUANTIDADE DE MEMBROS - {{ $instituicao->nome }}</div>
             <div class="period">
                 Período de {{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}
                 a {{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}

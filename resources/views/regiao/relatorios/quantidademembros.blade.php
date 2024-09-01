@@ -88,6 +88,7 @@ use Carbon\Carbon;
 
             <form id="report_form" action="{{ url('regiao/relatorio/quantidademembros/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
+                <input type="hidden" name="distrito" id="report_distrito">
                 <input type="hidden" name="data_inicial" id="report_data_inicial">
                 <input type="hidden" name="data_final" id="report_data_final">
                 <input type="hidden" name="tipo" id="report_tipo">
@@ -105,7 +106,7 @@ use Carbon\Carbon;
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">QUANTIDADE DE MEMBROS - {{ session('session_perfil')->instituicao_nome }}</h6>
+                            <h6 class="mt-3">QUANTIDADE DE MEMBROS - {{ $instituicao->nome }}</h6>
                             <div class="table-responsive">
                                 <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                     <thead class="thead-dark">
@@ -176,14 +177,16 @@ use Carbon\Carbon;
         $('.selectpicker').selectpicker();
 
         $('#btn_relatorio').on('click', function(event) {
+            var distrito = $('#distrito').val();
             var dataInicial = $('#data_inicial').val();
             var dataFinal = $('#data_final').val();
             var tipo = $('#tipo').val();
 
-            if (!dataInicial || !dataFinal || !tipo) {
+            if (!dataInicial || !dataFinal || !tipo || !distrito) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
+                $('#report_distrito').val(distrito);
                 $('#report_data_inicial').val(dataInicial);
                 $('#report_data_final').val(dataFinal);
                 $('#report_tipo').val(tipo);
@@ -192,11 +195,12 @@ use Carbon\Carbon;
         });
 
         $('#filter_form').submit(function(event) {
+            var distrito = $('#distrito').val();
             var dataInicial = $('#data_inicial').val();
             var dataFinal = $('#data_final').val();
             var tipo = $('#tipo').val();
 
-            if (!dataInicial || !dataFinal || !tipo) {
+            if (!dataInicial || !dataFinal || !tipo || !distrito) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             }
