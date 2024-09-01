@@ -27,14 +27,30 @@
         </div>
         <div class="widget-content widget-content-area">
             <form class="form-vertical" id="filter_form" method="GET">
-                <div class="form-group row mb-4" id="filtros_data">
+                <div class="form-group row mb-4">
+                    <div class="col-lg-2 text-right">
+                        <label class="control-label">* Distrito:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="distrito" name="distrito" required>
+                            <option value="">Selecione</option>
+                            @foreach($distritos as $distrito)
+                                <option value="{{ $distrito->id }}" {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
                         <label class="control-label">* Data Inicial:</label>
                     </div>
                     <div class="col-lg-3">
                         <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required>
                     </div>
+                </div>
 
+                <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
                         <label class="control-label">* Data Final:</label>
                     </div>
@@ -56,6 +72,7 @@
             </form>
             <form id="report_form" action="{{ url('regiao/relatorio/livrorazaogeral/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
+                <input type="hidden" name="distrito" id="report_distrito">
                 <input type="hidden" name="dt_inicial" id="report_dtinicio">
                 <input type="hidden" name="dt_final" id="report_dtfinal">
             </form>
@@ -72,7 +89,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h5 class="mt-3">LIVRO RAZÃO GERAL - {{ session('session_perfil')->instituicao_nome }}</h5>
+                            <h5 class="mt-3">LIVRO RAZÃO GERAL - {{ $instituicao->nome }}</h5>
                             <p>Período de {{ \Carbon\Carbon::parse(request()->input('dt_inicial'))->format('d/m/Y') }} a {{ \Carbon\Carbon::parse(request()->input('dt_final'))->format('d/m/Y') }}</p>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
@@ -123,15 +140,17 @@
     $(document).ready(function() {
 
         $('#btn_relatorio').on('click', function(event) {
+            var distrito = $('#distrito').val();
             var dt_inicial = $('#dt_inicial').val();
             var dt_final = $('#dt_final').val();
 
             // Verificar se a data está preenchida
-            if (!dt_inicial || !dt_final) {
+            if (!dt_inicial || !dt_final || !distrito) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
                 // Preencher e submeter o formulário oculto
+                $('#report_distrito').val(distrito);
                 $('#report_dtinicio').val(dt_inicial);
                 $('#report_dtfinal').val(dt_final);
                 $('#report_form').submit();
@@ -142,6 +161,7 @@
 <script>
     $(document).ready(function() {
         $('#filter_form').submit(function(event) {
+            var distrito = $('#distrito').val();
             var dataInicial = $('#dt_inicial').val();
             var dataFinal = $('#dt_final').val();
 
@@ -156,16 +176,27 @@
                 // Exibir uma mensagem de erro
                 alert('O mês final não pode ser menor que o mês inicial.');
             }
+
+            if (!distrito) {
+                event.preventDefault();
+                alert('Por favor, selecione o distrito.');
+            }
         });
     });
 </script>
 <script>
     function validarFormulario() {
+        const distrito = document.getElementById('distrito').value;
         const dataInicial = document.getElementById('dt_inicial').value;
         const dataFinal = document.getElementById('dt_final').value;
 
         if (!dataInicial || !dataFinal) {
             alert('Por favor, preencha os campos de mês inicial e mês final.');
+            return false;
+        }
+
+        if (!distrito) {
+            alert('Por favor, selecione o distrito.');
             return false;
         }
 

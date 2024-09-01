@@ -151,8 +151,9 @@ class RegiaoRelatorioController extends Controller
     {
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
+        $distrtoId = $request->input('distrito');
 
-        $data = app(LivroRazaoGeralService::class)->execute($dataInicial, $dataFinal);
+        $data = app(LivroRazaoGeralService::class)->execute($dataInicial, $dataFinal, $distrtoId);
 
         return view('regiao.relatorios.livrorazaogeral', $data);
     }
@@ -161,8 +162,9 @@ class RegiaoRelatorioController extends Controller
     {
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
+        $distritoId = $request->input('distrito');
 
-        $data = app(LivroRazaoGeralService::class)->execute($dataInicial, $dataFinal);
+        $data = app(LivroRazaoGeralService::class)->execute($dataInicial, $dataFinal, $distritoId);
 
         $pdf = FacadePdf::loadView('regiao.relatorios.livrorazaogeral_pdf', $data)
             ->setPaper('a4', 'landscape');

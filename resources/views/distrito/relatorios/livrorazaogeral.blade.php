@@ -27,14 +27,16 @@
         </div>
         <div class="widget-content widget-content-area">
             <form class="form-vertical" id="filter_form" method="GET">
-                <div class="form-group row mb-4" id="filtros_data">
+                <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
                         <label class="control-label">* Data Inicial:</label>
                     </div>
                     <div class="col-lg-3">
                         <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required>
                     </div>
+                </div>
 
+                <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
                         <label class="control-label">* Data Final:</label>
                     </div>
