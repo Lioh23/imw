@@ -28,7 +28,20 @@
         </div>
         <div class="widget-content widget-content-area">
             <form class="form-vertical" id="filter_form" method="GET">
-                <div class="form-group row mb-4" id="filtros_data">
+                <div class="form-group row mb-4">
+                    <div class="col-lg-2 text-right">
+                        <label class="control-label">* Distrito:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="distrito" name="distrito" required>
+                            <option value="">Selecione</option>
+                            @foreach($distritos as $distrito)
+                                <option value="{{ $distrito->id }}" {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
                         <label class="control-label">* Ano:</label>
                     </div>
@@ -50,6 +63,7 @@
             </form>
             <form id="report_form" action="{{ url('regiao/relatorio/orcamento/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
+                <input type="hidden" name="distrito" id="report_distrito">
                 <input type="hidden" name="dtano" id="report_dtano">
                 <input type="hidden" name="igrejas" id="report_igrejas">
             </form>
@@ -66,7 +80,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">ORÇAMENTO - {{ session('session_perfil')->instituicao_nome }}</h6>
+                            <h6 class="mt-3">ORÇAMENTO - {{ $instituicao->nome }}</h6>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
@@ -218,24 +232,27 @@
         });
 
         $('#btn_relatorio').on('click', function(event) {
+            var distrito = $('#distrito').val();
             var dataAno = $('#dtano').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno) {
+            if (!dataAno || !distrito) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
                 // Preencher e submeter o formulário oculto
+                $('#report_distrito').val(distrito);
                 $('#report_dtano').val(dataAno);
                 $('#report_form').submit();
             }
         });
 
         $('#filter_form').submit(function(event) {
+            var distrito = $('#distrito').val();
             var dataAno = $('#dtano').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno) {
+            if (!dataAno || !distrito) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             }

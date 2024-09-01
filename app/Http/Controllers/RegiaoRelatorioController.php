@@ -128,8 +128,9 @@ class RegiaoRelatorioController extends Controller
     public function orcamento(Request $request)
     {
         $dt = $request->input('dtano');
+        $distritoId = $request->input('distrito');
 
-        $data = app(OrcamentoService::class)->execute($dt);
+        $data = app(OrcamentoService::class)->execute($dt, $distritoId);
         return view('regiao.relatorios.orcamento', $data);
     }
 
@@ -137,8 +138,9 @@ class RegiaoRelatorioController extends Controller
     {
 
         $dt = $request->input('dtano');
+        $distritoId = $request->input('distrito');
 
-        $data = app(OrcamentoService::class)->execute($dt);
+        $data = app(OrcamentoService::class)->execute($dt, $distritoId);
 
         $pdf = FacadePdf::loadView('regiao.relatorios.orcamento_pdf', $data)
             ->setPaper('a4', 'landscape');
