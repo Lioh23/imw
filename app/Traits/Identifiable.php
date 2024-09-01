@@ -7,6 +7,7 @@ use App\Exceptions\FetchRolAtualException;
 use App\Exceptions\MembroNotFoundException;
 use App\Exceptions\MissingSessionDistritoException;
 use App\Exceptions\MissingSessionIgrejaLocalException;
+use App\Exceptions\MissingSessionRegiaoException;
 use App\Exceptions\VisitanteNotFoundException;
 use App\Models\CongregacoesCongregacao;
 use App\Models\InstituicoesInstituicao;
@@ -14,6 +15,7 @@ use App\Models\MembresiaMembro;
 use App\Models\MembresiaRolPermanente;
 use App\Models\MembresiaSituacao;
 use App\Models\PessoasPessoa;
+use Illuminate\Database\Eloquent\Collection;
 
 trait Identifiable
 {
@@ -98,6 +100,15 @@ trait Identifiable
         return $distrito;
     }
 
+    public static function fetchtSessionRegiao(): InstituicoesInstituicao
+    {
+        $distrito = session('session_perfil')->instituicoes->regiao;
+
+        if (!$distrito) throw new MissingSessionRegiaoException();
+
+        return $distrito;
+    }
+
     public static function fetchRolAtual($membroId, $numeroRol)
     {
         return MembresiaRolPermanente::where('membro_id', $membroId)
@@ -111,5 +122,10 @@ trait Identifiable
         return MembresiaRolPermanente::selectRaw('IFNULL(MAX(numero_rol), 0) + 1 sugestao_rol')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->first()->sugestao_rol;
+    }
+
+    public static function fetchDistritosByRegiao(int $regiaoId): Collection
+    {
+        return InstituicoesInstituicao::where('instituicao_pai_id', $regiaoId)->get();
     }
 }

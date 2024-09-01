@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\ServiceDistritoRelatorios\EstatisticaGeneroService;
-use App\Services\ServiceDistritoRelatorios\LancamentoIgrejasService;
-use App\Services\ServiceDistritoRelatorios\LivroRazaoGeralService;
-use App\Services\ServiceDistritoRelatorios\MembrosMinisterioService;
-use App\Services\ServiceDistritoRelatorios\OrcamentoService;
-use App\Services\ServiceDistritoRelatorios\QuantidadeMembrosService;
-use App\Services\ServiceDistritoRelatorios\SaldoIgrejasService;
-use App\Services\ServiceDistritoRelatorios\VariacaoFinanceiraService;
+use App\Services\ServiceRegiaoRelatorios\EstatisticaGeneroService;
+use App\Services\ServiceRegiaoRelatorios\LancamentoIgrejasService;
+use App\Services\ServiceRegiaoRelatorios\LivroRazaoGeralService;
+use App\Services\ServiceRegiaoRelatorios\MembrosMinisterioService;
+use App\Services\ServiceRegiaoRelatorios\OrcamentoService;
+use App\Services\ServiceRegiaoRelatorios\QuantidadeMembrosService;
+use App\Services\ServiceRegiaoRelatorios\SaldoIgrejasService;
+use App\Services\ServiceRegiaoRelatorios\VariacaoFinanceiraService;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
@@ -20,7 +20,9 @@ class RegiaoRelatorioController extends Controller
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
-        $data = app(MembrosMinisterioService::class)->execute($dataInicial, $dataFinal, $tipo);
+        $distritoId = $request->input('distrito');
+
+        $data = app(MembrosMinisterioService::class)->execute($dataInicial, $dataFinal, $tipo, $distritoId);
         return view('regiao.relatorios.membrosministerio', $data);
     }
 
@@ -28,7 +30,9 @@ class RegiaoRelatorioController extends Controller
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
         $tipo = $request->input('tipo');
-        $data = app(MembrosMinisterioService::class)->execute($dataInicial, $dataFinal, $tipo);
+        $distritoId = $request->input('distrito');
+
+        $data = app(MembrosMinisterioService::class)->execute($dataInicial, $dataFinal, $tipo, $distritoId);
         
         $pdf = FacadePdf::loadView('regiao.relatorios.membrosministerio_pdf', $data)
             ->setPaper('a4', 'landscape');
@@ -41,7 +45,9 @@ class RegiaoRelatorioController extends Controller
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
-        $data = app(QuantidadeMembrosService::class)->execute($dataInicial, $dataFinal, $tipo);
+        $distritoId = $request->input('distrito');
+
+        $data = app(QuantidadeMembrosService::class)->execute($dataInicial, $dataFinal, $tipo, $distritoId);
         return view('regiao.relatorios.quantidademembros', $data);
     }
 
@@ -49,8 +55,9 @@ class RegiaoRelatorioController extends Controller
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
-        $data = app(QuantidadeMembrosService::class)->execute($dataInicial, $dataFinal, $tipo);
-        
+        $distritoId = $request->input('distrito');
+
+        $data = app(QuantidadeMembrosService::class)->execute($dataInicial, $dataFinal, $tipo, $distritoId);
         $pdf = FacadePdf::loadView('regiao.relatorios.quantidademembros_pdf', $data)
             ->setPaper('a4', 'landscape');
 
@@ -62,8 +69,9 @@ class RegiaoRelatorioController extends Controller
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
+        $distritoId = $request->input('distrito');
 
-        $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo);
+        $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo, $distritoId);
         return view('regiao.relatorios.estatisticagenero', $data);
     }
 

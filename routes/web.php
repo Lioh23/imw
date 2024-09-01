@@ -17,6 +17,7 @@ use App\Http\Controllers\MembresiaGeralController;
 use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\NotificacoesTranferenciaController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\RegiaoRelatorioController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VisitantesController;

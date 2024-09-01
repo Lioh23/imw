@@ -32,6 +32,19 @@ use Carbon\Carbon;
         </div>
         <div class="widget-content widget-content-area">
             <form class="form-vertical" id="filter_form" method="GET">
+                <div class="form-group row mb-4">
+                    <div class="col-lg-3 text-right">
+                        <label class="control-label">* Distrito:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="distrito" name="distrito" required>
+                            <option value="">Selecione</option>
+                            @foreach($distritos as $distrito)
+                                <option value="{{ $distrito->id }}" {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
                 <div class="form-group row mb-4" id="filtros_data_inicial">
                     <div class="col-lg-3 text-right">
                         <label class="control-label">* Data Inicial:</label>
