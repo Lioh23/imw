@@ -105,8 +105,9 @@ class RegiaoRelatorioController extends Controller
     {
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
+        $distritoId = $request->input('distrito');
 
-        $data = app(VariacaoFinanceiraService::class)->execute($dataInicial, $dataFinal);
+        $data = app(VariacaoFinanceiraService::class)->execute($dataInicial, $dataFinal, $distritoId);
 
         return view('regiao.relatorios.variacaofinanceira', $data);
     }
@@ -116,8 +117,9 @@ class RegiaoRelatorioController extends Controller
 
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
+        $distritoId = $request->input('distrito');
 
-        $data = app(VariacaoFinanceiraService::class)->execute($dataInicial, $dataFinal);
+        $data = app(VariacaoFinanceiraService::class)->execute($dataInicial, $dataFinal, $distritoId);
 
         $pdf = FacadePdf::loadView('regiao.relatorios.variacaofinanceira_pdf', $data)
             ->setPaper('a4', 'landscape');
@@ -136,7 +138,6 @@ class RegiaoRelatorioController extends Controller
 
     public function orcamentoPdf(Request $request)
     {
-
         $dt = $request->input('dtano');
         $distritoId = $request->input('distrito');
 
