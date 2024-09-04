@@ -11,6 +11,7 @@ use App\Exceptions\MissingSessionRegiaoException;
 use App\Exceptions\VisitanteNotFoundException;
 use App\Models\CongregacoesCongregacao;
 use App\Models\InstituicoesInstituicao;
+use App\Models\InstituicoesTipoInstituicao;
 use App\Models\MembresiaMembro;
 use App\Models\MembresiaRolPermanente;
 use App\Models\MembresiaSituacao;
@@ -126,6 +127,8 @@ trait Identifiable
 
     public static function fetchDistritosByRegiao(int $regiaoId): Collection
     {
-        return InstituicoesInstituicao::where('instituicao_pai_id', $regiaoId)->get();
+        return InstituicoesInstituicao::where('instituicao_pai_id', $regiaoId)
+            ->where('tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO)
+            ->get();
     }
 }
