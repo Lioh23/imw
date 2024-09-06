@@ -173,9 +173,9 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/relatorio/livrorazao', [FinanceiroRelatorioController::class, 'livrorazao'])->name('relatorio-livrorazao')->middleware(['seguranca:menu-relatorios']);
             Route::get('/relatorio/livrocaixa', [FinanceiroRelatorioController::class, 'livrocaixa'])->name('relatorio-livrocaixa')->middleware(['seguranca:menu-relatorios']);
                 Route::get('/relatorio/livrocaixa/pdf', [FinanceiroRelatorioController::class, 'livrocaixaPdf'])->name('relatorio-livrocaixa.pdf')->middleware(['seguranca:menu-relatorios']);
-            Route::get('/relatorio/livrograde', [FinanceiroRelatorioController::class, 'livrograde'])->name('relatorio-livrograde')->middleware(['seguranca:menu-relatorios']);
-                Route::post('/relatorio/livrogradepost', [FinanceiroRelatorioController::class, 'livrogradepost'])->name('livrogradepost')->middleware(['seguranca:menu-relatorios']);
-                Route::post('/relatorio/livrograde/store', [FinanceiroRelatorioController::class, 'livrogradestore'])->name('livrograde.store')->middleware(['seguranca:menu-relatorios']);
+            Route::get('/relatorio/livrograde', [FinanceiroRelatorioController::class, 'livrograde'])->name('relatorio-livrograde')->middleware(['seguranca:financeiro-relatorio-livrograde']);
+                Route::post('/relatorio/livrogradepost', [FinanceiroRelatorioController::class, 'livrogradepost'])->name('livrogradepost')->middleware(['seguranca:financeiro-relatorio-livrograde']);
+                Route::post('/relatorio/livrograde/store', [FinanceiroRelatorioController::class, 'livrogradestore'])->name('livrograde.store')->middleware(['seguranca:financeiro-relatorio-livrograde']);
             Route::get('/relatorio/balancete', [FinanceiroRelatorioController::class, 'balancete'])->name('relatorio-balancete')->middleware(['seguranca:menu-relatorios']);
                 Route::get('/relatorio/balancete-pdf', [FinanceiroRelatorioController::class, 'balancetePdf'])->name('relatorio-balancete-pdf')->middleware(['seguranca:menu-relatorios']);
             Route::get('/relatorio/livrorazao', [FinanceiroRelatorioController::class, 'livroRazao'])->name('relatorio-livrorazao')->middleware(['seguranca:menu-relatorios']);
