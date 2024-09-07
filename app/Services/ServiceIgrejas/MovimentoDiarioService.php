@@ -14,7 +14,7 @@ class MovimentoDiarioService
         $caixasFind = (isset($caixaId) && $caixaId !== 'all')
             ? FinanceiroCaixa::where('id', $caixaId)->get()
             : MovimentoDiarioUtils::handleListaCaixas($igreja->id);
-            
+           
         return [
             'instituicao'         => $igreja,
             'caixas'              => MovimentoDiarioUtils::handleListaCaixas($igreja->id),  

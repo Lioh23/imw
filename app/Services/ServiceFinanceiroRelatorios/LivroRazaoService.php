@@ -9,9 +9,10 @@ class LivroRazaoService
 {
     public function execute($dataInicial, $dataFinal)
     {
+        $instituicaoId = session()->get('session_perfil')->instituicao_id;
         return [
-            'lancamentosPorConta' => LivroRazaoUtils::getLancamentosPorConta($dataInicial, $dataFinal),
-            'instituicao' => Identifiable::fetchSessionIgrejaLocal()
+            'lancamentosPorConta' => LivroRazaoUtils::getLancamentosPorConta($dataInicial, $dataFinal, $instituicaoId),
+            'instituicao' => $instituicaoId
         ];
     }
 }

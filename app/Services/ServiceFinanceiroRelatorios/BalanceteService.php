@@ -23,7 +23,7 @@ class BalanceteService
         }
 
         return [
-            'instituicao'  => Identifiable::fetchSessionIgrejaLocal(),
+            'instituicao'  => $instituicaoId,
             'caixas'       => BalanceteUtils::handleCaixas($dataInicial, $dataFinal, $caixaId, $instituicaoId),
             'caixasSelect' => BalanceteUtils::handleListaCaixas($instituicaoId),
             'lancamentos'  => BalanceteUtils::handleLancamentos($dataInicial, $dataFinal, $caixaId, $instituicaoId)

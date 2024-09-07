@@ -26,7 +26,7 @@ class MovimentoDiarioService
         $caixas = MovimentoDiarioUtils::handleListaCaixas($instituicaoId);
 
         return [
-            'instituicao' => Identifiable::fetchSessionIgrejaLocal(),
+            'instituicao' => $instituicaoId,
             'caixas' => $caixas,
             'lancamentosPorCaixa' => $lancamentosPorCaixa,
         ];
