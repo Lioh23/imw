@@ -88,7 +88,7 @@
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
-            <div class="title">LANÇAMENTOS DAS IGREJAS - {{ session('session_perfil')->instituicao_nome }}</div>
+            <div class="title">LANÇAMENTOS DAS IGREJAS - {{ $instituicao->nome }}</div>
             <div class="period" style="margin-top:4px">
                 Ano: {{ request()->input('dtano') }}
             </div>

@@ -43,9 +43,9 @@
                         <label class="control-label">* Igrejas:</label>
                     </div>
                     <div class="col-lg-6">
-                        <select class="selectpicker" data-actions-box="true" data-header="{{ session('session_perfil')->instituicao_nome }}" multiple data-live-search="true" id="igreja_id" name="igrejas[]" data-width="100%">
-                            @foreach ($igrejaSelect as $igreja)
-                            <option value="{{ $igreja->id }}" {{ in_array($igreja->id, request()->input('igrejas', [])) ? 'selected' : '' }}>
+                        <select class="form-control" id="igreja_id" name="igreja_id" data-width="100%">
+                            @foreach ($igrejas as $igreja)
+                            <option value="{{ $igreja->id }}" {{ $igreja->id == request()->input('igreja_id') ? 'selected' : '' }}>
                                 {{ $igreja->descricao }}
                             </option>
                             @endforeach
@@ -68,13 +68,13 @@
             <form id="report_form" action="{{ url('regiao/relatorio/lancamentodasigrejas/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
                 <input type="hidden" name="dtano" id="report_dtano">
-                <input type="hidden" name="igrejas" id="report_igrejas">
+                <input type="hidden" name="igreja_id" id="report_igreja_id">
             </form>
         </div>
     </div>
 </div>
 
-@if(request()->input('dtano') && request()->input('igrejas'))
+@if(request()->input('dtano') && request()->input('igreja_id'))
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
@@ -83,7 +83,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">LANÇAMENTOS DAS IGREJAS - {{ session('session_perfil')->instituicao_nome }}</h6>
+                            <h6 class="mt-3">LANÇAMENTOS DAS IGREJAS - {{ $instituicao->nome }}</h6>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
@@ -194,26 +194,26 @@
 
         $('#btn_relatorio').on('click', function(event) {
             var dataAno = $('#dtano').val();
-            var igrejas = $('#igreja_id').val();
+            var igreja = $('#igreja_id').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno || !igrejas || igrejas.length === 0) {
+            if (!dataAno || !igreja) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
                 // Preencher e submeter o formulário oculto
                 $('#report_dtano').val(dataAno);
-                $('#report_igrejas').val(JSON.stringify(igrejas));
+                $('#report_igreja_id').val(igreja);
                 $('#report_form').submit();
             }
         });
 
         $('#filter_form').submit(function(event) {
             var dataAno = $('#dtano').val();
-            var igrejas = $('#igreja_id').val();
+            var igreja = $('#igreja_id').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno || !igrejas || igrejas.length === 0) {
+            if (!dataAno || !igreja) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             }

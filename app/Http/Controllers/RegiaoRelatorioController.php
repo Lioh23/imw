@@ -10,6 +10,7 @@ use App\Services\ServiceRegiaoRelatorios\OrcamentoService;
 use App\Services\ServiceRegiaoRelatorios\QuantidadeMembrosService;
 use App\Services\ServiceRegiaoRelatorios\SaldoIgrejasService;
 use App\Services\ServiceRegiaoRelatorios\VariacaoFinanceiraService;
+use App\Traits\Identifiable;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 
@@ -94,9 +95,10 @@ class RegiaoRelatorioController extends Controller
     public function lancamentodasigrejas(Request $request)
     {
         $dt = $request->input('dtano');
-        $igrejasID = $request->input('igrejas', []);
+        $igrejaId = $request->input('igreja_id');
+        $regiao = Identifiable::fetchtSessionRegiao();
 
-        $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejasID);
+        $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejaId, $regiao);
         return view('regiao.relatorios.lancamentodasigrejas', $data);
     }
 
@@ -201,9 +203,10 @@ class RegiaoRelatorioController extends Controller
     {
 
         $dt = $request->input('dtano');
-        $igrejasID = json_decode($request->input('igrejas'), true);
+        $igrejaId = $request->input('igreja_id');
+        $regiao = Identifiable::fetchtSessionRegiao();
 
-        $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejasID);
+        $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejaId, $regiao);
 
         $pdf = FacadePdf::loadView('regiao.relatorios.lancamentodasigrejas_pdf', $data)
             ->setPaper('a4', 'landscape');
