@@ -37,25 +37,25 @@ class LancamentoIgrejasService
         $result = DB::table('instituicoes_instituicoes as ii')
             ->leftJoin('financeiro_lancamentos as fl', function($join) use ($dtano) {
                 $join->on('ii.id', '=', 'fl.instituicao_id')
-                     ->whereYear('fl.data_lancamento', '=', $dtano);
+                     ->whereYear('fl.data_movimento', '=', $dtano);
             })
             ->leftJoin('instituicoes_instituicoes as parent', 'ii.instituicao_pai_id', '=', 'parent.id')
             ->select(
                 'ii.nome as instituicao_nome',
                 'parent.nome as instituicao_pai_nome',
                 'ii.id',
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 1 THEN 1 END) AS janeiro'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 2 THEN 1 END) AS fevereiro'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 3 THEN 1 END) AS marco'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 4 THEN 1 END) AS abril'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 5 THEN 1 END) AS maio'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 6 THEN 1 END) AS junho'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 7 THEN 1 END) AS julho'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 8 THEN 1 END) AS agosto'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 9 THEN 1 END) AS setembro'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 10 THEN 1 END) AS outubro'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 11 THEN 1 END) AS novembro'),
-                DB::raw('COUNT(CASE WHEN MONTH(fl.data_lancamento) = 12 THEN 1 END) AS dezembro')
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 1 THEN 1 END) AS janeiro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 2 THEN 1 END) AS fevereiro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 3 THEN 1 END) AS marco'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 4 THEN 1 END) AS abril'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 5 THEN 1 END) AS maio'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 6 THEN 1 END) AS junho'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 7 THEN 1 END) AS julho'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 8 THEN 1 END) AS agosto'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 9 THEN 1 END) AS setembro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 10 THEN 1 END) AS outubro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 11 THEN 1 END) AS novembro'),
+                DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 12 THEN 1 END) AS dezembro')
             )
             ->where('ii.id', $igrejaId)
             ->groupBy('ii.id', 'ii.nome', 'parent.nome')
