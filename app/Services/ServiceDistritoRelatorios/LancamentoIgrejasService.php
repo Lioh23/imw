@@ -60,6 +60,7 @@ class LancamentoIgrejasService
             ->whereIn('ii.id', $igrejasID)
             ->where('fl.conciliado', 1)
             ->whereNull('ii.deleted_at')
+            ->where('ii.ativo', 1)
             ->whereNull('fl.deleted_at')
             ->groupBy('ii.id', 'ii.nome', 'parent.nome')
             ->orderBy('ii.id')
