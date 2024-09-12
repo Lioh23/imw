@@ -58,6 +58,9 @@ class LancamentoIgrejasService
                 DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 12 THEN 1 END) AS dezembro')
             )
             ->where('ii.id', $igrejaId)
+            ->where('fl.conciliado', 1)
+            ->whereNull('ii.deleted_at')
+            ->whereNull('fl.deleted_at')
             ->groupBy('ii.id', 'ii.nome', 'parent.nome')
             ->orderBy('ii.id')
             ->get();
@@ -80,6 +83,7 @@ class LancamentoIgrejasService
             ->whereIn('ii.instituicao_pai_id', $distritos)
             ->where('ii.tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
             ->where('ii.ativo', 1)
+            ->whereNull('ii.deleted_at')
             ->orderBy('ii.nome')
             ->get();
     }
