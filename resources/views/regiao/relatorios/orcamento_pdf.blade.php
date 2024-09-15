@@ -163,7 +163,7 @@
             @endphp
         @endforeach
         <tr class="font-weight-bold">
-            <td>Totais</td>
+            <td colspan="2">Totais</td>
             <td style="text-align: right">{{ number_format($totalJaneiro, 2, ',', '.') }}</td>
             <td style="text-align: right">{{ number_format($totalFevereiro, 2, ',', '.') }}</td>
             <td style="text-align: right">{{ number_format($totalMarco, 2, ',', '.') }}</td>
