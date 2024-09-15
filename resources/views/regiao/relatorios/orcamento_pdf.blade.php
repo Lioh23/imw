@@ -88,7 +88,7 @@
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
-            <div class="title">ORÇAMENTO - {{ $instituicao->nome }}</div>
+            <div class="title">ORÇAMENTO - {{ request()->input('distrito') != 'all' ? $instituicao->nome : 'Todos os Distritos' }}</div>
             <div class="period" style="margin-top:4px">
                 Ano: {{ request()->input('dtano') }}
             </div>
@@ -99,6 +99,7 @@
     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
     <thead class="thead-dark">
         <tr>
+            <th width="110px" style="text-align: left">DISTRITO</th>
             <th width="180px" style="text-align: left">IGREJA</th>
             <th width="50px" style="text-align: right">JAN</th>
             <th width="50px" style="text-align: right">FEV</th>
@@ -131,6 +132,7 @@
         @endphp
         @foreach($lancamentos as $lancamento)
             <tr>
+                <td>{{ $lancamento->distrito_nome }}</td>
                 <td>{{ $lancamento->instituicao_nome }}</td>
                 <td style="text-align: right">{{ number_format($lancamento->janeiro, 2, ',', '.') }}</td>
                 <td style="text-align: right">{{ number_format($lancamento->fevereiro, 2, ',', '.') }}</td>

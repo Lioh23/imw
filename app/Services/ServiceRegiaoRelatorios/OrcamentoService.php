@@ -20,7 +20,7 @@ class OrcamentoService
         $regiao = Identifiable::fetchtSessionRegiao();
 
         return [
-            'lancamentos' => OrcamentoUtils::fetch($dtano, $distritoId),
+            'lancamentos' => OrcamentoUtils::fetch($dtano, $distritoId, $regiao->id),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
             'instituicao' => InstituicoesInstituicao::find($distritoId)
         ];

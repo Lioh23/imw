@@ -35,6 +35,7 @@
                     <div class="col-lg-3">
                         <select class="form-control" id="distrito" name="distrito" required>
                             <option value="">Selecione</option>
+                            <option value="all">Todos</option>
                             @foreach($distritos as $distrito)
                                 <option value="{{ $distrito->id }}" {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
                             @endforeach
@@ -80,11 +81,12 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">ORÇAMENTO - {{ $instituicao->nome }}</h6>
+                            <h6 class="mt-3">ORÇAMENTO - {{ request()->input('distrito') != 'all' ? $instituicao->nome : 'Todos os Distritos' }}</h6>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <th width="300" style="text-align: left">IGREJA</th>
+                                        <th width="150" style="text-align: left">DISTRITO</th>
+                                        <th width="250" style="text-align: left">IGREJA</th>
                                         <th width="50" style="text-align: right">JAN</th>
                                         <th width="50" style="text-align: right">FEV</th>
                                         <th width="50" style="text-align: right">MAR</th>
@@ -116,6 +118,7 @@
                                     @endphp
                                     @foreach($lancamentos as $lancamento)
                                     <tr>
+                                        <td>{{ $lancamento->distrito_nome }}</td>
                                         <td>{{ $lancamento->instituicao_nome }}</td>
                                         <td style="text-align: right">{{ number_format($lancamento->janeiro, 2, ',', '.') }}</td>
                                         <td style="text-align: right">{{ number_format($lancamento->fevereiro, 2, ',', '.') }}</td>

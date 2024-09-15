@@ -131,4 +131,10 @@ trait Identifiable
             ->where('tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO)
             ->get();
     }
+
+    public static function fetchDistritosIdByRegiao(int $regiaoId): array
+    {
+        return static::fetchDistritosByRegiao($regiaoId)->pluck('id')->toArray();
+    }
+
 }
