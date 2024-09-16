@@ -37,6 +37,8 @@ trait OrcamentoUtils
                 fn ($query) => $query->whereIn('ii.instituicao_pai_id', Identifiable::fetchDistritosIdByRegiao($regiaoId)),
                 fn ($query) => $query->where('ii.instituicao_pai_id', $distritoId)
             )
+            ->where(fn ($query) => $query->whereNull('ii.deleted_at')->where('ii.ativo', 1))
+            ->where(fn ($query) => $query->whereNull('dist.deleted_at')->where('dist.ativo', 1))
             ->groupBy('dist.nome')
             ->groupBy('ii.nome')
             ->orderBy('dist.nome')
