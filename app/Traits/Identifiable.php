@@ -118,8 +118,19 @@ trait Identifiable
             ->firstOr(fn() => throw new FetchRolAtualException());
     }
 
-    public static function fetchSugestaoRol()
+    public static function fetchSugestaoRol($membroId = null)
     {
+        if ($membroId) {
+            $rolExistente = MembresiaRolPermanente::where('membro_id', $membroId)
+                ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
+                ->whereNotNull('numero_rol')
+                ->first();
+            
+            if ($rolExistente) {
+                return $rolExistente->numero_rol;
+            }
+        }
+
         return MembresiaRolPermanente::selectRaw('IFNULL(MAX(numero_rol), 0) + 1 sugestao_rol')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->first()->sugestao_rol;

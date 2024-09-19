@@ -139,11 +139,10 @@ class MembrosController extends Controller
             $data = app(IdentificaDadosExcluirMembroService::class)->execute($id);
 
             $pessoa       = $data['pessoa'];
-            $sugestaoRol  = $data['sugestao_rol'];
             $pastores     = $data['pastores'];
             $modos        = $data['modos'];
 
-            return view('membros.exclusao', compact('pessoa', 'sugestaoRol', 'pastores', 'modos'));
+            return view('membros.exclusao', compact('pessoa',  'pastores', 'modos'));
         } catch(IdentificaDadosExcluirMembroException $e) {
             return redirect()->back()->with('error', 'Erro ao tentar abrir a tela de exclusão de membro');
         } catch(\Exception $e) {

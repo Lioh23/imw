@@ -27,7 +27,7 @@ class StoreReintegracaoService
             ]);
 
             // atualiza o rol atual
-            optional($pessoa->rolAtual())->update(['lastrec' => 0]);
+            optional($pessoa->rolAtualSessionIgreja())->update(['lastrec' => 0]);
 
             $pessoa->rolPermanente()->create($params);
             DB::commit();

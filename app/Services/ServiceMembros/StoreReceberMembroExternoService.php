@@ -62,7 +62,6 @@ class StoreReceberMembroExternoService
             'status'           => MembresiaRolPermanente::STATUS_EXCLUSAO,
             'modo_exclusao_id' => 10,  // transferencia para outra igreja Wesleyana
             'dt_exclusao'      => $dtExclusao,
-            'lastrec'          => 0
         ];
 
         $rolAtual = MembresiaRolPermanente::where('membro_id', $membro->id)

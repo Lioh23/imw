@@ -5,6 +5,7 @@ namespace App\Http\Requests;
 use App\Rules\RangeDateRule;
 use App\Rules\UniqueRolIgrejaRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 
 class StoreReintegracaoRequest extends FormRequest
 {
@@ -25,8 +26,10 @@ class StoreReintegracaoRequest extends FormRequest
      */
     public function rules()
     {
+        $membroId = Route::current()->parameter('id');
+
         return [
-            "numero_rol"       => ['required', new UniqueRolIgrejaRule],
+            "numero_rol"       => ['required', new UniqueRolIgrejaRule($membroId)],
             "dt_recepcao"      => ['required', 'date', new RangeDateRule],
             "modo_recepcao_id" => 'required|exists:membresia_situacoes,id',
             "clerigo_id"       => 'required|exists:pessoas_pessoas,id',

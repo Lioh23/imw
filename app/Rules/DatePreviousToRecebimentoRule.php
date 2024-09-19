@@ -19,7 +19,7 @@ class DatePreviousToRecebimentoRule implements Rule
     public function __construct($membroId)
     {
         $this->dtRecepcao = MembresiaMembro::findOr($membroId, fn() => throw new MembroNotFoundException('Membro não encontrado'))
-            ->rolAtual
+            ->rolAtualSessionIgreja
             ->dt_recepcao;
     }
 

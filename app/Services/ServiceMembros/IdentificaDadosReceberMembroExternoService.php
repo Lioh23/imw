@@ -16,7 +16,7 @@ class IdentificaDadosReceberMembroExternoService
             'pessoa'       => Identifiable::fetchPessoa($notificacao->membro_id, MembresiaMembro::VINCULO_MEMBRO),
             'pastores'     => Identifiable::fetchPastores(),
             'congregacoes' => Identifiable::fetchCongregacoes(),
-            'sugestaoRol'  => Identifiable::fetchSugestaoRol(),
+            'sugestaoRol'  => Identifiable::fetchSugestaoRol($notificacao->membro_id),
             'notificacao'  => $notificacao
         ];
     }

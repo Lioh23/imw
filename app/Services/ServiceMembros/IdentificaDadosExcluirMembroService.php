@@ -17,7 +17,6 @@ class IdentificaDadosExcluirMembroService
     {
         return [
             'pessoa'       => $this->fetchMembroExcluir($id),
-            'sugestao_rol' => Identifiable::fetchSugestaoRol(),
             'pastores'     => Identifiable::fetchPastores(),
             'modos'        => Identifiable::fetchModos(MembresiaSituacao::TIPO_EXCLUSAO),
         ];

@@ -10,14 +10,16 @@ class UniqueRolIgrejaRule implements Rule
 {
     use Identifiable;
 
+    private $membroId;
+
     /**
      * Create a new rule instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($membroId = null)
     {
-        //
+        $this->membroId = $membroId;
     }
 
     /**
@@ -31,7 +33,8 @@ class UniqueRolIgrejaRule implements Rule
     {
         $hasRolPermanente = (booL) MembresiaRolPermanente::where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->where('numero_rol', $value)
-            ->first();
+            ->when($this->membroId, fn ($query) => $query->where('membro_id', '<>', $this->membroId))
+            ->exists();
         
         return !$hasRolPermanente;
     }

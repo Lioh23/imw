@@ -2,10 +2,12 @@
 
 namespace App\Models;
 
+use App\Traits\Identifiable;
 use Awobaz\Compoships\Compoships;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class MembresiaMembro extends Model
@@ -89,9 +91,9 @@ class MembresiaMembro extends Model
         return $this->hasMany(MembresiaRolPermanente::class, 'membro_id');
     }
 
-    public function rolAtual()
+    public function rolAtualSessionIgreja(): HasOne
     {
-        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->where('lastrec', 1);
+        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->where('lastrec', 1)->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id);
     }
 
     public function disciplinas()

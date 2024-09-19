@@ -4,6 +4,7 @@ namespace App\Http\Requests;
 
 use App\Rules\UniqueRolIgrejaRule;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Route;
 
 class StoreReceberMembroExternoRequest extends FormRequest
 {
@@ -24,12 +25,14 @@ class StoreReceberMembroExternoRequest extends FormRequest
      */
     public function rules()
     {
+        $notificacao = Route::current()->parameter('notificacao');
+
         return [
             'clerigo_id'  => 'required|exists:pessoas_pessoas,.id',
             'dt_resposta' => 'required|date',
             'congregacao' => 'nullable|exists:congregacoes_congregacoes,id',
             'action'      => 'required',
-            'numero_rol'  => ['required', new UniqueRolIgrejaRule],
+            'numero_rol'  => ['required', new UniqueRolIgrejaRule($notificacao->membro_id)],
         ];
     }
 }

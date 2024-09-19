@@ -45,7 +45,7 @@
             <label class="control-label">* Nº do Rol:</label>
           </div>
           <div class="col-lg-6">
-            <input type="number" class="form-control @error('numero_rol') is-invalid @enderror" id="numero_rol" name="numero_rol" value="{{ old('numero_rol', $sugestaoRol) }}">
+            <input type="number" class="form-control @error('numero_rol') is-invalid @enderror" id="numero_rol" name="numero_rol" value="{{ old('numero_rol', $sugestaoRol) }}" readonly>
             @error('numero_rol')
               <div class="invalid-feedback">{{ $message }}</div>
             @enderror

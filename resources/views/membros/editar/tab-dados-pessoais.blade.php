@@ -473,7 +473,7 @@
               </div>
               <div class="col-xl-3">
                 <label for="dt_recepcao">Data de Recepção</label>
-                <input type="date" class="form-control @error('dt_recepcao') is-invalid @enderror" id="dt_recepcao" name="dt_recepcao" value="{{ old('dt_recepcao', optional(optional($pessoa->rolAtual)->dt_recepcao)->format('Y-m-d')) }}">
+                <input type="date" class="form-control @error('dt_recepcao') is-invalid @enderror" id="dt_recepcao" name="dt_recepcao" value="{{ old('dt_recepcao', optional(optional($pessoa->rolAtualSessionIgreja)->dt_recepcao)->format('Y-m-d')) }}">
                 @error('dt_recepcao')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
