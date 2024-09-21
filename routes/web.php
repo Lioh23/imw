@@ -13,6 +13,7 @@ use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IgrejasController;
 use App\Http\Controllers\InstituicaoController;
+use App\Http\Controllers\InstituicaoRegiaoController;
 use App\Http\Controllers\MembresiaGeralController;
 use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\NotificacoesTranferenciaController;
@@ -300,5 +301,13 @@ Route::middleware(['auth'])->group(function () {
 
         // Segurança
         Route::get('/selecionarPerfil', [HomeController::class, 'selecionarPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('selecionarPerfil');
+    
+        //Instituicoes
+        Route::prefix('instituicoes')->name('instituicoes.')->group(function () {     
+            Route::get('/distritos', [InstituicaoRegiaoController::class, 'distritos'])->name('distritos')->middleware(['seguranca:instituicoes-distritos']);
+            Route::get('/secretarias', [InstituicaoRegiaoController::class, 'secretarias'])->name('secretarias')->middleware(['seguranca:instituicoes-secretarias']);
+            Route::get('/congregacoes', [InstituicaoRegiaoController::class, 'congregacoes'])->name('congregacoes')->middleware(['seguranca:instituicoes-congregacoes']);
+            Route::get('/igrejas', [InstituicaoRegiaoController::class, 'igrejas'])->name('igrejas')->middleware(['seguranca:instituicoes-igrejas']);
+        });
     });
 });
