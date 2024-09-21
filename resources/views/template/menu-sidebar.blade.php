@@ -159,11 +159,11 @@
                          <a href="{{ route('instituicoes.igrejas') }}">Igrejas</a>
                          @endif
                      </li>
-                     <li>
+                    <!--  <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-congregacoes'))
                          <a href="{{ route('instituicoes.congregacoes') }}">Congregacões</a>
                          @endif
-                     </li>
+                     </li> -->
                  </ul>
              </li>
              @endif
