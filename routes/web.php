@@ -14,6 +14,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IgrejasController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\InstituicaoRegiaoController;
+use App\Http\Controllers\InstituicaoRegiaoDistritosController;
+use App\Http\Controllers\InstituicaoRegiaoIgrejasController;
+use App\Http\Controllers\InstituicaoRegiaoSecretariasController;
 use App\Http\Controllers\MembresiaGeralController;
 use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\NotificacoesTranferenciaController;
@@ -304,10 +307,9 @@ Route::middleware(['auth'])->group(function () {
     
         //Instituicoes
         Route::prefix('instituicoes')->name('instituicoes.')->group(function () {     
-            Route::get('/distritos', [InstituicaoRegiaoController::class, 'distritos'])->name('distritos')->middleware(['seguranca:instituicoes-distritos']);
-            Route::get('/secretarias', [InstituicaoRegiaoController::class, 'secretarias'])->name('secretarias')->middleware(['seguranca:instituicoes-secretarias']);
-            Route::get('/congregacoes', [InstituicaoRegiaoController::class, 'congregacoes'])->name('congregacoes')->middleware(['seguranca:instituicoes-congregacoes']);
-            Route::get('/igrejas', [InstituicaoRegiaoController::class, 'igrejas'])->name('igrejas')->middleware(['seguranca:instituicoes-igrejas']);
+            Route::get('/distritos', [InstituicaoRegiaoDistritosController::class, 'index'])->name('distritos')->middleware(['seguranca:instituicoes-distritos']);
+            Route::get('/secretarias', [InstituicaoRegiaoSecretariasController::class, 'index'])->name('secretarias')->middleware(['seguranca:instituicoes-secretarias']);
+            Route::get('/igrejas', [InstituicaoRegiaoIgrejasController::class, 'index'])->name('igrejas')->middleware(['seguranca:instituicoes-igrejas']);
         });
     });
 });
