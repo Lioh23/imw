@@ -1,71 +1,72 @@
 @extends('template.layout')
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[
+<x-breadcrumb :breadcrumbs="[
         ['text' => 'Instituições', 'url' => '/', 'active' => false],
         ['text' => 'Distritos', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 @section('extras-css')
-    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
 
-    <style>
-        .swal2-popup .swal2-styled.swal2-cancel {
-            color: white !important;
-        }
-    </style>
+<style>
+    .swal2-popup .swal2-styled.swal2-cancel {
+        color: white !important;
+    }
+</style>
 @endsection
 
 @section('extras-scripts')
-    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+<script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
 @endsection
 
 @include('extras.alerts')
 
 @section('content')
-    <div class="container-fluid">
+<div class="container-fluid">
 
-    </div>
-    <div class="col-lg-12 col-12 layout-spacing">
-        <div class="statbox widget box box-shadow">
-            <div class="widget-header">
-                <div class="row">
-                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Filtros para pesquisa</h4>
-                    </div>
+</div>
+<div class="col-lg-12 col-12 layout-spacing">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4>Filtros para pesquisa</h4>
                 </div>
             </div>
-            <div class="widget-content widget-content-area">
-                <!-- Conteúdo -->
-                <div class="card mb-3">
-                    <div class="bg-holder d-none d-lg-block bg-card gb-title">
-                    </div>
-                    <!--/.bg-holder-->
-                    <div class="card-body">
-                        <form>
-                            <div class="row mb-4">
-                                <div class="col-4">
-                                    <input type="text" name="search" id="searchInput"
-                                        class="form-control form-control-sm" placeholder="Pesquisar...">
-                                </div>
-                                <div class="col-auto" style="margin-left: -19px;">
-                                    <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
+        </div>
+        <div class="widget-content widget-content-area">
+            <!-- Conteúdo -->
+            <div class="card mb-3">
+                <div class="bg-holder d-none d-lg-block bg-card gb-title">
                 </div>
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h5 class="mb-0">Listagem de Registros</h5>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-12">
-                                <a title="Inserir um novo registro"
+                <!--/.bg-holder-->
+                <div class="card-body">
+                    <form>
+                        <div class="row mb-4">
+                            <div class="col-4">
+                                <input type="text" name="search" id="searchInput"
+                                    class="form-control form-control-sm" placeholder="Pesquisar...">
+                            </div>
+                            <div class="col-auto" style="margin-left: -19px;">
+                                <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">
+                    <h5 class="mb-0">Listagem de Registros</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <a href="{{ route('instituicoes.distritos.novo') }}" title="Inserir um novo registro"
                                 class="btn btn-primary right btn-rounded"> <svg xmlns="http://www.w3.org/2000/svg"
                                     width="24" height="24" viewBox="0 0 24 24" fill="none"
                                     stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -75,96 +76,186 @@
                                     <line x1="12" y1="8" x2="12" y2="16"></line>
                                     <line x1="8" y1="12" x2="16" y2="12"></line>
                                 </svg> Novo </a>
-                                <div class="table-responsive">
-                                    <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
-                                        <thead class="thead-light">
-                                            <tr>
-                                                <th>Tipo</th>
-                                                <th>Nome</th>
-                                                <th>CNPJ</th>
-                                                <th>Cidade</th>
-                                                <th>Telefone</th>
-                                                <th>Ação</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @foreach ($distritos as $index => $distrito)
-                                                <tr>
-                                                    <td>{{$distrito->tipo}}</td>
-                                                    <td>{{$distrito->nome}}</td>
-                                                    <td>{{$fornecedor->telefone}}</td>
-                                                    <td>{{$fornecedor->cnpj}}</td>
-                                                    <td>{{$fornecedor->cidade}}</td>
-                                                    <td>{{$fornecedor->telefone}}</td>
-                                                    <td class="table-action">
-                                                            <a 
-                                                                title="Editar" class="btn btn-sm btn-dark mr-2 btn-rounded">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-edit-2">
-                                                                    <path
-                                                                        d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                    </path>
-                                                                </svg>
-                                                            </a>
-                                                            <form 
-                                                                method="POST" style="display: inline-block;"
-                                                                id="form_delete_fornecedor_{{ $index }}">
-                                                                @csrf
-                                                                @method('DELETE')
-                                                                <button type="button" title="Apagar"
-                                                                    class="btn btn-sm btn-danger mr-2 btn-rounded btn-confirm-delete"
-                                                                    data-form-id="form_delete_fornecedor_{{ $index }}">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="feather feather-trash-2">
-                                                                        <polyline points="3 6 5 6 21 6"></polyline>
-                                                                        <path
-                                                                            d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                                                        </path>
-                                                                        <line x1="10" y1="11" x2="10"
-                                                                            y2="17"></line>
-                                                                        <line x1="14" y1="11" x2="14"
-                                                                            y2="17"></line>
-                                                                    </svg>
-                                                                </button>
-                                                            </form>
-                                                        </td>  
-                                                    </tr>    
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                                {{ $distritos->links('vendor.pagination.index') }}
+                            <div class="table-responsive">
+                                <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Nome</th>
+
+                                            <th width="240px"></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($distritos as $index => $distrito)
+                                        <tr>
+                                            <td>
+                                                @if($distrito->deleted_at)
+                                                <del>{{ $distrito->nome }}</del>
+                                                @else
+                                                {{ $distrito->nome }}
+                                                @endif
+                                            </td>
+                                            <td class="table-action">
+                                                
+                                                @if(!$distrito->deleted_at)
+                                                <a href="javascript:void(0);" title="Visualizar" class="btn btn-sm btn-info mr-1 btn-rounded btn-view-details" data-distrito-id="{{ $distrito->id }}">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
+                                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z"></path>
+                                                        <circle cx="12" cy="12" r="3"></circle>
+                                                    </svg>
+
+                                                </a>
+                                                <a href="{{ route('instituicoes.distritos.editar', $distrito->id) }}" title="Editar" class="btn btn-sm btn-dark mr-1 btn-rounded">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2">
+                                                        <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                                                    </svg>
+                                                </a>
+                                                @endif
+
+                                                <form action="{{ route($distrito->deleted_at ? 'instituicoes.distritos.ativar' : 'instituicoes.distritos.deletar', $distrito->id) }}"
+                                                    method="POST" style="display: inline-block;" id="form_{{ $distrito->deleted_at ? 'ativar' : 'delete' }}_distrito_{{ $index }}">
+                                                    @csrf
+                                                    @if($distrito->deleted_at)
+                                                    @method('PUT') {{-- Para restaurar o registro --}}
+                                                    <button type="button" title="Ativar" class="btn btn-sm btn-success mr-1 btn-rounded btn-confirm-ativar" data-form-ativar-id="form_ativar_distrito_{{ $index }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw">
+                                                            <polyline points="23 4 23 10 17 10"></polyline>
+                                                            <polyline points="1 20 1 14 7 14"></polyline>
+                                                            <path d="M3.51 9a9 9 0 0 1 13.36-5.36L23 10m-2 6a9 9 0 0 1-13.36 5.36L1 14"></path>
+                                                        </svg>
+                                                    </button>
+                                                    @else
+                                                    @method('DELETE')
+                                                    <button type="button" title="Inativar" class="btn btn-sm btn-danger btn-rounded btn-confirm-delete" data-form-delete-id="form_delete_distrito_{{ $index }}">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-slash">
+                                                            <circle cx="12" cy="12" r="10"></circle>
+                                                            <line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line>
+                                                        </svg>
+                                                    </button>
+
+                                                    @endif
+                                                </form>
+
+                                            </td>
+                                        </tr>
+                                        <!-- Modal de Visualização -->
+                                        <div class="modal fade" id="viewDetailsModal_{{ $distrito->id }}" tabindex="-1" role="dialog" aria-labelledby="viewDetailsModalLabel_{{ $distrito->id }}" aria-hidden="true">
+                                            <div class="modal-dialog modal-lg" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="viewDetailsModalLabel_{{ $distrito->id }}">Detalhes do Distrito</h5>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true">&times;</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="modal-body">
+                                                        <!-- Os detalhes do distrito serão preenchidos aqui pelo JavaScript -->
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+
                             </div>
+                            {{ $distritos->links('vendor.pagination.index') }}
                         </div>
                     </div>
                 </div>
-                <!-- Fim Conteúdo -->
             </div>
+            <!-- Fim Conteúdo -->
         </div>
     </div>
+</div>
 
-    <script>
-        $('.btn-confirm-delete').on('click', function() {
-            const formId = $(this).data('form-id')
-            swal({
-                title: 'Deseja realmente apagar este fornecedor?',
-                type: 'error',
-                showCancelButton: true,
-                confirmButtonText: "Deletar",
-                confirmButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
-                cancelButtonColor: "#3085d6",
-                padding: '2em'
-            }).then(function(result) {
-                if (result.value) document.getElementById(formId).submit()
-            })
-        })
-    </script>
+<script>
+    // Confirmação para apagar (deletar) o distrito
+    $('.btn-confirm-delete').on('click', function() {
+        const formId = $(this).data('form-delete-id');
+        swal({
+            title: 'Deseja realmente inativar este distrito?',
+            type: 'error',
+            showCancelButton: true,
+            confirmButtonText: "Inativar",
+            confirmButtonColor: "#d33",
+            cancelButtonText: "Cancelar",
+            cancelButtonColor: "#3085d6",
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+                document.getElementById(formId).submit();
+            }
+        });
+    });
+
+    // Confirmação para ativar o distrito
+    $('.btn-confirm-ativar').on('click', function() {
+        const formId = $(this).data('form-ativar-id');
+        swal({
+            title: 'Deseja realmente ativar este distrito?',
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: "Sim",
+            confirmButtonColor: "#28a745", // Verde para ativar
+            cancelButtonText: "Não",
+            cancelButtonColor: "#3085d6",
+            padding: '2em'
+        }).then(function(result) {
+            if (result.value) {
+                document.getElementById(formId).submit();
+            }
+        });
+    });
+
+    $('.btn-view-details').on('click', function() {
+        var distritoId = $(this).data('distrito-id');
+        var modalId = '#viewDetailsModal_' + distritoId;
+        var button = $(this);
+
+        // Adicionar o ícone de loading no botão
+        var originalButtonText = button.html(); // Salvar o texto original do botão
+        button.html('<i class="fas fa-spinner fa-spin"></i>'); // Mudar para ícone de loading
+
+        // Fazer uma requisição AJAX para buscar os detalhes
+        $.ajax({
+            url: '/instituicoes/distritos/' + distritoId + '/detalhes',
+            method: 'GET',
+            success: function(data) {
+                // Preencher o modal com os detalhes
+                $(modalId).find('.modal-body').html(`
+                <p><strong>Nome:</strong> ${data.nome}</p>
+                <p><strong>CNPJ:</strong> ${data.cnpj || '-'}</p>
+                <p><strong>CEP:</strong> ${data.cep || '-'}</p>
+                <p><strong>Endereço:</strong> ${data.endereco || '-'}</p>
+                <p><strong>Número:</strong> ${data.numero || '-'}</p>
+                <p><strong>Complemento:</strong> ${data.complemento || '-'}</p>
+                <p><strong>Bairro:</strong> ${data.bairro || '-'}</p>
+                <p><strong>Cidade:</strong> ${data.cidade || '-'}</p>
+                <p><strong>UF:</strong> ${data.uf || '-'}</p>
+                <p><strong>País:</strong> ${data.pais || '-'}</p>
+                <p><strong>DDD:</strong> ${data.ddd || '-'}</p>
+                <p><strong>Telefone:</strong> ${data.telefone || '-'}</p>
+                <p><strong>Site:</strong> ${data.site || '-'}</p>
+                <p><strong>Email:</strong> ${data.email || '-'}</p>
+                <p><strong>Pastor:</strong> ${data.pastor || '-'}</p>
+                <p><strong>Tesoureiro:</strong> ${data.tesoureiro || '-'}</p>
+            `);
+                // Exibir o modal
+                $(modalId).modal('show');
+            },
+            error: function(err) {
+                console.error("Erro ao buscar os detalhes do distrito: ", err);
+            },
+            complete: function() {
+                // Restaurar o texto original do botão após o carregamento
+                button.html(originalButtonText);
+            }
+        });
+    });
+</script>
 
 @endsection

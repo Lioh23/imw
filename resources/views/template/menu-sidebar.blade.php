@@ -146,17 +146,17 @@
                  <ul class="collapse submenu list-unstyled" id="instituicoes" data-parent="#instituicoes">
                      <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-secretarias'))
-                         <a href="{{ route('instituicoes.secretarias') }}">Secretarias</a>
+                         <a href="{{ route('instituicoes.secretarias.index') }}">Secretarias</a>
                          @endif
                      </li>
                      <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-distritos'))
-                         <a href="{{ route('instituicoes.distritos') }}">Distritos</a>
+                         <a href="{{ route('instituicoes.distritos.index') }}">Distritos</a>
                          @endif
                      </li>
                      <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-igrejas'))
-                         <a href="{{ route('instituicoes.igrejas') }}">Igrejas</a>
+                         <a href="{{ route('instituicoes.igrejas.index') }}">Igrejas</a>
                          @endif
                      </li>
                  </ul>
