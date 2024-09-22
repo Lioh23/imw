@@ -58,4 +58,9 @@ class InstituicoesInstituicao extends Model
     {
         return $this->hasMany(FinanceiroCaixa::class, 'instituicao_id')->orderBy('id', 'asc');
     }
+
+    public function nomeacoes()
+    {
+        return $this->hasMany(PessoaNomeacao::class, 'instituicao_id', 'id');
+    }
 }

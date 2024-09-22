@@ -15,6 +15,11 @@
     .swal2-popup .swal2-styled.swal2-cancel {
         color: white !important;
     }
+
+    .modal-xl {
+        max-width: 90% !important;
+        /* Define que o modal ocupe 90% da largura da página */
+    }
 </style>
 @endsection
 
@@ -96,7 +101,7 @@
                                                 @endif
                                             </td>
                                             <td class="table-action">
-                                                
+
                                                 @if(!$distrito->deleted_at)
                                                 <a href="javascript:void(0);" title="Visualizar" class="btn btn-sm btn-info mr-1 btn-rounded btn-view-details" data-distrito-id="{{ $distrito->id }}">
                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye">
@@ -140,10 +145,9 @@
                                         </tr>
                                         <!-- Modal de Visualização -->
                                         <div class="modal fade" id="viewDetailsModal_{{ $distrito->id }}" tabindex="-1" role="dialog" aria-labelledby="viewDetailsModalLabel_{{ $distrito->id }}" aria-hidden="true">
-                                            <div class="modal-dialog modal-lg" role="document">
+                                            <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document"> <!-- Adiciona o scroll ao modal -->
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="viewDetailsModalLabel_{{ $distrito->id }}">Detalhes do Distrito</h5>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                                             <span aria-hidden="true">&times;</span>
                                                         </button>
@@ -151,12 +155,11 @@
                                                     <div class="modal-body">
                                                         <!-- Os detalhes do distrito serão preenchidos aqui pelo JavaScript -->
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
-                                                    </div>
+
                                                 </div>
                                             </div>
                                         </div>
+
                                         @endforeach
                                     </tbody>
                                 </table>
@@ -216,35 +219,40 @@
         var modalId = '#viewDetailsModal_' + distritoId;
         var button = $(this);
 
-        // Adicionar o ícone de loading no botão
+        // Adicionar o ícone de loading no botão usando Font Awesome
         var originalButtonText = button.html(); // Salvar o texto original do botão
-        button.html('<i class="fas fa-spinner fa-spin"></i>'); // Mudar para ícone de loading
+        button.html('<i class="fas fa-spinner fa-spin"></i>'); // Usar Font Awesome spinner
 
-        // Fazer uma requisição AJAX para buscar os detalhes
         $.ajax({
             url: '/instituicoes/distritos/' + distritoId + '/detalhes',
             method: 'GET',
             success: function(data) {
-                // Preencher o modal com os detalhes
+                // Preenche o modal com as informações do distrito e as nomeações, ambos em formato de card
                 $(modalId).find('.modal-body').html(`
-                <p><strong>Nome:</strong> ${data.nome}</p>
-                <p><strong>CNPJ:</strong> ${data.cnpj || '-'}</p>
-                <p><strong>CEP:</strong> ${data.cep || '-'}</p>
-                <p><strong>Endereço:</strong> ${data.endereco || '-'}</p>
-                <p><strong>Número:</strong> ${data.numero || '-'}</p>
-                <p><strong>Complemento:</strong> ${data.complemento || '-'}</p>
-                <p><strong>Bairro:</strong> ${data.bairro || '-'}</p>
-                <p><strong>Cidade:</strong> ${data.cidade || '-'}</p>
-                <p><strong>UF:</strong> ${data.uf || '-'}</p>
-                <p><strong>País:</strong> ${data.pais || '-'}</p>
-                <p><strong>DDD:</strong> ${data.ddd || '-'}</p>
-                <p><strong>Telefone:</strong> ${data.telefone || '-'}</p>
-                <p><strong>Site:</strong> ${data.site || '-'}</p>
-                <p><strong>Email:</strong> ${data.email || '-'}</p>
-                <p><strong>Pastor:</strong> ${data.pastor || '-'}</p>
-                <p><strong>Tesoureiro:</strong> ${data.tesoureiro || '-'}</p>
+                <div class="card mb-3">
+                    <div class="card-header bg-secondary text-white">
+                        Informações do Distrito
+                    </div>
+                    <div class="card-body">
+                        <p><strong>Nome:</strong> ${data.nome}</p>
+                        <p><strong>CNPJ:</strong> ${data.cnpj || '-'}</p>
+                        <p><strong>CEP:</strong> ${data.cep || '-'}</p>
+                        <p><strong>Endereço:</strong> ${data.endereco || '-'}, ${data.numero || '-'}</p>
+                        <p><strong>Complemento:</strong> ${data.complemento || '-'}</p>
+                        <p><strong>Bairro:</strong> ${data.bairro || '-'}</p>
+                        <p><strong>Cidade:</strong> ${data.cidade || '-'}</p>
+                        <p><strong>UF:</strong> ${data.uf || '-'}</p>
+                        <p><strong>País:</strong> ${data.pais || '-'}</p>
+                        <p><strong>DDD:</strong> ${data.ddd || '-'}</p>
+                        <p><strong>Telefone:</strong> ${data.telefone || '-'}</p>
+                        <p><strong>Site:</strong> ${data.site || '-'}</p>
+                        <p><strong>Email:</strong> ${data.email || '-'}</p>
+                        <p><strong>Responsável:</strong> ${data.pastor || '-'}</p>
+                    </div>
+                </div>
             `);
-                // Exibir o modal
+
+                // Exibe o modal
                 $(modalId).modal('show');
             },
             error: function(err) {
