@@ -32,21 +32,21 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchMembrosRelatorio($params)
     {
-        return MembresiaMembro::with('rolAtual')
+        return MembresiaMembro::with('rolAtualSessionIgreja')
             ->where('vinculo', $params['vinculo'])
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->withTrashed()
             ->when($params['situacao'] == 'ativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
-                    $query->orWhereRelation('rolAtual', 'status', 'A');
+                    $query->orWhereRelation('rolAtualSessionIgreja', 'status', 'A');
                     $query->orWhere('status', 'A');
                 });
             })
             ->when($params['situacao'] == 'inativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
-                    $query->orWhereRelation('rolAtual', 'status', 'I');
+                    $query->orWhereRelation('rolAtualSessionIgreja', 'status', 'I');
                     $query->orWhere('status', 'I');
                 });
             })
@@ -81,7 +81,7 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function handleRolDates($query, $field, $dtInicial, $dtFinal)
     {
-        return $query->whereHas('rolAtual', function ($query) use ($field, $dtInicial, $dtFinal) {
+        return $query->whereHas('rolAtualSessionIgreja', function ($query) use ($field, $dtInicial, $dtFinal) {
             $query->withoutGlobalScopes();
             $query->when($dtInicial, fn ($query) => $query->where($field, '>=', $dtInicial));
             $query->when($dtFinal, fn ($query) => $query->where($field, '<=', $dtFinal));
@@ -108,12 +108,12 @@ class IdentificaDadosRelatorioMembresiaService
             $query->withoutGlobalScopes();
             if ($dtInicial) {
                 $query->whereDate('created_at', '>=', $dtInicial);
-                $query->orWhereRelation('rolAtual', 'dt_recepcao', '>=', $dtInicial);
+                $query->orWhereRelation('rolAtualSessionIgreja', 'dt_recepcao', '>=', $dtInicial);
             }
     
             if ($dtFinal) {
                 $query->whereDate('created_at', '<=', $dtFinal);
-                $query->orWhereRelation('rolAtual', 'dt_recepcao', '<=', $dtFinal);
+                $query->orWhereRelation('rolAtualSessionIgreja', 'dt_recepcao', '<=', $dtFinal);
             }
         });
 
@@ -126,12 +126,12 @@ class IdentificaDadosRelatorioMembresiaService
             $query->withoutGlobalScopes();
             if ($dtInicial) {
                 $query->whereDate('deleted_at', '>=', $dtInicial);
-                $query->orWhereRelation('rolAtual', 'dt_exclusao', '>=', $dtInicial);
+                $query->orWhereRelation('rolAtualSessionIgreja', 'dt_exclusao', '>=', $dtInicial);
             }
     
             if ($dtFinal) {
                 $query->whereDate('deleted_at', '<=', $dtFinal);
-                $query->orWhereRelation('rolAtual', 'dt_exclusao', '<=', $dtFinal);
+                $query->orWhereRelation('rolAtualSessionIgreja', 'dt_exclusao', '<=', $dtFinal);
             }
         });
 
