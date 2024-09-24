@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\TodaysDeadlineRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class FinanceiroUpdateEntradaRequest extends FormRequest
@@ -27,7 +28,7 @@ class FinanceiroUpdateEntradaRequest extends FormRequest
             'plano_conta_id' => 'required',
             'caixa_id'       => 'required',
             'valor'          => 'required',
-            'data_movimento' => 'required',
+            'data_movimento' =>  ['required', new TodaysDeadlineRule],
             'descricao'      => 'nullable|string',
             'tipo_pagante_favorecido_id' => 'nullable|string'
         ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\TodaysDeadlineRule;
 use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -29,7 +30,7 @@ class FinanceiroStoreSaidaRequest extends FormRequest
             'plano_conta_id' => 'required',
             'caixa_id'       => 'required',
             'valor'          => 'required',
-            'data_movimento' => 'required',
+            'data_movimento' =>  ['required', new TodaysDeadlineRule],
             'descricao'      => 'nullable|string',
             'tipo_pagante_favorecido_id' => 'required',
             'anexo1' => 'nullable|file|max:20480|mimes:jpeg,png,gif,pdf,doc,docx,xls,xlsx,ppt,pptx',
