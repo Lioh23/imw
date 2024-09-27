@@ -40,6 +40,8 @@ trait QuantidadeMembrosUtils
 				fn ($query) => $query->where('ii.instituicao_pai_id', $distritoId),
 			)
 			->groupBy('ii.id', 'ii.nome', 'dist.nome')
+			->orderBy('dist.nome', 'asc')
+			->orderBy('ii.nome', 'asc')
 			->get();
 
 		return $results;
