@@ -39,6 +39,7 @@ use Carbon\Carbon;
                     <div class="col-lg-3">
                         <select class="form-control" id="distrito" name="distrito" required>
                             <option value="">Selecione</option>
+                            <option value="all">Todos</option>
                             @foreach($distritos as $distrito)
                                 <option value="{{ $distrito->id }}" {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
                             @endforeach
@@ -106,11 +107,12 @@ use Carbon\Carbon;
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">QUANTIDADE DE MEMBROS - {{ $instituicao->nome }}</h6>
+                            <h6 class="mt-3">QUANTIDADE DE MEMBROS - {{ optional($instituicao)->nome ?? optional($regiao)->nome }}</h6>
                             <div class="table-responsive">
                                 <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                     <thead class="thead-dark">
                                         <tr>
+                                            <th style="width: 17%" style="text-align: distrito">DISTRITO</th>
                                             <th style="text-align: left" rowspan="2">IGREJA</th>
                                             <th width="100px" style="text-align: left" rowspan="2">
                                                 TOTAL EM {{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}
@@ -127,6 +129,7 @@ use Carbon\Carbon;
                                         @endphp
                                         @foreach($lancamentos as $lancamento)
                                         <tr>
+                                            <td style="text-align: left;">{{ $lancamento->distrito }}</td>
                                             <td style="text-align: left;">{{ $lancamento->nome }}</td>
                                             <td style="text-align: left;">{{ $lancamento->total_ate_datainicial }}</td>
                                             <td style="text-align: left;">{{ $lancamento->total_ate_datafinal }}</td>
@@ -139,7 +142,7 @@ use Carbon\Carbon;
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th style="text-align: left;">Total Geral</th>
+                                            <th colspan="2" style="text-align: left;">Total Geral</th>
                                             <th style="text-align: left;">{{ $totalGeralInicial }}</th>
                                             <th style="text-align: left;">{{ $totalGeralFinal }}</th>
                                         </tr>

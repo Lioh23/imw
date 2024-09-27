@@ -23,9 +23,10 @@ class QuantidadeMembrosService
         $regiao = Identifiable::fetchtSessionRegiao();
 
         return [
-            'lancamentos' => QuantidadeMembrosUtils::fetch($dataInicial, $dataFinal, $tipo, $distritoId),
+            'lancamentos' => QuantidadeMembrosUtils::fetch($dataInicial, $dataFinal, $tipo, $distritoId, $regiao->id),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
-            'instituicao' => InstituicoesInstituicao::find($distritoId)
+            'instituicao' => InstituicoesInstituicao::find($distritoId),
+            'regiao'      => $regiao
         ];
     }
 }
