@@ -39,7 +39,7 @@ trait QuantidadeMembrosUtils
 				fn ($query) => $query->whereIn('ii.instituicao_pai_id', Identifiable::fetchDistritosIdByRegiao($regiaoId)),
 				fn ($query) => $query->where('ii.instituicao_pai_id', $distritoId),
 			)
-			->groupBy('ii.id', 'ii.nome')
+			->groupBy('ii.id', 'ii.nome', 'dist.nome')
 			->get();
 
 		return $results;
