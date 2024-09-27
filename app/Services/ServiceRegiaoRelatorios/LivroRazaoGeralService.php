@@ -12,7 +12,7 @@ class LivroRazaoGeralService
     use LivroRazaoGeralUtils;
     use Identifiable;
 
-    public function execute($dataInicial, $dataFinal, $distritoId)
+    public function execute($dataInicial, $dataFinal, $distritoId, $igrejaId)
     {
         $dataInicial ??= Carbon::now()->format('Y-m-d');
 
@@ -21,13 +21,10 @@ class LivroRazaoGeralService
         $regiao = Identifiable::fetchtSessionRegiao();
 
         return [
-            'lancamentos' => LivroRazaoGeralUtils::fetch($dataInicial, $dataFinal, $distritoId),
+            'lancamentos' => LivroRazaoGeralUtils::fetch($dataInicial, $dataFinal, $distritoId, $igrejaId),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
-            'instituicao' => InstituicoesInstituicao::find($distritoId)
+            'instituicao' => InstituicoesInstituicao::find($distritoId),
+            'igrejas'     => Identifiable::fetchIgrejasByDistrito($distritoId)
         ];
     }
-
-    
-    
-    
 }

@@ -10,10 +10,10 @@ use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\FinanceiroPlanoContaController;
 use App\Http\Controllers\FinanceiroRelatorioController;
 use App\Http\Controllers\FornecedorController;
+use App\Http\Controllers\HandleInstituicoesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IgrejasController;
 use App\Http\Controllers\InstituicaoController;
-use App\Http\Controllers\InstituicaoRegiaoController;
 use App\Http\Controllers\InstituicaoRegiaoDistritosController;
 use App\Http\Controllers\InstituicaoRegiaoIgrejasController;
 use App\Http\Controllers\InstituicaoRegiaoSecretariasController;
@@ -353,5 +353,9 @@ Route::middleware(['auth'])->group(function () {
                         Route::post('/update/{id}', 'update')->name('update');
                     });
             });
+    });
+
+    Route::prefix('instituicoes')->name('instituicoes.')->controller(HandleInstituicoesController::class)->group(function () {
+        Route::get('igrejasByDistrito/{distritoId}', 'igrejasByDistrito');
     });
 });

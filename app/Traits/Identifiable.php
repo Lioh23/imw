@@ -143,6 +143,13 @@ trait Identifiable
             ->get();
     }
 
+    public static function fetchIgrejasByDistrito(int $distritoId)
+    {
+        return InstituicoesInstituicao::where('instituicao_pai_id', $distritoId)
+            ->where('tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
+            ->get();
+    }
+
     public static function fetchDistritosIdByRegiao(int $regiaoId): array
     {
         return static::fetchDistritosByRegiao($regiaoId)->pluck('id')->toArray();

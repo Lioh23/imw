@@ -43,6 +43,20 @@
 
                 <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
+                        <label class="control-label">* Igreja:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="igreja" name="igreja" required>
+                            <option value="all">todas</option>
+                            @foreach($igrejas as $igreja)
+                                <option value="{{ $igreja->id }}" {{ request()->input('igreja') == $igreja->id ? 'selected' : '' }}>{{ $igreja->nome }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4">
+                    <div class="col-lg-2 text-right">
                         <label class="control-label">* Data Inicial:</label>
                     </div>
                     <div class="col-lg-3">
@@ -73,6 +87,7 @@
             <form id="report_form" action="{{ url('regiao/relatorio/livrorazaogeral/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
                 <input type="hidden" name="distrito" id="report_distrito">
+                <input type="hidden" name="igreja" id="report_igreja">
                 <input type="hidden" name="dt_inicial" id="report_dtinicio">
                 <input type="hidden" name="dt_final" id="report_dtfinal">
             </form>
@@ -102,20 +117,20 @@
                                 </thead>
                                 <tbody>
                                     @foreach($lancamentos as $key => $group)
-                                    <tr style="font-weight: bold;">
-                                        <td colspan="3">{{ $key }}</td>
-                                        <td style="text-align: right">R$ {{ number_format($group['total'], 2, ',', '.') }}</td>
-                                    </tr>
-                                    @foreach($group['movimentos'] as $lancamento)
-                                    @if($lancamento->total_entradas > 0 || $lancamento->total_saidas > 0)
-                                    <tr>
-                                        <td>{{ $lancamento->data_movimentacao }} - {{ $lancamento->instituicao_nome }}</td>
-                                        <td style="text-align: right">R$ {{ number_format($lancamento->total_entradas, 2, ',', '.') }}</td>
-                                        <td style="text-align: right">R$ {{ number_format($lancamento->total_saidas, 2, ',', '.') }}</td>
-                                        <td style="text-align: right"></td>
-                                    </tr>
-                                    @endif
-                                    @endforeach
+                                        <tr style="font-weight: bold;">
+                                            <td colspan="3">{{ $key }}</td>
+                                            <td style="text-align: right">R$ {{ number_format($group['total'], 2, ',', '.') }}</td>
+                                        </tr>
+                                        @foreach($group['movimentos'] as $lancamento)
+                                            @if($lancamento->total_entradas > 0 || $lancamento->total_saidas > 0)
+                                                <tr>
+                                                    <td>{{ $lancamento->data_movimentacao }} - {{ $lancamento->instituicao_nome }}</td>
+                                                    <td style="text-align: right">R$ {{ number_format($lancamento->total_entradas, 2, ',', '.') }}</td>
+                                                    <td style="text-align: right">R$ {{ number_format($lancamento->total_saidas, 2, ',', '.') }}</td>
+                                                    <td style="text-align: right"></td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                     @endforeach
                                 </tbody>
                             </table>
@@ -141,6 +156,7 @@
 
         $('#btn_relatorio').on('click', function(event) {
             var distrito = $('#distrito').val();
+            var igreja = $('#igreja').val();
             var dt_inicial = $('#dt_inicial').val();
             var dt_final = $('#dt_final').val();
 
@@ -151,6 +167,7 @@
             } else {
                 // Preencher e submeter o formulário oculto
                 $('#report_distrito').val(distrito);
+                $('#report_igreja').val(igreja);
                 $('#report_dtinicio').val(dt_inicial);
                 $('#report_dtfinal').val(dt_final);
                 $('#report_form').submit();
@@ -216,6 +233,17 @@
             form.submit();
         }
     }
+
+    $('#distrito').change(function () {
+        $('#igreja').html('<option value="" disabled selected hidden>...</option>');
+        
+        const result = $.get(`/instituicoes/igrejasByDistrito/${this.value}`, function (igrejas) {
+            $('#igreja').html('<option value="all">todas</option>');
+            igrejas.forEach(igreja => {
+                $('#igreja').append(`<option value="${igreja.id}">${igreja.nome}</option>`);
+            });
+        });
+    })
 </script>
 
 <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
