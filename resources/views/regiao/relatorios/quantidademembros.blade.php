@@ -39,7 +39,7 @@ use Carbon\Carbon;
                     <div class="col-lg-3">
                         <select class="form-control" id="distrito" name="distrito" required>
                             <option value="">Selecione</option>
-                            <option value="all">Todos</option>
+                            <option {{ request()->input('distrito') == 'all' ? 'selected' : '' }} value="all">Todos</option>
                             @foreach($distritos as $distrito)
                                 <option value="{{ $distrito->id }}" {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
                             @endforeach
