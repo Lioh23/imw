@@ -2,16 +2,17 @@
 
 namespace App\Traits;
 
+use App\Models\InstituicoesTipoInstituicao;
 use Illuminate\Support\Facades\DB;
 
 trait MembrosMinisterioUtils
 {
-    public static function fetch($dataInicial, $dataFinal, $tipo, $distritoId)
+    public static function fetch($dataInicial, $dataFinal, $tipo, $distritoId, $regiaoId = null)
     {
         $vinculoCondition = $tipo === 'C' ? ['C', 'M'] : ['M'];
 
         $results = DB::table('instituicoes_instituicoes as ii')
-            ->select('ii.nome')
+            ->select('ii.nome', 'dist.nome as distrito')
             ->selectRaw("
                 COUNT(CASE 
                     WHEN TIMESTAMPDIFF(YEAR, mm.data_nascimento, CURDATE()) BETWEEN 0 AND 9 
@@ -95,8 +96,15 @@ trait MembrosMinisterioUtils
             ->leftJoin('membresia_rolpermanente as mr', function ($join) {
                 $join->on('mr.membro_id', '=', 'mm.id');
             })
-            ->where('ii.instituicao_pai_id', $distritoId)
-            ->groupBy('ii.nome')
+            ->leftJoin('instituicoes_instituicoes as dist', function ($join) {
+				$join->on('ii.instituicao_pai_id', '=', 'dist.id')
+					->where('dist.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO);
+			})
+            ->when($distritoId == 'all' && $regiaoId,
+                fn ($query) => $query->whereIn('ii.instituicao_pai_id', Identifiable::fetchDistritosIdByRegiao($regiaoId)),
+                fn ($query) => $query->where('ii.instituicao_pai_id', $distritoId)
+            )
+            ->groupBy('ii.nome', 'dist.nome')
             ->get();
 
         return $results;

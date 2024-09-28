@@ -39,6 +39,7 @@ use Carbon\Carbon;
                     <div class="col-lg-3">
                         <select class="form-control" id="distrito" name="distrito" required>
                             <option value="">Selecione</option>
+                            <option value="all" {{ request()->input('distrito') == 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($distritos as $distrito)
                                 <option value="{{ $distrito->id }}" {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
                             @endforeach
@@ -106,11 +107,12 @@ use Carbon\Carbon;
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">MEMBROS POR MINISTÉRIO - {{ $instituicao->nome }}</h6>
+                            <h6 class="mt-3">MEMBROS POR MINISTÉRIO - {{ optional($instituicao)->nome ?? $regiao->nome }}</h6>
                             <div class="table-responsive">
                                 <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                     <thead class="thead-dark">
                                         <tr>
+                                            <th width="30px" style="text-align: left" rowspan="2">DISTRITO</th>
                                             <th width="500px" style="text-align: left" rowspan="2">IGREJA</th>
                                             <th width="60px" style="text-align: center" colspan="2">KIDS</th>
                                             <th width="60px" style="text-align: center" colspan="2">CONEXÃO</th>
@@ -175,6 +177,7 @@ use Carbon\Carbon;
                                         $totalSessenta_Y += $lancamento->Sessenta_Y;
                                         @endphp
                                         <tr>
+                                            <td style="text-align: left; min-width: 250px;">{{ $lancamento->distrito }}</td>
                                             <td style="text-align: left; min-width: 250px;">{{ $lancamento->nome }}</td>
                                             <td style="text-align: right">{{ $lancamento->Kids_X }}</td>
                                             <td style="text-align: right">{{ $lancamento->Kids_Y }}</td>
@@ -195,7 +198,7 @@ use Carbon\Carbon;
                                         </tr>
                                         @endforeach
                                         <tr class="thead-dark">
-                                            <th style="text-align: left">TOTAL</th>
+                                            <th colspan="2" style="text-align: left">TOTAL</th>
                                             <th style="text-align: right">{{ $totalKids_X }}</th>
                                             <th style="text-align: right">{{ $totalKids_Y }}</th>
                                             <th style="text-align: right">{{ $totalConexao_X }}</th>

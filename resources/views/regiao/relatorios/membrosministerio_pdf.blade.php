@@ -92,7 +92,7 @@ use Carbon\Carbon;
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
-            <div class="title">MEMBROS POR MINISTÉRIO - {{ $instituicao->nome }}</div>
+            <div class="title">MEMBROS POR MINISTÉRIO - {{ optional($instituicao)->nome ?? $regiao->nome }}</div>
             <div class="period">
                 Período de {{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}
                 a {{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}
@@ -104,7 +104,8 @@ use Carbon\Carbon;
     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
         <thead class="thead-dark">
             <tr>
-                <th width="140px" style="text-align: left" rowspan="2">IGREJA</th>
+                <th width="20px" style="text-align: left" rowspan="2">DISTRITO</th>
+                <th width="120px" style="text-align: left" rowspan="2">IGREJA</th>
                 <th width="40px" style="text-align: center" colspan="2">KIDS</th>
                 <th width="40px" style="text-align: center" colspan="2">CONEXÃO</th>
                 <th width="40px" style="text-align: center" colspan="2">FIRE</th>
@@ -168,6 +169,7 @@ use Carbon\Carbon;
             $totalSessenta_Y += $lancamento->Sessenta_Y;
             @endphp
             <tr>
+                <td style="text-align: left;">{{ $lancamento->distrito }}</td>
                 <td style="text-align: left;">{{ $lancamento->nome }}</td>
                 <td style="text-align: right">{{ $lancamento->Kids_X }}</td>
                 <td style="text-align: right">{{ $lancamento->Kids_Y }}</td>
@@ -188,7 +190,7 @@ use Carbon\Carbon;
             </tr>
             @endforeach
             <tr class="thead-dark">
-                <th style="text-align: left">TOTAL</th>
+                <th colspan="2" style="text-align: left">TOTAL</th>
                 <th style="text-align: right">{{ $totalKids_X }}</th>
                 <th style="text-align: right">{{ $totalKids_Y }}</th>
                 <th style="text-align: right">{{ $totalConexao_X }}</th>

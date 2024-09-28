@@ -23,9 +23,10 @@ class MembrosMinisterioService
         $regiao = Identifiable::fetchtSessionRegiao();
 
         return [
-            'lancamentos' => MembrosMinisterioUtils::fetch($dataInicial, $dataFinal, $tipo, $distritoId),
+            'lancamentos' => MembrosMinisterioUtils::fetch($dataInicial, $dataFinal, $tipo, $distritoId, $regiao->id),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
-            'instituicao' => InstituicoesInstituicao::find($distritoId)
+            'instituicao' => InstituicoesInstituicao::find($distritoId),
+            'regiao'      => $regiao
         ];
     }
 }
