@@ -98,13 +98,16 @@ trait MembrosMinisterioUtils
             })
             ->leftJoin('instituicoes_instituicoes as dist', function ($join) {
 				$join->on('ii.instituicao_pai_id', '=', 'dist.id')
-					->where('dist.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO);
+					->where('dist.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO)
+                    ->where('dist.ativo', 1);
 			})
             ->when($distritoId == 'all' && $regiaoId,
                 fn ($query) => $query->whereIn('ii.instituicao_pai_id', Identifiable::fetchDistritosIdByRegiao($regiaoId)),
                 fn ($query) => $query->where('ii.instituicao_pai_id', $distritoId)
             )
             ->groupBy('ii.nome', 'dist.nome')
+            ->orderBy('dist.nome', 'asc')
+            ->orderBy('ii.nome', 'asc')
             ->get();
 
         return $results;
