@@ -39,6 +39,7 @@ use Carbon\Carbon;
                     <div class="col-lg-3">
                         <select class="form-control" id="distrito" name="distrito" required>
                             <option value="">Selecione</option>
+                            <option value="all" {{ request()->input('distrito') == 'all' ? 'selected' : '' }}>Todos</option>
                             @foreach($distritos as $distrito)
                                 <option value="{{ $distrito->id }}" {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
                             @endforeach
@@ -106,17 +107,18 @@ use Carbon\Carbon;
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">QUANTIDADE DE MEMBROS - {{ $instituicao->nome }}</h6>
+                            <h6 class="mt-3">QUANTIDADE DE MEMBROS - {{ optional($instituicao)->nome ?? $regiao->nome }}</h6>
                             <div class="table-responsive">
                                 <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                     <thead class="thead-dark">
                                         <tr>
-                                            <th width="200px" style="text-align: left"></th>
+                                            <th colspan="2" width="200px" style="text-align: left"></th>
                                             <th colspan="2" style="text-align: center">TOTAL MASCULINO</th>
                                             <th colspan="2" style="text-align: center">TOTAL FEMININO</th>
                                             <th colspan="2" style="text-align: center">TOTAL</th>
                                         </tr>
                                         <tr>
+                                            <th width="40px" style="text-align: left">DISTRITO</th>
                                             <th width="200px" style="text-align: left">IGREJA</th>
                                             <th width="140px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
                                             <th width="140px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
@@ -137,6 +139,7 @@ use Carbon\Carbon;
                                         @endphp
                                         @foreach($lancamentos as $lancamento)
                                         <tr>
+                                            <td style="text-align: left; min-width: 100px;">{{ $lancamento->distrito }}</td>
                                             <td style="text-align: left; min-width: 100px;">{{ $lancamento->nome }}</td>
                                             <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_masculino_x }}</td>
                                             <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_masculino_y }}</td>
@@ -157,7 +160,7 @@ use Carbon\Carbon;
                                     </tbody>
                                     <tfoot>
                                         <tr>
-                                            <th style="text-align: center;">Total Geral</th>
+                                            <th colspan="2" style="text-align: left;">Total Geral</th>
                                             <th style="text-align: center;">{{ $totalMasculinoX }}</th>
                                             <th style="text-align: center;">{{ $totalMasculinoY }}</th>
                                             <th style="text-align: center;">{{ $totalFemininoX }}</th>

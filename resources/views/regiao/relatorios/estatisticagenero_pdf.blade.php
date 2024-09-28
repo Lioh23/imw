@@ -92,7 +92,7 @@ use Carbon\Carbon;
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
-            <div class="title">ESTATÍSTICA POR GÊNERO - {{ $instituicao->nome }}</div>
+            <div class="title">ESTATÍSTICA POR GÊNERO - {{ optional($instituicao)->nome ?? $regiao->nome }}</div>
             <div class="period">
                 Período de {{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}
                 a {{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}
@@ -104,12 +104,13 @@ use Carbon\Carbon;
     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
     <thead class="thead-dark">
         <tr>
-            <th width="200px" style="text-align: left"></th>
+            <th colspan="2" width="200px" style="text-align: left"></th>
             <th colspan="2" style="text-align: center">TOTAL MASCULINO</th>
             <th colspan="2" style="text-align: center">TOTAL FEMININO</th>
             <th colspan="2" style="text-align: center">TOTAL</th>
         </tr>
         <tr>
+            <th width="100px" style="text-align: left">DISTRITO</th>
             <th width="200px" style="text-align: left">IGREJA</th>
             <th width="100px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_inicial'))->format('d/m/Y') }}</th>
             <th width="100px" style="text-align: center">{{ \Carbon\Carbon::parse(request()->input('data_final'))->format('d/m/Y') }}</th>
@@ -130,6 +131,7 @@ use Carbon\Carbon;
         @endphp
         @foreach($lancamentos as $lancamento)
         <tr>
+            <td style="text-align: left;">{{ $lancamento->distrito }}</td>
             <td style="text-align: left; min-width: 100px;">{{ $lancamento->nome }}</td>
             <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_masculino_x }}</td>
             <td style="text-align: center; min-width: 100px;">{{ $lancamento->total_masculino_y }}</td>
@@ -150,7 +152,7 @@ use Carbon\Carbon;
     </tbody>
     <tfoot>
         <tr>
-            <th style="text-align: center;">Total Geral</th>
+            <th colspan="2" style="text-align: left;">Total Geral</th>
             <th style="text-align: center;">{{ $totalMasculinoX }}</th>
             <th style="text-align: center;">{{ $totalMasculinoY }}</th>
             <th style="text-align: center;">{{ $totalFemininoX }}</th>

@@ -23,9 +23,10 @@ class EstatisticaGeneroService
         $regiao = Identifiable::fetchtSessionRegiao();
 
         return [
-            'lancamentos' => EstatisticaGeneroUtils::fetch($dataInicial, $dataFinal, $tipo, $distritoId),
+            'lancamentos' => EstatisticaGeneroUtils::fetch($dataInicial, $dataFinal, $tipo, $distritoId, $regiao->id),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
-            'instituicao' => InstituicoesInstituicao::find($distritoId)
+            'instituicao' => InstituicoesInstituicao::find($distritoId),
+            'regiao'      => $regiao
         ];
     }
 }
