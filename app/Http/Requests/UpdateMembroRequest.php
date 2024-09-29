@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Rules\TodaysDeadlineRule;
 use App\Rules\ValidaCPF;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\DB;
@@ -78,18 +79,20 @@ class UpdateMembroRequest extends FormRequest
                         $fail('A data de batismo no Espírito deve ser após a data de nascimento e a data atual.');
                     }
                 },
-                'dt_recepcao' => [
-                    'sometimes',
-                    'date',
-                    function ($attribute, $value, $fail) use ($dataNascimento, $minDate, $currentDate) {
-                        if (strtotime($value) <= strtotime($dataNascimento)) {
-                            $fail('A data de recepção deve ser após a data de nascimento.');
-                        }
-                        if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
-                            $fail('A data de recepção deve ser após a data de nascimento e a data atual.');
-                        }
-                    },
-                ],
+
+            ],
+            'dt_recepcao' => [
+                'sometimes',
+                'date',
+                function ($attribute, $value, $fail) use ($dataNascimento, $minDate, $currentDate) {
+                    if (strtotime($value) <= strtotime($dataNascimento)) {
+                        $fail('A data de recepção deve ser após a data de nascimento.');
+                    }
+                    if (strtotime($value) < strtotime($minDate) || strtotime($value) > strtotime($currentDate)) {
+                        $fail('A data de recepção deve ser após a data de nascimento e a data atual.');
+                    }
+                },
+                new TodaysDeadlineRule
             ],
             'estado_civil' => 'required',
             'nacionalidade' => 'required',
