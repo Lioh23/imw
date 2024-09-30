@@ -88,7 +88,7 @@
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
-            <div class="title">LANÇAMENTOS DAS IGREJAS - {{ $instituicao->nome }}</div>
+            <div class="title">LANÇAMENTOS DAS IGREJAS - {{ $regiao->nome }}</div>
             <div class="period" style="margin-top:4px">
                 Ano: {{ request()->input('dtano') }}
             </div>
@@ -99,7 +99,7 @@
     <table>
         <thead>
             <tr>
-                <!--          <th width="100">DISTRITO</th> -->
+                <th width="100">DISTRITO</th>
                 <th width="100">IGREJA</th>
                 <th width="30" class="text-right">JAN</th>
                 <th width="30" class="text-right">FEV</th>
@@ -118,7 +118,7 @@
         <tbody>
             @foreach($lancamentos as $lancamento)
             <tr>
-                <!--                 <td>{{ $lancamento->instituicao_pai_nome}}</td> -->
+                <td>{{ $lancamento->instituicao_pai_nome}}</td>
                 <td>{{ $lancamento->instituicao_nome }}</td>
                 <td style="text-align: right">{{ $lancamento->janeiro }}</td>
                 <td style="text-align: right">{{ $lancamento->fevereiro }}</td>
