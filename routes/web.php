@@ -337,6 +337,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/editar/{id}', 'editar')->name('editar');
                         Route::post('/store', 'store')->name('store');
                         Route::post('/update/{id}', 'update')->name('update');
+                        Route::put('/ativar/{id}', 'ativar')->name('ativar');
                     });
 
                 // Grupo de rotas para Igrejas
@@ -351,6 +352,7 @@ Route::middleware(['auth'])->group(function () {
                         Route::get('/editar/{id}', 'editar')->name('editar');
                         Route::post('/store', 'store')->name('store');
                         Route::post('/update/{id}', 'update')->name('update');
+                        Route::put('/ativar/{id}', 'ativar')->name('ativar');
                     });
             });
     });

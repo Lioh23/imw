@@ -36,7 +36,7 @@ class InstituicoesInstituicao extends Model
         'telefone',
         'uf',
         'pastor',
-        'tesoureiro'
+        'tesoureiro',
     ];
 
     public function users()
