@@ -37,22 +37,6 @@
                     </div>
                 </div>
 
-                {{-- Igrejas --}}
-                <div class="form-group row mb-4">
-                    <div class="col-lg-2 text-right">
-                        <label class="control-label">* Igrejas:</label>
-                    </div>
-                    <div class="col-lg-6">
-                        <select class="form-control" id="igreja_id" name="igreja_id" data-width="100%">
-                            @foreach ($igrejas as $igreja)
-                            <option value="{{ $igreja->id }}" {{ $igreja->id == request()->input('igreja_id') ? 'selected' : '' }}>
-                                {{ $igreja->descricao }}
-                            </option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-
                 <div class="form-group row mb-4">
                     <div class="col-lg-2"></div>
                     <div class="col-lg-6">
@@ -68,13 +52,12 @@
             <form id="report_form" action="{{ url('regiao/relatorio/lancamentodasigrejas/pdf') }}" method="POST" target="_blank" style="display: none;">
                 @csrf
                 <input type="hidden" name="dtano" id="report_dtano">
-                <input type="hidden" name="igreja_id" id="report_igreja_id">
             </form>
         </div>
     </div>
 </div>
 
-@if(request()->input('dtano') && request()->input('igreja_id'))
+@if(request()->input('dtano'))
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
@@ -83,11 +66,11 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">LANÇAMENTOS DAS IGREJAS - {{ $instituicao->nome }}</h6>
+                            <h6 class="mt-3">LANÇAMENTOS DAS IGREJAS - {{ $regiao->nome }}</h6>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
-                                        <!--    <th width="300" style="text-align: left">DISTRITO</th> -->
+                                        <th width="110" style="text-align: left">DISTRITO</th>
                                         <th width="300" style="text-align: left">IGREJA</th>
                                         <th width="50" style="text-align: right">JAN</th>
                                         <th width="50" style="text-align: right">FEV</th>
@@ -106,7 +89,7 @@
                                 <tbody>
                                     @foreach($lancamentos as $lancamento)
                                     <tr>
-                                        <!--  <td>{{ $lancamento->instituicao_pai_nome}}</td> -->
+                                        <td>{{ $lancamento->instituicao_pai_nome}}</td>
                                         <td>{{ $lancamento->instituicao_nome }}</td>
                                         <td style="text-align: right">{{ $lancamento->janeiro }}</td>
                                         <td style="text-align: right">{{ $lancamento->fevereiro }}</td>
@@ -194,26 +177,23 @@
 
         $('#btn_relatorio').on('click', function(event) {
             var dataAno = $('#dtano').val();
-            var igreja = $('#igreja_id').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno || !igreja) {
+            if (!dataAno) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             } else {
                 // Preencher e submeter o formulário oculto
                 $('#report_dtano').val(dataAno);
-                $('#report_igreja_id').val(igreja);
                 $('#report_form').submit();
             }
         });
 
         $('#filter_form').submit(function(event) {
             var dataAno = $('#dtano').val();
-            var igreja = $('#igreja_id').val();
 
             // Verificar se a data está preenchida
-            if (!dataAno || !igreja) {
+            if (!dataAno) {
                 event.preventDefault();
                 alert('Por favor, preencha todos os campos.');
             }
