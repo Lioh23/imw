@@ -95,8 +95,10 @@ class RegiaoRelatorioController extends Controller
     public function lancamentodasigrejas(Request $request)
     {
         $dt = $request->input('dtano');
+        $igrejaId = $request->input('igreja_id');
+        $regiao = Identifiable::fetchtSessionRegiao();
 
-        $data = app(LancamentoIgrejasService::class)->execute($dt);
+        $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejaId, $regiao);
         return view('regiao.relatorios.lancamentodasigrejas', $data);
     }
 
@@ -203,8 +205,10 @@ class RegiaoRelatorioController extends Controller
     {
 
         $dt = $request->input('dtano');
+        $igrejaId = $request->input('igreja_id');
+        $regiao = Identifiable::fetchtSessionRegiao();
 
-        $data = app(LancamentoIgrejasService::class)->execute($dt);
+        $data = app(LancamentoIgrejasService::class)->execute($dt, $igrejaId, $regiao);
 
         $pdf = FacadePdf::loadView('regiao.relatorios.lancamentodasigrejas_pdf', $data)
             ->setPaper('a4', 'landscape');

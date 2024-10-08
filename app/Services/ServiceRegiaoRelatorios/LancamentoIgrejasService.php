@@ -14,22 +14,25 @@ class LancamentoIgrejasService
     use FinanceiroUtils;
     use Identifiable;
 
-    public function execute($dtano)
+    public function execute($dtano, $igrejaId, $regiao)
     {
         if (empty($dtano)) {
             $dtano = Carbon::now()->format('Y');
         } 
 
-        $regiao = Identifiable::fetchtSessionRegiao();
-        $lancamentos = $this->handleLancamentos($dtano, $regiao->id);
+        $igrejaSelect  = $this->handleListaIgrejasByRegiao($regiao->id);
+        $lancamentos = $this->handleLancamentos($dtano, $igrejaId);
+
 
         return [
+            'igrejaSelect' => $igrejaSelect,
             'lancamentos' => $lancamentos,
-            'regiao' => $regiao
+            'igrejas' => $igrejaSelect,
+            'instituicao' => InstituicoesInstituicao::find($igrejaId)
         ];
     }
 
-    private function handleLancamentos($dtano, $regiaoId)
+    private function handleLancamentos($dtano, $igrejaId)
     {
         $result = DB::table('instituicoes_instituicoes as ii')
             ->leftJoin('financeiro_lancamentos as fl', function($join) use ($dtano) {
@@ -54,14 +57,13 @@ class LancamentoIgrejasService
                 DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 11 THEN 1 END) AS novembro'),
                 DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 12 THEN 1 END) AS dezembro')
             )
-            ->whereIn('parent.id', Identifiable::fetchDistritosIdByRegiao($regiaoId))
+            ->where('ii.id', $igrejaId)
             ->where('fl.conciliado', 1)
             ->whereNull('ii.deleted_at')
             ->where('ii.ativo', 1)
             ->whereNull('fl.deleted_at')
             ->groupBy('ii.id', 'ii.nome', 'parent.nome')
-            ->orderBy('parent.nome')
-            ->orderBy('ii.nome')
+            ->orderBy('ii.id')
             ->get();
 
         return $result;
