@@ -65,7 +65,7 @@
                     <label for="data_abertura">Data de Fechamento*</label>
                     <input class="form-control" type="text" id="data_abertura" name="data_abertura">
                 </div> --}}
-                <div class="col-12 mt-3 col-md-6">
+                {{-- <div class="col-12 mt-3 col-md-6">
                     <label for="instituicao_pai_id">Instituição Pai*</label>
                     <select class="form-control" type="text" id="instituicao_pai_id" name="instituicao_pai_id">
                         @foreach ($instituicao_pai_id as $row)
@@ -73,7 +73,7 @@
                         @endforeach
 
                     </select>
-                </div>
+                </div> --}}
 
             </div>
             <div class="col-12 mt-3 col-md-6">

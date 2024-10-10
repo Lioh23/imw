@@ -36,8 +36,8 @@ class InstituicaoRegiaoSecretariasController extends Controller
             $query->where('tipo_instituicao_id', 5)
                 ->orWhere('tipo_instituicao_id', 9);
         })->get();
-        $distrito = InstituicoesInstituicao::findOrFail($id);
-        return view('instituicoes.secretarias.editar', compact('distrito', 'instituicao_pai_id'));
+        $secretaria = InstituicoesInstituicao::findOrFail($id);
+        return view('instituicoes.secretarias.editar', compact('secretaria', 'instituicao_pai_id'));
     }
     public function store(StoreReceberNovaSecretariaRequest $request)
     {
@@ -49,7 +49,7 @@ class InstituicaoRegiaoSecretariasController extends Controller
     {
         app(UpdateRegiaoSecretariasService::class)->execute($request, $id);
 
-        return redirect()->route('instituicoes.secretarias.index')->with('success', 'Secretaria editad1 com sucesso!');
+        return redirect()->route('instituicoes.secretarias.index')->with('success', 'Secretaria editada com sucesso!');
     }
 
 

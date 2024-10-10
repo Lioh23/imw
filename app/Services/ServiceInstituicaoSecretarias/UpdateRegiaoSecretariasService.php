@@ -11,7 +11,7 @@ class UpdateRegiaoSecretariasService
     {
         $secretaria = InstituicoesInstituicao::findORFail($id);
         $dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('data_abertura'))->format('Y-m-d');
-        if (isset($distrito)) {
+        if (isset($secretaria)) {
             try {
                 $secretaria->update(
                     [
@@ -34,7 +34,7 @@ class UpdateRegiaoSecretariasService
                 );
                
             } catch (\Exception $e) {
-                return response()->json(['mensagem' => 'Erro ao editadar a secretaria.', 'error' => $e->getMessage()], 500);
+                return response()->json(['mensagem' => 'Erro ao editar a secretaria.', 'error' => $e->getMessage()], 500);
             }
         }
     }

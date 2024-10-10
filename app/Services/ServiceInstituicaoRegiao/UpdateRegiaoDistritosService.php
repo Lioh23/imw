@@ -17,7 +17,7 @@ class UpdateRegiaoDistritosService
                     [
                         'nome' => $request->input('nome'),
                         'tipo_instituicao_id' => $request->input('tipo_instituicao_id'),
-                        'instituicao_pai_id' => session()->get('session_perfil')->instituicao_id,
+                        'instituicao_pai_id' => $request->input('tipo_instituicao_id'),
                         'bairro' => $request->input('bairro'),
                         'cep' => $request->input('cep'),
                         'cidade' => $request->input('cidade'),
@@ -34,7 +34,7 @@ class UpdateRegiaoDistritosService
                 );
                
             } catch (\Exception $e) {
-                return response()->json(['mensagem' => 'Erro ao editadar o distrito.', 'error' => $e->getMessage()], 500);
+                return response()->json(['mensagem' => 'Erro ao editar o distrito.', 'error' => $e->getMessage()], 500);
             }
         }
     }

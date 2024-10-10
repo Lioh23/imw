@@ -46,7 +46,7 @@
                 <table class="table table-bordered table-striped table-hover mb-4" id="datatable" data-url="{{ route('igrejas.regiao.list') }}">
                     <thead>
                         <tr>
-                            <th>CIDADE</th>
+                            <th>DISTRITO</th>
                             <th>IGREJA</th>
                             <th>PASTOR</th>
                             <th>AÇÕES</th>

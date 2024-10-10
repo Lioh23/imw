@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\InstituicoesInstituicao;
-use App\Services\ServiceDatatable\IgrejasDataTable;
 use App\Services\ServiceDatatable\IgrejasRegiaoDataTable;
 use App\Services\ServiceIgrejas\BalanceteService;
 use App\Services\ServiceIgrejas\GetEstatisticaAnoEclesiasticoService;

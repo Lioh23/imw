@@ -42,24 +42,24 @@
         </div>
 
         <form class="py-4" method="POST"
-            action="{{ route('instituicoes.secretarias.update', ['id' => $distrito['id']]) }}">
+            action="{{ route('instituicoes.secretarias.update', ['id' => $secretaria['id']]) }}">
             @csrf
 
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
                     <label for="nome">Nome*</label>
-                    <input class="form-control" type="text" id="nome" name="nome" value="<?php echo $distrito['nome']; ?>">
+                    <input class="form-control" type="text" id="nome" name="nome" value="<?php echo $secretaria['nome']; ?>">
                 </div>
                 <div class="col-12 mt-3 col-md-3">
                     <label for="cnpj">CNPJ*</label>
-                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="<?php echo $distrito['cnpj']; ?>">
+                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="<?php echo $secretaria['cnpj']; ?>">
 
                 </div>
 
                 <div class="col-12 mt-3 col-md-3">
                     <label for="data_abertura">Data de Abertura*</label>
                     <input class="form-control" type="text" id="data_abertura" name="data_abertura"
-                        value="<?php echo $distrito['data_abertura']; ?>">
+                        value="<?php echo $secretaria['data_abertura']; ?>">
                 </div>
             </div>
 
@@ -70,28 +70,17 @@
                 </div> --}}
 
                 <div class="col-12 mt-3 col-md-6">
-                    <label for="instituicao_pai_id">Instituição Pai*</label>
-                    <select class="form-control" type="text" id="instituicao_pai_id" name="instituicao_pai_id">
-                        <option value="<?php echo $igreja['data_abertura']; ?>"><?php echo $igreja['data_abertura']; ?></option>
-                        @foreach ($instituicao_pai_id as $row)
-                            @if ($row['id'] == $igreja['instituicao_pai_id'])
-                                {
-                                <option value="<?php echo $row['id']; ?>" selected><?php echo $row['nome']; ?></option>
-                                }
-                                <option value="<?php echo $row['id']; ?>"><?php echo $row['nome']; ?></option>
-                            @endif
-                        @endforeach
-
-                    </select>
+                    {{---Instituição 6 Região como pai padrão ---}}
+                    <input type="hidden" id="instituicao_pai_id" value="23" name="instituicao_pai_id">
                 </div>
             </div>
-            <input type="hidden" name="tipo_instituicao_id" value="2">
+            <input type="hidden" id="tipo_instituicao_id" value="5" name="tipo_instituicao_id">
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="cep">CEP*</label>
                         <input type="text" class="form-control" type="text" id="cep" name="cep"
-                            value="<?php echo $distrito['cep']; ?>">
+                            value="<?php echo $secretaria['cep']; ?>">
 
                     </div>
 
@@ -99,51 +88,51 @@
                                 mt-3 col-md-8">
                         <label for="endereco">Logradouro (Rua/Av/Beco)*</label>
                         <input type="text" class="form-control" type="text" id="endereco" name="endereco"
-                            value="<?php echo $distrito['endereco']; ?>">
+                            value="<?php echo $secretaria['endereco']; ?>">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="numero">Numero</label>
                         <input type="number" class="form-control" type="text" id="numero" name="numero"
-                            value="<?php echo $distrito['numero']; ?>">
+                            value="<?php echo $secretaria['numero']; ?>">
 
                     </div>
 
                     <div class="col-12 mt-3 col-md-4">
                         <label for="bairro">Bairro</label>
                         <input type="text" class="form-control" type="text" id="bairro" name="bairro"
-                            value="<?php echo $distrito['bairro']; ?>">
+                            value="<?php echo $secretaria['bairro']; ?>">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="complemento">Complemento</label>
-                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"> <?php echo $distrito['complemento']; ?></textarea>
+                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"> <?php echo $secretaria['complemento']; ?></textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="cidade">Cidade</label>
                         <input type="text" class="form-control" type="text" id="cidade" name="cidade"
-                            value="<?php echo $distrito['cidade']; ?>">
+                            value="<?php echo $secretaria['cidade']; ?>">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
                         <input type="text" class="form-control" type="text" id="uf" name="uf"
-                            value="<?php echo $distrito['uf']; ?>" placeholder="xx">
+                            value="<?php echo $secretaria['uf']; ?>" placeholder="xx">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
                         <label for="pais">País</label>
                         <input type="text" class="form-control" type="text" id="pais" name="pais"
-                            value="<?php echo $distrito['pais']; ?>">
+                            value="<?php echo $secretaria['pais']; ?>">
                     </div>
                     <div class="col-12 mt-3 col-md-3">
                         <label for="telefone">Celular/Telefone</label>
                         <input type="text" class="form-control" type="text" id="telefone" name="telefone"
-                            value="<?php echo $distrito['telefone']; ?>">
+                            value="<?php echo $secretaria['telefone']; ?>">
                     </div>
                 </div>
             </div>
