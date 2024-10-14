@@ -19,10 +19,10 @@ class ListarRegiaoSecretariasServices
                 });
             })
             ->where(function ($query) {
-                $query->where('tipo_instituicao_id', 5);
+                $query->where('tipo_instituicao_id', 9);
             })
-            ->whereAnd('instituicao_pai_id', session()->get('session_perfil')->instituicao_id)
-            ->orderBy('id', 'desc')
+            ->where('instituicao_pai_id', session()->get('session_perfil')->instituicao_id)
+            ->orderBy('nome', 'asc')
             ->paginate(50);
 
         return $secretarias;

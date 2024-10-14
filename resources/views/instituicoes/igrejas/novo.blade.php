@@ -69,14 +69,22 @@
                     <label for="instituicao_pai_id">Instituição Pai*</label>
                     <select class="form-control" type="text" id="instituicao_pai_id" name="instituicao_pai_id">
                         @foreach ($instituicao_pai_id as $row)
-                            <option value="<?php echo $row['id'] ?>"><?php echo $row['nome']; ?></option>
+                            <option value="<?php echo $row['id']; ?>"><?php echo $row['nome']; ?></option>
                         @endforeach
 
                     </select>
                 </div>
+                <div class="col-12 mt-3 col-md-6">
+                    <label for="tipo_instituicao_id">Instituição Pai*</label>
+                    <select class="form-control" type="text" id="tipo_instituicao_id" name="tipo_instituicao_id">
+                        <option value="1">Igreja</option>
+                        <option value="2">Distrito</option>
+                        <option value="9">Secretaria</option>
+                    </select>   
+                </div>
 
             </div>
-            <input type="hidden" name="tipo_instituicao_id" value="1">
+
 
             <div class="mt-4">
                 <div class="row">
@@ -113,13 +121,13 @@
                         <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"></textarea>
                     </div>
                 </div>
-         
+
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="pais">País</label>
                         <input type="text" class="form-control" type="text" id="pais" name="pais">
                     </div>
-              
+
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
                         <input type="text" class="form-control" type="text" id="uf" name="uf">
