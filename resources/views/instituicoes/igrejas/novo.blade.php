@@ -74,15 +74,15 @@
 
                     </select>
                 </div>
-                <div class="col-12 mt-3 col-md-6">
+                {{-- <div class="col-12 mt-3 col-md-6">
                     <label for="tipo_instituicao_id">Instituição Pai*</label>
                     <select class="form-control" type="text" id="tipo_instituicao_id" name="tipo_instituicao_id">
                         <option value="1">Igreja</option>
                         <option value="2">Distrito</option>
                         <option value="9">Secretaria</option>
                     </select>   
-                </div>
-
+                </div> --}}
+                <input type="hidden" name="tipo_instituicao_id" value="1">
             </div>
 
 
@@ -138,7 +138,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary my-4">Adicionar Igreja +</button>
+            <button class="btn btn-primary my-4">Salvar</button>
         </form>
     </div>
 

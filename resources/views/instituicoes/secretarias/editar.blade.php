@@ -74,7 +74,7 @@
                     <input type="hidden" id="instituicao_pai_id" value="23" name="instituicao_pai_id">
                 </div>
             </div>
-            <input type="hidden" id="tipo_instituicao_id" value="5" name="tipo_instituicao_id">
+            <input type="hidden" id="tipo_instituicao_id" value="9" name="tipo_instituicao_id">
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
@@ -137,7 +137,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary my-4">Editar Secretaria</button>
+            <button class="btn btn-primary my-4">Salvar</button>
         </form>
 
     </div>

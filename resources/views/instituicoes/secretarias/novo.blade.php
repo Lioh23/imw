@@ -78,7 +78,7 @@
             </div>
             <div class="col-12 mt-3 col-md-6">
                 <div class="col-12 mt-3 col-md-6">
-                    <input type="hidden" id="tipo_instituicao_id" value="5" name="tipo_instituicao_id">
+                    <input type="hidden" id="tipo_instituicao_id" value="9" name="tipo_instituicao_id">
                 </div>
 
 
@@ -140,7 +140,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary my-4">Adicionar Secretarias+</button>
+            <button class="btn btn-primary my-4">Salvar</button>
         </form>
     </div>
 
@@ -149,7 +149,7 @@
     <script>
         $(document).ready(function() {
             $('#cep').mask('00000000');
-            $('#telefone').mask('00000-0000');
+            $('#telefone').mask('0000-0000');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });

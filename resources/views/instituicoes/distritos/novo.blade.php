@@ -120,7 +120,7 @@
                     </div>
                 </div>
             </div>
-            <button class="btn btn-primary my-4">Adicionar Distrito +</button>
+            <button class="btn btn-primary my-4">Salvar</button>
         </form>
     </div>
 

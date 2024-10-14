@@ -134,7 +134,7 @@
                     </div>
                 </div>
 
-            <button type="submit" class="btn btn-primary my-4">Editar Distrito +</button>
+            <button type="submit" class="btn btn-primary my-4">Salvar</button>
         </form>
 
     </div>
