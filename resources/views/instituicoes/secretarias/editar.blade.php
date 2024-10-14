@@ -44,7 +44,7 @@
         <form class="py-4" method="POST"
             action="{{ route('instituicoes.secretarias.update', ['id' => $secretaria['id']]) }}">
             @csrf
-
+      
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
                     <label for="nome">Nome*</label>
@@ -71,10 +71,10 @@
 
                 <div class="col-12 mt-3 col-md-6">
                     {{---Instituição 6 Região como pai padrão ---}}
-                    <input type="hidden" id="instituicao_pai_id" value="23" name="instituicao_pai_id">
+                    <input type="hidden" id="instituicao_pai_id" value="<?php echo $secretaria['instituicao_pai_id']; ?>" name="instituicao_pai_id">
                 </div>
             </div>
-            <input type="hidden" id="tipo_instituicao_id" value="9" name="tipo_instituicao_id">
+            <input type="hidden" id="tipo_instituicao_id" value="<?php echo $secretaria['tipo_instituicao_id']; ?>" name="tipo_instituicao_id">
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
@@ -120,7 +120,7 @@
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
                         <input type="text" class="form-control" type="text" id="uf" name="uf"
-                            value="<?php echo $secretaria['uf']; ?>" placeholder="xx">
+                            value="<?php echo $secretaria['uf']; ?>">
                     </div>
                 </div>
                 <div class="row">
@@ -137,7 +137,7 @@
                 </div>
             </div>
 
-            <button class="btn btn-primary my-4">Salvar</button>
+            <button type="submit" class="btn btn-primary my-4">Salvar</button>
         </form>
 
     </div>
@@ -147,7 +147,7 @@
     <script>
         $(document).ready(function() {
             $('#cep').mask('00000000');
-            $('#telefone').mask('00000-0000');
+           $('#telefone').mask('0000-0000');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });

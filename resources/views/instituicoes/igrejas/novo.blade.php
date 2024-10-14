@@ -147,7 +147,7 @@
     <script>
         $(document).ready(function() {
             $('#cep').mask('00000000');
-            $('#telefone').mask('00000-0000');
+           $('#telefone').mask('0000-0000');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });

@@ -33,6 +33,7 @@ class UpdateRegiaoSecretariasService
                     ]
                 );
                
+               
             } catch (\Exception $e) {
                 return response()->json(['mensagem' => 'Erro ao editar a secretaria.', 'error' => $e->getMessage()], 500);
             }
