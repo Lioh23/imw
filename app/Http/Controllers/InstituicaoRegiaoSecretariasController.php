@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReceberNovaSecretariaRequest;
+use App\Http\Requests\UpdateSecretariaRequest;
 use App\Models\InstituicoesInstituicao;
 use App\Services\ServiceInstituicaoSecretarias\AtivarRegiaoSecretariasService;
 use App\Services\ServiceInstituicaoSecretarias\DeletarRegiaoSecretariasService;
@@ -45,10 +46,10 @@ class InstituicaoRegiaoSecretariasController extends Controller
 
         return redirect()->route('instituicoes.secretarias.index')->with('success', 'Secretaria criada com sucesso!');
     }
-    public function update(StoreReceberNovaSecretariaRequest $request, string $id)
+    public function update(UpdateSecretariaRequest $request, string $id)
     {
+        
         app(UpdateRegiaoSecretariasService::class)->execute($request, $id);
-
         return redirect()->route('instituicoes.secretarias.index')->with('success', 'Secretaria editada com sucesso!');
     }
 

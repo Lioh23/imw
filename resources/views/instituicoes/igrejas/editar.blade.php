@@ -40,7 +40,15 @@
                 </div>
             </div>
         </div>
-
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class=" d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form class="py-4" method="POST" action="{{ route('instituicoes.igrejas.update', ['id' => $igreja['id']]) }}">
             @csrf
             <?php echo $igreja['id']; ?>
@@ -136,14 +144,21 @@
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
                         <label for="pais">País</label>
-                        <input type="text" class="form-control" type="text" id="pais" name="pais"
-                            value="<?php echo $igreja['pais']; ?>">
+                        <input type="text" class="form-control" type="text" id="pais" name="pais" value="<?php echo $igreja['pais']; ?>">
                     </div>
-                    <div class="col-12 mt-3 col-md-3">
-                        <label for="telefone">Celular/Telefone</label>
-                        <input type="text" class="form-control" type="text" id="telefone" name="telefone"
-                            value="<?php echo $igreja['telefone']; ?>">
+                    <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
+                        <div>
+                            <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"
+                                style="max-width: 55px" placeholder="DDD" value="<?php echo $igreja['ddd']; ?>">
+                        </div>
+
+
+                        <div>
+                            <label for="telefone">Celular/Telefone</label>
+                            <input type="text" class="form-control" type="text" id="telefone" name="telefone" value="<?php echo $igreja['telefone']; ?>">
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -157,7 +172,7 @@
     <script>
         $(document).ready(function() {
             $('#cep').mask('00000000');
-            $('#telefone').mask('0000-0000');
+            $('#telefone').mask('00000-0000');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });

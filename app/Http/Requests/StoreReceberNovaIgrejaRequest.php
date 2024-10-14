@@ -38,6 +38,7 @@ class StoreReceberNovaIgrejaRequest extends FormRequest
             'telefone' => 'required|max:11',
             'uf' => 'required|max:2',
             'endereco' => 'required',
+            'ddd' => ''
         ];
     }
     public function messages()

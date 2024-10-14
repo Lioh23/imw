@@ -27,6 +27,7 @@ class StoreRegiaoIgrejasService
                 'uf' => $request->input('uf'),
                 'endereco' => $request->input('endereco'),
                 'telefone' => $request->input('telefone'),
+                'ddd' => $request->input('ddd'),
                 'inss' => 0
             ]
         );

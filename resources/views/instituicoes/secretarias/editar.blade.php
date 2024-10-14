@@ -40,11 +40,19 @@
                 </div>
             </div>
         </div>
-
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class=" d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form class="py-4" method="POST"
             action="{{ route('instituicoes.secretarias.update', ['id' => $secretaria['id']]) }}">
             @csrf
-      
+
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
                     <label for="nome">Nome*</label>
@@ -70,7 +78,7 @@
                 </div> --}}
 
                 <div class="col-12 mt-3 col-md-6">
-                    {{---Instituição 6 Região como pai padrão ---}}
+                    {{-- -Instituição 6 Região como pai padrão - --}}
                     <input type="hidden" id="instituicao_pai_id" value="<?php echo $secretaria['instituicao_pai_id']; ?>" name="instituicao_pai_id">
                 </div>
             </div>
@@ -114,26 +122,33 @@
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="cidade">Cidade</label>
-                        <input type="text" class="form-control" type="text" id="cidade" name="cidade"
+                        <input type="text" class="form-control" id="cidade" name="cidade"
                             value="<?php echo $secretaria['cidade']; ?>">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
-                        <input type="text" class="form-control" type="text" id="uf" name="uf"
+                        <input type="text" class="form-control" id="uf" name="uf"
                             value="<?php echo $secretaria['uf']; ?>">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
                         <label for="pais">País</label>
-                        <input type="text" class="form-control" type="text" id="pais" name="pais"
-                            value="<?php echo $secretaria['pais']; ?>">
+                        <input type="text" class="form-control" type="text" id="pais" name="pais" value="<?php echo $secretaria['pais']; ?>">
                     </div>
-                    <div class="col-12 mt-3 col-md-3">
-                        <label for="telefone">Celular/Telefone</label>
-                        <input type="text" class="form-control" type="text" id="telefone" name="telefone"
-                            value="<?php echo $secretaria['telefone']; ?>">
+                    <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
+                        <div>
+                            <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"
+                                style="max-width: 55px" placeholder="DDD" value="<?php echo $secretaria['ddd']; ?>">
+                        </div>
+
+
+                        <div>
+                            <label for="telefone">Celular/Telefone</label>
+                            <input type="text" class="form-control" type="text" id="telefone" name="telefone" value="<?php echo $secretaria['telefone']; ?>">
+                        </div>
                     </div>
+
                 </div>
             </div>
 
@@ -147,7 +162,7 @@
     <script>
         $(document).ready(function() {
             $('#cep').mask('00000000');
-           $('#telefone').mask('0000-0000');
+            $('#telefone').mask('00000-0000');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });

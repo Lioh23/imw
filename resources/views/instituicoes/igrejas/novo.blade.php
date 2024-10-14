@@ -40,6 +40,15 @@
                 </div>
             </div>
         </div>
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class=" d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <form class="py-4" method="POST" action="{{ route('instituicoes.igrejas.store') }}">
             @csrf
 
@@ -120,19 +129,23 @@
                         <label for="complemento">Complemento</label>
                         <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"></textarea>
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="pais">País</label>
-                        <input type="text" class="form-control" type="text" id="pais" name="pais">
-                    </div>
 
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
                         <input type="text" class="form-control" type="text" id="uf" name="uf">
                     </div>
-                    <div class="col-12 mt-3 col-md-3">
+                </div>
+
+                <div class="col-12 mt-3 col-md-3">
+                    <label for="pais">País</label>
+                    <input type="text" class="form-control" type="text" id="pais" name="pais">
+                </div>
+                <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
+                    <div>
+                        <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd" placeholder="DDD"
+                            style="max-width: 55px">
+                    </div>
+                    <div>
                         <label for="telefone">Celular/Telefone</label>
                         <input type="text" class="form-control" type="text" id="telefone" name="telefone">
                     </div>
@@ -147,7 +160,7 @@
     <script>
         $(document).ready(function() {
             $('#cep').mask('00000000');
-           $('#telefone').mask('0000-0000');
+            $('#telefone').mask('00000-0000');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });
