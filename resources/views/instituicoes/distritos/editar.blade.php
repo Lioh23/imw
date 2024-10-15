@@ -56,18 +56,18 @@
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
                     <label for="nome">Nome*</label>
-                    <input class="form-control" type="text" id="nome" name="nome" value="<?php echo $distrito['nome']; ?>">
+                    <input class="form-control" type="text" id="nome" name="nome" value="{{ $distrito['nome']; }}">
                 </div>
                 <div class="col-12 mt-3 col-md-3">
                     <label for="cnpj">CNPJ*</label>
-                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="<?php echo $distrito['cnpj']; ?>">
+                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="{{ $distrito['cnpj']; }}">
 
                 </div>
 
                 <div class="col-12 mt-3 col-md-3">
                     <label for="data_abertura">Data de Abertura*</label>
                     <input class="form-control" type="text" id="data_abertura" name="data_abertura"
-                        value="<?php echo $distrito['data_abertura']; ?>">
+                        value="{{ $distrito['data_abertura']; }}">
                 </div>
             </div>
 
@@ -84,7 +84,7 @@
                     <div class="col-12 mt-3 col-md-4">
                         <label for="cep">CEP*</label>
                         <input type="text" class="form-control" type="text" id="cep" name="cep"
-                            value="<?php echo $distrito['cep']; ?>">
+                            value="{{ $distrito['cep']; }}">
 
                     </div>
 
@@ -92,56 +92,56 @@
                                 mt-3 col-md-8">
                         <label for="endereco">Logradouro (Rua/Av/Beco)*</label>
                         <input type="text" class="form-control" type="text" id="endereco" name="endereco"
-                            value="<?php echo $distrito['endereco']; ?>">
+                            value="{{ $distrito['endereco']; }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="numero">Numero</label>
                         <input type="number" class="form-control" type="text" id="numero" name="numero"
-                            value="<?php echo $distrito['numero']; ?>">
+                            value="{{ $distrito['numero']; }}">
 
                     </div>
 
                     <div class="col-12 mt-3 col-md-4">
                         <label for="bairro">Bairro</label>
                         <input type="text" class="form-control" type="text" id="bairro" name="bairro"
-                            value="<?php echo $distrito['bairro']; ?>">
+                            value="{{ $distrito['bairro']; }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="complemento">Complemento</label>
-                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"> <?php echo $distrito['complemento']; ?></textarea>
+                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"> {{ $distrito['complemento']; }}</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="cidade">Cidade</label>
                         <input type="text" class="form-control" type="text" id="cidade" name="cidade"
-                            value="<?php echo $distrito['cidade']; ?>">
+                            value="{{ $distrito['cidade']; }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
                         <input type="text" class="form-control" type="text" id="uf" name="uf"
-                            value="<?php echo $distrito['uf']; ?>" placeholder="xx">
+                            value="{{ $distrito['uf']; }}" placeholder="xx">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
                         <label for="pais">País</label>
-                        <input type="text" class="form-control" type="text" id="pais" name="pais" value="<?php echo $distrito['pais']; ?>">
+                        <input type="text" class="form-control" type="text" id="pais" name="pais" value="{{ $distrito['pais']; }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
                         <div>
                             <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"
-                                style="max-width: 55px" placeholder="DDD" value="<?php echo $distrito['ddd']; ?>">
+                                style="max-width: 55px" placeholder="DDD" value="{{ $distrito['ddd']; }}">
                         </div>
 
 
                         <div>
                             <label for="telefone">Celular/Telefone</label>
-                            <input type="text" class="form-control" type="text" id="telefone" name="telefone" value="<?php echo $distrito['telefone']; ?>">
+                            <input type="text" class="form-control" type="text" id="telefone" name="telefone" value="{{ $distrito['telefone']; }}">
                         </div>
                     </div>
 

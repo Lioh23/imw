@@ -38,7 +38,7 @@ class UpdateSecretariaRequest extends FormRequest
             'telefone' => 'required|max:11',
             'uf' => 'required',
             'endereco' => 'required',
-            'ddd' => 'max:2'
+            'ddd' => ''
         ];
     }
     public function messages()

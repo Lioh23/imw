@@ -13,7 +13,6 @@ class UpdateRegiaoSecretariasService
         $dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('data_abertura'))->format('Y-m-d');
         if (isset($secretaria)) {
             try {
-             
                 $secretaria->update(
                     [
                         'nome' => $request->input('nome'),
@@ -30,7 +29,6 @@ class UpdateRegiaoSecretariasService
                         'uf' => $request->input('uf'),
                         'endereco' => $request->input('endereco'),
                         'telefone' => $request->input('telefone'),
-                        'ddd' => $request->input('ddd'),
                         'inss' => 0
                     ]
                 );

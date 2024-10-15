@@ -9,7 +9,7 @@ class UpdateRegiaoIgrejasService
 {
     public function execute($request, $id)
     {
-        $igreja = InstituicoesInstituicao::findORFail($id);
+        $igreja = InstituicoesInstituicao::findOrFail($id);
         $dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('data_abertura'))->format('Y-m-d');
         if (isset($igreja)) {
             try {

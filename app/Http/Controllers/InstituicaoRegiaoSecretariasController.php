@@ -46,10 +46,11 @@ class InstituicaoRegiaoSecretariasController extends Controller
 
         return redirect()->route('instituicoes.secretarias.index')->with('success', 'Secretaria criada com sucesso!');
     }
-    public function update(UpdateSecretariaRequest $request, string $id)
+    public function update(StoreReceberNovaSecretariaRequest $request, string $id)
     {
-        
+    
         app(UpdateRegiaoSecretariasService::class)->execute($request, $id);
+        
         return redirect()->route('instituicoes.secretarias.index')->with('success', 'Secretaria editada com sucesso!');
     }
 

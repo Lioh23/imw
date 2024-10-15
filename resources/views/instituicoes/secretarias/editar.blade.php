@@ -56,18 +56,18 @@
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
                     <label for="nome">Nome*</label>
-                    <input class="form-control" type="text" id="nome" name="nome" value="<?php echo $secretaria['nome']; ?>">
+                    <input class="form-control" type="text" id="nome" name="nome" value="{{ $secretaria['nome']; }}">
                 </div>
                 <div class="col-12 mt-3 col-md-3">
                     <label for="cnpj">CNPJ*</label>
-                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="<?php echo $secretaria['cnpj']; ?>">
+                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="{{ $secretaria['cnpj']; }}">
 
                 </div>
 
                 <div class="col-12 mt-3 col-md-3">
                     <label for="data_abertura">Data de Abertura*</label>
                     <input class="form-control" type="text" id="data_abertura" name="data_abertura"
-                        value="<?php echo $secretaria['data_abertura']; ?>">
+                        value="{{ $secretaria['data_abertura']; }}">
                 </div>
             </div>
 
@@ -79,73 +79,71 @@
 
                 <div class="col-12 mt-3 col-md-6">
                     {{-- -Instituição 6 Região como pai padrão - --}}
-                    <input type="hidden" id="instituicao_pai_id" value="<?php echo $secretaria['instituicao_pai_id']; ?>" name="instituicao_pai_id">
+                    <input type="hidden" id="instituicao_pai_id" value="{{ $secretaria['instituicao_pai_id']; }}" name="instituicao_pai_id">
                 </div>
             </div>
-            <input type="hidden" id="tipo_instituicao_id" value="<?php echo $secretaria['tipo_instituicao_id']; ?>" name="tipo_instituicao_id">
+            <input type="hidden" id="tipo_instituicao_id" value="{{ $secretaria['tipo_instituicao_id']; }}" name="tipo_instituicao_id">
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="cep">CEP*</label>
-                        <input type="text" class="form-control" type="text" id="cep" name="cep"
-                            value="<?php echo $secretaria['cep']; ?>">
+                        <input type="text" class="form-control"  id="cep" name="cep"
+                            value="{{ $secretaria['cep']; }}">
 
                     </div>
 
                     <div class="col-12
                                 mt-3 col-md-8">
                         <label for="endereco">Logradouro (Rua/Av/Beco)*</label>
-                        <input type="text" class="form-control" type="text" id="endereco" name="endereco"
-                            value="<?php echo $secretaria['endereco']; ?>">
+                        <input type="text" class="form-control" id="endereco" name="endereco"
+                            value="{{ $secretaria['endereco']; }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="numero">Numero</label>
-                        <input type="number" class="form-control" type="text" id="numero" name="numero"
-                            value="<?php echo $secretaria['numero']; ?>">
+                        <input type="number" class="form-control" id="numero" name="numero"
+                            value="{{ $secretaria['numero']; }}">
 
                     </div>
 
                     <div class="col-12 mt-3 col-md-4">
                         <label for="bairro">Bairro</label>
-                        <input type="text" class="form-control" type="text" id="bairro" name="bairro"
-                            value="<?php echo $secretaria['bairro']; ?>">
+                        <input type="text" class="form-control" id="bairro" name="bairro"
+                            value="{{ $secretaria['bairro']; }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="complemento">Complemento</label>
-                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"> <?php echo $secretaria['complemento']; ?></textarea>
+                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"> {{ $secretaria['complemento']; }}</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="cidade">Cidade</label>
                         <input type="text" class="form-control" id="cidade" name="cidade"
-                            value="<?php echo $secretaria['cidade']; ?>">
+                            value="{{ $secretaria['cidade']; }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
                         <input type="text" class="form-control" id="uf" name="uf"
-                            value="<?php echo $secretaria['uf']; ?>">
+                            value="{{ $secretaria['uf']; }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
                         <label for="pais">País</label>
-                        <input type="text" class="form-control" type="text" id="pais" name="pais" value="<?php echo $secretaria['pais']; ?>">
+                        <input type="text" class="form-control"  id="pais" name="pais" value="{{ $secretaria['pais']; }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
                         <div>
-                            <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"
-                                style="max-width: 55px" placeholder="DDD" value="<?php echo $secretaria['ddd']; ?>">
+                            <input type="text" maxlength="2" class="form-control p-2" id="ddd" name="ddd"
+                                style="max-width: 55px" placeholder="DDD" value="{{ $secretaria['ddd']; }}">
                         </div>
-
-
                         <div>
                             <label for="telefone">Celular/Telefone</label>
-                            <input type="text" class="form-control" type="text" id="telefone" name="telefone" value="<?php echo $secretaria['telefone']; ?>">
+                            <input type="text" class="form-control" id="telefone" name="telefone" value="{{ $secretaria['telefone']; }}">
                         </div>
                     </div>
 

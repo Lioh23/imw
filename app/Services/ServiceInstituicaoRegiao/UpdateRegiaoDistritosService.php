@@ -9,7 +9,7 @@ class UpdateRegiaoDistritosService
 {
     public function execute($request, $id)
     {
-        $distrito = InstituicoesInstituicao::findORFail($id);
+        $distrito = InstituicoesInstituicao::findOrFail($id);
         $dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('data_abertura'))->format('Y-m-d');
         if (isset($distrito)) {
             try {

@@ -51,23 +51,23 @@
         @endif
         <form class="py-4" method="POST" action="{{ route('instituicoes.igrejas.update', ['id' => $igreja['id']]) }}">
             @csrf
-            <?php echo $igreja['id']; ?>
+            {{ $igreja['id']; }}
 
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
                     <label for="nome">Nome*</label>
-                    <input class="form-control" type="text" id="nome" name="nome" value="<?php echo $igreja['nome']; ?>">
+                    <input class="form-control" type="text" id="nome" name="nome" value="{{ $igreja['nome']; }}">
                 </div>
                 <div class="col-12 mt-3 col-md-3">
                     <label for="cnpj">CNPJ*</label>
-                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="<?php echo $igreja['cnpj']; ?>">
+                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="{{ $igreja['cnpj']; }}">
 
                 </div>
 
                 <div class="col-12 mt-3 col-md-3">
                     <label for="data_abertura">Data de Abertura*</label>
                     <input class="form-control" type="text" id="data_abertura" name="data_abertura"
-                        value="<?php echo $igreja['data_abertura']; ?>">
+                        value="{{ $igreja['data_abertura']; }}">
                 </div>
             </div>
 
@@ -79,13 +79,13 @@
                 <div class="col-12 mt-3 col-md-6">
                     <label for="instituicao_pai_id">Instituição Pai*</label>
                     <select class="form-control" type="text" id="instituicao_pai_id" name="instituicao_pai_id">
-                        <option value="<?php echo $igreja['data_abertura']; ?>"><?php echo $igreja['data_abertura']; ?></option>
+                        <option value="{{ $igreja['data_abertura']; }}">{{ $igreja['data_abertura']; }}</option>
                         @foreach ($instituicao_pai_id as $row)
                             @if ($row['id'] == $igreja['instituicao_pai_id'])
                                 {
-                                <option value="<?php echo $row['id']; ?>" selected><?php echo $row['nome']; ?></option>
+                                <option value="{{ $row['id']; }}" selected>{{ $row['nome']; }}</option>
                                 }
-                                <option value="<?php echo $row['id']; ?>"><?php echo $row['nome']; ?></option>
+                                <option value="{{ $row['id']; }}">{{ $row['nome']; }}</option>
                             @endif
                         @endforeach
 
@@ -98,7 +98,7 @@
                     <div class="col-12 mt-3 col-md-4">
                         <label for="cep">CEP*</label>
                         <input type="text" class="form-control" type="text" id="cep" name="cep"
-                            value="<?php echo $igreja['cep']; ?>">
+                            value="{{ $igreja['cep']; }}">
 
                     </div>
 
@@ -106,56 +106,56 @@
                                 mt-3 col-md-8">
                         <label for="endereco">Logradouro (Rua/Av/Beco)*</label>
                         <input type="text" class="form-control" type="text" id="endereco" name="endereco"
-                            value="<?php echo $igreja['endereco']; ?>">
+                            value="{{ $igreja['endereco']; }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="numero">Numero</label>
                         <input type="number" class="form-control" type="text" id="numero" name="numero"
-                            value="<?php echo $igreja['numero']; ?>">
+                            value="{{ $igreja['numero']; }}">
 
                     </div>
 
                     <div class="col-12 mt-3 col-md-4">
                         <label for="bairro">Bairro</label>
                         <input type="text" class="form-control" type="text" id="bairro" name="bairro"
-                            value="<?php echo $igreja['bairro']; ?>">
+                            value="{{ $igreja['bairro']; }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="complemento">Complemento</label>
-                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"> <?php echo $igreja['complemento']; ?></textarea>
+                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"> {{ $igreja['complemento']; }}</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="cidade">Cidade</label>
                         <input type="text" class="form-control" type="text" id="cidade" name="cidade"
-                            value="<?php echo $igreja['cidade']; ?>">
+                            value="{{ $igreja['cidade']; }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
                         <input type="text" class="form-control" type="text" id="uf" name="uf"
-                            value="<?php echo $igreja['uf']; ?>" placeholder="xx">
+                            value="{{ $igreja['uf']; }}" placeholder="xx">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
                         <label for="pais">País</label>
-                        <input type="text" class="form-control" type="text" id="pais" name="pais" value="<?php echo $igreja['pais']; ?>">
+                        <input type="text" class="form-control" type="text" id="pais" name="pais" value="{{ $igreja['pais']; }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
                         <div>
                             <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"
-                                style="max-width: 55px" placeholder="DDD" value="<?php echo $igreja['ddd']; ?>">
+                                style="max-width: 55px" placeholder="DDD" value="{{ $igreja['ddd']; }}">
                         </div>
 
 
                         <div>
                             <label for="telefone">Celular/Telefone</label>
-                            <input type="text" class="form-control" type="text" id="telefone" name="telefone" value="<?php echo $igreja['telefone']; ?>">
+                            <input type="text" class="form-control" type="text" id="telefone" name="telefone" value="{{ $igreja['telefone']; }}">
                         </div>
                     </div>
 
