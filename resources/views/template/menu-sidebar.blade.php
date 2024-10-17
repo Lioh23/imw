@@ -142,7 +142,7 @@
 
              @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-instituicoes'))
                  <li class="menu">
-                     <a href="#instituicoes" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                     <a href="{{ route('instituicoes.index') }}"class="dropdown-toggle">
                          <div class="">
                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -154,38 +154,14 @@
                              </svg>
                              <span>Instituicões</span>
                          </div>
-                         <div>
-                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                 viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                 stroke-linecap="round" stroke-linejoin="round"
-                                 class="feather feather-chevron-right">
-                                 <polyline points="9 18 15 12 9 6"></polyline>
-                             </svg>
-                         </div>
+                     
                      </a>
-                     <ul class="collapse submenu list-unstyled" id="instituicoes" data-parent="#instituicoes">
-                         <li>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-secretarias'))
-                                 <a href="{{ route('instituicoes.secretarias.index') }}">Secretarias</a>
-                             @endif
-                         </li>
-                         <li>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-distritos'))
-                                 <a href="{{ route('instituicoes.distritos.index') }}">Distritos</a>
-                             @endif
-                         </li>
-                         <li>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-igrejas'))
-                                 <a href="{{ route('instituicoes.igrejas.index') }}">Igrejas</a>
-                             @endif
-                         </li>
-                     </ul>
                  </li>
              @endif
 
              <li class="menu">
                  @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-igrejas'))
-                     <a href="{{ route('instituicoes.igrejas.index') }}">Igrejas</a>
+                     <a href="">Igrejas</a>
                  @endif
                  @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-igrejas'))
              <li class="menu">

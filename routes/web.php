@@ -15,6 +15,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IgrejasController;
 use App\Http\Controllers\IgrejasRegiaoController;
 use App\Http\Controllers\InstituicaoController;
+use App\Http\Controllers\InstituicaoRegiaoController;
 use App\Http\Controllers\InstituicaoRegiaoDistritosController;
 use App\Http\Controllers\InstituicaoRegiaoIgrejasController;
 use App\Http\Controllers\InstituicaoRegiaoSecretariasController;
@@ -321,53 +322,16 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('instituicoes')
             ->name('instituicoes.')
             ->middleware(['seguranca:menu-instituicoes'])
+            ->controller(InstituicaoRegiaoController::class)
             ->group(function () {
-
-                // Grupo de rotas para Distritos
-                Route::prefix('distritos')
-                    ->name('distritos.')
-                    ->middleware(['seguranca:instituicoes-distritos'])
-                    ->controller(InstituicaoRegiaoDistritosController::class)
-                    ->group(function () {
-                        Route::get('/', 'index')->name('index');
-                        Route::get('/novo', 'novo')->name('novo');
-                        Route::delete('/deletar/{id}', 'deletar')->name('deletar');
-                        Route::get('/editar/{id}', 'editar')->name('editar');
-                        Route::post('/store', 'store')->name('store');
-                        Route::post('/update/{id}', 'update')->name('update');
-                        Route::put('/ativar/{id}', 'ativar')->name('ativar');
-                        Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
-                    });
-
-                // Grupo de rotas para Secretarias
-                Route::prefix('secretarias')
-                    ->name('secretarias.')
-                    ->middleware(['seguranca:instituicoes-secretarias'])
-                    ->controller(InstituicaoRegiaoSecretariasController::class)
-                    ->group(function () {
-                        Route::get('/', 'index')->name('index');
-                        Route::get('/novo', 'novo')->name('novo');
-                        Route::delete('/deletar/{id}', 'deletar')->name('deletar');
-                        Route::get('/editar/{id}', 'editar')->name('editar');
-                        Route::post('/store', 'store')->name('store');
-                        Route::post('/update/{id}', 'update')->name('update');
-                        Route::put('/ativar/{id}', 'ativar')->name('ativar');
-                    });
-
-                // Grupo de rotas para Igrejas
-                Route::prefix('igrejas')
-                    ->name('igrejas.')
-                    ->middleware(['seguranca:instituicoes-igrejas'])
-                    ->controller(InstituicaoRegiaoIgrejasController::class)
-                    ->group(function () {
-                        Route::get('/', 'index')->name('index');
-                        Route::get('/novo', 'novo')->name('novo');
-                        Route::delete('/deletar/{id}', 'deletar')->name('deletar');
-                        Route::get('/editar/{id}', 'editar')->name('editar');
-                        Route::post('/store', 'store')->name('store');
-                        Route::post('/update/{id}', 'update')->name('update');
-                        Route::put('/ativar/{id}', 'ativar')->name('ativar');
-                    });
+                Route::get('/', 'index')->name('index');
+                Route::get('/novo', 'novo')->name('novo');
+                Route::delete('/deletar/{id}', 'deletar')->name('deletar');
+                Route::get('/editar/{id}', 'editar')->name('editar');
+                Route::post('/store', 'store')->name('store');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::put('/ativar/{id}', 'ativar')->name('ativar');
+                Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
             });
     });
 

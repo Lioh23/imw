@@ -4,11 +4,11 @@ namespace App\Services\ServiceInstituicaoRegiao;
 
 use App\Models\InstituicoesInstituicao;
 
-class DeletarRegiaoDistritosService
+class DeletarRegiaoService
 {
     public function execute($id)
     {
-        $distrito = InstituicoesInstituicao::findOrFail($id);
-        $distrito->delete(); // Soft delete
+        $instituicao = InstituicoesInstituicao::findOrFail($id);
+        $instituicao->delete(); // Soft delete
     }
 }

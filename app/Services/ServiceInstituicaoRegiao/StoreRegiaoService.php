@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Services\ServiceInstituicaoSecretarias;
+namespace App\Services\ServiceInstituicaoRegiao;
 
 use App\Models\InstituicoesInstituicao;
 use Carbon\Carbon;
 
-class StoreRegiaoSecretariasService
+class StoreRegiaoService
 {
     public function execute($request)
     {
@@ -16,6 +16,7 @@ class StoreRegiaoSecretariasService
                 'nome' => $request->input('nome'),
                 'tipo_instituicao_id' => $request->input('tipo_instituicao_id'),
                 'instituicao_pai_id' => $request->input('instituicao_pai_id'),
+                'regiao_id' => $request->input('regiao_id'),
                 'bairro' => $request->input('bairro'),
                 'cep' => $request->input('cep'),
                 'cidade' => $request->input('cidade'),

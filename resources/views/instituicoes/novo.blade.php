@@ -1,9 +1,6 @@
 @extends('template.layout')
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[
-        ['text' => 'Instituições', 'url' => '/', 'active' => false],
-        ['text' => 'Distritos', 'url' => '#', 'active' => true],
-    ]"></x-breadcrumb>
+    <x-breadcrumb :breadcrumbs="[['text' => 'Instituições', 'url' => '/', 'active' => true]]"></x-breadcrumb>
 @endsection
 @section('extras-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -49,7 +46,7 @@
                 </ul>
             </div>
         @endif
-        <form class="py-4" method="POST" action="{{ route('instituicoes.distritos.store') }}">
+        <form class="py-4" method="POST" action="{{ route('instituicoes.store') }}">
             @csrf
 
             <div class="row">
@@ -75,8 +72,26 @@
                     <input class="form-control" type="text" id="data_abertura" name="data_abertura">
                 </div> --}}
 
+                <div class="col-12 mt-3 col-md-4">
+                    <label for="tipo_instituicao_id">Tipo da Instituição*</label>
+                    <select name="tipo_instituicao_id" id="tipo_instituicao_id" class="form-control">
+                        <option value="1">Igreja</option>
+                        <option value="2">Distrito</option>
+                        <option value="5">Secretaria Regional</option>
+                    </select>
+                </div>
+                <div class="col-12 mt-3 col-md-4">
+                    <label for="instituicao_pai_id">Instituição Pai*</label>
+                    <select name="instituicao_pai_id" id="instituicao_pai_id" class="form-control">
+                        {{-- ForEach com todas as instituicoes da Regiao 23 --}}
+                        @foreach ($instituicoes_pai as $ip)
+                            <option value="{{$ip['id']}}">{{$ip['nome']}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <input type="hidden" name="regiao_id" id="regiao_id" value="23">
             </div>
-            <input type="hidden" name="tipo_instituicao_id" value="2">
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
@@ -126,7 +141,8 @@
                     </div>
                     <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
                         <div>
-                            <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"  style="max-width: 55px" placeholder="DDD" >
+                            <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"
+                                style="max-width: 55px" placeholder="DDD">
                         </div>
                         <div>
                             <label for="telefone">Celular/Telefone</label>

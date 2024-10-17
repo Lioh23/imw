@@ -1,9 +1,6 @@
 @extends('template.layout')
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[
-        ['text' => 'Instituições', 'url' => '/', 'active' => false],
-        ['text' => 'Igrejas', 'url' => '#', 'active' => true],
-    ]"></x-breadcrumb>
+    <x-breadcrumb :breadcrumbs="[['text' => 'Instituições', 'url' => '/', 'active' => false]]"></x-breadcrumb>
 @endsection
 @section('extras-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -44,6 +41,23 @@
                     </div>
                 </div>
             </div>
+            <div class="tabs">
+                <ul class="nav nav-tabs" id="instituicaoTabs" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="{{route('instituicoes.index')}}" role="tab">Todos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?tipo_instituicao_id=1" role="tab">Igrejas</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?tipo_instituicao_id=5" role="tab">Secretarias</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="?tipo_instituicao_id=2" role="tab">Distritos</a>
+                    </li>
+                    <!-- Adicione mais abas conforme necessário -->
+                </ul>
+            </div>
             <div class="widget-content widget-content-area">
                 <!-- Conteúdo -->
                 <div class="card mb-3">
@@ -71,7 +85,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="{{ route('instituicoes.igrejas.novo') }}" title="Inserir um novo registro"
+                                <a href="{{ route('instituicoes.novo') }}" title="Inserir um novo registro"
                                     class="btn btn-primary right btn-rounded"> <svg xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -87,24 +101,25 @@
                                             <tr>
                                                 <th>Nome</th>
 
-                                                <th width="340px"></th>
+                                                <th width="240px"></th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($igrejas as $index => $igreja)
+                                            @foreach ($instituicoes as $index => $instituicao)
                                                 <tr>
                                                     <td>
-                                                        @if ($igreja->deleted_at)
-                                                            <del>{{ $igreja->nome }}</del>
+                                                        @if ($instituicao->deleted_at)
+                                                            <del>{{ $instituicao->nome }}</del>
                                                         @else
-                                                            {{ $igreja->nome }}
+                                                            {{ $instituicao->nome }}
                                                         @endif
                                                     </td>
-                                                    <td class="table-action d-flex align-items-center">
-                                                        @if (!$igreja->deleted_at)
+                                                    <td class="table-action">
+
+                                                        @if (!$instituicao->deleted_at)
                                                             <a href="javascript:void(0);" title="Visualizar"
                                                                 class="btn btn-sm btn-info mr-1 btn-rounded btn-view-details"
-                                                                data-igreja-id="{{ $igreja->id }}">
+                                                                data-instituicao-id="{{ $instituicao->id }}">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -116,8 +131,9 @@
                                                                 </svg>
 
                                                             </a>
-                                                            <a href="{{ route('instituicoes.igrejas.editar', $igreja->id) }}"
-                                                                title="Editar" class="btn btn-sm btn-dark mr-1 btn-rounded">
+                                                            <a href="{{ route('instituicoes.editar', $instituicao->id) }}"
+                                                                title="Editar"
+                                                                class="btn btn-sm btn-dark mr-1 btn-rounded">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -130,16 +146,16 @@
                                                             </a>
                                                         @endif
 
-                                                        <form class="mb-0"
-                                                            action="{{ route($igreja->deleted_at ? 'instituicoes.igrejas.ativar' : 'instituicoes.igrejas.deletar', $igreja->id) }}"
+                                                        <form
+                                                            action="{{ route($instituicao->deleted_at ? 'instituicoes.ativar' : 'instituicoes.deletar', $instituicao->id) }}"
                                                             method="POST" style="display: inline-block;"
-                                                            id="form_{{ $igreja->deleted_at ? 'ativar' : 'delete' }}_igreja_{{ $index }}">
+                                                            id="form_{{ $instituicao->deleted_at ? 'ativar' : 'delete' }}_instituicao_{{ $index }}">
                                                             @csrf
-                                                            @if ($igreja->deleted_at)
+                                                            @if ($instituicao->deleted_at)
                                                                 @method('PUT') {{-- Para restaurar o registro --}}
                                                                 <button type="button" title="Ativar"
                                                                     class="btn btn-sm btn-success mr-1 btn-rounded btn-confirm-ativar"
-                                                                    data-form-ativar-id="form_ativar_igreja_{{ $index }}">
+                                                                    data-form-ativar-id="form_ativar_instituicao_{{ $index }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
                                                                         stroke="currentColor" stroke-width="2"
@@ -156,7 +172,7 @@
                                                                 @method('DELETE')
                                                                 <button type="button" title="Inativar"
                                                                     class="btn btn-sm btn-danger btn-rounded btn-confirm-delete"
-                                                                    data-form-delete-id="form_delete_igreja_{{ $index }}">
+                                                                    data-form-delete-id="form_delete_instituicao_{{ $index }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
                                                                         stroke="currentColor" stroke-width="2"
@@ -174,9 +190,9 @@
                                                     </td>
                                                 </tr>
                                                 <!-- Modal de Visualização -->
-                                                <div class="modal fade" id="viewDetailsModal_{{ $igreja->id }}"
+                                                <div class="modal fade" id="viewDetailsModal_{{ $instituicao->id }}"
                                                     tabindex="-1" role="dialog"
-                                                    aria-labelledby="viewDetailsModalLabel_{{ $igreja->id }}"
+                                                    aria-labelledby="viewDetailsModalLabel_{{ $instituicao->id }}"
                                                     aria-hidden="true">
                                                     <div class="modal-dialog modal-lg modal-dialog-scrollable"
                                                         role="document"> <!-- Adiciona o scroll ao modal -->
@@ -188,7 +204,7 @@
                                                                 </button>
                                                             </div>
                                                             <div class="modal-body">
-                                                                <!-- Os detalhes do igreja serão preenchidos aqui pelo JavaScript -->
+                                                                <!-- Os detalhes do instituicao serão preenchidos aqui pelo JavaScript -->
                                                             </div>
 
                                                         </div>
@@ -199,7 +215,7 @@
                                     </table>
 
                                 </div>
-                                {{ $igrejas->links('vendor.pagination.index') }}
+                                {{ $instituicoes->links('vendor.pagination.index') }}
                             </div>
                         </div>
                     </div>
@@ -210,11 +226,11 @@
     </div>
 
     <script>
-        // Confirmação para apagar (deletar) o igreja
+        // Confirmação para apagar (deletar) o instituicao
         $('.btn-confirm-delete').on('click', function() {
             const formId = $(this).data('form-delete-id');
             swal({
-                title: 'Deseja realmente inativar este igreja?',
+                title: 'Deseja realmente inativar esta instituicao?',
                 type: 'error',
                 showCancelButton: true,
                 confirmButtonText: "Inativar",
@@ -229,11 +245,11 @@
             });
         });
 
-        // Confirmação para ativar o igreja
+        // Confirmação para ativar o instituicao
         $('.btn-confirm-ativar').on('click', function() {
             const formId = $(this).data('form-ativar-id');
             swal({
-                title: 'Deseja realmente ativar este igreja?',
+                title: 'Deseja realmente ativar esta instituicao?',
                 type: 'warning',
                 showCancelButton: true,
                 confirmButtonText: "Sim",
@@ -249,8 +265,8 @@
         });
 
         $('.btn-view-details').on('click', function() {
-            var igrejaId = $(this).data('igreja-id');
-            var modalId = '#viewDetailsModal_' + igrejaId;
+            var instituicaoId = $(this).data('instituicao-id');
+            var modalId = '#viewDetailsModal_' + instituicaoId;
             var button = $(this);
 
             // Adicionar o ícone de loading no botão usando Font Awesome
@@ -258,14 +274,14 @@
             button.html('<i class="fas fa-spinner fa-spin"></i>'); // Usar Font Awesome spinner
 
             $.ajax({
-                url: '/instituicoes/distritos/' + igrejaId + '/detalhes',
+                url: '/instituicoes/instituicoes/' + instituicaoId + '/detalhes',
                 method: 'GET',
                 success: function(data) {
-                    // Preenche o modal com as informações do igreja e as nomeações, ambos em formato de card
+                    // Preenche o modal com as informações do instituicao e as nomeações, ambos em formato de card
                     $(modalId).find('.modal-body').html(`
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">
-                        Informações do igreja
+                        Informações do Instituicao
                     </div>
                     <div class="card-body">
                         <p><strong>Nome:</strong> ${data.nome}</p>
@@ -290,12 +306,24 @@
                     $(modalId).modal('show');
                 },
                 error: function(err) {
-                    console.error("Erro ao buscar os detalhes do igreja: ", err);
+                    console.error("Erro ao buscar os detalhes do instituicao: ", err);
                 },
                 complete: function() {
                     // Restaurar o texto original do botão após o carregamento
                     button.html(originalButtonText);
                 }
+            });
+        });
+
+        const tabs = document.querySelectorAll('[role=tab]');
+
+        tabs.forEach((tab) => {
+            tab.addEventListener('click', (event) => {
+                // Remove a classe 'active' de todas as abas
+                tabs.forEach((t) => t.classList.remove('active'));
+
+                // Adiciona a classe 'active' à aba clicada
+                event.currentTarget.classList.add('active');
             });
         });
     </script>

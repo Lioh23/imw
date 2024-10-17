@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreReceberNovaSecretariaRequest extends FormRequest
+class StoreReceberNovoRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -38,7 +38,7 @@ class StoreReceberNovaSecretariaRequest extends FormRequest
             'telefone' => 'required|max:11',
             'uf' => 'required',
             'endereco' => 'required',
-            'ddd' => ''
+            'ddd' => 'max:2'
         ];
     }
     public function messages()
