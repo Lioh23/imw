@@ -44,16 +44,16 @@
             <div class="tabs">
                 <ul class="nav nav-tabs" id="instituicaoTabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link active" href="{{route('instituicoes.index')}}" role="tab">Todos</a>
+                        <a class="nav-link" href="{{ route('instituicoes.index') }}" role="tab">Todos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?tipo_instituicao_id=1" role="tab">Igrejas</a>
+                        <a class="nav-link" href="?tipo_instituicao_id=1" role="tab_igreja">Igrejas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?tipo_instituicao_id=5" role="tab">Secretarias</a>
+                        <a class="nav-link" href="?tipo_instituicao_id=5" role="tab_secretaria">Secretarias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="?tipo_instituicao_id=2" role="tab">Distritos</a>
+                        <a class="nav-link" href="?tipo_instituicao_id=2" role="tab_distrito">Distritos</a>
                     </li>
                     <!-- Adicione mais abas conforme necessário -->
                 </ul>
@@ -314,16 +314,30 @@
                 }
             });
         });
-
         const tabs = document.querySelectorAll('[role=tab]');
+        const params = new URLSearchParams(window.location.search);
+        const id = params.get('tipo_instituicao_id');
 
+        console.log(id);
+
+        // Ativa a aba com base no valor de 'id' ao carregar a página
+        if (id == 1) {
+            document.querySelector('[role=tab_igreja]').classList.add('active');
+        }
+        else if (id == 2) {
+            document.querySelector('[role=tab_distrito]').classList.add('active');
+        }
+        else if (id == 5) {
+            document.querySelector('[role=tab_secretaria]').classList.add('active');
+        }else{
+            document.querySelector('[role=tab]').classList.add('active');
+        }
+
+        // Evento de clique para alternar manualmente as abas
         tabs.forEach((tab) => {
             tab.addEventListener('click', (event) => {
-                // Remove a classe 'active' de todas as abas
-                tabs.forEach((t) => t.classList.remove('active'));
-
-                // Adiciona a classe 'active' à aba clicada
-                event.currentTarget.classList.add('active');
+                tabs.forEach((tab) => tab.classList.remove('active'));
+                event.currentTarget.classList.add('active'); 
             });
         });
     </script>
