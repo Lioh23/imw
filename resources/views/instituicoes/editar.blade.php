@@ -78,12 +78,14 @@
                 <div class="col-12 mt-3 col-md-4">
                     <label for="tipo_instituicao_id">Tipo da Instituição*</label>
                     <select name="tipo_instituicao_id" id="tipo_instituicao_id" class="form-control">
-                        <option value="{{ $instituicao['tipo_instituicao_id'] }}">
-                            {{ $instituicao['tipo_instituicao_id'] }}</option>
-                        <option value="1">Igreja</option>
-                        <option value="2">Distrito</option>
-                        <option value="5">Secretaria Regional</option>
+                        <option value="1" {{ $instituicao['tipo_instituicao_id'] == 1 ? 'selected' : '' }}>Igreja
+                        </option>
+                        <option value="2" {{ $instituicao['tipo_instituicao_id'] == 2 ? 'selected' : '' }}>Distrito
+                        </option>
+                        <option value="5" {{ $instituicao['tipo_instituicao_id'] == 5 ? 'selected' : '' }}>Secretaria
+                            Regional</option>
                     </select>
+
                 </div>
                 <div class="col-12 mt-3 col-md-4">
                     <label for="instituicao_pai_id">Instituição Pai*</label>
@@ -96,7 +98,6 @@
                     </select>
                 </div>
             </div>
-            <input type="hidden" name="tipo_instituicao_id" value="2">
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">

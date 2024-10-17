@@ -13,6 +13,7 @@ class UpdateRegiaoService
         $dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('data_abertura'))->format('Y-m-d');
         if (isset($instituicao)) {
             try {
+               
                 $instituicao->update(
                     [
                         'nome' => $request->input('nome'),

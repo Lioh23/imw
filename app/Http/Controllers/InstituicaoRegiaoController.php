@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReceberNovoRequest;
 use App\Models\InstituicoesInstituicao;
+use App\Models\InstituicoesTipoInstituicao;
 use App\Services\ServiceInstituicaoRegiao\UpdateRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\ListarRegiaoServices;
 use App\Services\ServiceInstituicaoRegiao\DeletarRegiaoService;
@@ -47,13 +48,15 @@ class InstituicaoRegiaoController extends Controller
         //Enviar Lista de insituicões pai, todas da regiao_id exceto igrejas
         $instituicoes_pai = InstituicoesInstituicao::where('regiao_id', session()->get('session_perfil')->instituicao_id)->where('tipo_instituicao_id', '!=', 1)->get();
         $instituicao = InstituicoesInstituicao::findOrFail($id);
-        return view('instituicoes.editar', compact('instituicao', 'instituicoes_pai'));
+       
+        return view('instituicoes.editar', compact('instituicao', 'instituicoes_pai' ));
     }
 
 
     public function update(StoreReceberNovoRequest $request, string $id)
     {
-
+      
+       
         app(UpdateRegiaoService::class)->execute($request, $id);
 
         return redirect()->route('instituicoes.index')->with('success', 'Instituição editado com sucesso!');
