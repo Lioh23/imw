@@ -65,7 +65,7 @@
                 <div class="col-12 mt-3 col-md-3">
                     <label for="data_abertura">Data de Abertura*</label>
                     <input class="form-control" type="text" id="data_abertura" name="data_abertura"
-                        value="{{ $instituicao['data_abertura'] }}">
+                        value="{{ \Carbon\Carbon::parse($instituicao['data_abertura'])->format('d/m/Y') }}">
                 </div>
             </div>
 

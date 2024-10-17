@@ -274,7 +274,7 @@
             button.html('<i class="fas fa-spinner fa-spin"></i>'); // Usar Font Awesome spinner
 
             $.ajax({
-                url: '/instituicoes/instituicoes/' + instituicaoId + '/detalhes',
+                url: '/instituicoes/' + instituicaoId + '/detalhes',
                 method: 'GET',
                 success: function(data) {
                     // Preenche o modal com as informações do instituicao e as nomeações, ambos em formato de card

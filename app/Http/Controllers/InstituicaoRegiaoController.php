@@ -42,7 +42,7 @@ class InstituicaoRegiaoController extends Controller
         return redirect()->route('instituicoes.index')->with('success', 'Instituição criado com sucesso!');
     }
 
-    public function editar($id)
+    public function editar(string $id)
     {
         //Enviar Lista de insituicões pai, todas da regiao_id exceto igrejas
         $instituicoes_pai = InstituicoesInstituicao::where('regiao_id', session()->get('session_perfil')->instituicao_id)->where('tipo_instituicao_id', '!=', 1)->get();
