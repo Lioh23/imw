@@ -27,6 +27,7 @@ class StoreReceberNovoRequest extends FormRequest
             'nome' => 'required',
             'tipo_instituicao_id' => 'required',
             'instituicao_pai_id' => 'required',
+            'regiao_id' => 'required',
             'bairro' => 'required',
             'cep' => 'required',
             'cidade' => 'required',
