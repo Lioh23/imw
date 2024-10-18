@@ -29,5 +29,77 @@ class IgrejasRegiaoController extends Controller
             return response()->json(['message' => 'Não foi possível listar as igrejas'], 500);
         }
     }
+    public function estatisticaAnoEclesiastico(Request $request, InstituicoesInstituicao $igreja)
+    {
+        try {
+            $data = app(GetEstatisticaAnoEclesiasticoService::class)->execute($igreja, $request->input('ano'));
+            return view('igrejas-regiao.estatistica-ano-eclesiastico', $data);
+        } catch (\Exception $e) {
 
+            return redirect()->back()->with('error', 'Erro' . $e->getMessage());
+        }
+    }
+
+    public function balancete(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
+        return view('igrejas-regiao.balancete', $data);
+    }
+
+    public function balancetePdf(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
+        $pdf = FacadePdf::loadView('financeiro.relatorios.balancete_pdf', $data);
+        return $pdf->stream('balancete.pdf');
+    }
+
+    public function movimentoDiario(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(MovimentoDiarioService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
+        return view('igrejas.movimentodiario', $data);
+    }
+
+    public function movimentoDiarioPdf(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $caixaId = $request->input('caixa_id');
+
+        $data = app(MovimentoDiarioService::class)->execute($dataInicial, $dataFinal, $caixaId, $igreja);
+        $pdf = FacadePdf::loadView('financeiro.relatorios.movimento-diario-pdf', $data);
+        return $pdf->stream('relatorio_movimento_diario.pdf');
+    }
+
+    public function livrorazao(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+
+        // Chama o serviço para obter os dados necessários
+        $data = app(LivroRazaoService::class)->execute($dataInicial, $dataFinal, $igreja);
+        return view('igrejas.livrorazao', $data);
+    }
+
+    public function livrorazaoPdf(Request $request, InstituicoesInstituicao $igreja)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+
+        // Chama o serviço para obter os dados necessários
+        $data = app(LivroRazaoService::class)->execute($dataInicial, $dataFinal, $igreja);
+        $pdf = FacadePdf::loadView('financeiro.relatorios.livrorazao_pdf', $data);
+        return $pdf->stream('relatorio_livrorazao.pdf');
+    }
 }
