@@ -175,7 +175,7 @@
                              <rect x="4" y="6" width="16" height="16" rx="2"></rect>
                              <path d="M8 12h8M12 16v4"></path>
                          </svg>
-                         <span>igrejas</span>
+                         <span>Igrejas</span>
                      </div>
                  </a>
              </li>
