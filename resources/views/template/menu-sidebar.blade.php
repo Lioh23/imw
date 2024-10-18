@@ -458,7 +458,7 @@
                      </a>
                  </li>
              @endif
-             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-gestao-igrejas'))
+             {{-- @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-gestao-igrejas'))
                  <li class="menu">
                      <a href="/igreja" aria-expanded="false" class="dropdown-toggle">
                          <div class="">
@@ -467,7 +467,7 @@
                          </div>
                      </a>
                  </li>
-             @endif
+             @endif --}}
              <li class="menu menu-heading">
                  <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
