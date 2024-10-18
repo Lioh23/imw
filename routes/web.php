@@ -262,15 +262,15 @@ Route::middleware(['auth'])->group(function () {
 
         // Crud igrejas
         Route::prefix('igreja')->name('igreja.')->controller(IgrejasController::class)->group(function () {
-            Route::get('/', 'index')->name('index')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('/list', 'list')->name('list')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('balancete/{igreja}', 'balancete')->name('balancete')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('balancete-pdf/{igreja}', 'balancetePdf')->name('balancete-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('movimento-diario/{igreja}', 'movimentoDiario')->name('movimento-diario')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('livrorazao/{igreja}', 'livrorazao')->name('livrorazao')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('/', 'index')->name('index')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
+            Route::get('/list', 'list')->name('list')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
+            Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
+            Route::get('balancete/{igreja}', 'balancete')->name('balancete')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
+            Route::get('balancete-pdf/{igreja}', 'balancetePdf')->name('balancete-pdf')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
+            Route::get('movimento-diario/{igreja}', 'movimentoDiario')->name('movimento-diario')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
+            Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
+            Route::get('livrorazao/{igreja}', 'livrorazao')->name('livrorazao')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
+            Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf')->middleware(['seguranca:distrito-gestao-igrejas', 'regiao-gestao-igrejas']);
         });
 
         /* Por enquanto somente visualiações */
