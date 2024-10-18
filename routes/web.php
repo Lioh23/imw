@@ -322,7 +322,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('instituicoes')
             ->name('instituicoes.')
             ->middleware(['seguranca:menu-instituicoes'])
-            ->controller(InstituicaoRegiaoController::class)
+            ->controller(InstituicaoRegiaoDistritosController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/novo', 'novo')->name('novo');

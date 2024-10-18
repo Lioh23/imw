@@ -16,7 +16,7 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Svg\Tag\Rect;
 
-class InstituicaoRegiaoController extends Controller
+class InstituicaoRegiaoDistritosController extends Controller
 {
     public function index(Request $request)
     {
