@@ -13,9 +13,7 @@ use App\Http\Controllers\FornecedorController;
 use App\Http\Controllers\HandleInstituicoesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IgrejasController;
-use App\Http\Controllers\IgrejasRegiaoController;
 use App\Http\Controllers\InstituicaoController;
-use App\Http\Controllers\InstituicaoRegiaoController;
 use App\Http\Controllers\InstituicaoRegiaoDistritosController;
 use App\Http\Controllers\InstituicaoRegiaoIgrejasController;
 use App\Http\Controllers\InstituicaoRegiaoSecretariasController;
@@ -262,15 +260,15 @@ Route::middleware(['auth'])->group(function () {
 
         // Crud igrejas
         Route::prefix('igreja')->name('igreja.')->controller(IgrejasController::class)->group(function () {
-            Route::get('/', 'index')->name('index')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('/list', 'list')->name('list')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('balancete/{igreja}', 'balancete')->name('balancete')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('balancete-pdf/{igreja}', 'balancetePdf')->name('balancete-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('movimento-diario/{igreja}', 'movimentoDiario')->name('movimento-diario')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('livrorazao/{igreja}', 'livrorazao')->name('livrorazao')->middleware(['seguranca:distrito-gestao-igrejas']);
-            Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf')->middleware(['seguranca:distrito-gestao-igrejas']);
+            Route::get('/', 'index')->name('index');
+            Route::get('/list', 'list')->name('list');
+            Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico');
+            Route::get('balancete/{igreja}', 'balancete')->name('balancete');
+            Route::get('balancete-pdf/{igreja}', 'balancetePdf')->name('balancete-pdf');
+            Route::get('movimento-diario/{igreja}', 'movimentoDiario')->name('movimento-diario');
+            Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf');
+            Route::get('livrorazao/{igreja}', 'livrorazao')->name('livrorazao');
+            Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf');
         });
 
         /* Por enquanto somente visualiações */
@@ -304,34 +302,57 @@ Route::middleware(['auth'])->group(function () {
         // Segurança
         Route::get('/selecionarPerfil', [HomeController::class, 'selecionarPerfil'])->withoutMiddleware([VerificaPerfil::class])->name('selecionarPerfil');
 
-        Route::prefix('igrejas-regiao')->name('igrejas.regiao.')->controller(IgrejasRegiaoController::class)->middleware(['seguranca:menu-instituicoes'])->group(
-            function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/list', 'list')->name('list');
-                Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico');
-                Route::get('balancete/{igreja}', 'balancete')->name('balancete');
-                Route::get('balancete-pdf/{igreja}', 'balancetePdf')->name('balancete-pdf');
-                Route::get('movimento-diario/{igreja}', 'movimentoDiario')->name('movimento-diario');
-                Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf');
-                Route::get('livrorazao/{igreja}', 'livrorazao')->name('livrorazao');
-                Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf');
-            }
-        );
-
         //Instituicoes
         Route::prefix('instituicoes')
             ->name('instituicoes.')
             ->middleware(['seguranca:menu-instituicoes'])
             ->controller(InstituicaoRegiaoDistritosController::class)
             ->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/novo', 'novo')->name('novo');
-                Route::delete('/deletar/{id}', 'deletar')->name('deletar');
-                Route::get('/editar/{id}', 'editar')->name('editar');
-                Route::post('/store', 'store')->name('store');
-                Route::post('/update/{id}', 'update')->name('update');
-                Route::put('/ativar/{id}', 'ativar')->name('ativar');
-                Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
+
+                // Grupo de rotas para Distritos
+                Route::prefix('distritos')
+                    ->name('distritos.')
+                    ->middleware(['seguranca:instituicoes-distritos'])
+                    ->controller(InstituicaoRegiaoDistritosController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')->name('index');
+                        Route::get('/novo', 'novo')->name('novo');
+                        Route::delete('/deletar/{id}', 'deletar')->name('deletar');
+                        Route::get('/editar/{id}', 'editar')->name('editar');
+                        Route::post('/store', 'store')->name('store');
+                        Route::post('/update/{id}', 'update')->name('update');
+                        Route::put('/ativar/{id}', 'ativar')->name('ativar');
+                        Route::get('/{id}/detalhes','detalhes')->name('detalhes');
+
+                    });
+
+                // Grupo de rotas para Secretarias
+                Route::prefix('secretarias')
+                    ->name('secretarias.')
+                    ->middleware(['seguranca:instituicoes-secretarias'])
+                    ->controller(InstituicaoRegiaoSecretariasController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')->name('index');
+                        Route::get('/novo', 'novo')->name('novo');
+                        Route::delete('/deletar/{id}', 'deletar')->name('deletar');
+                        Route::get('/editar/{id}', 'editar')->name('editar');
+                        Route::post('/store', 'store')->name('store');
+                        Route::post('/update/{id}', 'update')->name('update');
+                    });
+
+                // Grupo de rotas para Igrejas
+                Route::prefix('igrejas')
+                    ->name('igrejas.')
+                    ->middleware(['seguranca:instituicoes-igrejas'])
+                    ->controller(InstituicaoRegiaoIgrejasController::class)
+                    ->group(function () {
+                        Route::get('/', 'index')->name('index');
+                        Route::get('/novo', 'novo')->name('novo');
+                        Route::delete('/deletar/{id}', 'deletar')->name('deletar');
+                        Route::get('/editar/{id}', 'editar')->name('editar');
+                        Route::post('/store', 'store')->name('store');
+                        Route::post('/update/{id}', 'update')->name('update');
+                    });
             });
     });
 
