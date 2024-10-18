@@ -308,16 +308,8 @@ Route::middleware(['auth'])->group(function () {
             function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/list', 'list')->name('list');
-                Route::get('estatistica-ano-eclesiastico/{igreja}', 'estatisticaAnoEclesiastico')->name('estatistica-ano-eclesiastico');
-                Route::get('balancete/{igreja}', 'balancete')->name('balancete');
-                Route::get('balancete-pdf/{igreja}', 'balancetePdf')->name('balancete-pdf');
-                Route::get('movimento-diario/{igreja}', 'movimentoDiario')->name('movimento-diario');
-                Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf');
-                Route::get('livrorazao/{igreja}', 'livrorazao')->name('livrorazao');
-                Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf');
             }
         );
-
         //Instituicoes
         Route::prefix('instituicoes')
             ->name('instituicoes.')
