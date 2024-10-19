@@ -34,7 +34,7 @@ class GetEstatisticaAnoEclesiasticoService
         $dataReferencia = Carbon::parse("$ano-11-01")->startOfDay();
 
         return $dataHoje->lessThan($dataReferencia)
-            ? sprintf('%s-11-01', $ano - 1)
+            ? sprintf('%s-11-01', $ano - 2)
             : sprintf('%s-11-01', $ano);
     }
 
