@@ -119,58 +119,29 @@ class GetEstatisticaAnoEclesiasticoService
     private function handleTotalRolatual($igrejaId, $dataReferencia)
     {
         $query = "SELECT 
-            (	
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_recepcao >= '$dataReferencia'
-                    AND mr.igreja_id = $igrejaId
-                    AND mm.sexo = 'M' 
-                ) -
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_exclusao >= '$dataReferencia'
-                    AND mr.igreja_id = $igrejaId
-                    AND mm.sexo = 'M' 
-                )
+            (	    
+                SELECT count(*)
+                FROM membresia_rolpermanente mr, membresia_membros mm 
+                WHERE mm.id = mr.membro_id 
+                AND mr.status = 'A'
+                AND mr.igreja_id = $igrejaId
+                AND mm.sexo = 'M'  
             ) sexo_masculino,  
             (	
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_recepcao >= '$dataReferencia'
-                    AND mr.igreja_id = $igrejaId
-                    AND mm.sexo = 'F' 
-                ) -
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_exclusao >= '$dataReferencia'
-                    AND mr.igreja_id = $igrejaId
-                    AND mm.sexo = 'F' 
-                )
+                SELECT count(*)
+                FROM membresia_rolpermanente mr, membresia_membros mm 
+                WHERE mm.id = mr.membro_id 
+                AND mr.status = 'A'
+                AND mr.igreja_id = $igrejaId
+                AND mm.sexo = 'F' 
+                
             ) sexo_feminino,
             (
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_recepcao >= '$dataReferencia'
-                    AND mr.igreja_id = $igrejaId
-                ) -
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_exclusao >= '$dataReferencia'
-                    AND mr.igreja_id = $igrejaId
-                )	
-                
+                SELECT count(*)
+                FROM membresia_rolpermanente mr, membresia_membros mm 
+                WHERE mm.id = mr.membro_id 
+                AND mr.status = 'A'
+                AND mr.igreja_id = $igrejaId
             ) total";
 
         return DB::selectOne($query);
