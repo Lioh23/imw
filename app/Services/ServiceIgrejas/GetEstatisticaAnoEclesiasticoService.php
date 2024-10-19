@@ -4,26 +4,31 @@ namespace App\Services\ServiceIgrejas;
 
 use App\Models\InstituicoesInstituicao;
 use Carbon\Carbon;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class GetEstatisticaAnoEclesiasticoService
 {
     public function execute(InstituicoesInstituicao $igreja, $ano = null)
     {
-        $dataReferenciaRolAtual = $this->handleDataReferenciaRolAtual($ano ?? date('Y'));
-        [$dataInicialRolAnterior, $dataFinalRolAnterior] = $this->handlePeriodoRolAnterior($dataReferenciaRolAtual);
+        $dataReferencia = $this->handleDataReferencia($ano ?? date('Y'));
+
+        $membrosRecebidos = $this->handleEstatisticaRecepcao($igreja->id, $dataReferencia);
+        $membrosExcluidos = $this->handleEstatisticaExclusao($igreja->id, $dataReferencia);
+        $rolAtual         = $this->handleTotalRolAtual($igreja->id);
+        $rolAnterior      = $this->handleTotalRolAnterior($rolAtual, $membrosRecebidos, $membrosExcluidos);
 
         return [
             'igreja'           => $igreja,
             'ano'              => $ano,
-            'membrosRecebidos' => $this->handleEstatisticaRecepcao($igreja->id, $dataReferenciaRolAtual),
-            'membrosExcluidos' => $this->handleEstatisticaExclusao($igreja->id, $dataReferenciaRolAtual),
-            'rolAtual'         => $this->handleTotalRolAtual($igreja->id, $dataReferenciaRolAtual),
-            'rolAnterior'      => $this->handleTotalRolAnterior($igreja->id, $dataInicialRolAnterior, $dataFinalRolAnterior)
+            'membrosRecebidos' => $membrosRecebidos,
+            'membrosExcluidos' => $membrosExcluidos,
+            'rolAtual'         => $rolAtual,
+            'rolAnterior'      => $rolAnterior,
         ];
     }
 
-    private function handleDataReferenciaRolAtual($ano): string
+    private function handleDataReferencia($ano): string
     {
         $dataHoje = Carbon::today()->startOfDay();
         $dataReferencia = Carbon::parse("$ano-11-01")->startOfDay();
@@ -31,17 +36,6 @@ class GetEstatisticaAnoEclesiasticoService
         return $dataHoje->lessThan($dataReferencia)
             ? sprintf('%s-11-01', $ano - 1)
             : sprintf('%s-11-01', $ano);
-    }
-
-    private function handlePeriodoRolAnterior(string $dataReferenciaRolAtual): array
-    {
-        $periodoInicial = Carbon::parse($dataReferenciaRolAtual)->subYear()->startOfDay();
-        $periodoFinal = Carbon::parse($dataReferenciaRolAtual)->subDay()->startOfDay();
-
-        return [
-            $periodoInicial->format('Y-m-d'),
-            $periodoFinal->format('Y-m-d'),
-        ];
     }
 
     private function handleEstatisticaRecepcao($igrejaId, $dataReferencia)
@@ -116,7 +110,7 @@ class GetEstatisticaAnoEclesiasticoService
         return collect(DB::select($query));
     }
 
-    private function handleTotalRolatual($igrejaId, $dataReferencia)
+    private function handleTotalRolatual($igrejaId)
     {
         $query = "SELECT 
             (	    
@@ -147,63 +141,12 @@ class GetEstatisticaAnoEclesiasticoService
         return DB::selectOne($query);
     }
 
-    private function handleTotalRolAnterior($igrejaId, $dataInicial, $dataFinal)
+    private function handleTotalRolAnterior(object $rolAtual, Collection $membrosRecebidos, Collection $membrosExcluidos)
     {
-        $query = "SELECT 
-            (	
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_recepcao BETWEEN $dataInicial AND $dataFinal
-                    AND mr.igreja_id = $igrejaId
-                    AND mm.sexo = 'M' 
-                ) -
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_exclusao BETWEEN $dataInicial AND $dataFinal	
-                    AND mr.igreja_id = $igrejaId
-                    AND mm.sexo = 'M' 
-                )
-            ) sexo_masculino,  
-            (	
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_recepcao BETWEEN $dataInicial AND $dataFinal
-                    AND mr.igreja_id = $igrejaId
-                    AND mm.sexo = 'F' 
-                ) -
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_exclusao BETWEEN $dataInicial AND $dataFinal	
-                    AND mr.igreja_id = $igrejaId
-                    AND mm.sexo = 'F' 
-                )
-            ) sexo_feminino,
-            (
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_recepcao BETWEEN $dataInicial AND $dataFinal
-                    AND mr.igreja_id = $igrejaId
-                ) -
-                (
-                    SELECT count(*)
-                    FROM membresia_rolpermanente mr, membresia_membros mm 
-                    WHERE mm.id = mr.membro_id 
-                    AND mr.dt_exclusao BETWEEN $dataInicial AND $dataFinal	
-                    AND mr.igreja_id = $igrejaId
-                )	
-                
-            ) total";
-
-        return DB::selectOne($query);
+        return (object) [
+            'sexo_masculino' => $rolAtual->sexo_masculino - $membrosRecebidos->sum('sexo_masculino') + $membrosExcluidos->sum('sexo_masculino'),
+            'sexo_feminino'  => $rolAtual->sexo_feminino  - $membrosRecebidos->sum('sexo_feminino')  + $membrosExcluidos->sum('sexo_feminino'),
+            'total'          => $rolAtual->total          - $membrosRecebidos->sum('total')          + $membrosExcluidos->sum('total'),
+        ];
     }
 }
