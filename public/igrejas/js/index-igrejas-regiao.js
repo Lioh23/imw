@@ -68,18 +68,7 @@ $(document).ready(function() {
                         return row.nome
                     }
                 }
-            },
-            {
-                targets: 0,
-                orderable: 1,
-                render: function (data, type, row, meta) {
-                    if (row.deleted_at) {
-                        return `<span class="badge badge-danger"> ${row.nome} </span>`
-                    } else {
-                        return row.nome
-                    }
-                }
-            },
+            }
         ],
     }
 
