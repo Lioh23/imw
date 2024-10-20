@@ -27,7 +27,7 @@ class IgrejasRegiaoDataTable extends Datatable implements DatatableInterface
             ->order(function ($query) use ($requestData) {
                 [$order] = $requestData["order"];
 
-                $query->when($order['column'] == 0, fn($q) => $q->orderBy('cidade', $order['dir']));
+                $query->when($order['column'] == 0, fn($q) => $q->orderBy('distrito', $order['dir']));
                 $query->when($order['column'] == 1, fn($q) => $q->orderBy('nome', $order['dir']));
                 $query->when($order['column'] == 2, fn($q) => $q->orderBy('pastor', $order['dir']));
             })
