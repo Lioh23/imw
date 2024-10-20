@@ -4,6 +4,7 @@ CREATE OR REPLACE VIEW vw_igrejas AS
 	  ,igreja.nome
 	  ,igreja.cidade
 	  ,igreja.pastor
+		,igreja.ativo
 	  ,igreja.deleted_at
 	  ,distrito.id distrito_id
 	  ,distrito.nome distrito

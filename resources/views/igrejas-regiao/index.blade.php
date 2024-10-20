@@ -66,5 +66,5 @@
 <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
 <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
 <script src="{{ asset('custom/js/imw_datatables.js')}}?time={{ time() }}"></script>
-<script src="{{ asset('igrejas/js/index.js')}}?time={{ time() }}"></script>
+<script src="{{ asset('igrejas/js/index-igrejas-regiao.js')}}?time={{ time() }}"></script>
 @endsection

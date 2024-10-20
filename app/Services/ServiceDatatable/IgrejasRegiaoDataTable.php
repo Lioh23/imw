@@ -14,6 +14,8 @@ class IgrejasRegiaoDataTable extends Datatable implements DatatableInterface
     public function getQueryBuilder($parameters = []): Builder
     {
         return VwIgreja::whereIn('distrito_id', Identifiable::fetchDistritosIdByRegiao(Identifiable::fetchtSessionRegiao()->id))
+            ->whereNull('deleted_at')
+            ->where('ativo', 1)
             ->when(isset($parameters['search']) && trim($parameters['search']), function ($query) use ($parameters) {
                 $query->where('nome', 'like', "%{$parameters['search']}%");
             });
