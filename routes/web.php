@@ -337,7 +337,7 @@ Route::middleware(['auth'])->group(function () {
 
 
         //Instituicoes
-        Route::prefix('instituicoes')
+        Route::prefix('instituicoes-regiao')
             ->name('instituicoes.')
             ->middleware(['seguranca:menu-instituicoes'])
             ->controller(InstituicaoRegiaoDistritosController::class)
