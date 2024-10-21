@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\ClerigosRegiaoController;
 use App\Http\Controllers\CongregacoesController;
 use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\DistritoRelatorioController;
@@ -317,6 +318,24 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf');
             }
         );
+
+        //Clérigos
+        Route::prefix('clerigos')->name('clerigos.')
+            ->controller(ClerigosRegiaoController::class)
+            ->middleware(['seguranca:menu-instituicoes'])
+            ->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/novo', 'novo')->name('novo');
+                Route::delete('/deletar/{id}', 'deletar')->name('deletar');
+                Route::get('/editar/{id}', 'editar')->name('editar');
+                Route::post('/store', 'store')->name('store');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::put('/ativar/{id}', 'ativar')->name('ativar');
+                Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
+            });
+
+
+
         //Instituicoes
         Route::prefix('instituicoes')
             ->name('instituicoes.')
