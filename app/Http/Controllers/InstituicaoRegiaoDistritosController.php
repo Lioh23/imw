@@ -40,7 +40,7 @@ class InstituicaoRegiaoDistritosController extends Controller
     {
         app(StoreRegiaoService::class)->execute($request);
 
-        return redirect()->route('instituicoes.index')->with('success', 'Instituição criado com sucesso!');
+        return redirect()->route('instituicoes-regiao.index')->with('success', 'Instituição criado com sucesso!');
     }
 
     public function editar(string $id)
@@ -59,7 +59,7 @@ class InstituicaoRegiaoDistritosController extends Controller
        
         app(UpdateRegiaoService::class)->execute($request, $id);
 
-        return redirect()->route('instituicoes.index')->with('success', 'Instituição editado com sucesso!');
+        return redirect()->route('instituicoes-regiao.index')->with('success', 'Instituição editado com sucesso!');
     }
 
 
@@ -68,14 +68,14 @@ class InstituicaoRegiaoDistritosController extends Controller
     {
         app(DeletarRegiaoService::class)->execute($id);
 
-        return redirect()->route('instituicoes.index')->with('success', 'Instituição inativado com sucesso.');
+        return redirect()->route('instituicoes-regiao.index')->with('success', 'Instituição inativado com sucesso.');
     }
 
     public function ativar($id)
     {
         app(AtivarRegiaoService::class)->execute($id);
 
-        return redirect()->route('instituicoes.index')->with('success', 'Instituição ativado com sucesso.');
+        return redirect()->route('instituicoes-regiao.index')->with('success', 'Instituição ativado com sucesso.');
     }
 
     public function detalhes($id)

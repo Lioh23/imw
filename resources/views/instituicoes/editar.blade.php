@@ -46,7 +46,7 @@
                 </ul>
             </div>
         @endif
-        <form class="py-4" method="POST" action="{{ route('instituicoes.update', ['id' => $instituicao['id']]) }}">
+        <form class="py-4" method="POST" action="{{ route('instituicoes-regiao.update', ['id' => $instituicao['id']]) }}">
             @csrf
 
             <div class="row">

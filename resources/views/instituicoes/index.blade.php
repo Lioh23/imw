@@ -44,7 +44,7 @@
             <div class="tabs">
                 <ul class="nav nav-tabs" id="instituicaoTabs" role="tablist">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ route('instituicoes.index') }}" role="tab">Todos</a>
+                        <a class="nav-link" href="{{ route('instituicoes-regiao.index') }}" role="tab">Todos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="?tipo_instituicao_id=1" role="tab_igreja">Igrejas</a>
@@ -85,7 +85,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="{{ route('instituicoes.novo') }}" title="Inserir um novo registro"
+                                <a href="{{ route('instituicoes-regiao.novo') }}" title="Inserir um novo registro"
                                     class="btn btn-primary right btn-rounded"> <svg xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -131,7 +131,7 @@
                                                                 </svg>
 
                                                             </a>
-                                                            <a href="{{ route('instituicoes.editar', $instituicao->id) }}"
+                                                            <a href="{{ route('instituicoes-regiao.editar', $instituicao->id) }}"
                                                                 title="Editar"
                                                                 class="btn btn-sm btn-dark mr-1 btn-rounded">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
@@ -147,7 +147,7 @@
                                                         @endif
 
                                                         <form
-                                                            action="{{ route($instituicao->deleted_at ? 'instituicoes.ativar' : 'instituicoes.deletar', $instituicao->id) }}"
+                                                            action="{{ route($instituicao->deleted_at ? 'instituicoes-regiao.ativar' : 'instituicoes-regiao.deletar', $instituicao->id) }}"
                                                             method="POST" style="display: inline-block;"
                                                             id="form_{{ $instituicao->deleted_at ? 'ativar' : 'delete' }}_instituicao_{{ $index }}">
                                                             @csrf
@@ -274,7 +274,7 @@
             button.html('<i class="fas fa-spinner fa-spin"></i>'); // Usar Font Awesome spinner
 
             $.ajax({
-                url: '/instituicoes/' + instituicaoId + '/detalhes',
+                url: '/instituicoes-regiao/' + instituicaoId + '/detalhes',
                 method: 'GET',
                 success: function(data) {
                     // Preenche o modal com as informações do instituicao e as nomeações, ambos em formato de card

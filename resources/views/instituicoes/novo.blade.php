@@ -46,7 +46,7 @@
                 </ul>
             </div>
         @endif
-        <form class="py-4" method="POST" action="{{ route('instituicoes.store') }}">
+        <form class="py-4" method="POST" action="{{ route('instituicoes-regiao.store') }}">
             @csrf
 
             <div class="row">
