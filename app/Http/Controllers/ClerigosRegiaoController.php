@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\PessoasPessoa;
+use App\Services\ServiceClerigosRegiao\DetalhesRegiaoClerigosService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
 use Illuminate\Http\Request;
 
@@ -25,9 +26,9 @@ class ClerigosRegiaoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function novo()
     {
-        //
+        return view('clerigos.novo');
     }
 
     /**
@@ -84,5 +85,11 @@ class ClerigosRegiaoController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function detalhes($id)
+    {
+        $instituicao = app(DetalhesRegiaoClerigosService::class)->execute($id);
+        return response()->json($instituicao);
     }
 }

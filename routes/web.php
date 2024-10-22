@@ -353,7 +353,7 @@ Route::middleware(['auth'])->group(function () {
             });
     });
 
-    Route::prefix('instituicoes')->name('instituicoes.')->controller(HandleInstituicoesController::class)->group(function () {
+    Route::prefix('instituicoes-admin')->name('instituicoes-admin.')->controller(HandleInstituicoesController::class)->group(function () {
         Route::get('igrejasByDistrito/{distritoId}', 'igrejasByDistrito');
     });
 });
