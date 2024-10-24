@@ -198,7 +198,7 @@
                             <path d="M16 21v-2a4 4 0 0 0-3-3.87"></path>
                             <path d="M8 21v-2a4 4 0 0 1 3-3.87"></path>
                         </svg>
-                        
+
                         <span>Clérigos</span>
                     </div>
                     <div>
