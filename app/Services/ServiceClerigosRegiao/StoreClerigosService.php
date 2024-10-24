@@ -30,7 +30,7 @@ class StoreClerigosService
             'estado_civil',
             'regiao_id',
             'sexo',
-            'escolaridade',
+            'formacao_id',
             'nome_mae',
             'nome_pai',
             'telefone_preferencial',

@@ -30,7 +30,7 @@ class UpdateClerigosService
                     'estado_civil' => $request->input('estado_civil'),
                     'regiao_id' => $request->input('regiao_id'),
                     'sexo' => $request->input('sexo'),
-                    'escolaridade' => $request->input('escolaridade', ''),
+                    'formacao_id' => $request->input('formacao_id', ''),
                     'nome_mae' => $request->input('nome_mae', ''),
                     'nome_pai' => $request->input('nome_pai', ''),
                     'telefone_preferencial' => $request->input('telefone_preferencial'),
@@ -51,7 +51,7 @@ class UpdateClerigosService
                 ]
 
             );
-            dd('Clerigo cadastrado!');
+         
         }
     }
 }
