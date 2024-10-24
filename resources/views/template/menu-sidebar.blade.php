@@ -143,7 +143,7 @@
 
              @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-instituicoes'))
                  <li class="menu">
-                     <a href="{{ route('instituicoes.index') }}"class="dropdown-toggle">
+                     <a href="{{ route('instituicoes-regiao.index') }}"class="dropdown-toggle">
                          <div class="">
                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                  viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
@@ -198,7 +198,7 @@
                             <path d="M16 21v-2a4 4 0 0 0-3-3.87"></path>
                             <path d="M8 21v-2a4 4 0 0 1 3-3.87"></path>
                         </svg>
-                        
+
                         <span>Clérigos</span>
                     </div>
                     <div>
