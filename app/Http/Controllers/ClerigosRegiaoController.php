@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreReceberNovoClerigoRequest;
 use App\Models\Formacao;
 use App\Models\PessoasPessoa;
+use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
+use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
+use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
 use App\Services\ServiceClerigosRegiao\StoreClerigosService;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
@@ -92,14 +95,23 @@ class ClerigosRegiaoController extends Controller
         return redirect()->route('clerigos.index')->with('sucess', 'Clerigo editado com sucesso!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
+    public function deletar($id)
     {
-        //
+        app(DeletarClerigoService::class)->execute($id);
+
+        return redirect()->route('clerigos.index')->with('success', 'Clerigo inativado com sucesso.');
+    }
+
+    public function ativar($id)
+    {
+        app(AtivarClerigoService::class)->execute($id);
+
+        return redirect()->route('clerigos.index')->with('success', 'Clerigo ativado com sucesso.');
+    }
+
+    public function detalhes($id)
+    {
+        $clerigos = app(DetalhesClerigoService::class)->execute($id);
+        return response()->json($clerigos);
     }
 }
