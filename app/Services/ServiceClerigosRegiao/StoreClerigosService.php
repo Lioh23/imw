@@ -48,6 +48,7 @@ class StoreClerigosService
             'titulo_eleitor',
             'titulo_eleitor_secao',
             'titulo_eleitor_zona',
+            'categoria',
         ]);
 
         PessoasPessoa::create($data);

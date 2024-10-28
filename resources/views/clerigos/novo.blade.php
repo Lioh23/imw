@@ -84,7 +84,7 @@
             <div id="tab_dados_clerigo">
 
                 <div class="row">
-                    <div class="col-12 mt-3 col-md-6">
+                    <div class="col-12 mt-3 col-md-5">
                         <label for="nome">Nome*</label>
                         <input class="form-control" type="text" id="nome" name="nome">
                     </div>
@@ -92,6 +92,16 @@
                         <label for="tipo">Tipo*</label>
                         <select class="form-control" type="text" id="tipo" name="tipo">
                             <option value="CLE">CLE</option>
+                        </select>
+
+                    </div>
+                    <div class="col-12 mt-3 col-md-3">
+                        <label for="categoria">Categoaria*</label>
+                        <select class="form-control" type="text" id="categoria" name="categoria">
+                            <option value="missionária">Missionária</option>
+                            <option value="pastor">Pastor</option>
+                            <option value="ministro">Ministro</option>
+                            <option value="bispo">Bispo</option>
                         </select>
 
                     </div>

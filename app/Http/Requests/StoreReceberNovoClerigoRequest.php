@@ -64,6 +64,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'titulo_eleitor_secao' => 'required|string|max:10',
             'titulo_eleitor_zona' => 'required|string|max:10',
             'formacao_id' => 'required|integer', 
+            'categoria' => 'required', 
                         
         ];
     }

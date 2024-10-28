@@ -48,6 +48,7 @@ class UpdateClerigosService
                     'titulo_eleitor' => $request->input('titulo_eleitor', ''),
                     'titulo_eleitor_secao' => $request->input('titulo_eleitor_secao', ''),
                     'titulo_eleitor_zona' => $request->input('titulo_eleitor_zona', ''),
+                    'categoria' => $request->input('categoria', ''),
                 ]
 
             );
