@@ -343,7 +343,7 @@ Route::middleware(['auth'])->group(function () {
             ->controller(InstituicaoRegiaoDistritosController::class)
             ->group(function () {
                 Route::get('/', 'index')->name('index');
-                Route::get('/novo{tab}', 'novo')->name('novo');
+                Route::get('/novo', 'novo')->name('novo');
                 Route::delete('/deletar/{id}', 'deletar')->name('deletar');
                 Route::get('/editar/{id}', 'editar')->name('editar');
                 Route::post('/store', 'store')->name('store');
