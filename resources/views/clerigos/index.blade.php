@@ -68,7 +68,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="{{ route('clerigos.novo') }}" title="Inserir um novo registro"
+                                <a href="{{ route('clerigos.novo', ['tab' => 'tab_dados_clerigo']) }}" title="Inserir um novo registro"
                                     class="btn btn-primary right btn-rounded"> <svg xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -268,7 +268,6 @@
                     </div>
                     <div class="card-body">
                         <p><strong>Nome:</strong> ${data.nome}</p>
-                        <p><strong>CNPJ:</strong> ${data.cnpj || '-'}</p>
                         <p><strong>CEP:</strong> ${data.cep || '-'}</p>
                         <p><strong>Endereço:</strong> ${data.endereco || '-'}, ${data.numero || '-'}</p>
                         <p><strong>Complemento:</strong> ${data.complemento || '-'}</p>
@@ -276,11 +275,12 @@
                         <p><strong>Cidade:</strong> ${data.cidade || '-'}</p>
                         <p><strong>UF:</strong> ${data.uf || '-'}</p>
                         <p><strong>País:</strong> ${data.pais || '-'}</p>
-                        <p><strong>DDD:</strong> ${data.ddd || '-'}</p>
-                        <p><strong>Telefone:</strong> ${data.telefone || '-'}</p>
-                        <p><strong>Site:</strong> ${data.site || '-'}</p>
                         <p><strong>Email:</strong> ${data.email || '-'}</p>
-                        <p><strong>Responsável:</strong> ${data.pastor || '-'}</p>
+                        <p><strong>Estado Cívil:</strong> ${data.estado_civil || '-'}</p>
+                        <p><strong>CPF:</strong> ${data.cpf || '-'}</p>
+                        <p><strong>Nascimento:</strong> ${data.data_nascimento || '-'}</p>
+                        <p><strong>Conjugue:</strong> ${data.nome_conjuge || '-'}</p>
+    
                     </div>
                 </div>
             `);

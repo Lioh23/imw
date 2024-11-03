@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Formacao;
 use App\Models\InstituicoesInstituicao;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -58,4 +59,26 @@ Artisan::command('regiaoId', function () {
         }
         $this->info('igrejas ok');
     }
+});
+
+
+Artisan::command('formacao', function () {
+    $listaFormacao = [
+        'Ensino Fundamental',
+        'Ensino Médio',
+        'Superior Completo',
+        'Superior Incompleto',
+        'Pós-Graduação',
+        'Mestrado',
+        'Doutorado',
+        'Pós-Doutorado',
+    ];
+    foreach($listaFormacao as $formacao){
+        Formacao::create(
+            [
+                'nivel' => $formacao,
+            ]
+            );
+    };
+  
 });
