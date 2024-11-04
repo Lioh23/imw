@@ -72,10 +72,6 @@ class UpdateMembroService
                 } else {
                     throw new \Exception("Foto inválida ou não fornecida.");
                 }
-            } elseif ($photo === null && !$isNew) {
-                // Se a foto for nula e não for uma nova entrada, remover a foto existente
-                $membro->foto = null;
-                $membro->save();
             }
         
             // Salvar as mudanças no banco de dados, caso outras alterações tenham sido feitas
