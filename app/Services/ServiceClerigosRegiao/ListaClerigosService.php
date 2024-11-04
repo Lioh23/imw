@@ -6,13 +6,16 @@ use App\Models\PessoasPessoa;
 
 class ListaClerigosService
 {
-    public function execute($searchTerm = null)
+    public function execute($parameters = null,)
     {
-        $regiao_id = (int) session()->get('session_perfil')->instituicao_id;
 
+        
+        $regiao_id = (int) session()->get('session_perfil')->instituicao_id;
+        $searchTerm = is_array($parameters) && isset($parameters['searchTerm']) ? $parameters['searchTerm'] : null;
+        dd($parameters);
         $clerigos = PessoasPessoa::query()->withTrashed()->where('regiao_id', $regiao_id)
-            ->when(isset($searchTerm), function ($query) {
-                $query->where('nome', 'like', "%{$this->searchTerm}%");
+            ->when($searchTerm, function ($query, $searchTerm) {
+                $query->where('nome', 'like', "%{$searchTerm}%");
             })
             ->orderBy('nome', 'asc')
             ->paginate(50);
