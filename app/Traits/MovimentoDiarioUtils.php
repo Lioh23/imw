@@ -31,7 +31,7 @@ trait MovimentoDiarioUtils
             ->where('financeiro_lancamentos.caixa_id', $caixaId)
             ->whereBetween('financeiro_lancamentos.data_movimento', [$dataInicial, $dataFinal])
             ->orderBy('financeiro_lancamentos.data_movimento', 'asc')
-            ->orderBy('financeiro_plano_contas.nome', 'asc')
+            ->orderBy('financeiro_plano_contas.numeracao', 'asc')
             ->get();
     }
 }
