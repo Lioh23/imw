@@ -85,13 +85,6 @@
                         <input class="form-control" type="text" id="nome" name="nome">
                     </div>
                     <div class="col-12 mt-3 col-md-3">
-                        <label for="tipo">Tipo*</label>
-                        <select class="form-control" type="text" id="tipo" name="tipo">
-                            <option value="CLE">CLE</option>
-                        </select>
-
-                    </div>
-                    <div class="col-12 mt-3 col-md-3">
                         <label for="categoria">Categoaria*</label>
                         <select class="form-control" type="text" id="categoria" name="categoria">
                             <option value="missionária">Missionária</option>

@@ -27,7 +27,6 @@ class StoreReceberNovoClerigoRequest extends FormRequest
     public function rules()
     {
         return [
-        'tipo' => 'required|string|max:3',
             'nome' => 'required|string|max:255',
             'identidade' => 'required|string|max:20',
             'orgao_emissor' => 'required|string|max:50',
@@ -45,7 +44,6 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'estado_civil' => 'required|string|max:20',
             'regiao_id' => 'required|integer', // Supondo que você tenha uma tabela de regiões
             'sexo' => 'required|string|in:M,F', // M ou F
-            'escolaridade' => 'required|string|max:100',
             'nome_mae' => 'nullable|string|max:255',
             'nome_pai' => 'nullable|string|max:255',
             'telefone_preferencial' => 'required|string|max:15',
@@ -63,9 +61,9 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'titulo_eleitor' => 'required|string|max:20',
             'titulo_eleitor_secao' => 'required|string|max:10',
             'titulo_eleitor_zona' => 'required|string|max:10',
-            'formacao_id' => 'required|integer', 
-            'categoria' => 'required', 
-                        
+            'formacao_id' => 'required|integer',
+            'categoria' => 'required',
+
         ];
     }
 

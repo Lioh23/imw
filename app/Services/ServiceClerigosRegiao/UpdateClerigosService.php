@@ -12,7 +12,7 @@ class UpdateClerigosService
         if ($clerigo) {
             $clerigo::update(
                 [
-                    'tipo' => $request->input('tipo'),
+
                     'nome' => $request->input('nome'),
                     'identidade' => $request->input('identidade'),
                     'orgao_emissor' => $request->input('orgao_emissor'),
@@ -52,7 +52,7 @@ class UpdateClerigosService
                 ]
 
             );
-         
+
         }
     }
 }

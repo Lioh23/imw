@@ -12,7 +12,6 @@ class StoreClerigosService
         $data_emissao = Carbon::createFromFormat('d/m/Y', $request->input('data_emissao'))->format('Y-m-d');
         $pispasep_emissao = Carbon::createFromFormat('d/m/Y', $request->input('pispasep_emissao'))->format('Y-m-d');
         $data = $request->safe()->only([
-            'tipo',
             'nome',
             'identidade',
             'orgao_emissor',
@@ -52,6 +51,6 @@ class StoreClerigosService
         ]);
 
         PessoasPessoa::create($data);
-      
+
     }
 }

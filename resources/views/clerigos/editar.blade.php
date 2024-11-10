@@ -91,12 +91,6 @@
                             value="{{ old('nome', $clerigo->nome) }}" required>
                     </div>
                     <div class="col-12 mt-3 col-md-3">
-                        <label for="tipo">Tipo*</label>
-                        <select class="form-control" id="tipo" name="tipo">
-                            <option value="CLE" {{ $clerigo->tipo == 'CLE' ? 'selected' : '' }}>CLE</option>
-                        </select>
-                    </div>
-                    <div class="col-12 mt-3 col-md-3">
                         <label for="categoria">Categoaria*</label>
                         <select class="form-control" type="text" id="categoria" name="categoria">
                             <option value="missionária">Missionária</option>
