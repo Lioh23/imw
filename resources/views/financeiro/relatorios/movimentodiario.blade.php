@@ -104,47 +104,49 @@
                         // Combine all transactions into a single array
                         $allLancamentos = [];
                         foreach ($lancamentosPorCaixa as $caixaDescricao => $lancamentos) {
-                        foreach ($lancamentos as $lancamento) {
-                        $lancamento->caixaDescricao = $caixaDescricao; // Add caixaDescricao to each transaction
-                        $allLancamentos[] = $lancamento;
-                        }
+                            foreach ($lancamentos as $lancamento) {
+                                $lancamento->caixaDescricao = $caixaDescricao; // Add caixaDescricao to each transaction
+                                $allLancamentos[] = $lancamento;
+                            }
                         }
 
                         // Sort all transactions by date
                         usort($allLancamentos, function ($a, $b) {
-                        return strtotime($a->data_movimento) - strtotime($b->data_movimento);
+                            return strtotime($a->data_movimento) - strtotime($b->data_movimento);
                         });
 
                         // Group transactions by date
                         $groupedLancamentos = [];
                         foreach ($allLancamentos as $lancamento) {
-                        $groupedLancamentos[$lancamento->data_movimento][] = $lancamento;
+                            $groupedLancamentos[$lancamento->data_movimento][$lancamento->caixaDescricao][] = $lancamento;
                         }
                         @endphp
 
-                        @foreach ($groupedLancamentos as $dataMovimento => $lancamentosData)
-                        <tr>
-                            <td><b>{{ \Carbon\Carbon::parse($dataMovimento)->format('d/m/Y') }}</b></td>
-                            <td><b>{{ $lancamentosData[0]->caixaDescricao }}</b></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>
-                        @foreach ($lancamentosData as $lancamento)
-                        <tr>
-                            <td></td>
-                            <td>{{ $lancamento->planoConta->numeracao }} - {{ $lancamento->planoConta->nome }}</td>
-                            <td style="{{ $lancamento->tipo_lancamento === 'E' ? 'color: green;' : 'color: red;' }}">
-                                {{ $lancamento->tipo_lancamento === 'E' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
-                            </td>
-                            <td style="{{ $lancamento->tipo_lancamento === 'S' ? 'color: red;' : 'color: green;' }}">
-                                {{ $lancamento->tipo_lancamento === 'S' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
-                            </td>
-                            <td>{{ $lancamento->descricao }}</td>
-                            <td>{{ $lancamento->pagante_favorecido }}</td>
-                        </tr>
-                        @endforeach
+                        @foreach ($groupedLancamentos as $dataMovimento => $lancamentosCaixa)
+                            @foreach($lancamentosCaixa as $caixaDescricao => $lancamentosData)
+                                <tr>
+                                    <td><b>{{ \Carbon\Carbon::parse($dataMovimento)->format('d/m/Y') }}</b></td>
+                                    <td><b>{{ $caixaDescricao }}</b></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                                @foreach ($lancamentosData as $lancamento)
+                                <tr>
+                                    <td></td>
+                                    <td>{{ $lancamento->planoConta->numeracao }} - {{ $lancamento->planoConta->nome }}</td>
+                                    <td style="{{ $lancamento->tipo_lancamento === 'E' ? 'color: green;' : 'color: red;' }}">
+                                        {{ $lancamento->tipo_lancamento === 'E' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
+                                    </td>
+                                    <td style="{{ $lancamento->tipo_lancamento === 'S' ? 'color: red;' : 'color: green;' }}">
+                                        {{ $lancamento->tipo_lancamento === 'S' ? 'R$ ' . number_format($lancamento->valor, 2, ',', '.') : '-' }}
+                                    </td>
+                                    <td>{{ $lancamento->descricao }}</td>
+                                    <td>{{ $lancamento->pagante_favorecido }}</td>
+                                </tr>
+                                @endforeach
+                            @endforeach
                         @endforeach
                     </tbody>
                 </table>
