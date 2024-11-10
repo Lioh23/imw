@@ -72,11 +72,7 @@
         </div>
         @if ($errors->any())
             <div class="alert alert-danger">
-                <ul class=" d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
-
-                    <li>{{ $errors->first() }}</li>
-
-                </ul>
+                <p>{{ $errors->first() }}</p>
             </div>
         @endif
         <form class="py-4" method="POST" action="{{ route('clerigos.store') }}">
@@ -391,7 +387,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script>
-       
         document.querySelector('form').addEventListener('keydown', function(event) {
             if (event.key === 'Enter') {
                 event.preventDefault(); // Impede o envio do formulário
@@ -408,8 +403,8 @@
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });
-     
-           
+
+
         })
         const tabs = document.querySelectorAll('[role^="tab_"]');
         const formulariosId = document.querySelectorAll('[id^="tab_"]');
@@ -499,6 +494,7 @@
 
         function buscarCep() {
             let cep = document.getElementById('cep').value;
+            console.log("CEP digitado: ", cep);
             if (cep !== "") {
                 let url = "https://brasilapi.com.br/api/cep/v1/" + cep;
                 let req = new XMLHttpRequest()
@@ -524,7 +520,7 @@
                             }
                         }
 
-                    } else if (req.stauts === 404) {
+                    } else if (req.status === 404) {
                         alert('CEP inválido')
                     }
                 }

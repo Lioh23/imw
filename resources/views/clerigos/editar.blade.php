@@ -71,11 +71,10 @@
 
         @if ($errors->any())
             <div class="alert alert-danger">
-                <ul class="d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
+
+                <p>{{ $errors->first() }}</p>
+
+
             </div>
         @endif
 
@@ -152,7 +151,8 @@
                             </option>
                             <option value="Casado" {{ $clerigo->estado_civil == 'Casado' ? 'selected' : '' }}>Casado
                             </option>
-                            <option value="Viúvo" {{ $clerigo->estado_civil == 'Viúvo' ? 'selected' : '' }}>Viúvo</option>
+                            <option value="Viúvo" {{ $clerigo->estado_civil == 'Viúvo' ? 'selected' : '' }}>Viúvo
+                            </option>
                             <option value="Divorciado" {{ $clerigo->estado_civil == 'Divorciado' ? 'selected' : '' }}>
                                 Divorciado</option>
                         </select>
@@ -232,157 +232,160 @@
                     <div class="col-12 mt-3 col-md-4">
                         <label for="residencia_propria">Residência Própria</label>
                         <select class="form-control" type="text" id="residencia_propria" name="residencia_propria">
-                            <option value="0" {{$clerigo->residencia_propria == '0' ? 'selected' : ''}}>Não</option>
-                            <option value="1" {{$clerigo->residencia_propria == '1' ? 'selected' : ''}}>Sim</option>
+                            <option value="0" {{ $clerigo->residencia_propria == '0' ? 'selected' : '' }}>Não
+                            </option>
+                            <option value="1" {{ $clerigo->residencia_propria == '1' ? 'selected' : '' }}>Sim
+                            </option>
                         </select>
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="residencia_propria_fgts">Utilizou FGTS?</label>
                         <select class="form-control" type="text" id="residencia_propria_fgts"
                             name="residencia_propria_fgts">
-                            <option value="0" {{$clerigo->residencia_propria_fgts == '0' ? 'selected' : ''}}>Não</option>
-                            <option value="1" {{$clerigo->residencia_propria_fgts == '1' ? 'selected' : ''}}>Sim</option>
+                            <option value="0" {{ $clerigo->residencia_propria_fgts == '0' ? 'selected' : '' }}>Não
+                            </option>
+                            <option value="1" {{ $clerigo->residencia_propria_fgts == '1' ? 'selected' : '' }}>Sim
+                            </option>
                         </select>
                     </div>
                 </div>
             </div>
+    </div>
+
+
+    <div id="tab_registro_geral" class="mt-4">
+        <div class="row">
+            <div class="col-12 mt-3 col-md-4">
+                <label for="identidade">Identidade*</label>
+                <input type="text" class="form-control" id="identidade" name="identidade"
+                    value="{{ old('identidade', $clerigo->identidade) }}" required>
             </div>
-
-
-            <div id="tab_registro_geral" class="mt-4">
-                <div class="row">
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="identidade">Identidade*</label>
-                        <input type="text" class="form-control" id="identidade" name="identidade"
-                            value="{{ old('identidade', $clerigo->identidade) }}" required>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="data_emissao">Data de Emissão*</label>
-                        <input type="date" class="form-control" id="data_emissao"
-                            name="data_emissao"
-                            value="{{ old('data_emissao', $clerigo->data_emissao) }}" required>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="orgao_emissor">Órgão Emissor*</label>
-                        <input type="text" class="form-control" id="orgao_emissor" name="orgao_emissor"
-                            value="{{ old('orgao_emissor', $clerigo->orgao_emissor) }}" required>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="identidade_uf">Estado</label>
-                        <select class="form-control" type="text" id="identidade_uf" name="identidade_uf">
-                            <option value="{{ old('identidade_uf', $clerigo->identidade_uf) }}">{{ old('identidade_uf', $clerigo->identidade_uf) }}</option>
-                            @foreach ($ufs as $uf)
-                                <option value="{{ $uf }}">{{ $uf }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="data_emissao">Data de Emissão*</label>
+                <input type="date" class="form-control" id="data_emissao" name="data_emissao"
+                    value="{{ old('data_emissao', $clerigo->data_emissao) }}" required>
             </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="orgao_emissor">Órgão Emissor*</label>
+                <input type="text" class="form-control" id="orgao_emissor" name="orgao_emissor"
+                    value="{{ old('orgao_emissor', $clerigo->orgao_emissor) }}" required>
+            </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="identidade_uf">Estado</label>
+                <select class="form-control" type="text" id="identidade_uf" name="identidade_uf">
+                    <option value="{{ old('identidade_uf', $clerigo->identidade_uf) }}">
+                        {{ old('identidade_uf', $clerigo->identidade_uf) }}</option>
+                    @foreach ($ufs as $uf)
+                        <option value="{{ $uf }}">{{ $uf }}</option>
+                    @endforeach
+                </select>
+            </div>
+        </div>
+    </div>
 
-            <div id="tab_carteira_trabalho" class="mt-4">
-                <div class="row">
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="ctps">Número da CTPS*</label>
-                        <input type="text" class="form-control" id="ctps" name="ctps"
-                            value="{{ old('ctps', $clerigo->ctps) }}" required>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="ctps_emissao">Data de Emissão*</label>
-                        <input type="date" class="form-control" id="ctps_emissao" name="ctps_emissao"
-                            value="{{ old('ctps_emissao', $clerigo->ctps_emissao) }}" required>
-                    </div>
-                    {{-- <div class="col-12 mt-3 col-md-4">
+    <div id="tab_carteira_trabalho" class="mt-4">
+        <div class="row">
+            <div class="col-12 mt-3 col-md-4">
+                <label for="ctps">Número da CTPS*</label>
+                <input type="text" class="form-control" id="ctps" name="ctps"
+                    value="{{ old('ctps', $clerigo->ctps) }}" required>
+            </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="ctps_emissao">Data de Emissão*</label>
+                <input type="date" class="form-control" id="ctps_emissao" name="ctps_emissao"
+                    value="{{ old('ctps_emissao', $clerigo->ctps_emissao) }}" required>
+            </div>
+            {{-- <div class="col-12 mt-3 col-md-4">
                         <label for="ctps_serie">Série*</label>
                         <input type="text" class="form-control" id="ctps_serie" name="ctps_serie"
                             value="{{ old('ctps_serie', $clerigo->ctps_serie) }}" required>
                     </div> --}}
-                </div>
-            </div>
+        </div>
+    </div>
 
-            <div id="tab_pis_pasep" class="mt-4">
-                <div class="row">
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="pispasep">Número do PIS/PASEP*</label>
-                        <input type="text" class="form-control" id="pispasep" name="pispasep"
-                            value="{{ old('pispasep', $clerigo->pispasep) }}" required>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="pispasep_emissao">Data de Emissão*</label>
-                        <input type="date" class="form-control" id="pispasep_emissao" name="pispasep_emissao"
-                            value="{{ old('pispasep_emissao', $clerigo->pispasep_emissao) }}" required>
-                    </div>
-                </div>
+    <div id="tab_pis_pasep" class="mt-4">
+        <div class="row">
+            <div class="col-12 mt-3 col-md-4">
+                <label for="pispasep">Número do PIS/PASEP*</label>
+                <input type="text" class="form-control" id="pispasep" name="pispasep"
+                    value="{{ old('pispasep', $clerigo->pispasep) }}" required>
             </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="pispasep_emissao">Data de Emissão*</label>
+                <input type="date" class="form-control" id="pispasep_emissao" name="pispasep_emissao"
+                    value="{{ old('pispasep_emissao', $clerigo->pispasep_emissao) }}" required>
+            </div>
+        </div>
+    </div>
 
-            <div id="tab_eleitor" class="mt-4">
-                <div class="row">
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="titulo_eleitor">Número do Título de Eleitor*</label>
-                        <input type="text" class="form-control" id="titulo_eleitor" name="titulo_eleitor"
-                            value="{{ old('titulo_eleitor', $clerigo->titulo_eleitor) }}" required>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="titulo_eleitor_zona">Zona*</label>
-                        <input type="text" class="form-control" id="titulo_eleitor_zona" name="titulo_eleitor_zona"
-                            value="{{ old('titulo_eleitor_zona', $clerigo->titulo_eleitor_zona) }}" required>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="titulo_eleitor_secao">Seção*</label>
-                        <input type="text" class="form-control" id="titulo_eleitor_secao" name="titulo_eleitor_secao"
-                            value="{{ old('titulo_eleitor_secao', $clerigo->titulo_eleitor_secao) }}" required>
-                    </div>
-                </div>
+    <div id="tab_eleitor" class="mt-4">
+        <div class="row">
+            <div class="col-12 mt-3 col-md-4">
+                <label for="titulo_eleitor">Número do Título de Eleitor*</label>
+                <input type="text" class="form-control" id="titulo_eleitor" name="titulo_eleitor"
+                    value="{{ old('titulo_eleitor', $clerigo->titulo_eleitor) }}" required>
             </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="titulo_eleitor_zona">Zona*</label>
+                <input type="text" class="form-control" id="titulo_eleitor_zona" name="titulo_eleitor_zona"
+                    value="{{ old('titulo_eleitor_zona', $clerigo->titulo_eleitor_zona) }}" required>
+            </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="titulo_eleitor_secao">Seção*</label>
+                <input type="text" class="form-control" id="titulo_eleitor_secao" name="titulo_eleitor_secao"
+                    value="{{ old('titulo_eleitor_secao', $clerigo->titulo_eleitor_secao) }}" required>
+            </div>
+        </div>
+    </div>
 
-            <div id="tab_habilitacao" class="mt-4">
-                <div class="row">
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="habilitacao">Número da Habilitação*</label>
-                        <input type="text" class="form-control" id="habilitacao" name="habilitacao"
-                            value="{{ old('habilitacao', $clerigo->habilitacao) }}" required>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="habilitacao_categoria">Categoria*</label>
-                            <select class="form-control" type="text" id="habilitacao_categoria"
-                            name="habilitacao_categoria">
-                                <option value="ACC"{{ $clerigo->habilitacao_categoria == 'ACC' ? 'selected' : 'ACC'}}>A</option>
-                                <option value="A"{{ $clerigo->habilitacao_categoria == 'A' ? 'selected' : 'A'}}>A</option>
-                                <option value="B"{{ $clerigo->habilitacao_categoria == 'B' ? 'selected' : 'B'}}>B</option>
-                                <option value="C" {{ $clerigo->habilitacao_categoria == 'C' ? 'selected' : 'C'}}>C</option>
-                                <option value="D" {{ $clerigo->habilitacao_categoria == 'D' ? 'selected' : 'D'}}>D</option>
-                                <option value="E" {{ $clerigo->habilitacao_categoria == 'E' ? 'selected' : 'E'}}>E</option>
-                            </select>
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="habilitacao_emissor">Emissor</label>
-                        <input type="text" class="form-control"  id="habilitacao_emissor"
-                            name="habilitacao_emissor" value="{{$clerigo->habilitacao_emissor}}">
-                    </div>
-                    <div class="col-12 mt-3 col-md-4">
-                        <label for="habilitacao_uf">Estado</label>
-                        <input type="text" class="form-control" id="habilitacao_uf"
-                            name="habilitacao_uf" value="{{$clerigo->habilitacao_uf}}">
-                    </div>
-                </div>
+    <div id="tab_habilitacao" class="mt-4">
+        <div class="row">
+            <div class="col-12 mt-3 col-md-4">
+                <label for="habilitacao">Número da Habilitação*</label>
+                <input type="text" class="form-control" id="habilitacao" name="habilitacao"
+                    value="{{ old('habilitacao', $clerigo->habilitacao) }}" required>
             </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="habilitacao_categoria">Categoria*</label>
+                <select class="form-control" type="text" id="habilitacao_categoria" name="habilitacao_categoria">
+                    <option value="ACC"{{ $clerigo->habilitacao_categoria == 'ACC' ? 'selected' : 'ACC' }}>A</option>
+                    <option value="A"{{ $clerigo->habilitacao_categoria == 'A' ? 'selected' : 'A' }}>A</option>
+                    <option value="B"{{ $clerigo->habilitacao_categoria == 'B' ? 'selected' : 'B' }}>B</option>
+                    <option value="C" {{ $clerigo->habilitacao_categoria == 'C' ? 'selected' : 'C' }}>C</option>
+                    <option value="D" {{ $clerigo->habilitacao_categoria == 'D' ? 'selected' : 'D' }}>D</option>
+                    <option value="E" {{ $clerigo->habilitacao_categoria == 'E' ? 'selected' : 'E' }}>E</option>
+                </select>
+            </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="habilitacao_emissor">Emissor</label>
+                <input type="text" class="form-control" id="habilitacao_emissor" name="habilitacao_emissor"
+                    value="{{ $clerigo->habilitacao_emissor }}">
+            </div>
+            <div class="col-12 mt-3 col-md-4">
+                <label for="habilitacao_uf">Estado</label>
+                <input type="text" class="form-control" id="habilitacao_uf" name="habilitacao_uf"
+                    value="{{ $clerigo->habilitacao_uf }}">
+            </div>
+        </div>
+    </div>
 
-            <div class="d-flex my-3 justify-content-between align-items-center">
-                <button type="button" id="backBtn" class="btn btn-primary text-start"> <-Voltar </button>
-                        <button type="button" id="nextBtn" class="btn btn-primary text-end"> Proximo-> </button>
-            </div>
-            <div class="d-flex justify-content-between align-items-center">
-                <a href="{{ route('clerigos.index') }}" class="btn btn-secondary text-start">Cancelar</a>
-                <div id="button-container" class="d-flex justify-content-end align-items-center">
-                    <button type="submit" class="btn btn-primary">Salvar</button>
-                </div>
+    <div class="d-flex my-3 justify-content-between align-items-center">
+        <button type="button" id="backBtn" class="btn btn-primary text-start"> <-Voltar </button>
+                <button type="button" id="nextBtn" class="btn btn-primary text-end"> Proximo-> </button>
+    </div>
+    <div class="d-flex justify-content-between align-items-center">
+        <a href="{{ route('clerigos.index') }}" class="btn btn-secondary text-start">Cancelar</a>
+        <div id="button-container" class="d-flex justify-content-end align-items-center">
+            <button type="submit" class="btn btn-primary">Salvar</button>
+        </div>
 
-            </div>
-        </form>
+    </div>
+    </form>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script>
-         $(document).ready(function() {
+        $(document).ready(function() {
             $('#cep').mask('00000000');
             $('#telefone_preferencial').mask('00000-0000');
             $('#cpf').mask('000.000.000-00');
@@ -480,6 +483,44 @@
             }
         }
 
+        function buscarCep() {
+            let cep = document.getElementById('cep').value;
+            if (cep !== "") {
+                let url = "https://brasilapi.com.br/api/cep/v1/" + cep;
+                let req = new XMLHttpRequest()
+                req.open("GET", url);
+                req.send()
 
+                req.onload = function() {
+                    if (req.status === 200) {
+                        let endereco = JSON.parse(req.response)
+                        document.getElementById('endereco').value = endereco.street
+                        document.getElementById('bairro').value = endereco.neighborhood
+                        document.getElementById('cidade').value = endereco.city
+                        let estado = endereco.state;
+                        let ufSelect = document.getElementById('uf');
+
+                        // Itera pelas opções e seleciona a que corresponde ao estado
+                        for (let i = 0; i < ufSelect.options.length; i++) {
+                            if (ufSelect.options[i].value === estado) {
+                                console.log(ufSelect.options[i].value)
+                                ufSelect.selectedIndex = i;
+                                console.log(ufSelect.selectedIndex)
+                                break;
+                            }
+                        }
+
+                    } else if (req.stauts === 404) {
+                        alert('CEP inválido')
+                    }
+                }
+
+            }
+        }
+
+        window.onload = function() {
+            let cep = document.getElementById('cep')
+            cep.addEventListener("blur", buscarCep)
+        }
     </script>
 @endsection
