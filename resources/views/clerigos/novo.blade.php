@@ -395,7 +395,7 @@
 
 
         $(document).ready(function() {
-            $('#cep').mask('00000000');
+            $('#cep').mask('00000-000');
             $('#telefone_preferencial').mask('00000-0000');
             $('#cpf').mask('000.000.000-00');
             $('#celular').mask('(00) 00000-0000');
@@ -467,7 +467,7 @@
         function proximoForm(event) {
             event.preventDefault();
             const indice = listForms.indexOf(document.getElementById(UrlTabId));
-            console.log(UrlTabId);
+
 
             if (indice < total - 1) {
                 UrlTabId = listForms[indice + 1].id;
@@ -494,7 +494,7 @@
 
         function buscarCep() {
             let cep = document.getElementById('cep').value;
-            console.log("CEP digitado: ", cep);
+
             if (cep !== "") {
                 let url = "https://brasilapi.com.br/api/cep/v1/" + cep;
                 let req = new XMLHttpRequest()
@@ -520,8 +520,6 @@
                             }
                         }
 
-                    } else if (req.status === 404) {
-                        alert('CEP inválido')
                     }
                 }
 
