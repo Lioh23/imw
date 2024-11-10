@@ -382,16 +382,17 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script>
-        $(document).ready(function() {
+         $(document).ready(function() {
             $('#cep').mask('00000000');
             $('#telefone_preferencial').mask('00000-0000');
+            $('#cpf').mask('000.000.000-00');
             $('#celular').mask('(00) 00000-0000');
             $('#identidade').mask('00 000 000-0');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });
-            $('#ctps_emissao').mask('00/00/0000');
-            $('#pispasep_emissao').mask('00/00/0000');
+
+
         })
         const tabs = document.querySelectorAll('[role^="tab_"]');
         const formulariosId = document.querySelectorAll('[id^="tab_"]');
@@ -462,7 +463,7 @@
                 urlAtual.searchParams.set('tab', UrlTabId);
                 window.history.pushState({}, '', urlAtual);
                 handleTabChange(UrlTabId);
-                
+
             }
         }
 
@@ -479,6 +480,6 @@
             }
         }
 
-       
+
     </script>
 @endsection

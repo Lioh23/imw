@@ -32,7 +32,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'identidade' => 'required|string|max:20',
             'orgao_emissor' => 'required|string|max:50',
             'data_emissao' => 'required|date',
-            'cpf' => 'required|string|cpf', // Supondo que você tenha uma regra de validação para CPF
+            'cpf' => 'required|string', // Supondo que você tenha uma regra de validação para CPF
             'endereco' => 'required|string|max:255',
             'numero' => 'required|integer',
             'complemento' => 'nullable|string|max:50',

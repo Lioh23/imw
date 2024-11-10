@@ -73,9 +73,9 @@
         @if ($errors->any())
             <div class="alert alert-danger">
                 <ul class=" d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
+
+                    <li>{{ $errors->first() }}</li>
+
                 </ul>
             </div>
         @endif
@@ -136,15 +136,15 @@
                     <div class="col-12 mt-3 col-md-4">
                         <label for="formacao_id">Formação*</label>
                         <select class="form-control" type="text" id="formacao_id" name="formacao_id">
-                            @forEach($formacoes as $formacao)
-                            <option value="{{$formacao->id}}">{{$formacao->nivel}}</option>
+                            @foreach ($formacoes as $formacao)
+                                <option value="{{ $formacao->id }}">{{ $formacao->nivel }}</option>
                             @endforeach
                         </select>
 
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control"  id="email" name="email">
+                        <input type="email" class="form-control" id="email" name="email">
 
                     </div>
                     <div class="col-12 mt-3 col-md-4">
@@ -188,31 +188,31 @@
 
                     <div class="col-12 mt-3 col-md-8">
                         <label for="endereco">Logradouro (Rua/Av/Beco)*</label>
-                        <input type="text" class="form-control"  id="endereco" name="endereco">
+                        <input type="text" class="form-control" id="endereco" name="endereco">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="numero">Numero</label>
-                        <input type="number" class="form-control"  id="numero" name="numero">
+                        <input type="number" class="form-control" id="numero" name="numero">
 
                     </div>
 
                     <div class="col-12 mt-3 col-md-4">
                         <label for="bairro">Bairro</label>
-                        <input type="text" class="form-control"  id="bairro" name="bairro">
+                        <input type="text" class="form-control" id="bairro" name="bairro">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="complemento">Complemento</label>
-                        <textarea class="form-control w-100"  id="complemento" name="complemento" rows="4"></textarea>
+                        <textarea class="form-control w-100" id="complemento" name="complemento" rows="4"></textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="cidade">Cidade</label>
-                        <input type="text" class="form-control"  id="cidade" name="cidade">
+                        <input type="text" class="form-control" id="cidade" name="cidade">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="uf">Estado</label>
@@ -233,7 +233,7 @@
                     </div>
                     <div class="col-12 mt-3 col-md-4 mt-3" style="gap:10px">
                         <label for="telefone_preferencial">Telefone preferencial</label>
-                        <input type="text" class="form-control"  id="telefone_preferencial"
+                        <input type="text" class="form-control" id="telefone_preferencial"
                             name="telefone_preferencial">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
@@ -269,13 +269,11 @@
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="data_emissao">Data de Emissão</label>
-                        <input type="date" class="form-control"  id="data_emissao"
-                            name="data_emissao">
+                        <input type="date" class="form-control" id="data_emissao" name="data_emissao">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="orgao_emissor">Orgão Emissor</label>
-                        <input type="text" class="form-control" id="orgao_emissor"
-                            name="orgao_emissor">
+                        <input type="text" class="form-control" id="orgao_emissor" name="orgao_emissor">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="identidade_uf">Estado</label>
@@ -296,8 +294,7 @@
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="ctps_emissao">Data de Emissão da CTPS</label>
-                        <input type="date" class="form-control" id="ctps_emissao"
-                            name="ctps_emissao">
+                        <input type="date" class="form-control" id="ctps_emissao" name="ctps_emissao">
                     </div>
                     {{-- <div class="col-12 mt-3 col-md-4">
                         <label for="ctps">CTPS Série</label>
@@ -310,12 +307,11 @@
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="pispasep">Pis/Pasep</label>
-                        <input type="text" class="form-control"  id="pispasep" name="pispasep">
+                        <input type="text" class="form-control" id="pispasep" name="pispasep">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="pispasep_emissao">Pis/Pasep Data de Emissão</label>
-                        <input type="date" class="form-control"  id="pispasep_emissao"
-                            name="pispasep_emissao">
+                        <input type="date" class="form-control" id="pispasep_emissao" name="pispasep_emissao">
                     </div>
                     {{-- <div class="col-12 mt-3 col-md-4">
                         <label for="pispasep_emissao">Pis/Pasep Série</label>
@@ -329,17 +325,15 @@
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="titulo_eleitor">Título de Eleitor</label>
-                        <input type="text" class="form-control" id="titulo_eleitor"
-                            name="titulo_eleitor">
+                        <input type="text" class="form-control" id="titulo_eleitor" name="titulo_eleitor">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="titulo_eleitor_zona">Zona</label>
-                        <input type="text" class="form-control"  id="titulo_eleitor_zona"
-                            name="titulo_eleitor_zona">
+                        <input type="text" class="form-control" id="titulo_eleitor_zona" name="titulo_eleitor_zona">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="titulo_eleitor_secao">Seção</label>
-                        <input type="text" class="form-control"  id="titulo_eleitor_secao"
+                        <input type="text" class="form-control" id="titulo_eleitor_secao"
                             name="titulo_eleitor_secao">
                     </div>
                 </div>
@@ -349,13 +343,13 @@
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="habilitacao">Habilitacação</label>
-                        <input type="text" class="form-control"  id="habilitacao" name="habilitacao">
+                        <input type="text" class="form-control" id="habilitacao" name="habilitacao">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="habilitacao_categoria">Categoria</label>
-                        
+
                         <select class="form-control" type="text" id="habilitacao_categoria"
-                        name="habilitacao_categoria">
+                            name="habilitacao_categoria">
                             <option value="ACC">ACC</option>
                             <option value="A">A</option>
                             <option value="B">B</option>
@@ -366,13 +360,15 @@
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="habilitacao_emissor">Emissor</label>
-                        <input type="text" class="form-control"  id="habilitacao_emissor"
-                            name="habilitacao_emissor">
+                        <input type="text" class="form-control" id="habilitacao_emissor" name="habilitacao_emissor">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="habilitacao_uf">Estado</label>
-                        <input type="text" class="form-control" id="habilitacao_uf"
-                            name="habilitacao_uf">
+                        <select class="form-control" type="text" id="habilitacao_uf" name="habilitacao_uf">
+                            @foreach ($ufs as $uf)
+                                <option value="{{ $uf }}">{{ $uf }}</option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
             </div>
@@ -395,16 +391,25 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script>
+       
+        document.querySelector('form').addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                event.preventDefault(); // Impede o envio do formulário
+            }
+        });
+
+
         $(document).ready(function() {
             $('#cep').mask('00000000');
             $('#telefone_preferencial').mask('00000-0000');
+            $('#cpf').mask('000.000.000-00');
             $('#celular').mask('(00) 00000-0000');
             $('#identidade').mask('00 000 000-0');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });
-            $('#ctps_emissao').mask('00/00/0000');
-            $('#pispasep_emissao').mask('00/00/0000');
+     
+           
         })
         const tabs = document.querySelectorAll('[role^="tab_"]');
         const formulariosId = document.querySelectorAll('[id^="tab_"]');
@@ -475,7 +480,7 @@
                 urlAtual.searchParams.set('tab', UrlTabId);
                 window.history.pushState({}, '', urlAtual);
                 handleTabChange(UrlTabId);
-                
+
             }
         }
 
@@ -492,6 +497,44 @@
             }
         }
 
-       
+        function buscarCep() {
+            let cep = document.getElementById('cep').value;
+            if (cep !== "") {
+                let url = "https://brasilapi.com.br/api/cep/v1/" + cep;
+                let req = new XMLHttpRequest()
+                req.open("GET", url);
+                req.send()
+
+                req.onload = function() {
+                    if (req.status === 200) {
+                        let endereco = JSON.parse(req.response)
+                        document.getElementById('endereco').value = endereco.street
+                        document.getElementById('bairro').value = endereco.neighborhood
+                        document.getElementById('cidade').value = endereco.city
+                        let estado = endereco.state;
+                        let ufSelect = document.getElementById('uf');
+
+                        // Itera pelas opções e seleciona a que corresponde ao estado
+                        for (let i = 0; i < ufSelect.options.length; i++) {
+                            if (ufSelect.options[i].value === estado) {
+                                console.log(ufSelect.options[i].value)
+                                ufSelect.selectedIndex = i;
+                                console.log(ufSelect.selectedIndex)
+                                break;
+                            }
+                        }
+
+                    } else if (req.stauts === 404) {
+                        alert('CEP inválido')
+                    }
+                }
+
+            }
+        }
+
+        window.onload = function() {
+            let cep = document.getElementById('cep')
+            cep.addEventListener("blur", buscarCep)
+        }
     </script>
 @endsection
