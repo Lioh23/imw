@@ -160,7 +160,7 @@
                  </li>
              @endif
 
-             <li class="menu">
+             <li class="menu mx-3">
                  @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-igrejas'))
                      <a href="">Igrejas</a>
                  @endif
@@ -184,12 +184,12 @@
 
           {{-- Menu Clérigos --}}
 
-             <li class="menu">
+             <li class="menu mx-3">
                  @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-igrejas'))
                      <a href="">Clérigos</a>
                  @endif
             @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-igrejas'))
-            <li class="menu">
+            <li class="menu x-2">
                 <a href="#clerigos" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                     <div class="">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users">

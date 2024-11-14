@@ -281,7 +281,7 @@
                     $(modalId).find('.modal-body').html(`
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">
-                        Informações do Instituicao
+                        Informações do Instituições
                     </div>
                     <div class="card-body">
                         <p><strong>Nome:</strong> ${data.nome}</p>
@@ -337,7 +337,7 @@
         tabs.forEach((tab) => {
             tab.addEventListener('click', (event) => {
                 tabs.forEach((tab) => tab.classList.remove('active'));
-                event.currentTarget.classList.add('active'); 
+                event.currentTarget.classList.add('active');
             });
         });
     </script>

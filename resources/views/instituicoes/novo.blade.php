@@ -1,6 +1,10 @@
 @extends('template.layout')
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[['text' => 'Instituições', 'url' => '/', 'active' => true]]"></x-breadcrumb>
+    <x-breadcrumb :breadcrumbs="[
+        ['text' => 'Instituições', 'url' => '/instituicoes-regiao', 'active' => false],
+        ['text' => 'Novo', 'url' => '#', 'active' => true],
+    ]">
+    </x-breadcrumb>
 @endsection
 @section('extras-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -29,128 +33,130 @@
 @include('extras.alerts')
 
 @section('content')
-    <div class="container-fluid">
-        <div class="widget-header">
-            <div class="row">
-                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4>Dados do usuário</h4>
-                </div>
-            </div>
+    <div class="container-fluid" style="background: #fff">
+        <div class="widget-header" >
+            <h4>Dados do usuário</h4>
         </div>
+
         @if ($errors->any())
             <div class="alert alert-danger">
-                <ul class=" d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
+                <ul class="d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
+
+                    <li>{{ $errors->first() }}</li>
+
                 </ul>
             </div>
         @endif
-        <form class="py-4" method="POST" action="{{ route('instituicoes-regiao.store') }}">
+
+        <form class="py-2 px-3" method="POST" action="{{ route('instituicoes-regiao.store') }}">
             @csrf
 
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
-                    <label for="nome">Nome*</label>
-                    <input class="form-control" type="text" id="nome" name="nome">
+                    <label for="nome"><span class="text-danger">*</span> Nome</label>
+                    <input class="form-control" type="text" id="nome" name="nome" value="{{ old('nome') }}">
                 </div>
                 <div class="col-12 mt-3 col-md-3">
-                    <label for="cnpj">CNPJ*</label>
-                    <input class="form-control" type="text" id="cnpj" name="cnpj">
-
+                    <label for="cnpj"><span class="text-danger">*</span> CNPJ</label>
+                    <input class="form-control" type="text" id="cnpj" name="cnpj" value="{{ old('cnpj') }}">
                 </div>
 
                 <div class="col-12 mt-3 col-md-3">
-                    <label for="data_abertura">Data de Abertura*</label>
-                    <input class="form-control" type="text" id="data_abertura" name="data_abertura">
+                    <label for="data_abertura"><span class="text-danger">*</span> Data de Abertura</label>
+                    <input class="form-control" type="text" id="data_abertura" name="data_abertura"
+                        value="{{ old('data_abertura') }}">
                 </div>
             </div>
 
             <div class="row">
-                {{-- <div class="col-12 mt-3 col-md-6">
-                    <label for="data_abertura">Data de Fechamento*</label>
-                    <input class="form-control" type="text" id="data_abertura" name="data_abertura">
-                </div> --}}
-
                 <div class="col-12 mt-3 col-md-4">
-                    <label for="tipo_instituicao_id">Tipo da Instituição*</label>
+                    <label for="tipo_instituicao_id"><span class="text-danger">*</span> Tipo da Instituição</label>
                     <select name="tipo_instituicao_id" id="tipo_instituicao_id" class="form-control">
-                        <option value="1">Igreja</option>
-                        <option value="2">Distrito</option>
-                        <option value="5">Secretaria Regional</option>
+                        <option value="1" {{ old('tipo_instituicao_id') == 1 ? 'selected' : '' }}>Igreja</option>
+                        <option value="2" {{ old('tipo_instituicao_id') == 2 ? 'selected' : '' }}>Distrito</option>
+                        <option value="5" {{ old('tipo_instituicao_id') == 5 ? 'selected' : '' }}>Secretaria Regional
+                        </option>
                     </select>
                 </div>
                 <div class="col-12 mt-3 col-md-4">
-                    <label for="instituicao_pai_id">Instituição Pai*</label>
+                    <label for="instituicao_pai_id"><span class="text-danger">*</span> Instituição Pai</label>
                     <select name="instituicao_pai_id" id="instituicao_pai_id" class="form-control">
-                        {{-- ForEach com todas as instituicoes da Regiao 23 --}}
                         @foreach ($instituicoes_pai as $ip)
-                            <option value="{{$ip['id']}}">{{$ip['nome']}}</option>
+                            <option value="{{ $ip['id'] }}"
+                                {{ old('instituicao_pai_id') == $ip['id'] ? 'selected' : '' }}>{{ $ip['nome'] }}
+                            </option>
                         @endforeach
                     </select>
                 </div>
 
                 <input type="hidden" name="regiao_id" id="regiao_id" value="23">
             </div>
+
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="cep">CEP*</label>
-                        <input type="text" class="form-control" type="text" id="cep" name="cep">
-
+                        <label for="cep"><span class="text-danger">*</span> CEP</label>
+                        <input type="text" class="form-control" id="cep" name="cep"
+                            value="{{ old('cep') }}">
                     </div>
 
                     <div class="col-12 mt-3 col-md-8">
-                        <label for="endereco">Logradouro (Rua/Av/Beco)*</label>
-                        <input type="text" class="form-control" type="text" id="endereco" name="endereco">
+                        <label for="endereco"><span class="text-danger">*</span> Logradouro (Rua/Av/Beco)</label>
+                        <input type="text" class="form-control" id="endereco" name="endereco"
+                            value="{{ old('endereco') }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="numero">Numero</label>
-                        <input type="number" class="form-control" type="text" id="numero" name="numero">
-
+                        <label for="numero">Número</label>
+                        <input type="number" class="form-control" id="numero" name="numero"
+                            value="{{ old('numero') }}">
                     </div>
 
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="bairro">Bairro</label>
-                        <input type="text" class="form-control" type="text" id="bairro" name="bairro">
+                        <label for="bairro"<span class="text-danger">*</span>>Bairro</label>
+                        <input type="text" class="form-control" id="bairro" name="bairro"
+                            value="{{ old('bairro') }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="complemento">Complemento</label>
-                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4"></textarea>
+                        <textarea class="form-control w-100" id="complemento" name="complemento" rows="4">{{ old('complemento') }}</textarea>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="cidade">Cidade</label>
-                        <input type="text" class="form-control" type="text" id="cidade" name="cidade">
+                        <input type="text" class="form-control" id="cidade" name="cidade"
+                            value="{{ old('cidade') }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="uf">Estado</label>
-                        <input type="text" class="form-control" type="text" id="uf" name="uf"
-                            placeholder="xx">
+                        <label for="uf"><span class="text-danger">*</span>Estado</label>
+                        <input type="text" class="form-control" id="uf" name="uf"
+                            value="{{ old('uf') }}">
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
-                        <label for="pais">País</label>
-                        <input type="text" class="form-control" type="text" id="pais" name="pais">
+                        <label for="pais"><span class="text-danger">*</span>País</label>
+                        <input type="text" class="form-control" id="pais" name="pais"
+                            value="{{ old('pais') }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
                         <div>
                             <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"
-                                style="max-width: 55px" placeholder="DDD">
+                                style="max-width: 55px" placeholder="DDD" value="{{ old('ddd') }}">
                         </div>
                         <div>
-                            <label for="telefone">Celular/Telefone</label>
-                            <input type="text" class="form-control" type="text" id="telefone" name="telefone">
+                            <label for="telefone"><span class="text-danger">*</span>Celular/Telefone</label>
+                            <input type="text" class="form-control" id="telefone" name="telefone"
+                                value="{{ old('telefone') }}">
                         </div>
                     </div>
                 </div>
             </div>
+
             <button class="btn btn-primary my-4">Salvar</button>
         </form>
     </div>
