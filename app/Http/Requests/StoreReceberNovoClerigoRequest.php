@@ -38,8 +38,8 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'bairro' => 'required|string|max:100',
             'cidade' => 'required|string|max:100',
             'uf' => 'required|string|max:2',
-            'pais' => 'required|string|max:100',
-            'cep' => 'required|string|size:8', // Se o CEP for de 8 caracteres
+            'pais' => '',
+            'cep' => 'required|string', // Se o CEP for de 8 caracteres
             'email' => 'required|email|max:255',
             'estado_civil' => 'required|string|max:20',
             'regiao_id' => 'required|integer', // Supondo que você tenha uma tabela de regiões
@@ -48,7 +48,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'nome_pai' => 'nullable|string|max:255',
             'telefone_preferencial' => 'required|string|max:15',
             'ctps' => 'required|string|max:20',
-            'ctps_emissao' => 'required|date',
+            'ctps_emissao' => 'date',
             'habilitacao' => 'required|string|max:20',
             'habilitacao_categoria' => 'required|string|max:5',
             'habilitacao_emissor' => 'required|string|max:50',
@@ -61,7 +61,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'titulo_eleitor' => 'required|string|max:20',
             'titulo_eleitor_secao' => 'required|string|max:10',
             'titulo_eleitor_zona' => 'required|string|max:10',
-            'formacao_id' => 'required|integer',
+            'formacao_id' => '',
             'categoria' => 'required',
 
         ];
@@ -81,7 +81,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'bairro.required' => 'O campo bairro é obrigatório.',
             'cidade.required' => 'O campo cidade é obrigatório.',
             'uf.required' => 'O campo estado é obrigatório.',
-            'pais.required' => 'O campo país é obrigatório.',
+
             'cep.required' => 'O campo CEP é obrigatório.',
             'email.required' => 'O campo email é obrigatório.',
             'estado_civil.required' => 'O campo estado civil é obrigatório.',
@@ -90,7 +90,6 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'escolaridade.required' => 'O campo escolaridade é obrigatório.',
             'telefone_preferencial.required' => 'O campo telefone preferencial é obrigatório.',
             'ctps.required' => 'O campo CTPS é obrigatório.',
-            'ctps_emissao.required' => 'O campo data de emissão da CTPS é obrigatório.',
             'habilitacao.required' => 'O campo habilitação é obrigatório.',
             'habilitacao_categoria.required' => 'O campo categoria da habilitação é obrigatório.',
             'habilitacao_emissor.required' => 'O campo órgão emissor da habilitação é obrigatório.',

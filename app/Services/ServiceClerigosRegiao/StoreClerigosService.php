@@ -9,13 +9,12 @@ class StoreClerigosService
 {
     public function execute($request)
     {
-        $data_emissao = Carbon::createFromFormat('d/m/Y', $request->input('data_emissao'))->format('Y-m-d');
-        $pispasep_emissao = Carbon::createFromFormat('d/m/Y', $request->input('pispasep_emissao'))->format('Y-m-d');
+
         $data = $request->safe()->only([
             'nome',
             'identidade',
             'orgao_emissor',
-            $data_emissao,
+            'data_emissao',
             'cpf',
             'endereco',
             'numero',
@@ -41,7 +40,7 @@ class StoreClerigosService
             'habilitacao_uf',
             'identidade_uf',
             'pispasep',
-            $pispasep_emissao,
+            'pispasep_emissao',
             'residencia_propria',
             'residencia_propria_fgts',
             'titulo_eleitor',

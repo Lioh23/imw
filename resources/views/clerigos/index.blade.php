@@ -264,7 +264,7 @@
                     $(modalId).find('.modal-body').html(`
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">
-                        Informações do Instituicao
+                        Informações do Clérigos
                     </div>
                     <div class="card-body">
                         <p><strong>Nome:</strong> ${data.nome}</p>
@@ -280,7 +280,7 @@
                         <p><strong>CPF:</strong> ${data.cpf || '-'}</p>
                         <p><strong>Nascimento:</strong> ${data.data_nascimento || '-'}</p>
                         <p><strong>Conjugue:</strong> ${data.nome_conjuge || '-'}</p>
-    
+
                     </div>
                 </div>
             `);
