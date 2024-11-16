@@ -75,9 +75,9 @@
 
         @if ($errors->any())
             <div class="alert alert-danger">
-                @foreach ($errors->first() as $error)
-                    <p class="my-1">{{ $error }}</p>
-                @endforeach
+
+                    <p class="my-1">{{ $errors->first() }}</p>
+
             </div>
         @endif
         <form class="py-2 px-3" method="POST" action="{{ route('clerigos.store') }}">
