@@ -6,6 +6,7 @@
         <!-- Conteúdo do formulário -->
         <div class="col-12">
             <div class="form-group @error('nome') has-error @enderror">
+                <input type="hidden" id="regiao_id" value="23">
                 <div class="row mb-4">
                     <div class="col-xl-5">
                         <label for="nome">* Nome</label>
@@ -110,9 +111,6 @@
                         @enderror
                     </div>
                 </div>
-
-
-
 
 
                 <div class="row mb-4">
