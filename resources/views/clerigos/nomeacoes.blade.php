@@ -1,6 +1,6 @@
 @extends('template.layout')
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[['text' => 'Clérigos', 'url' => '/', 'active' => true]]"></x-breadcrumb>
+    <x-breadcrumb :breadcrumbs="[['text' => 'Clérigos', 'url' => '/', 'active' => true], ['text' => 'Nomeações', 'url' => '/', 'active' => true]]"></x-breadcrumb>
 @endsection
 @section('extras-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -68,7 +68,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="{{ route('clerigos.novo', ['tab' => 'tab_dados_clerigo']) }}" title="Inserir um novo registro"
+                                <a href="#" title="Inserir um novo registro"
                                     class="btn btn-primary right btn-rounded"> <svg xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -82,38 +82,36 @@
                                     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>Nome</th>
-
-                                                <th width="310px"></th>
+                                                <th>Função ministerial</th>
+                                                <th>Data de nomeação</th>
+                                                <th>Data de término da nomeação</th>
+                                                <th>Instituição filho</th>
+                                                <th width="310px">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($clerigos as $index => $clerigo)
+                                            @foreach ($nomeacoes as $index => $clerigo)
                                                 <tr>
                                                     <td>
-                                                        @if ($clerigo->deleted_at)
-                                                            <del>{{ $clerigo->nome }}</del>
-                                                        @else
-                                                            {{ $clerigo->nome }}
-                                                        @endif
+                                                       {{$clerigo->funcaoMinisterial?->funcao}}
+                                                   </td> 
+
+                                                    <td>
+                                                        {{$clerigo->data_nomeacao}}
                                                     </td>
+                                                        
+                                                    <td>
+                                                        {{$clerigo->data_termino}}
+                                                    </td>
+                                                        
+                                                    <td>
+                                                        {{$clerigo->instituicao->pai_nome}} > {{$clerigo->instituicao->nome}}
+                                                    </td> 
+
                                                     <td class="table-action">
 
                                                         @if (!$clerigo->deleted_at)
 
-                                                        <a href="{{ route('clerigos.nomeacoes', $clerigo->id) }}"
-                                                            title="Editar"
-                                                            class="btn btn-sm btn-dark mr-1 btn-rounded">
-                                                            <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2"
-                                                                stroke-linecap="round" stroke-linejoin="round"
-                                                                class="feather feather-edit-2">
-                                                                <path
-                                                                    d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                </path>
-                                                            </svg>
-                                                        </a>
                                                             <a href="javascript:void(0);" title="Visualizar"
                                                                 class="btn btn-sm btn-info mr-1 btn-rounded btn-view-details"
                                                                 data-clerigo-id="{{ $clerigo->id }}">
@@ -212,7 +210,6 @@
                                     </table>
 
                                 </div>
-                                {{ $clerigos->links('vendor.pagination.index') }}
                             </div>
                         </div>
                     </div>

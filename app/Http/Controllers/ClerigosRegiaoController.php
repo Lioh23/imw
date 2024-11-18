@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreReceberNovoClerigoRequest;
 use App\Models\Formacao;
+use Illuminate\Http\Request;
 use App\Models\PessoasPessoa;
+use App\Traits\LocationUtils;
+use App\Models\PessoaNomeacao;
+use Illuminate\Support\Facades\DB;
+use App\Http\Requests\StoreReceberNovoClerigoRequest;
 use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
-use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
-use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
 use App\Services\ServiceClerigosRegiao\StoreClerigosService;
+use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
-use App\Traits\LocationUtils;
-use Illuminate\Http\Request;
+use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
 
 class ClerigosRegiaoController extends Controller
 {
@@ -113,5 +115,16 @@ class ClerigosRegiaoController extends Controller
     {
         $clerigos = app(DetalhesClerigoService::class)->execute($id);
         return response()->json($clerigos);
+    }
+
+    public function nomeacoes(Request $request)
+    {
+        $id = $request->route('id');
+        $searchTerm = $request->input('search');
+        $nomeacoes = PessoaNomeacao::with(['funcaoMinisterial', 'instituicao' => function($query) {
+            $query->join('instituicoes_instituicoes as ii', 'instituicoes_instituicoes.instituicao_pai_id', '=', 'ii.id')
+            ->select('instituicoes_instituicoes.*', 'ii.nome as pai_nome');
+        }])->where('pessoa_id', $id)->get();
+        return view('clerigos.nomeacoes', compact('nomeacoes'));
     }
 }
