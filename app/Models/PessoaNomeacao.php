@@ -26,6 +26,18 @@ class PessoaNomeacao extends Model
         'funcao_ministerial_id'
     ];
 
+        // Relacionamento com PessoaFuncaoMinisterial
+    public function funcaoMinisterial()
+    {
+        return $this->belongsTo(PessoaFuncaoMinisterial::class, 'funcao_ministerial_id', 'id');
+    }
+    
+    // Relacionamento com Instituicao
+    public function instituicao()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'instituicao_id', 'id');
+    }
+
     public function pessoa()
     {
         return $this->belongsTo(PessoasPessoa::class, 'pessoa_id', 'id');
