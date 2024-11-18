@@ -432,7 +432,31 @@
                 reverse: true
             });
 
+            // Funcionalidade de preenchimento automático de endereço pelo CEP
+            $('#cep').blur(function(){
+              atualiza_cep($(this))
+            });
+            $('#cep').on('input', function() {
+                atualiza_cep($(this))
+            })
 
+            function atualiza_cep(elemento) {
+                var cep = elemento.val().replace(/\D/g, '');
+                if(cep.length != 8){
+                    return;
+                }
+                $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data){
+                    if(!("erro" in data)){
+                        $('#endereco').val(data.logradouro);
+                        // Preencha os outros campos de endereço aqui, se necessário
+                        $('#bairro').val(data.bairro);
+                        $('#cidade').val(data.localidade);
+                        $('#uf').val(data.uf);
+                    }else{
+                        toastr.warning('CEP não encontrado.');
+                    }
+                });
+            }
         })
         const tabs = document.querySelectorAll('[role^="tab_"]');
         const formulariosId = document.querySelectorAll('[id^="tab_"]');
