@@ -120,11 +120,23 @@ class ClerigosRegiaoController extends Controller
     public function nomeacoes(Request $request)
     {
         $id = $request->route('id');
-        $searchTerm = $request->input('search');
+        $search = $request->input('search');
+        $status = $request->input('status');
         $nomeacoes = PessoaNomeacao::with(['funcaoMinisterial', 'instituicao' => function($query) {
             $query->join('instituicoes_instituicoes as ii', 'instituicoes_instituicoes.instituicao_pai_id', '=', 'ii.id')
             ->select('instituicoes_instituicoes.*', 'ii.nome as pai_nome');
-        }])->where('pessoa_id', $id)->get();
-        return view('clerigos.nomeacoes', compact('nomeacoes'));
+        }])->where('pessoa_id', $id);
+
+        if(!empty($status)) { 
+            if($status == 1) {
+                $nomeacoes = $nomeacoes->whereNull('data_termino');
+            } else if($status == 2) {
+                $nomeacoes = $nomeacoes->whereNotNull('data_termino');
+            }
+        }
+
+        $nomeacoes = $nomeacoes->get();
+
+        return view('clerigos.nomeacoes', compact('nomeacoes', 'search', 'status'));
     }
 }
