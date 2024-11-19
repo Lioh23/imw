@@ -50,14 +50,21 @@
                     <div class="card-body">
                         <form>
                             <div class="row mb-4">
-                                <div class="col-4">
-                                    <input type="text" name="search" id="searchInput"
+                                {{-- <div class="col-4">
+                                    <input type="text" name="search" value="{{$search}}" id="searchInput"
                                         class="form-control form-control-sm" placeholder="Pesquisar...">
+                                </div> --}}
+                                <div class="col-2">
+                                    <select name="status" id="" class="form-control">
+                                        <option value="">Status nomeação</option>
+                                        <option value="1" {{!empty($status) && (int)$status === 1 ? 'selected': ''}}>Ativo</option>
+                                        <option value="2" {{!empty($status) && (int)$status === 2 ? 'selected': ''}}>Inativo</option>
+                                    </select>
                                 </div>
                                 <div class="col-auto" style="margin-left: -19px;">
                                     <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
                                 </div>
-                            </div>
+                            </div>                    
                         </form>
                     </div>
                 </div>
