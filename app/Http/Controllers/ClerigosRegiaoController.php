@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreNomeacoesClerigosRequest;
 use App\Models\Formacao;
 use Illuminate\Http\Request;
 use App\Models\PessoasPessoa;
@@ -9,12 +10,17 @@ use App\Traits\LocationUtils;
 use App\Models\PessoaNomeacao;
 use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreReceberNovoClerigoRequest;
+use App\Models\InstituicoesInstituicao;
+use App\Models\PessoaFuncaoMinisterial;
 use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
 use App\Services\ServiceClerigosRegiao\StoreClerigosService;
 use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
 use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
+use App\Services\ServiceClerigosRegiao\ListarNomeacoesClerigos;
+use App\Services\ServiceClerigosRegiao\StoreNomeacoesClerigos;
+use PhpParser\Node\Expr\FuncCall;
 
 class ClerigosRegiaoController extends Controller
 {
@@ -119,24 +125,32 @@ class ClerigosRegiaoController extends Controller
 
     public function nomeacoes(Request $request)
     {
-        $id = $request->route('id');
-        $search = $request->input('search');
-        $status = $request->input('status');
-        $nomeacoes = PessoaNomeacao::with(['funcaoMinisterial', 'instituicao' => function($query) {
-            $query->join('instituicoes_instituicoes as ii', 'instituicoes_instituicoes.instituicao_pai_id', '=', 'ii.id')
-            ->select('instituicoes_instituicoes.*', 'ii.nome as pai_nome');
-        }])->where('pessoa_id', $id);
 
-        if(!empty($status)) { 
-            if($status == 1) {
-                $nomeacoes = $nomeacoes->whereNull('data_termino');
-            } else if($status == 2) {
-                $nomeacoes = $nomeacoes->whereNotNull('data_termino');
-            }
+        app(ListarNomeacoesClerigos::class)->execute($request);
+        return view('clerigos.nomeacoes.index', compact('nomeacoes', 'search', 'status', 'id'));
+    }
+
+
+    public function novaNomeacao(string $id){
+        $instituicoes_completa = [];
+        $instituicoes = InstituicoesInstituicao::whereIn('tipo_instituicao_id', [1, 3, 5])->get();
+
+        foreach ($instituicoes as $instituicao) {
+            $instituicao_pai = InstituicoesInstituicao::where('id', $instituicao->instituicao_pai_id)->first();
+            $instituicoes_completa[] = [
+                'instituicao' => $instituicao->nome,
+                'instituicao_pai' => $instituicao_pai ? $instituicao_pai->nome : 'Sem instituição pai'
+            ];
         }
 
-        $nomeacoes = $nomeacoes->get();
+        $funcoes = PessoaFuncaoMinisterial::orderBy('funcao')->get();
 
-        return view('clerigos.nomeacoes', compact('nomeacoes', 'search', 'status'));
+        return view('clerigos.nomeacoes.novo', compact('instituicoes_completa', 'id', 'funcoes'));
+    }
+
+    public function storeNomeacao(StoreNomeacoesClerigosRequest $request){
+
+        app(StoreNomeacoesClerigos::class)->execute($request);
+        return redirect()->route('clerigos.nomeacoes', ['id' => $request->pessoa_id])->with('success', 'Nomeação criada com sucesso!');
     }
 }

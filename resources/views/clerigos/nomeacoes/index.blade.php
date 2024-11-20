@@ -1,6 +1,7 @@
 @extends('template.layout')
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[['text' => 'Clérigos', 'url' => '/', 'active' => true], ['text' => 'Nomeações', 'url' => '/', 'active' => true]]"></x-breadcrumb>
+    <x-breadcrumb :breadcrumbs="[['text' => 'Clérigos', 'url' => '/clerigos', 'active' => false],
+     ['text' => 'Nomeações', 'url' => '/', 'active' => true]]"></x-breadcrumb>
 @endsection
 @section('extras-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -48,23 +49,16 @@
                     </div>
                     <!--/.bg-holder-->
                     <div class="card-body">
-                        <form>
+                         <form>
                             <div class="row mb-4">
-                                {{-- <div class="col-4">
-                                    <input type="text" name="search" value="{{$search}}" id="searchInput"
+                                <div class="col-4">
+                                    <input type="text" name="search" id="searchInput"
                                         class="form-control form-control-sm" placeholder="Pesquisar...">
-                                </div> --}}
-                                <div class="col-2">
-                                    <select name="status" id="" class="form-control">
-                                        <option value="">Status nomeação</option>
-                                        <option value="1" {{!empty($status) && (int)$status === 1 ? 'selected': ''}}>Ativo</option>
-                                        <option value="2" {{!empty($status) && (int)$status === 2 ? 'selected': ''}}>Inativo</option>
-                                    </select>
                                 </div>
                                 <div class="col-auto" style="margin-left: -19px;">
                                     <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
                                 </div>
-                            </div>                    
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -75,7 +69,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="#" title="Inserir um novo registro"
+                                <a href="{{route('clerigos.nomeacao.novo', ['id'=> $id])}}" title="Inserir um novo registro"
                                     class="btn btn-primary right btn-rounded"> <svg xmlns="http://www.w3.org/2000/svg"
                                         width="24" height="24" viewBox="0 0 24 24" fill="none"
                                         stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -93,7 +87,7 @@
                                                 <th>Data de nomeação</th>
                                                 <th>Data de término da nomeação</th>
                                                 <th>Instituição filho</th>
-                                                <th width="310px">Ações</th>
+                                                <th width="120px">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -101,52 +95,23 @@
                                                 <tr>
                                                     <td>
                                                        {{$clerigo->funcaoMinisterial?->funcao}}
-                                                   </td> 
+                                                   </td>
 
                                                     <td>
                                                         {{$clerigo->data_nomeacao}}
                                                     </td>
-                                                        
+
                                                     <td>
                                                         {{$clerigo->data_termino}}
                                                     </td>
-                                                        
+
                                                     <td>
                                                         {{$clerigo->instituicao->pai_nome}} > {{$clerigo->instituicao->nome}}
-                                                    </td> 
+                                                    </td>
 
                                                     <td class="table-action">
 
-                                                        @if (!$clerigo->deleted_at)
 
-                                                            <a href="javascript:void(0);" title="Visualizar"
-                                                                class="btn btn-sm btn-info mr-1 btn-rounded btn-view-details"
-                                                                data-clerigo-id="{{ $clerigo->id }}">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-eye">
-                                                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z">
-                                                                    </path>
-                                                                    <circle cx="12" cy="12" r="3"></circle>
-                                                                </svg>
-
-                                                            </a>
-                                                            <a href="{{ route('clerigos.editar', $clerigo->id) }}"
-                                                                title="Editar"
-                                                                class="btn btn-sm btn-dark mr-1 btn-rounded">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-edit-2">
-                                                                    <path
-                                                                        d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z">
-                                                                    </path>
-                                                                </svg>
-                                                            </a>
-                                                        @endif
 
                                                         <form
                                                             action="{{ route($clerigo->deleted_at ? 'clerigos.ativar' : 'clerigos.deletar', $clerigo->id) }}"
@@ -154,22 +119,7 @@
                                                             id="form_{{ $clerigo->deleted_at ? 'ativar' : 'delete' }}_clerigo_{{ $index }}">
                                                             @csrf
                                                             @if ($clerigo->deleted_at)
-                                                                @method('PUT') {{-- Para restaurar o registro --}}
-                                                                <button type="button" title="Ativar"
-                                                                    class="btn btn-sm btn-success mr-1 btn-rounded btn-confirm-ativar"
-                                                                    data-form-ativar-id="form_ativar_clerigo_{{ $index }}">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="feather feather-refresh-cw">
-                                                                        <polyline points="23 4 23 10 17 10"></polyline>
-                                                                        <polyline points="1 20 1 14 7 14"></polyline>
-                                                                        <path
-                                                                            d="M3.51 9a9 9 0 0 1 13.36-5.36L23 10m-2 6a9 9 0 0 1-13.36 5.36L1 14">
-                                                                        </path>
-                                                                    </svg>
-                                                                </button>
+
                                                             @else
                                                                 @method('DELETE')
                                                                 <button type="button" title="Inativar"
