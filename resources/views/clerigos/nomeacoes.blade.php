@@ -1,6 +1,10 @@
 @extends('template.layout')
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[['text' => 'Clérigos', 'url' => '/', 'active' => true], ['text' => 'Nomeações', 'url' => '/', 'active' => true]]"></x-breadcrumb>
+    <x-breadcrumb :breadcrumbs="[
+        ['text' => 'Home', 'url' => '/', 'active' => false], 
+        ['text' => 'Clérigos', 'url' => '/clerigos', 'active' => false], 
+        ['text' => 'Nomeações', 'url' => '/', 'active' => true]
+    ]"></x-breadcrumb>
 @endsection
 @section('extras-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -56,7 +60,7 @@
                                 </div> --}}
                                 <div class="col-2">
                                     <select name="status" id="" class="form-control">
-                                        <option value="">Status nomeação</option>
+                                        <option value="">Todos</option>
                                         <option value="ativo" {{!empty($status) && $status === 'ativo' ? 'selected': ''}}>Ativo</option>
                                         <option value="inativo" {{!empty($status) && $status === 'inativo' ? 'selected': ''}}>Inativo</option>
                                     </select>
