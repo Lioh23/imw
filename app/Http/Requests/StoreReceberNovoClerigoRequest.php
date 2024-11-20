@@ -48,6 +48,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'nome_pai' => 'nullable|string|max:255',
             'telefone_preferencial' => 'required|string|max:15',
             'ctps' => 'required|string|max:20',
+<<<<<<< HEAD
             'ctps_emissao' => 'date',
             'habilitacao' => 'required|string|max:20',
             'habilitacao_categoria' => 'required|string|max:5',
@@ -62,6 +63,14 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'titulo_eleitor_secao' => 'required|string|max:10',
             'titulo_eleitor_zona' => 'required|string|max:10',
             'formacao_id' => '',
+=======
+            'ctps_emissao' => 'required|date',
+
+            'titulo_eleitor' => 'required|string|max:20',
+            'titulo_eleitor_secao' => 'required|string|max:10',
+            'titulo_eleitor_zona' => 'required|string|max:10',
+            'formacao_id' => 'required|integer',
+>>>>>>> origin/master
             'categoria' => 'required',
 
         ];
@@ -90,6 +99,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'escolaridade.required' => 'O campo escolaridade é obrigatório.',
             'telefone_preferencial.required' => 'O campo telefone preferencial é obrigatório.',
             'ctps.required' => 'O campo CTPS é obrigatório.',
+<<<<<<< HEAD
             'habilitacao.required' => 'O campo habilitação é obrigatório.',
             'habilitacao_categoria.required' => 'O campo categoria da habilitação é obrigatório.',
             'habilitacao_emissor.required' => 'O campo órgão emissor da habilitação é obrigatório.',
@@ -97,6 +107,9 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'identidade_uf.required' => 'O campo estado da identidade é obrigatório.',
             'pispasep.required' => 'O campo PIS/PASEP é obrigatório.',
             'pispasep_emissao.required' => 'O campo data de emissão do PIS/PASEP é obrigatório.',
+=======
+            'ctps_emissao.required' => 'O campo data de emissão da CTPS é obrigatório.',
+>>>>>>> origin/master
             'titulo_eleitor.required' => 'O campo título de eleitor é obrigatório.',
             'titulo_eleitor_secao.required' => 'O campo seção do título de eleitor é obrigatório.',
             'titulo_eleitor_zona.required' => 'O campo zona do título de eleitor é obrigatório.',

@@ -42,7 +42,7 @@ class ClerigosRegiaoController extends Controller
     {
         $formacoes =  Formacao::all();
         $ufs = $this->fetchUFs();
-        return view('clerigos.novo', compact('ufs', 'formacoes'));
+        return view('clerigos.novo.index', compact('ufs', 'formacoes'));
     }
 
     /**
@@ -53,7 +53,7 @@ class ClerigosRegiaoController extends Controller
      */
     public function store(StoreReceberNovoClerigoRequest $request)
     {
-    
+
         app(StoreClerigosService::class)->execute($request);
         return redirect()->route('clerigos.index')->with('success', 'Clerigo criado com sucesso!');
     }
@@ -80,7 +80,7 @@ class ClerigosRegiaoController extends Controller
         $formacoes =  Formacao::all();
         $ufs = $this->fetchUFs();
         $clerigo = PessoasPessoa::findOrfail($id);
-        return view('clerigos.editar', compact('clerigo', 'ufs', 'formacoes'));
+        return view('clerigos.editar.index', compact('clerigo', 'ufs', 'formacoes'));
     }
 
     /**
@@ -91,8 +91,8 @@ class ClerigosRegiaoController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(StoreReceberNovoClerigoRequest $request, $id)
-    {   
-     
+    {
+
         app(UpdateClerigosService::class)->execute($request, $id);
         return redirect()->route('clerigos.index')->with('sucess', 'Clerigo editado com sucesso!');
     }

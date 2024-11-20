@@ -2,19 +2,24 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PessoaFuncaoministerial extends Model
+class PessoaFuncaoMinisterial extends Model
 {
-    use HasFactory;
-
     protected $table = 'pessoas_funcaoministerial';
 
     protected $fillable = [
-        'excluido',
         'funcao',
         'ordem',
-        'titulo'
+        'titulo',
+        'excluido',
+        'created_at',
+        'updated_at',
     ];
+
+    // Relacionamento inverso com PessoaNomeacao
+    public function nomeacoes()
+    {
+        return $this->hasMany(PessoaNomeacao::class, 'funcao_ministerial_id', 'id');
+    }
 }
