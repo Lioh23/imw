@@ -333,7 +333,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/ativar/{id}', 'ativar')->name('ativar');
                 Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
                 Route::get('/{id}/nomeacoes', 'nomeacoes')->name('nomeacoes');
-                Route::get('/{id}/nomeacoes/novo', 'novaNomeacao')->name('nomeacao.novo');
+                Route::get('/{pessoa}/nomeacoes/novo', 'novaNomeacao')->name('nomeacao.novo');
                 Route::post('/{id}/nomeacoes/novo', 'storeNomeacao')->name('nomeacao.store');
                 Route::delete('/{id}/nomeacoes/{id}', 'deleteNomeacao')->name('nomeacao.delete');
             });

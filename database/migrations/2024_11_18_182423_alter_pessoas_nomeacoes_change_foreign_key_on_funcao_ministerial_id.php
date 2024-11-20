@@ -19,7 +19,7 @@ return new class extends Migration
         });
 
         Schema::table('pessoas_nomeacoes', function (Blueprint $table) {
-            $table->foreignId('funcao_ministerial_id')->nullable()->after('pessoa_id')->constrained('membresia_funcoesministeriais');
+            $table->foreignId('funcao_ministerial_id')->nullable()->after('pessoa_id')->constrained('pessoas_funcaoministerial');
         });
     }
 

@@ -12,7 +12,7 @@
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+    <link href="{{ asset('theme/plugins/select2/select2.min.css') }}" rel="stylesheet" />
 
 
     <style>
@@ -27,32 +27,14 @@
     </style>
 @endsection
 
-@section('extras-scripts')
-    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/pt-BR.js"></script>
-@endsection
-
 @include('extras.alerts')
 
 @section('content')
     <div class="container-fluid" style="background: #fff">
         <div class="widget-header">
-            <h4>Dados do usuário</h4>
+            <h4>Nova nomeação de {{ $pessoa->nome }}</h4>
         </div>
 
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
-
-                    <li>{{ $errors->first() }}</li>
-
-                </ul>
-            </div>
-        @endif
 
         <form class="py-2 px-3" method="POST" action="{{ route('clerigos.nomeacao.store', ['id' => $id]) }}">
             @csrf
@@ -74,7 +56,7 @@
 
                 <div class="col-12 mt-3 col-md-4">
                     <label for="data_nomeacao">* Data de Nomeação</label>
-                    <input class="form-control" type="text" id="data_nomeacao" name="data_nomeacao"
+                    <input class="form-control" type="date" id="data_nomeacao" name="data_nomeacao"
                         value="{{ old('data_nomeacao') }}" @error('data_nomeacao') is-invalid @enderror>
                 </div>
 
@@ -83,10 +65,10 @@
                     <select class="form-control basic" name="instituicao_id" id="instituicao_id"
                         @error('instituicao_id') is-invalid @enderror>
                         <option value="">Selecione</option>
-                        @foreach ($instituicoes_completa as $i)
-                            <option value="{{ $i['instituicao'] }}"
-                                {{ old('instituicao_id') == $i['instituicao'] ? 'selected' : '' }}>
-                                {{ $i['instituicao'] }}({{ $i['instituicao_pai'] }})</option>
+                        @foreach ($instituicoes as $instituicao)
+                            <option value="{{ $instituicao->id }}" {{ old('instituicao_id') == $instituicao->id ? 'selected' : '' }}>
+                                {{ $instituicao->nome }} {{ $instituicao->instituicaoPai ? sprintf('(%s)', $instituicao->instituicaoPai->nome) : '' }}
+                            </option>
                         @endforeach
                         </option>
                     </select>
@@ -100,6 +82,16 @@
             <button class="btn btn-primary my-4">Salvar</button>
         </form>
     </div>
+@endsection
+
+@section('extras-scripts')
+    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+
+    <script src="{{ asset('theme/plugins/select2/select2.min.js') }}"></script>
+    <script src="{{ asset('theme/plugins/select2/custom-select2.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/pt-BR.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>

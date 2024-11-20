@@ -29,13 +29,10 @@ class StoreNomeacoesClerigosRequest extends FormRequest
     {
         $clergId = $this->route('id');
         return [
-            'data_nomeacao' => 'required',
-            new TodaysDeadlineRule,
-            new ValidDataGreaterThanCreationClerigo($clergId),
+            'data_nomeacao' => ['required', new TodaysDeadlineRule, new ValidDataGreaterThanCreationClerigo($clergId)],
             'instituicao_id' => 'required',
             'pessoa_id' => 'required',
             'funcao_ministerial_id' => 'required'
-
         ];
     }
 }

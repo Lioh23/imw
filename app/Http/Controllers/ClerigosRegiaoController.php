@@ -9,6 +9,7 @@ use App\Models\PessoasPessoa;
 use App\Traits\LocationUtils;
 use App\Http\Requests\StoreReceberNovoClerigoRequest;
 use App\Models\InstituicoesInstituicao;
+use App\Models\InstituicoesTipoInstituicao;
 use App\Models\PessoaFuncaoMinisterial;
 use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
@@ -17,7 +18,8 @@ use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
 use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaNomeacoesClerigoService;
-use App\Services\ServiceClerigosRegiao\StoreNomeacoesClerigos;
+use App\Services\ServiceNomeacoes\StoreNomeacoesClerigos;
+
 class ClerigosRegiaoController extends Controller
 {
 
@@ -120,26 +122,28 @@ class ClerigosRegiaoController extends Controller
     }
 
 
-    public function novaNomeacao(string $id){
+    public function novaNomeacao(PessoasPessoa $pessoa){
+        $id = $pessoa->id;
         $instituicoes_completa = [];
-        $instituicoes = InstituicoesInstituicao::whereIn('tipo_instituicao_id', [1, 3, 5])->get();
-
-        foreach ($instituicoes as $instituicao) {
-            $instituicao_pai = InstituicoesInstituicao::where('id', $instituicao->instituicao_pai_id)->first();
-            $instituicoes_completa[] = [
-                'instituicao' => $instituicao->nome,
-                'instituicao_pai' => $instituicao_pai ? $instituicao_pai->nome : 'Sem instituição pai'
-            ];
-        }
+        $instituicoes = InstituicoesInstituicao::whereIn('tipo_instituicao_id', [
+                InstituicoesTipoInstituicao::IGREJA_LOCAL, 
+                InstituicoesTipoInstituicao::DISTRITO, 
+                InstituicoesTipoInstituicao::REGIAO, 
+                InstituicoesTipoInstituicao::SECRETARIA, 
+                InstituicoesTipoInstituicao::SECRETARIA_REGIONAL, 
+            ])
+            ->orderBy('nome')
+            ->get();
 
         $funcoes = PessoaFuncaoMinisterial::orderBy('funcao')->get();
 
-        return view('clerigos.nomeacoes.novo', compact('instituicoes_completa', 'id', 'funcoes'));
+        return view('clerigos.nomeacoes.novo', compact('instituicoes', 'id', 'funcoes', 'pessoa'));
     }
 
     public function storeNomeacao(StoreNomeacoesClerigosRequest $request){
 
         app(StoreNomeacoesClerigos::class)->execute($request);
+
         return redirect()->route('clerigos.nomeacoes', ['id' => $request->pessoa_id])->with('success', 'Nomeação criada com sucesso!');
     }
 }
