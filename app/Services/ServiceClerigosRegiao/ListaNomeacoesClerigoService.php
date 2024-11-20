@@ -13,6 +13,7 @@ class ListaNomeacoesClerigoService
             ->when($status == 'ativo', fn ($query) => $query->whereNull('data_termino'))
             ->when($status == 'inativo', fn ($query) => $query->whereNotNull('data_termino'))
             ->orderBy('data_termino')
+            ->orderBy('data_nomeacao', 'desc')
             ->get();
 
         return [
