@@ -7,8 +7,6 @@ use App\Models\Formacao;
 use Illuminate\Http\Request;
 use App\Models\PessoasPessoa;
 use App\Traits\LocationUtils;
-use App\Models\PessoaNomeacao;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreReceberNovoClerigoRequest;
 use App\Models\InstituicoesInstituicao;
 use App\Models\PessoaFuncaoMinisterial;
@@ -18,10 +16,8 @@ use App\Services\ServiceClerigosRegiao\StoreClerigosService;
 use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
 use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
-use App\Services\ServiceClerigosRegiao\ListarNomeacoesClerigos;
+use App\Services\ServiceClerigosRegiao\ListaNomeacoesClerigoService;
 use App\Services\ServiceClerigosRegiao\StoreNomeacoesClerigos;
-use PhpParser\Node\Expr\FuncCall;
-
 class ClerigosRegiaoController extends Controller
 {
 
@@ -35,6 +31,7 @@ class ClerigosRegiaoController extends Controller
     {
         $searchTerm = $request->input('search');
         $clerigos = app(ListaClerigosService::class)->execute($searchTerm);
+
         return view('clerigos.index', compact('clerigos'));
     }
 
@@ -48,6 +45,7 @@ class ClerigosRegiaoController extends Controller
     {
         $formacoes =  Formacao::all();
         $ufs = $this->fetchUFs();
+
         return view('clerigos.novo.index', compact('ufs', 'formacoes'));
     }
 
@@ -61,18 +59,8 @@ class ClerigosRegiaoController extends Controller
     {
 
         app(StoreClerigosService::class)->execute($request);
-        return redirect()->route('clerigos.index')->with('success', 'Clerigo criado com sucesso!');
-    }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return redirect()->route('clerigos.index')->with('success', 'Clerigo criado com sucesso!');
     }
 
     /**
@@ -100,6 +88,7 @@ class ClerigosRegiaoController extends Controller
     {
 
         app(UpdateClerigosService::class)->execute($request, $id);
+
         return redirect()->route('clerigos.index')->with('sucess', 'Clerigo editado com sucesso!');
     }
 
@@ -120,14 +109,14 @@ class ClerigosRegiaoController extends Controller
     public function detalhes($id)
     {
         $clerigos = app(DetalhesClerigoService::class)->execute($id);
+
         return response()->json($clerigos);
     }
 
-    public function nomeacoes(Request $request)
+    public function nomeacoes($id, Request $request)
     {
-
-        app(ListarNomeacoesClerigos::class)->execute($request);
-        return view('clerigos.nomeacoes.index', compact('nomeacoes', 'search', 'status', 'id'));
+        $data = app(ListaNomeacoesClerigoService::class)->execute($id, $request->input('status'));
+        return view('clerigos.nomeacoes.index', $data);
     }
 
 

@@ -1,7 +1,10 @@
 @extends('template.layout')
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[['text' => 'Clérigos', 'url' => '/clerigos', 'active' => false],
-     ['text' => 'Nomeações', 'url' => '/', 'active' => true]]"></x-breadcrumb>
+    <x-breadcrumb :breadcrumbs="[
+        ['text' => 'Home', 'url' => '/', 'active' => false],
+        ['text' => 'Clérigos', 'url' => '/clerigos', 'active' => false],
+        ['text' => 'Nomeações', 'url' => '/', 'active' => true]
+    ]"></x-breadcrumb>
 @endsection
 @section('extras-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -55,6 +58,13 @@
                                     <input type="text" name="search" id="searchInput"
                                         class="form-control form-control-sm" placeholder="Pesquisar...">
                                 </div>
+                                <div class="col-2">
+                                    <select name="status" id="" class="form-control">
+                                        <option value="">Todos</option>
+                                        <option value="ativo" {{!empty($status) && $status === 'ativo' ? 'selected': ''}}>Ativo</option>
+                                        <option value="inativo" {{!empty($status) && $status === 'inativo' ? 'selected': ''}}>Inativo</option>
+                                    </select>
+                                </div>
                                 <div class="col-auto" style="margin-left: -19px;">
                                     <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
                                 </div>
@@ -86,82 +96,40 @@
                                                 <th>Função ministerial</th>
                                                 <th>Data de nomeação</th>
                                                 <th>Data de término da nomeação</th>
-                                                <th>Instituição filho</th>
+                                                <th>Instituição</th>
                                                 <th width="120px">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($nomeacoes as $index => $clerigo)
+                                            @foreach ($nomeacoes as $index => $nomeacao)
                                                 <tr>
                                                     <td>
-                                                       {{$clerigo->funcaoMinisterial?->funcao}}
+                                                       {{$nomeacao->funcaoMinisterial?->funcao}}
                                                    </td>
 
                                                     <td>
-                                                        {{$clerigo->data_nomeacao}}
+                                                        {{$nomeacao->data_nomeacao}}
                                                     </td>
 
                                                     <td>
-                                                        {{$clerigo->data_termino}}
+                                                        {{$nomeacao->data_termino}}
                                                     </td>
 
                                                     <td>
-                                                        {{$clerigo->instituicao->pai_nome}} > {{$clerigo->instituicao->nome}}
+                                                        {{ $nomeacao->instituicao->nome }}
+                                                        {{ $nomeacao->instituicao->instituicaoPai
+                                                            ? sprintf('(%s)', $nomeacao->instituicao->instituicaoPai->nome)
+                                                            : ''
+                                                        }}
                                                     </td>
 
                                                     <td class="table-action">
-
-
-
-                                                        <form
-                                                            action="{{ route($clerigo->deleted_at ? 'clerigos.ativar' : 'clerigos.deletar', $clerigo->id) }}"
-                                                            method="POST" style="display: inline-block;"
-                                                            id="form_{{ $clerigo->deleted_at ? 'ativar' : 'delete' }}_clerigo_{{ $index }}">
-                                                            @csrf
-                                                            @if ($clerigo->deleted_at)
-
-                                                            @else
-                                                                @method('DELETE')
-                                                                <button type="button" title="Inativar"
-                                                                    class="btn btn-sm btn-danger btn-rounded btn-confirm-delete"
-                                                                    data-form-delete-id="form_delete_clerigo_{{ $index }}">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="feather feather-slash">
-                                                                        <circle cx="12" cy="12" r="10">
-                                                                        </circle>
-                                                                        <line x1="4.93" y1="4.93"
-                                                                            x2="19.07" y2="19.07"></line>
-                                                                    </svg>
-                                                                </button>
-                                                            @endif
-                                                        </form>
-
+                                                        <button type="button" title="Inativar"
+                                                            class="btn btn-sm btn-danger btn-rounded btn-confirm-delete">
+                                                            <x-bx-block />
+                                                        </button>
                                                     </td>
                                                 </tr>
-                                                <!-- Modal de Visualização -->
-                                                <div class="modal fade" id="viewDetailsModal_{{ $clerigo->id }}"
-                                                    tabindex="-1" role="dialog"
-                                                    aria-labelledby="viewDetailsModalLabel_{{ $clerigo->id }}"
-                                                    aria-hidden="true">
-                                                    <div class="modal-dialog modal-lg modal-dialog-scrollable"
-                                                        role="document"> <!-- Adiciona o scroll ao modal -->
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <button type="button" class="close"
-                                                                    data-dismiss="modal" aria-label="Close">
-                                                                    <span aria-hidden="true">&times;</span>
-                                                                </button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                <!-- Os detalhes do clerigo serão preenchidos aqui pelo JavaScript -->
-                                                            </div>
-
-                                                        </div>
-                                                    </div>
-                                                </div>
                                             @endforeach
                                         </tbody>
                                     </table>
@@ -175,96 +143,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        // Confirmação para apagar (deletar) o clerigo
-        $('.btn-confirm-delete').on('click', function() {
-            const formId = $(this).data('form-delete-id');
-            swal({
-                title: 'Deseja realmente inativar esta clerigo?',
-                type: 'error',
-                showCancelButton: true,
-                confirmButtonText: "Inativar",
-                confirmButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
-                cancelButtonColor: "#3085d6",
-                padding: '2em'
-            }).then(function(result) {
-                if (result.value) {
-                    document.getElementById(formId).submit();
-                }
-            });
-        });
-
-        // Confirmação para ativar o clerigo
-        $('.btn-confirm-ativar').on('click', function() {
-            const formId = $(this).data('form-ativar-id');
-            swal({
-                title: 'Deseja realmente ativar esta clerigo?',
-                type: 'warning',
-                showCancelButton: true,
-                confirmButtonText: "Sim",
-                confirmButtonColor: "#28a745", // Verde para ativar
-                cancelButtonText: "Não",
-                cancelButtonColor: "#3085d6",
-                padding: '2em'
-            }).then(function(result) {
-                if (result.value) {
-                    document.getElementById(formId).submit();
-                }
-            });
-        });
-
-        $('.btn-view-details').on('click', function() {
-            var clerigoId = $(this).data('clerigo-id');
-            var modalId = '#viewDetailsModal_' + clerigoId;
-            var button = $(this);
-
-            // Adicionar o ícone de loading no botão usando Font Awesome
-            var originalButtonText = button.html(); // Salvar o texto original do botão
-            button.html('<i class="fas fa-spinner fa-spin"></i>'); // Usar Font Awesome spinner
-
-            $.ajax({
-                url: '/clerigos/' + clerigoId + '/detalhes',
-                method: 'GET',
-                success: function(data) {
-                    // Preenche o modal com as informações do clerigo e as nomeações, ambos em formato de card
-                    $(modalId).find('.modal-body').html(`
-                <div class="card mb-3">
-                    <div class="card-header bg-secondary text-white">
-                        Informações do Clérigos
-                    </div>
-                    <div class="card-body">
-                        <p><strong>Nome:</strong> ${data.nome}</p>
-                        <p><strong>CEP:</strong> ${data.cep || '-'}</p>
-                        <p><strong>Endereço:</strong> ${data.endereco || '-'}, ${data.numero || '-'}</p>
-                        <p><strong>Complemento:</strong> ${data.complemento || '-'}</p>
-                        <p><strong>Bairro:</strong> ${data.bairro || '-'}</p>
-                        <p><strong>Cidade:</strong> ${data.cidade || '-'}</p>
-                        <p><strong>UF:</strong> ${data.uf || '-'}</p>
-                        <p><strong>País:</strong> ${data.pais || '-'}</p>
-                        <p><strong>Email:</strong> ${data.email || '-'}</p>
-                        <p><strong>Estado Cívil:</strong> ${data.estado_civil || '-'}</p>
-                        <p><strong>CPF:</strong> ${data.cpf || '-'}</p>
-                        <p><strong>Nascimento:</strong> ${data.data_nascimento || '-'}</p>
-                        <p><strong>Conjugue:</strong> ${data.nome_conjuge || '-'}</p>
-
-                    </div>
-                </div>
-            `);
-
-                    // Exibe o modal
-                    $(modalId).modal('show');
-                },
-                error: function(err) {
-                    console.error("Erro ao buscar os detalhes do clerigo: ", err);
-                },
-                complete: function() {
-                    // Restaurar o texto original do botão após o carregamento
-                    button.html(originalButtonText);
-                }
-            });
-        });
-
-    </script>
 @endsection

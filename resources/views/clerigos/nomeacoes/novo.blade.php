@@ -14,6 +14,7 @@
     <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
+
     <style>
         .swal2-popup .swal2-styled.swal2-cancel {
             color: white !important;
@@ -106,13 +107,7 @@
         $(document).ready(function() {
             $('#data_nomeacao').mask('00/00/0000');
         })
-
-        var ss = $(".basic").select2({
-            tags: true,
-        });
-
-        $.fn.select2.defaults.set("language", "pt-BR");
-        $('#instituicao').select2({
+        $('.basic').select2({
             placeholder: 'Selecione',
             allowClear: true
         });

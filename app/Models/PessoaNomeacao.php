@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -15,6 +16,7 @@ class PessoaNomeacao extends Model
     protected $fillable = [
         'codigo_host',
         'data_nomeacao',
+        'data_termino',
         'hist_distrito_id',
         'hist_geral_id',
         'hist_igreja_id',
@@ -26,7 +28,26 @@ class PessoaNomeacao extends Model
         'funcao_ministerial_id'
     ];
 
-        // Relacionamento com PessoaFuncaoMinisterial
+    protected $casts = [
+        'data_nomeacao' => 'date',
+        'data_termino' => 'date'
+    ];
+
+    public function getDataNomeacaoAttribute($value)
+    {
+        if (!$value) return '';
+
+        return Carbon::parse($value)->format('d/m/Y');
+    }
+
+    public function getDataTerminoAttribute($value)
+    {
+        if (!$value) return '';
+
+        return Carbon::parse($value)->format('d/m/Y');
+    }
+
+    // Relacionamento com PessoaFuncaoMinisterial
     public function funcaoMinisterial()
     {
         return $this->belongsTo(PessoaFuncaoMinisterial::class, 'funcao_ministerial_id', 'id');
