@@ -6,8 +6,6 @@ use App\Models\Formacao;
 use Illuminate\Http\Request;
 use App\Models\PessoasPessoa;
 use App\Traits\LocationUtils;
-use App\Models\PessoaNomeacao;
-use Illuminate\Support\Facades\DB;
 use App\Http\Requests\StoreReceberNovoClerigoRequest;
 use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
@@ -15,6 +13,7 @@ use App\Services\ServiceClerigosRegiao\StoreClerigosService;
 use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
 use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
+use App\Services\ServiceClerigosRegiao\ListaNomeacoesClerigoService;
 
 class ClerigosRegiaoController extends Controller
 {
@@ -117,26 +116,10 @@ class ClerigosRegiaoController extends Controller
         return response()->json($clerigos);
     }
 
-    public function nomeacoes(Request $request)
+    public function nomeacoes($id, Request $request)
     {
-        $id = $request->route('id');
-        $search = $request->input('search');
-        $status = $request->input('status');
-        $nomeacoes = PessoaNomeacao::with(['funcaoMinisterial', 'instituicao' => function($query) {
-            $query->join('instituicoes_instituicoes as ii', 'instituicoes_instituicoes.instituicao_pai_id', '=', 'ii.id')
-            ->select('instituicoes_instituicoes.*', 'ii.nome as pai_nome');
-        }])->where('pessoa_id', $id);
+        $data = app(ListaNomeacoesClerigoService::class)->execute($id, $request->input('status'));
 
-        if(!empty($status)) { 
-            if($status == 1) {
-                $nomeacoes = $nomeacoes->whereNull('data_termino');
-            } else if($status == 2) {
-                $nomeacoes = $nomeacoes->whereNotNull('data_termino');
-            }
-        }
-
-        $nomeacoes = $nomeacoes->get();
-
-        return view('clerigos.nomeacoes', compact('nomeacoes', 'search', 'status'));
+        return view('clerigos.nomeacoes', $data);
     }
 }
