@@ -125,7 +125,7 @@
 
                                                     <td class="table-action">
                                                         <button type="button" title="Inativar"
-                                                            class="btn btn-sm btn-danger btn-rounded btn-confirm-delete">
+                                                            class="btn btn-sm btn-danger btn-rounded btn-confirm-delete bs-tooltip">
                                                             <x-bx-block />
                                                         </button>
                                                     </td>
@@ -143,4 +143,24 @@
             </div>
         </div>
     </div>
+    <script>
+        // Confirmação para apagar (deletar) o clerigo
+        $('.btn-confirm-delete').on('click', function() {
+            const formId = $(this).data('form-delete-id');
+            swal({
+                title: 'Deseja realmente inativar esta nomeação?',
+                type: 'error',
+                showCancelButton: true,
+                confirmButtonText: "Inativar",
+                confirmButtonColor: "#d33",
+                cancelButtonText: "Cancelar",
+                cancelButtonColor: "#3085d6",
+                padding: '2em'
+            }).then(function(result) {
+                // if (result.value) {
+                //     document.getElementById(formId).submit();
+                // }
+            });
+        });
+    </script>
 @endsection

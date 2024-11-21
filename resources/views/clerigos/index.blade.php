@@ -171,7 +171,7 @@
                                                             @else
                                                                 @method('DELETE')
                                                                 <button type="button" title="Inativar"
-                                                                    class="btn btn-sm btn-danger btn-rounded btn-confirm-delete"
+                                                                    class="btn btn-sm btn-danger btn-rounded btn-confirm-delete bs-tooltip"
                                                                     data-form-delete-id="form_delete_clerigo_{{ $index }}">
                                                                     <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                         height="24" viewBox="0 0 24 24" fill="none"
