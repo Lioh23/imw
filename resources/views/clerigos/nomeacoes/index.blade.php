@@ -2,8 +2,8 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Clérigos', 'url' => '/clerigos', 'active' => false],
-        ['text' => 'Nomeações', 'url' => '/', 'active' => true]
+        ['text' => 'Clérigos', 'url' => '/nomeacoes', 'active' => false],
+        ['text' => 'Nomeações', 'url' => '/', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 @section('extras-css')
@@ -25,6 +25,7 @@
 @endsection
 
 @section('extras-scripts')
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
@@ -52,7 +53,7 @@
                     </div>
                     <!--/.bg-holder-->
                     <div class="card-body">
-                         <form>
+                        <form>
                             <div class="row mb-4">
                                 <div class="col-4">
                                     <input type="text" name="search" id="searchInput"
@@ -61,8 +62,11 @@
                                 <div class="col-2">
                                     <select name="status" id="" class="form-control">
                                         <option value="">Todos</option>
-                                        <option value="ativo" {{!empty($status) && $status === 'ativo' ? 'selected': ''}}>Ativo</option>
-                                        <option value="inativo" {{!empty($status) && $status === 'inativo' ? 'selected': ''}}>Inativo</option>
+                                        <option value="ativo"
+                                            {{ !empty($status) && $status === 'ativo' ? 'selected' : '' }}>Ativo</option>
+                                        <option value="inativo"
+                                            {{ !empty($status) && $status === 'inativo' ? 'selected' : '' }}>Inativo
+                                        </option>
                                     </select>
                                 </div>
                                 <div class="col-auto" style="margin-left: -19px;">
@@ -79,10 +83,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="{{route('clerigos.nomeacao.novo', ['pessoa'=> $id])}}" title="Inserir um novo registro"
-                                    class="btn btn-primary right btn-rounded"> <svg xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                <a href="{{ route('clerigos.nomeacoes.novo', ['pessoa' => $id]) }}"
+                                    title="Inserir um novo registro" class="btn btn-primary right btn-rounded"> <svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="feather feather-plus-square">
                                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2">
                                         </rect>
@@ -104,30 +108,64 @@
                                             @foreach ($nomeacoes as $index => $nomeacao)
                                                 <tr>
                                                     <td>
-                                                       {{$nomeacao->funcaoMinisterial?->funcao}}
-                                                   </td>
-
-                                                    <td>
-                                                        {{$nomeacao->data_nomeacao}}
+                                                        {{ $nomeacao->funcaoMinisterial?->funcao }}
                                                     </td>
 
                                                     <td>
-                                                        {{$nomeacao->data_termino}}
+                                                        {{ $nomeacao->data_nomeacao }}
+                                                    </td>
+
+                                                    <td>
+                                                        {{ $nomeacao->data_termino }}
                                                     </td>
 
                                                     <td>
                                                         {{ $nomeacao->instituicao->nome }}
-                                                        {{ $nomeacao->instituicao->instituicaoPai
-                                                            ? sprintf('(%s)', $nomeacao->instituicao->instituicaoPai->nome)
-                                                            : ''
-                                                        }}
+                                                        {{ $nomeacao->instituicao->instituicaoPai ? sprintf('(%s)', $nomeacao->instituicao->instituicaoPai->nome) : '' }}
                                                     </td>
 
                                                     <td class="table-action">
-                                                        <button type="button" title="Inativar"
-                                                            class="btn btn-sm btn-danger btn-rounded btn-confirm-delete">
-                                                            <x-bx-block />
-                                                        </button>
+
+                                                        @if (!$nomeacao->data_termino)
+                                                            <a href="javascript:void(0);" title="Visualizar"
+                                                                class="btn btn-sm btn-info mr-1 btn-rounded btn-view-details"
+                                                                data-nomeacao-id="{{ $nomeacao->id }}">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="feather feather-eye">
+                                                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z">
+                                                                    </path>
+                                                                    <circle cx="12" cy="12" r="3"></circle>
+                                                                </svg>
+                                                            </a>
+                                                        @endif
+                                                        @if (!$nomeacao->data_termino)
+                                                            <form
+                                                                action="{{ route($nomeacao->data_termino ? 'clerigos.nomeacoes.index' : 'clerigos.nomeacoes.delete', ['id' => $nomeacao->id]) }}"
+                                                                method="POST" style="display: inline-block;"
+                                                                id="form_{{ $nomeacao->data_termino ? '' : 'delete' }}_nomeacao_{{ $nomeacao->id }}">
+                                                                @csrf
+
+                                                                @method('DELETE')
+                                                                <button type="button" title="Finalizar"
+                                                                    class="btn btn-sm btn-danger btn-rounded btn-confirm-delete"
+                                                                    data-form-delete-id="form_delete_nomeacao_{{ $nomeacao->id }}">
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                        height="24" viewBox="0 0 24 24" fill="none"
+                                                                        stroke="currentColor" stroke-width="2"
+                                                                        stroke-linecap="round" stroke-linejoin="round"
+                                                                        class="feather feather-slash">
+                                                                        <circle cx="12" cy="12" r="10">
+                                                                        </circle>
+                                                                        <line x1="4.93" y1="4.93"
+                                                                            x2="19.07" y2="19.07"></line>
+                                                                    </svg>
+                                                                </button>
+
+                                                            </form>
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -143,4 +181,78 @@
             </div>
         </div>
     </div>
+
+
+    <script>
+        $('.btn-confirm-delete').on('click', function() {
+            const formId = $(this).data('form-delete-id');
+            console.log(formId)
+            swal({
+                title: 'Deseja realmente finalizar esta nomeação?',
+                type: 'error',
+                showCancelButton: true,
+                confirmButtonText: "finalizar",
+                confirmButtonColor: "#d33",
+                cancelButtonText: "Cancelar",
+                cancelButtonColor: "#3085d6",
+                padding: '2em'
+            }).then(function(result) {
+                if (result.value) {
+                    document.getElementById(formId).submit();
+                }
+            });
+        });
+
+
+        // $('.btn-view-details').on('click', function() {
+        //     var clerigoId = $(this).data('clerigo-id');
+        //     var modalId = '#viewDetailsModal_' + clerigoId;
+        //     var button = $(this);
+
+        //     // Adicionar o ícone de loading no botão usando Font Awesome
+        //     var originalButtonText = button.html(); // Salvar o texto original do botão
+        //     button.html('<i class="fas fa-spinner fa-spin"></i>'); // Usar Font Awesome spinner
+
+        //     $.ajax({
+        //         url: '/clerigos/' + clerigoId + '/detalhes',
+        //         method: 'GET',
+        //         success: function(data) {
+        //             // Preenche o modal com as informações do clerigo e as nomeações, ambos em formato de card
+        //             $(modalId).find('.modal-body').html(`
+    //         <div class="card mb-3">
+    //             <div class="card-header bg-secondary text-white">
+    //                 Informações do Clérigos
+    //             </div>
+    //             <div class="card-body">
+    //                 <p><strong>Nome:</strong> ${data.nome}</p>
+    //                 <p><strong>CEP:</strong> ${data.cep || '-'}</p>
+    //                 <p><strong>Endereço:</strong> ${data.endereco || '-'}, ${data.numero || '-'}</p>
+    //                 <p><strong>Complemento:</strong> ${data.complemento || '-'}</p>
+    //                 <p><strong>Bairro:</strong> ${data.bairro || '-'}</p>
+    //                 <p><strong>Cidade:</strong> ${data.cidade || '-'}</p>
+    //                 <p><strong>UF:</strong> ${data.uf || '-'}</p>
+    //                 <p><strong>País:</strong> ${data.pais || '-'}</p>
+    //                 <p><strong>Email:</strong> ${data.email || '-'}</p>
+    //                 <p><strong>Estado Cívil:</strong> ${data.estado_civil || '-'}</p>
+    //                 <p><strong>CPF:</strong> ${data.cpf || '-'}</p>
+    //                 <p><strong>Nascimento:</strong> ${data.data_nascimento || '-'}</p>
+    //                 <p><strong>Conjugue:</strong> ${data.nome_conjuge || '-'}</p>
+
+    //             </div>
+    //         </div>
+    //     `);
+
+        //             // Exibe o modal
+        //             $(modalId).modal('show');
+        //         },
+        //         error: function(err) {
+        //             console.error("Erro ao buscar os detalhes do clerigo: ", err);
+        //         },
+        //         complete: function() {
+        //             // Restaurar o texto original do botão após o carregamento
+        //             button.html(originalButtonText);
+        //         }
+        //     });
+        // });
+    </script>
 @endsection

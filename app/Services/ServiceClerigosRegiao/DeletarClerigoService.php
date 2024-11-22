@@ -8,6 +8,9 @@ class DeletarClerigoService
     public function execute($id)
     {
         $clerigo = PessoasPessoa::findOrFail($id);
-        $clerigo->delete(); // Soft delete
+        if($clerigo){
+            $clerigo->delete(); // Soft delete
+        }
+
     }
 }

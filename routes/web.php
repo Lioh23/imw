@@ -22,6 +22,7 @@ use App\Http\Controllers\InstituicaoRegiaoIgrejasController;
 use App\Http\Controllers\InstituicaoRegiaoSecretariasController;
 use App\Http\Controllers\MembresiaGeralController;
 use App\Http\Controllers\MembrosController;
+use App\Http\Controllers\NomeacoesClerigosController;
 use App\Http\Controllers\NotificacoesTranferenciaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\RegiaoRelatorioController;
@@ -332,10 +333,16 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/update/{id}', 'update')->name('update');
                 Route::put('/ativar/{id}', 'ativar')->name('ativar');
                 Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
-                Route::get('/{id}/nomeacoes', 'nomeacoes')->name('nomeacoes');
-                Route::get('/{pessoa}/nomeacoes/novo', 'novaNomeacao')->name('nomeacao.novo');
-                Route::post('/{id}/nomeacoes/novo', 'storeNomeacao')->name('nomeacao.store');
-                Route::delete('/{id}/nomeacoes/{id}', 'deleteNomeacao')->name('nomeacao.delete');
+            });
+
+        Route::prefix('clerigos/nomeacoes')->name('clerigos.nomeacoes.')
+            ->controller(NomeacoesClerigosController::class)
+            ->middleware(['seguranca:menu-instituicoes'])
+            ->group(function () {
+                Route::get('/{id}', 'index')->name('index');
+                Route::get('/{pessoa}/novo', 'novo')->name('novo');
+                Route::post('/{id}/novo', 'store')->name('store');
+                Route::delete('/{id}', 'delete')->name('delete');
             });
 
 

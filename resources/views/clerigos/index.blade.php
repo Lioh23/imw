@@ -1,7 +1,7 @@
 @extends('template.layout')
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
-        ['text' => 'Home', 'url' => '/', 'active' => false], 
+        ['text' => 'Home', 'url' => '/', 'active' => false],
         ['text' => 'Clérigos', 'url' => '/', 'active' => true]
     ]"></x-breadcrumb>
 @endsection
@@ -104,7 +104,7 @@
 
                                                         @if (!$clerigo->deleted_at)
 
-                                                        <a href="{{ route('clerigos.nomeacoes', $clerigo->id) }}"
+                                                        <a href="{{ route('clerigos.nomeacoes.index', $clerigo->id) }}"
                                                             title="Nomeações"
                                                             class="btn btn-primary right btn-rounded">
                                                             <svg xmlns="http://www.w3.org/2000/svg"
@@ -230,7 +230,7 @@
         $('.btn-confirm-delete').on('click', function() {
             const formId = $(this).data('form-delete-id');
             swal({
-                title: 'Deseja realmente inativar esta clerigo?',
+                title: 'Deseja realmente inativar este clérigo?',
                 type: 'error',
                 showCancelButton: true,
                 confirmButtonText: "Inativar",

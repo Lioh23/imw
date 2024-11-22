@@ -8,7 +8,7 @@ class ListaNomeacoesClerigoService
 {
     public function execute($clerigoId, $status = null): array
     {
-        $nomeacoes = PessoaNomeacao::with(['funcaoMinisterial', 'instituicao.instituicaoPai'])
+        $nomeacoes = PessoaNomeacao::withTrashed(['funcaoMinisterial', 'instituicao.instituicaoPai'])
             ->where('pessoa_id', $clerigoId)
             ->when($status == 'ativo', fn($query) => $query->whereNull('data_termino'))
             ->when($status == 'inativo', fn($query) => $query->whereNotNull('data_termino'))

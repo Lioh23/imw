@@ -15,6 +15,7 @@ use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
 use App\Services\ServiceClerigosRegiao\StoreClerigosService;
 use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
+use App\Services\ServiceClerigosRegiao\DeletarNomeacoesClerigos\DeletarNomeacoesClerigos;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
 use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaNomeacoesClerigoService;
@@ -91,7 +92,7 @@ class ClerigosRegiaoController extends Controller
 
         app(UpdateClerigosService::class)->execute($request, $id);
 
-        return redirect()->route('clerigos.index')->with('sucess', 'Clerigo editado com sucesso!');
+        return redirect()->route('clerigos.index')->with('success', 'Clerigo editado com sucesso!');
     }
 
     public function deletar($id)
@@ -115,35 +116,5 @@ class ClerigosRegiaoController extends Controller
         return response()->json($clerigos);
     }
 
-    public function nomeacoes($id, Request $request)
-    {
-        $data = app(ListaNomeacoesClerigoService::class)->execute($id, $request->input('status'));
-        return view('clerigos.nomeacoes.index', $data);
-    }
 
-
-    public function novaNomeacao(PessoasPessoa $pessoa){
-        $id = $pessoa->id;
-        $instituicoes_completa = [];
-        $instituicoes = InstituicoesInstituicao::whereIn('tipo_instituicao_id', [
-                InstituicoesTipoInstituicao::IGREJA_LOCAL, 
-                InstituicoesTipoInstituicao::DISTRITO, 
-                InstituicoesTipoInstituicao::REGIAO, 
-                InstituicoesTipoInstituicao::SECRETARIA, 
-                InstituicoesTipoInstituicao::SECRETARIA_REGIONAL, 
-            ])
-            ->orderBy('nome')
-            ->get();
-
-        $funcoes = PessoaFuncaoMinisterial::orderBy('funcao')->get();
-
-        return view('clerigos.nomeacoes.novo', compact('instituicoes', 'id', 'funcoes', 'pessoa'));
-    }
-
-    public function storeNomeacao(StoreNomeacoesClerigosRequest $request){
-
-        app(StoreNomeacoesClerigos::class)->execute($request);
-
-        return redirect()->route('clerigos.nomeacoes', ['id' => $request->pessoa_id])->with('success', 'Nomeação criada com sucesso!');
-    }
 }
