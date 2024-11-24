@@ -50,19 +50,18 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="habilitacao_uf">Estado</label>
-                <select type="text" class="form-control @error('habilitacao_uf') is-invalid @enderror"
-                    id="habilitacao_uf" name="habilitacao_uf"
-                    value="{{ old('habilitacao_uf', $clerigo->habilitacao_uf) }}">
+                <select class="form-control @error('habilitacao_uf') is-invalid @enderror"
+                    id="habilitacao_uf" name="habilitacao_uf">
                     @foreach ($ufs as $key => $value)
-                        <option value="{{ $key }}" {{ old('uf', $clerigo->habilitacao_uf) == $key ? 'selected' : '' }}>
+                        <option value="{{ $key }}" {{ old('habilitacao_uf', $clerigo->habilitacao_uf) == $key ? 'selected' : '' }}>
                             {{ $value }}
                         </option>
+                    @endforeach
                 </select>
                 @error('habilitacao_uf')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
             </div>
         </div>
-
     </blockquote>
 </div>
