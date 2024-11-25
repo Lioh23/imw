@@ -52,7 +52,7 @@ class PessoaNomeacao extends Model
     {
         return $this->belongsTo(PessoaFuncaoMinisterial::class, 'funcao_ministerial_id', 'id');
     }
-    
+
     // Relacionamento com Instituicao
     public function instituicao()
     {
