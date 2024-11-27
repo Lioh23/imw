@@ -2,6 +2,7 @@
 
 namespace App\Services\ServiceClerigosRegiao;
 
+use App\Models\InstituicoesInstituicao;
 use App\Models\PessoaNomeacao;
 
 class ListaNomeacoesClerigoService
@@ -12,8 +13,14 @@ class ListaNomeacoesClerigoService
             ->where('pessoa_id', $clerigoId)
             ->when($status == 'ativo', fn($query) => $query->whereNull('data_termino'))
             ->when($status == 'inativo', fn($query) => $query->whereNotNull('data_termino'))
-            ->orderBy('data_termino')
+            ->orderByRaw('data_termino IS NULL DESC')
             ->orderBy('data_nomeacao', 'desc')
+            ->orderBy(
+                InstituicoesInstituicao::select('nome')
+                    ->whereColumn('instituicoes_instituicoes.id', 'pessoas_nomeacoes.instituicao_id')
+                    ->limit(1),
+                'asc'
+            )
             ->get();
 
         return [

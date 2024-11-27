@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Clerigos', 'url' => '/clerigos', 'active' => false],
-        ['text' => 'Nomeações', 'url' => route('clerigos.nomeacoes', ['id' => $id]), 'active' => false],
+        ['text' => 'Nomeações', 'url' => route('clerigos.nomeacoes.index', ['id' => $id]), 'active' => false],
         ['text' => 'Novo', 'url' => '#', 'active' => true],
     ]">
     </x-breadcrumb>
@@ -36,7 +36,7 @@
         </div>
 
 
-        <form class="py-2 px-3" method="POST" action="{{ route('clerigos.nomeacao.store', ['id' => $id]) }}">
+        <form class="py-2 px-3" method="POST" action="{{ route('clerigos.nomeacoes.store', ['id' => $id]) }}">
             @csrf
 
             <div class="row">

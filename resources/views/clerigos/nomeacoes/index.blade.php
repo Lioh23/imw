@@ -55,10 +55,6 @@
                     <div class="card-body">
                         <form>
                             <div class="row mb-4">
-                                <div class="col-4">
-                                    <input type="text" name="search" id="searchInput"
-                                        class="form-control form-control-sm" placeholder="Pesquisar...">
-                                </div>
                                 <div class="col-2">
                                     <select name="status" id="" class="form-control">
                                         <option value="">Todos</option>
@@ -97,16 +93,22 @@
                                     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>Função ministerial</th>
-                                                <th>Data de nomeação</th>
-                                                <th>Data de término da nomeação</th>
                                                 <th>Instituição</th>
+                                                <th>Função ministerial</th>
+                                                <th>Nomeação</th>
+                                                <th>Término</th>
                                                 <th width="120px">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($nomeacoes as $index => $nomeacao)
+
                                                 <tr>
+
+                                                    <td>
+                                                        {{ $nomeacao->instituicao->nome }}
+                                                        {{ $nomeacao->instituicao->instituicaoPai ? sprintf('(%s)', $nomeacao->instituicao->instituicaoPai->nome) : '' }}
+                                                    </td>
                                                     <td>
                                                         {{ $nomeacao->funcaoMinisterial?->funcao }}
                                                     </td>
@@ -119,28 +121,8 @@
                                                         {{ $nomeacao->data_termino }}
                                                     </td>
 
-                                                    <td>
-                                                        {{ $nomeacao->instituicao->nome }}
-                                                        {{ $nomeacao->instituicao->instituicaoPai ? sprintf('(%s)', $nomeacao->instituicao->instituicaoPai->nome) : '' }}
-                                                    </td>
-
                                                     <td class="table-action">
 
-                                                        @if (!$nomeacao->data_termino)
-                                                            <a href="javascript:void(0);" title="Visualizar"
-                                                                class="btn btn-sm btn-info mr-1 btn-rounded btn-view-details"
-                                                                data-nomeacao-id="{{ $nomeacao->id }}">
-                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                    height="24" viewBox="0 0 24 24" fill="none"
-                                                                    stroke="currentColor" stroke-width="2"
-                                                                    stroke-linecap="round" stroke-linejoin="round"
-                                                                    class="feather feather-eye">
-                                                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8S1 12 1 12z">
-                                                                    </path>
-                                                                    <circle cx="12" cy="12" r="3"></circle>
-                                                                </svg>
-                                                            </a>
-                                                        @endif
                                                         @if (!$nomeacao->data_termino)
                                                             <form
                                                                 action="{{ route($nomeacao->data_termino ? 'clerigos.nomeacoes.index' : 'clerigos.nomeacoes.delete', ['id' => $nomeacao->id]) }}"
@@ -188,7 +170,7 @@
             const formId = $(this).data('form-delete-id');
             console.log(formId)
             swal({
-                title: 'Deseja realmente finalizar esta nomeação?',
+                title: 'Deseja realmente finalizar esta nomeação no dia ' + '{{ now()->format('d/m/Y') }} ?',
                 type: 'error',
                 showCancelButton: true,
                 confirmButtonText: "finalizar",
