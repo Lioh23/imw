@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\FinalizarNomeacoesRequest;
 use App\Http\Requests\StoreNomeacoesClerigosRequest;
 use App\Models\InstituicoesInstituicao;
 use App\Models\InstituicoesTipoInstituicao;
 use App\Models\PessoaFuncaoMinisterial;
 use App\Models\PessoasPessoa;
 use App\Services\ServiceClerigosRegiao\DeletarNomeacoesClerigos;
+use App\Services\ServiceClerigosRegiao\FinalizarNomeacoesClerigos;
 use App\Services\ServiceClerigosRegiao\ListaNomeacoesClerigoService;
 use App\Services\ServiceNomeacoes\StoreNomeacoesClerigos;
 use Illuminate\Http\Request;
@@ -48,11 +50,11 @@ class NomeacoesClerigosController extends Controller
         return redirect()->route('clerigos.nomeacoes', ['id' => $request->pessoa_id])->with('success', 'Nomeação criada com sucesso!');
     }
 
-    public function delete(string $id)
+
+    public function finalizar(string $id, FinalizarNomeacoesRequest $request)
     {
 
-        app(DeletarNomeacoesClerigos::class)->execute($id);
-
-        return redirect()->back()->with('success', 'Nomeação deletada com sucesso');
+        app(FinalizarNomeacoesClerigos::class)->execute($id, $request);
+        return redirect()->route('clerigos.nomeacoes.index', ['id' => $id])->with('success', 'Nomeação finalizada com sucesso!');
     }
 }

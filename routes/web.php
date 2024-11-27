@@ -342,7 +342,7 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/{id}', 'index')->name('index');
                 Route::get('/{pessoa}/novo', 'novo')->name('novo');
                 Route::post('/{id}/novo', 'store')->name('store');
-                Route::delete('/{id}', 'delete')->name('delete');
+                Route::patch('/{id}/finalizar','finalizar')->name('finalizar');
             });
 
 

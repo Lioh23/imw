@@ -52,13 +52,20 @@
                         @endforeach
                         </option>
                     </select>
+                    @error('funcao_ministerial_id')
+                        <span class="help-block text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
 
                 <div class="col-12 mt-3 col-md-4">
                     <label for="data_nomeacao">* Data de Nomeação</label>
                     <input class="form-control" type="date" id="data_nomeacao" name="data_nomeacao"
                         value="{{ old('data_nomeacao') }}" @error('data_nomeacao') is-invalid @enderror>
+                    @error('data_nomeacao')
+                        <span class="help-block text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
+
 
                 <div class="col-12 mt-3 col-md-4">
                     <label for="instituicao_id">* Instituição</label>
@@ -66,12 +73,17 @@
                         @error('instituicao_id') is-invalid @enderror>
                         <option value="">Selecione</option>
                         @foreach ($instituicoes as $instituicao)
-                            <option value="{{ $instituicao->id }}" {{ old('instituicao_id') == $instituicao->id ? 'selected' : '' }}>
-                                {{ $instituicao->nome }} {{ $instituicao->instituicaoPai ? sprintf('(%s)', $instituicao->instituicaoPai->nome) : '' }}
+                            <option value="{{ $instituicao->id }}"
+                                {{ old('instituicao_id') == $instituicao->id ? 'selected' : '' }}>
+                                {{ $instituicao->nome }}
+                                {{ $instituicao->instituicaoPai ? sprintf('(%s)', $instituicao->instituicaoPai->nome) : '' }}
                             </option>
                         @endforeach
                         </option>
                     </select>
+                    @error('instituicao_id')
+                        <span class="help-block text-danger">{{ $message }}</span>
+                    @enderror
                 </div>
             </div>
 

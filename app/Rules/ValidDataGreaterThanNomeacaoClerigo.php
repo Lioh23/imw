@@ -1,11 +1,12 @@
 <?php
 namespace App\Rules;
 
+use App\Models\PessoaNomeacao;
 use Illuminate\Contracts\Validation\Rule;
 use App\Models\PessoasPessoa;
 
 
-class ValidDataGreaterThanCreationClerigo implements Rule
+class ValidDataGreaterThanNomeacaoClerigo implements Rule
 {
     protected $clergId;
 
@@ -13,6 +14,7 @@ class ValidDataGreaterThanCreationClerigo implements Rule
     public function __construct($clergId)
     {
         $this->clergId = $clergId;
+
     }
 
     /**
@@ -24,10 +26,8 @@ class ValidDataGreaterThanCreationClerigo implements Rule
      */
     public function passes($attribute, $value)
     {
-
-        $clerg = PessoasPessoa::find($this->clergId);
-
-        if (!$clerg || strtotime($value) < strtotime($clerg->created_at)) {
+        $clerg = PessoaNomeacao::withTrashed()->find($this->clergId);
+        if (!$clerg || strtotime($value) < strtotime($clerg->data_nomeacao)) {
             return false;
         }
 
@@ -41,6 +41,6 @@ class ValidDataGreaterThanCreationClerigo implements Rule
      */
     public function message()
     {
-        return 'A data de nomeação não pode ser anterior à data de criação do clérigo.';
+        return 'A data de finalizacão não pode ser anterior à data de nomeação do clérigo.';
     }
 }

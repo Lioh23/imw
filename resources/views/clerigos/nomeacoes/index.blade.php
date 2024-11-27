@@ -28,7 +28,9 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    </script>
 @endsection
 
 @include('extras.alerts')
@@ -102,7 +104,6 @@
                                         </thead>
                                         <tbody>
                                             @foreach ($nomeacoes as $index => $nomeacao)
-
                                                 <tr>
 
                                                     <td>
@@ -121,34 +122,27 @@
                                                         {{ $nomeacao->data_termino }}
                                                     </td>
 
+
+
                                                     <td class="table-action">
-
                                                         @if (!$nomeacao->data_termino)
-                                                            <form
-                                                                action="{{ route($nomeacao->data_termino ? 'clerigos.nomeacoes.index' : 'clerigos.nomeacoes.delete', ['id' => $nomeacao->id]) }}"
-                                                                method="POST" style="display: inline-block;"
-                                                                id="form_{{ $nomeacao->data_termino ? '' : 'delete' }}_nomeacao_{{ $nomeacao->id }}">
-                                                                @csrf
-
-                                                                @method('DELETE')
-                                                                <button type="button" title="Finalizar"
-                                                                    class="btn btn-sm btn-danger btn-rounded btn-confirm-delete"
-                                                                    data-form-delete-id="form_delete_nomeacao_{{ $nomeacao->id }}">
-                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24"
-                                                                        height="24" viewBox="0 0 24 24" fill="none"
-                                                                        stroke="currentColor" stroke-width="2"
-                                                                        stroke-linecap="round" stroke-linejoin="round"
-                                                                        class="feather feather-slash">
-                                                                        <circle cx="12" cy="12" r="10">
-                                                                        </circle>
-                                                                        <line x1="4.93" y1="4.93"
-                                                                            x2="19.07" y2="19.07"></line>
-                                                                    </svg>
-                                                                </button>
-
-                                                            </form>
+                                                            <button type="button" class="btn btn-sm btn-danger btn-rounded"
+                                                                data-bs-toggle="modal" data-bs-target="#modalFinalizar"
+                                                                data-nomeacao-id="{{ $nomeacao->id }}"
+                                                                onclick="abrirModal({{ $nomeacao->id }}, {{ $nomeacao->funcao }})">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="feather feather-slash">
+                                                                    <circle cx="12" cy="12" r="10"></circle>
+                                                                    <line x1="4.93" y1="4.93" x2="19.07"
+                                                                        y2="19.07"></line>
+                                                                </svg>
+                                                            </button>
                                                         @endif
                                                     </td>
+
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -163,78 +157,76 @@
             </div>
         </div>
     </div>
+    <!-- Modal -->
+    <div class="modal fade " id="modalFinalizar" tabindex="-1" aria-labelledby="modalFinalizarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content"  style="max-width: 500px; margin: 0 auto">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFinalizarLabel">Finalizar Nomeação</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="funcao" class="form-control-plaintext">{{ old('nome') }}</p>
+                    <form id="finalizarForm" method="POST">
+                        @csrf
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
+                        @method('PATCH')
+                        <div class="mb-3">
+                            <label for="data_termino" class="form-label">Data de Término</label>
+                            <input type="date" class="form-control" id="data_termino" name="data_termino" required
+                                value="{{ old('data_termino') }}" @error('data_termino') is-invalid @enderror>
+                            @error('data_termino')
+                                <span class="help-block text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                         <input type="hidden" id="nomeacao_id" name="nomeacao_id" value="{{ old('nomeacao_id') }}">
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Finalizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
     <script>
-        $('.btn-confirm-delete').on('click', function() {
-            const formId = $(this).data('form-delete-id');
-            console.log(formId)
-            swal({
-                title: 'Deseja realmente finalizar esta nomeação no dia ' + '{{ now()->format('d/m/Y') }} ?',
-                type: 'error',
-                showCancelButton: true,
-                confirmButtonText: "finalizar",
-                confirmButtonColor: "#d33",
-                cancelButtonText: "Cancelar",
-                cancelButtonColor: "#3085d6",
-                padding: '2em'
-            }).then(function(result) {
-                if (result.value) {
-                    document.getElementById(formId).submit();
-                }
-            });
+        function abrirModal(id, funcao) {
+            const nomeacaoId = id;
+            const form = $('#finalizarForm');
+            form.attr('action', '/clerigos/nomeacoes/' + id + '/finalizar');
+
+            if (document.getElementById('funcao')) {
+                document.getElementById('funcao').textContent = funcao;
+            }
+            if (document.getElementById('nomeacao_id')) {
+                document.getElementById('nomeacao_id').value = id;
+            }
+
+            // Verificar se a instância do modal já está criada
+            const modalElement = document.getElementById('modalFinalizar');
+            let modal = bootstrap.Modal.getInstance(modalElement);
+
+            // Se o modal não estiver inicializado, criá-lo
+            if (!modal) {
+                modal = new bootstrap.Modal(modalElement);
+            }
+
+            // Mostrar o modal
+            modal.show();
+        }
+        $('#modalFinalizar').on('hidden.bs.modal', function() {
+
         });
 
-
-        // $('.btn-view-details').on('click', function() {
-        //     var clerigoId = $(this).data('clerigo-id');
-        //     var modalId = '#viewDetailsModal_' + clerigoId;
-        //     var button = $(this);
-
-        //     // Adicionar o ícone de loading no botão usando Font Awesome
-        //     var originalButtonText = button.html(); // Salvar o texto original do botão
-        //     button.html('<i class="fas fa-spinner fa-spin"></i>'); // Usar Font Awesome spinner
-
-        //     $.ajax({
-        //         url: '/clerigos/' + clerigoId + '/detalhes',
-        //         method: 'GET',
-        //         success: function(data) {
-        //             // Preenche o modal com as informações do clerigo e as nomeações, ambos em formato de card
-        //             $(modalId).find('.modal-body').html(`
-    //         <div class="card mb-3">
-    //             <div class="card-header bg-secondary text-white">
-    //                 Informações do Clérigos
-    //             </div>
-    //             <div class="card-body">
-    //                 <p><strong>Nome:</strong> ${data.nome}</p>
-    //                 <p><strong>CEP:</strong> ${data.cep || '-'}</p>
-    //                 <p><strong>Endereço:</strong> ${data.endereco || '-'}, ${data.numero || '-'}</p>
-    //                 <p><strong>Complemento:</strong> ${data.complemento || '-'}</p>
-    //                 <p><strong>Bairro:</strong> ${data.bairro || '-'}</p>
-    //                 <p><strong>Cidade:</strong> ${data.cidade || '-'}</p>
-    //                 <p><strong>UF:</strong> ${data.uf || '-'}</p>
-    //                 <p><strong>País:</strong> ${data.pais || '-'}</p>
-    //                 <p><strong>Email:</strong> ${data.email || '-'}</p>
-    //                 <p><strong>Estado Cívil:</strong> ${data.estado_civil || '-'}</p>
-    //                 <p><strong>CPF:</strong> ${data.cpf || '-'}</p>
-    //                 <p><strong>Nascimento:</strong> ${data.data_nascimento || '-'}</p>
-    //                 <p><strong>Conjugue:</strong> ${data.nome_conjuge || '-'}</p>
-
-    //             </div>
-    //         </div>
-    //     `);
-
-        //             // Exibe o modal
-        //             $(modalId).modal('show');
-        //         },
-        //         error: function(err) {
-        //             console.error("Erro ao buscar os detalhes do clerigo: ", err);
-        //         },
-        //         complete: function() {
-        //             // Restaurar o texto original do botão após o carregamento
-        //             button.html(originalButtonText);
-        //         }
-        //     });
-        // });
+        @if ($errors->any())
+                $(document).ready(function() {
+                    var nome = "{{ old('nome') }}";
+                    var id = "{{ old('nomeacao_id') }}";
+                    abrirModal(id, nome);
+                });
+        @endif
     </script>
 @endsection
