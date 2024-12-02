@@ -77,6 +77,7 @@
                         <div class="invalid-feedback">{{ $message }}</div>
                     @enderror
                 </div>
+                <input type="hidden" name="regiao_id" id="regiao_id" value="23">
             </div>
 
             <div class="row">
