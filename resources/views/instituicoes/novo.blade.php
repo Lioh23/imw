@@ -34,7 +34,7 @@
 
 @section('content')
     <div class="container-fluid" style="background: #fff">
-        <div class="widget-header" >
+        <div class="widget-header">
             <h4>Dados do usuário</h4>
         </div>
 
@@ -53,16 +53,16 @@
 
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
-                    <label for="nome"><span class="text-danger">*</span> Nome</label>
+                    <label for="nome"><span>*</span> Nome</label>
                     <input class="form-control" type="text" id="nome" name="nome" value="{{ old('nome') }}">
                 </div>
                 <div class="col-12 mt-3 col-md-3">
-                    <label for="cnpj"><span class="text-danger">*</span> CNPJ</label>
+                    <label for="cnpj"><span>*</span> CNPJ</label>
                     <input class="form-control" type="text" id="cnpj" name="cnpj" value="{{ old('cnpj') }}">
                 </div>
 
                 <div class="col-12 mt-3 col-md-3">
-                    <label for="data_abertura"><span class="text-danger">*</span> Data de Abertura</label>
+                    <label for="data_abertura"><span>*</span> Data de Abertura</label>
                     <input class="form-control" type="text" id="data_abertura" name="data_abertura"
                         value="{{ old('data_abertura') }}">
                 </div>
@@ -70,7 +70,7 @@
 
             <div class="row">
                 <div class="col-12 mt-3 col-md-4">
-                    <label for="tipo_instituicao_id"><span class="text-danger">*</span> Tipo da Instituição</label>
+                    <label for="tipo_instituicao_id"><span>*</span> Tipo da Instituição</label>
                     <select name="tipo_instituicao_id" id="tipo_instituicao_id" class="form-control">
                         <option value="1" {{ old('tipo_instituicao_id') == 1 ? 'selected' : '' }}>Igreja</option>
                         <option value="2" {{ old('tipo_instituicao_id') == 2 ? 'selected' : '' }}>Distrito</option>
@@ -79,7 +79,7 @@
                     </select>
                 </div>
                 <div class="col-12 mt-3 col-md-4">
-                    <label for="instituicao_pai_id"><span class="text-danger">*</span> Instituição Pai</label>
+                    <label for="instituicao_pai_id"><span>*</span> Instituição Pai</label>
                     <select name="instituicao_pai_id" id="instituicao_pai_id" class="form-control">
                         @foreach ($instituicoes_pai as $ip)
                             <option value="{{ $ip['id'] }}"
@@ -95,13 +95,13 @@
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="cep"><span class="text-danger">*</span> CEP</label>
+                        <label for="cep"><span>*</span> CEP</label>
                         <input type="text" class="form-control" id="cep" name="cep"
                             value="{{ old('cep') }}">
                     </div>
 
                     <div class="col-12 mt-3 col-md-8">
-                        <label for="endereco"><span class="text-danger">*</span> Logradouro (Rua/Av/Beco)</label>
+                        <label for="endereco"><span>*</span> Logradouro (Rua/Av/Beco)</label>
                         <input type="text" class="form-control" id="endereco" name="endereco"
                             value="{{ old('endereco') }}">
                     </div>
@@ -114,7 +114,7 @@
                     </div>
 
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="bairro"<span class="text-danger">*</span>>Bairro</label>
+                        <label for="bairro"><span>*</span>Bairro</label>
                         <input type="text" class="form-control" id="bairro" name="bairro"
                             value="{{ old('bairro') }}">
                     </div>
@@ -132,14 +132,20 @@
                             value="{{ old('cidade') }}">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="uf"><span class="text-danger">*</span>Estado</label>
-                        <input type="text" class="form-control" id="uf" name="uf"
-                            value="{{ old('uf') }}">
+                        <label for="uf"><span>*</span>Estado</label>
+                        <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf">
+                            <option value="">Selecione</option>
+                            @foreach ($ufs as $key => $value)
+                                <option value="{{ $key }}" {{ old('uf') == $key ? 'selected' : '' }}>
+                                    {{ $value }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
-                        <label for="pais"><span class="text-danger">*</span>País</label>
+                        <label for="pais"><span>*</span>País</label>
                         <input type="text" class="form-control" id="pais" name="pais"
                             value="{{ old('pais') }}">
                     </div>
@@ -149,7 +155,7 @@
                                 style="max-width: 55px" placeholder="DDD" value="{{ old('ddd') }}">
                         </div>
                         <div>
-                            <label for="telefone"><span class="text-danger">*</span>Celular/Telefone</label>
+                            <label for="telefone"><span>*</span>Celular/Telefone</label>
                             <input type="text" class="form-control" id="telefone" name="telefone"
                                 value="{{ old('telefone') }}">
                         </div>
@@ -165,12 +171,33 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script>
         $(document).ready(function() {
-            $('#cep').mask('00000000');
+            $('#cep').mask('00000.000');
             $('#telefone').mask('00000-0000');
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true
             });
             $('#data_abertura').mask('00/00/0000');
         })
+    </script>
+    <script src="{{ asset('theme/plugins/fullcalendar/moment.min.js') }}"></script>
+    <script>
+        // Funcionalidade de preenchimento automático de endereço pelo CEP
+        $('#cep').blur(function() {
+            var cep = $(this).val().replace(/\D/g, '');
+            if (cep.length != 8) {
+                return;
+            }
+            $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data) {
+                if (!("erro" in data)) {
+                    $('#endereco').val(data.logradouro);
+                    // Preencha os outros campos de endereço aqui, se necessário
+                    $('#bairro').val(data.bairro);
+                    $('#cidade').val(data.localidade);
+                    $('#estado').val(data.uf);
+                } else {
+                    toastr.warning('CEP não encontrado.');
+                }
+            });
+        });
     </script>
 @endsection

@@ -5,23 +5,21 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReceberNovoRequest;
 use App\Models\InstituicoesInstituicao;
-use App\Models\InstituicoesTipoInstituicao;
 use App\Services\ServiceInstituicaoRegiao\UpdateRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\ListarRegiaoServices;
 use App\Services\ServiceInstituicaoRegiao\DeletarRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\AtivarRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\DetalhesRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\StoreRegiaoService;
-use Carbon\Carbon;
+use App\Traits\LocationUtils;
 use Illuminate\Http\Request;
-use Svg\Tag\Rect;
 
 class InstituicaoRegiaoDistritosController extends Controller
 {
+    use LocationUtils;
     public function index(Request $request)
     {
         $tipoInstituicaoId = $request->get('tipo_instituicao_id');
-
         $searchTerm = $request->input('search');
         $instituicoes = app(ListarRegiaoServices::class)->execute($searchTerm, $tipoInstituicaoId);
 
@@ -32,12 +30,14 @@ class InstituicaoRegiaoDistritosController extends Controller
     public function novo()
     {
         //Enviar Lista de insituicões pai, todas da regiao_id exceto igrejas
+        $ufs = $this->fetchUFs();
         $instituicoes_pai = InstituicoesInstituicao::where('regiao_id', session()->get('session_perfil')->instituicao_id)->where('tipo_instituicao_id', '!=', 1)->get();
-        return view('instituicoes.novo', compact('instituicoes_pai'));
+        return view('instituicoes.novo', compact('instituicoes_pai', 'ufs'));
     }
 
     public function store(StoreReceberNovoRequest $request)
     {
+
         app(StoreRegiaoService::class)->execute($request);
 
         return redirect()->route('instituicoes-regiao.index')->with('success', 'Instituição criado com sucesso!');
@@ -48,15 +48,15 @@ class InstituicaoRegiaoDistritosController extends Controller
         //Enviar Lista de insituicões pai, todas da regiao_id exceto igrejas
         $instituicoes_pai = InstituicoesInstituicao::where('regiao_id', session()->get('session_perfil')->instituicao_id)->where('tipo_instituicao_id', '!=', 1)->get();
         $instituicao = InstituicoesInstituicao::findOrFail($id);
-       
-        return view('instituicoes.editar', compact('instituicao', 'instituicoes_pai' ));
+        $ufs = $this->fetchUFs();
+        return view('instituicoes.editar', compact('instituicao', 'instituicoes_pai' , 'ufs'));
     }
 
 
     public function update(StoreReceberNovoRequest $request, string $id)
     {
-      
-       
+
+
         app(UpdateRegiaoService::class)->execute($request, $id);
 
         return redirect()->route('instituicoes-regiao.index')->with('success', 'Instituição editado com sucesso!');

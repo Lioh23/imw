@@ -52,108 +52,172 @@
 
             <div class="row">
                 <div class="col-12 mt-3 col-md-6">
-                    <label for="nome"><span class="text-danger">*</span> Nome</label>
-                    <input class="form-control" type="text" id="nome" name="nome"
-                        value="{{ $instituicao['nome'] }}">
+                    <label for="nome"><span>*</span> Nome</label>
+                    <input class="form-control @error('nome') is-invalid @enderror" type="text" id="nome"
+                        name="nome" value="{{ old('nome', $instituicao['nome']) }}">
+                    @error('nome')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 mt-3 col-md-3">
-                    <label for="cnpj"><span class="text-danger">*</span> CNPJ</label>
-                    <input class="form-control" type="text" id="cnpj" name="cnpj"
-                        value="{{ $instituicao['cnpj'] }}">
+                    <label for="cnpj"><span>*</span> CNPJ</label>
+                    <input class="form-control @error('cnpj') is-invalid @enderror" type="text" id="cnpj"
+                        name="cnpj" value="{{ old('cnpj', $instituicao['cnpj']) }}">
+                    @error('cnpj')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
 
                 <div class="col-12 mt-3 col-md-3">
-                    <label for="data_abertura"><span class="text-danger">*</span> Data de Abertura</label>
-                    <input class="form-control" type="text" id="data_abertura" name="data_abertura"
-                        value="{{ \Carbon\Carbon::parse($instituicao['data_abertura'])->format('d/m/Y') }}">
+                    <label for="data_abertura"><span>*</span> Data de Abertura</label>
+                    <input class="form-control @error('data_abertura') is-invalid @enderror" type="text"
+                        id="data_abertura" name="data_abertura"
+                        value="{{ old('data_abertura', \Carbon\Carbon::parse($instituicao['data_abertura'])->format('d/m/Y')) }}">
+                    @error('data_abertura')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-12 mt-3 col-md-4">
-                    <label for="tipo_instituicao_id"><span class="text-danger">*</span> Tipo da Instituição</label>
-                    <select name="tipo_instituicao_id" id="tipo_instituicao_id" class="form-control">
-                        <option value="1" {{ $instituicao['tipo_instituicao_id'] == 1 ? 'selected' : '' }}>Igreja</option>
-                        <option value="2" {{ $instituicao['tipo_instituicao_id'] == 2 ? 'selected' : '' }}>Distrito</option>
-                        <option value="5" {{ $instituicao['tipo_instituicao_id'] == 5 ? 'selected' : '' }}>Secretaria Regional</option>
+                    <label for="tipo_instituicao_id"><span>*</span> Tipo da Instituição</label>
+                    <select name="tipo_instituicao_id" id="tipo_instituicao_id"
+                        class="form-control @error('tipo_instituicao_id') is-invalid @enderror">
+                        <option value="1"
+                            {{ old('tipo_instituicao_id', $instituicao['tipo_instituicao_id']) == 1 ? 'selected' : '' }}>
+                            Igreja</option>
+                        <option value="2"
+                            {{ old('tipo_instituicao_id', $instituicao['tipo_instituicao_id']) == 2 ? 'selected' : '' }}>
+                            Distrito</option>
+                        <option value="5"
+                            {{ old('tipo_instituicao_id', $instituicao['tipo_instituicao_id']) == 5 ? 'selected' : '' }}>
+                            Secretaria Regional</option>
                     </select>
+                    @error('tipo_instituicao_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
                 <div class="col-12 mt-3 col-md-4">
-                    <label for="instituicao_pai_id"><span class="text-danger">*</span> Instituição Pai</label>
-                    <select name="instituicao_pai_id" id="instituicao_pai_id" class="form-control">
-                        <option value="{{ $instituicao['instituicao_pai_id'] }}">{{ $instituicao['instituicao_pai_id'] }}</option>
+                    <label for="instituicao_pai_id"><span>*</span> Instituição Pai</label>
+                    <select name="instituicao_pai_id" id="instituicao_pai_id"
+                        class="form-control @error('instituicao_pai_id') is-invalid @enderror">
+                        <option value="{{ old('instituicao_pai_id', $instituicao['instituicao_pai_id']) }}">
+                            {{ $instituicao['instituicao_pai_id'] }}</option>
                         <option value="2">Distrito</option>
-                        <input type="hidden" name="regiao_id" id="regiao_id" value="23">
                     </select>
+                    @error('instituicao_pai_id')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                    @enderror
                 </div>
             </div>
 
             <div class="mt-4">
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="cep"><span class="text-danger">*</span> CEP</label>
-                        <input type="text" class="form-control" type="text" id="cep" name="cep"
-                            value="{{ $instituicao['cep'] }}">
+                        <label for="cep"><span>*</span> CEP</label>
+                        <input class="form-control @error('cep') is-invalid @enderror" type="text" id="cep"
+                            name="cep" value="{{ old('cep', $instituicao['cep']) }}">
+                        @error('cep')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="col-12 mt-3 col-md-8">
-                        <label for="endereco"><span class="text-danger">*</span> Logradouro (Rua/Av/Beco)</label>
-                        <input type="text" class="form-control" type="text" id="endereco" name="endereco"
-                            value="{{ $instituicao['endereco'] }}">
+                        <label for="endereco"><span>*</span> Logradouro (Rua/Av/Beco)</label>
+                        <input class="form-control @error('endereco') is-invalid @enderror" type="text" id="endereco"
+                            name="endereco" value="{{ old('endereco', $instituicao['endereco']) }}">
+                        @error('endereco')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-12 mt-3 col-md-4">
                         <label for="numero">Número</label>
-                        <input type="number" class="form-control" type="text" id="numero" name="numero"
-                            value="{{ $instituicao['numero'] }}">
+                        <input class="form-control @error('numero') is-invalid @enderror" type="number" id="numero"
+                            name="numero" value="{{ old('numero', $instituicao['numero']) }}">
+                        @error('numero')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="bairro"><span class="text-danger">*</span>Bairro</label>
-                        <input type="text" class="form-control" type="text" id="bairro" name="bairro"
-                            value="{{ $instituicao['bairro'] }}">
+                        <label for="bairro"><span>*</span> Bairro</label>
+                        <input class="form-control @error('bairro') is-invalid @enderror" type="text" id="bairro"
+                            name="bairro" value="{{ old('bairro', $instituicao['bairro']) }}">
+                        @error('bairro')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="complemento">Complemento</label>
-                        <textarea class="form-control w-100" type="text" id="complemento" name="complemento" rows="4">{{ $instituicao['complemento'] }}</textarea>
+                        <textarea class="form-control @error('complemento') is-invalid @enderror" id="complemento" name="complemento"
+                            rows="4">{{ old('complemento', $instituicao['complemento']) }}</textarea>
+                        @error('complemento')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-12 mt-3 col-md-8">
                         <label for="cidade">Cidade</label>
-                        <input type="text" class="form-control" type="text" id="cidade" name="cidade"
-                            value="{{ $instituicao['cidade'] }}">
+                        <input class="form-control @error('cidade') is-invalid @enderror" type="text" id="cidade"
+                            name="cidade" value="{{ old('cidade', $instituicao['cidade']) }}">
+                        @error('cidade')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                     <div class="col-12 mt-3 col-md-4">
-                        <label for="uf"><span class="text-danger">*</span>Estado</label>
-                        <input type="text" class="form-control" type="text" id="uf" name="uf"
-                            value="{{ $instituicao['uf'] }}">
+                        <label for="uf"><span>*</span> Estado</label>
+                        <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf">
+                            <option value="">Selecione</option>
+                            @foreach ($ufs as $key => $value)
+                                <option value="{{ $key }}"
+                                    {{ old('uf', $instituicao['uf'] ?? '') == $key ? 'selected' : '' }}>
+                                    {{ $value }}
+                                </option>
+                            @endforeach
+                        </select>
+                        @error('uf')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
                 </div>
 
                 <div class="row">
                     <div class="col-12 mt-3 col-md-3">
-                        <label for="pais"><span class="text-danger">*</span>País</label>
-                        <input type="text" class="form-control" type="text" id="pais" name="pais"
-                            value="{{ $instituicao['pais'] }}">
+                        <label for="pais"><span>*</span> País</label>
+                        <input class="form-control @error('pais') is-invalid @enderror" type="text" id="pais"
+                            name="pais" value="{{ old('pais', $instituicao['pais']) }}">
+                        @error('pais')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
                     </div>
 
                     <div class="col-12 mt-3 col-md-4 d-flex align-items-end mt-3" style="gap:10px">
                         <div>
-                            <input type="text" maxlength="3" class="form-control p-2" id="ddd" name="ddd"
-                                style="max-width: 55px" placeholder="DDD" value="{{ $instituicao['ddd'] }}">
+                            <input type="text" maxlength="3"
+                                class="form-control p-2 @error('ddd') is-invalid @enderror" id="ddd"
+                                name="ddd" style="max-width: 55px" placeholder="DDD"
+                                value="{{ old('ddd', $instituicao['ddd']) }}">
+                            @error('ddd')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div>
-                            <label for="telefone"><span class="text-danger">*</span>Celular/Telefone</label>
-                            <input type="text" class="form-control" type="text" id="telefone" name="telefone"
-                                value="{{ $instituicao['telefone'] }}">
+                            <label for="telefone"><span>*</span> Celular/Telefone</label>
+                            <input class="form-control @error('telefone') is-invalid @enderror" type="text"
+                                id="telefone" name="telefone" value="{{ old('telefone', $instituicao['telefone']) }}">
+                            @error('telefone')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
                 </div>
@@ -174,5 +238,26 @@
             })
             $('#data_abertura').mask('00/00/0000')
         })
+    </script>
+    <script src="{{ asset('theme/plugins/fullcalendar/moment.min.js') }}"></script>
+    <script>
+        // Funcionalidade de preenchimento automático de endereço pelo CEP
+        $('#cep').blur(function() {
+            var cep = $(this).val().replace(/\D/g, '');
+            if (cep.length != 8) {
+                return;
+            }
+            $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data) {
+                if (!("erro" in data)) {
+                    $('#endereco').val(data.logradouro);
+                    // Preencha os outros campos de endereço aqui, se necessário
+                    $('#bairro').val(data.bairro);
+                    $('#cidade').val(data.localidade);
+                    $('#estado').val(data.uf);
+                } else {
+                    toastr.warning('CEP não encontrado.');
+                }
+            });
+        });
     </script>
 @endsection
