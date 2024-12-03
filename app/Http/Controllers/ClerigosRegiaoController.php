@@ -2,24 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreNomeacoesClerigosRequest;
 use App\Models\Formacao;
 use Illuminate\Http\Request;
 use App\Models\PessoasPessoa;
 use App\Traits\LocationUtils;
-use App\Http\Requests\StoreReceberNovoClerigoRequest;
-use App\Models\InstituicoesInstituicao;
-use App\Models\InstituicoesTipoInstituicao;
-use App\Models\PessoaFuncaoMinisterial;
+use App\Http\Requests\StoreReceberNovoClerigoRequest;;
 use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
 use App\Services\ServiceClerigosRegiao\StoreClerigosService;
 use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
-use App\Services\ServiceClerigosRegiao\DeletarNomeacoesClerigos\DeletarNomeacoesClerigos;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
 use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
-use App\Services\ServiceClerigosRegiao\ListaNomeacoesClerigoService;
-use App\Services\ServiceNomeacoes\StoreNomeacoesClerigos;
 
 class ClerigosRegiaoController extends Controller
 {

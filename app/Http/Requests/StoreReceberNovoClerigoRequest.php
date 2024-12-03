@@ -42,19 +42,21 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'cep' => 'required|string', // Se o CEP for de 8 caracteres
             'email' => 'required|email|max:255',
             'estado_civil' => 'required|string|max:20',
-            'regiao_id' => 'required|integer', // Supondo que você tenha uma tabela de regiões
             'sexo' => 'required|string|in:M,F', // M ou F
             'nome_mae' => 'nullable|string|max:255',
             'nome_pai' => 'nullable|string|max:255',
             'telefone_preferencial' => 'required|string|max:15',
             'ctps' => 'required|string|max:20',
             'ctps_emissao' => 'required|date',
-
             'titulo_eleitor' => 'required|string|max:20',
             'titulo_eleitor_secao' => 'required|string|max:10',
             'titulo_eleitor_zona' => 'required|string|max:10',
             'formacao_id' => 'required|integer',
             'categoria' => 'required',
+            'habilitacao' => 'nullable',
+            'habilitacao_categoria' =>  'nullable',
+            'habilitacao_emissor' =>'nullable',
+            'habilitacao_uf' => 'nullable',
 
         ];
     }
@@ -89,5 +91,4 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'formacao_id.required' => 'O campo formação é obrigatório.',
         ];
     }
-
 }

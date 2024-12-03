@@ -34,7 +34,7 @@
             <div class="col-xl-2">
                 <label for="cep">* CEP</label>
                 <input type="text" id="cep" class="form-control @error('cep') is-invalid @enderror"
-                    name="cep" value="{{ old('cep') }}" maxlength="8">
+                    name="cep" value="{{ old('cep') }}" >
                 @error('cep')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror

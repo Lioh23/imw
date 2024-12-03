@@ -6,12 +6,11 @@ use App\Models\PessoasPessoa;
 
 class ListaClerigosService
 {
-    public function execute($parameters = null,)
+    public function execute($searchTerm = null)
     {
 
-        
+
         $regiao_id = (int) session()->get('session_perfil')->instituicao_id;
-        $searchTerm = is_array($parameters) && isset($parameters['searchTerm']) ? $parameters['searchTerm'] : null;
         $clerigos = PessoasPessoa::query()->withTrashed()->where('regiao_id', $regiao_id)
             ->when($searchTerm, function ($query, $searchTerm) {
                 $query->where('nome', 'like', "%{$searchTerm}%");

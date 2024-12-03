@@ -35,7 +35,7 @@
             <div class="col-xl-2">
                 <label for="cep">* CEP</label>
                 <input type="text" id="cep" class="form-control @error('cep') is-invalid @enderror"
-                    name="cep" value="{{ old('cep', $clerigo->cep) }}" maxlength="8">
+                    name="cep" value="{{ old('cep', $clerigo->cep) }}">
                 @error('cep')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -89,7 +89,7 @@
             </div>
 
             <div class="col-xl-4">
-                <label for="uf">UF</label>
+                <label for="uf">* UF</label>
                 <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf">
                     <option value="">Selecione</option>
                     @foreach ($ufs as $key => $value)

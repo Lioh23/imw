@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-12 mt-3 col-md-4">
                 <label for="identidade">Identidade*</label>
-                <input type="text" class="form-control @error('identidade') is-invalid @enderror" id="identidade" name="identidade"
-                    value="{{ old('identidade') }}" >
+                <input type="text" class="form-control @error('identidade') is-invalid @enderror" id="identidade"
+                    name="identidade" value="{{ old('identidade') }}">
                 @error('identidade')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -12,8 +12,8 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="data_emissao">Data de Emissão*</label>
-                <input type="text" class="form-control @error('data_emissao') is-invalid @enderror" id="data_emissao" name="data_emissao"
-                    value="{{ old('data_emissao') }}" >
+                <input type="date" class="form-control @error('data_emissao') is-invalid @enderror" id="data_emissao"
+                    name="data_emissao" value="{{ old('data_emissao') }}">
                 @error('data_emissao')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -21,8 +21,8 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="orgao_emissor">Órgão Emissor*</label>
-                <input type="text" class="form-control @error('orgao_emissor') is-invalid @enderror" id="orgao_emissor" name="orgao_emissor"
-                    value="{{ old('orgao_emissor') }}" >
+                <input type="text" class="form-control @error('orgao_emissor') is-invalid @enderror"
+                    id="orgao_emissor" name="orgao_emissor" value="{{ old('orgao_emissor') }}">
                 @error('orgao_emissor')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -30,12 +30,12 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="identidade_uf">Estado</label>
-                <select class="form-control @error('identidade_uf') is-invalid @enderror" id="identidade_uf" name="identidade_uf">
+                <select class="form-control @error('identidade_uf') is-invalid @enderror" id="identidade_uf"
+                    name="identidade_uf">
                     <option value="">Selecione</option>
-                    <option value="{{ old('identidade_uf') }}" selected>
-                        {{ old('identidade_uf') }}</option>
-                    @foreach ($ufs as $uf)
-                        <option value="{{ $uf }}" {{ old('identidade_uf') == $uf ? 'selected' : '' }}>
+                    @foreach ($ufs as $key => $uf)
+                        <option value="{{ $key }}"
+                            {{ old('identidade_uf') == $key ? 'selected' : '' }}>
                             {{ $uf }}
                         </option>
                     @endforeach

@@ -232,7 +232,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script>
         $(document).ready(function() {
-            $('#cep').mask('00000000')
+            $('#cep').mask('00000.000')
             $('#telefone').mask('00000-0000')
             $('#cnpj').mask('00.000.000/0000-00', {
                 reverse: true

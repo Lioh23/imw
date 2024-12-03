@@ -14,9 +14,6 @@
                 <label for="habilitacao_categoria">Categoria*</label>
                 <select class="form-control @error('habilitacao_categoria') is-invalid @enderror"
                     id="habilitacao_categoria" name="habilitacao_categoria">
-                    <option value="ACC"
-                        {{ old('habilitacao_categoria', $clerigo->habilitacao_categoria) == 'ACC' ? 'selected' : '' }}>
-                        ACC</option>
                     <option value="A"
                         {{ old('habilitacao_categoria', $clerigo->habilitacao_categoria) == 'A' ? 'selected' : '' }}>A
                     </option>

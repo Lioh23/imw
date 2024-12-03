@@ -12,7 +12,7 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="pispasep_emissao">Data de Emissão*</label>
-                <input type="text" class="form-control @error('pispasep_emissao') is-invalid @enderror"
+                <input type="date" class="form-control @error('pispasep_emissao') is-invalid @enderror"
                     id="pispasep_emissao" name="pispasep_emissao"
                     value="{{ old('pispasep_emissao', $clerigo->pispasep_emissao) }}" >
                 @error('pispasep_emissao')

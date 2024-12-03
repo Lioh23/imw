@@ -12,7 +12,7 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="data_emissao">Data de Emissão*</label>
-                <input type="text" class="form-control @error('data_emissao') is-invalid @enderror" id="data_emissao" name="data_emissao"
+                <input type="date" class="form-control @error('data_emissao') is-invalid @enderror" id="data_emissao" name="data_emissao"
                     value="{{ old('data_emissao', $clerigo->data_emissao) }}" >
                 @error('data_emissao')
                     <span class="help-block text-danger">{{ $message }}</span>

@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Clérigos', 'url' => '/', 'active' => true]
+        ['text' => 'Clérigos', 'url' => '/', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 @section('extras-css')
@@ -51,11 +51,12 @@
                     </div>
                     <!--/.bg-holder-->
                     <div class="card-body">
-                        <form>
+                        <form method="GET" action="{{ route('clerigos.index') }}">
                             <div class="row mb-4">
                                 <div class="col-4">
                                     <input type="text" name="search" id="searchInput"
-                                        class="form-control form-control-sm" placeholder="Pesquisar...">
+                                        class="form-control form-control-sm" value="{{ old('search') }}"
+                                        placeholder="Pesquisar...">
                                 </div>
                                 <div class="col-auto" style="margin-left: -19px;">
                                     <button type="submit" class="btn btn-primary btn-rounded">Pesquisar</button>
@@ -71,10 +72,10 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="{{ route('clerigos.novo', ['tab' => 'tab_dados_clerigo']) }}" title="Inserir um novo registro"
-                                    class="btn btn-primary right btn-rounded"> <svg xmlns="http://www.w3.org/2000/svg"
-                                        width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                        stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                <a href="{{ route('clerigos.novo', ['tab' => 'tab_dados_clerigo']) }}"
+                                    title="Inserir um novo registro" class="btn btn-primary right btn-rounded"> <svg
+                                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                        fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                         stroke-linejoin="round" class="feather feather-plus-square">
                                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2">
                                         </rect>
@@ -103,20 +104,22 @@
                                                     <td class="table-action">
 
                                                         @if (!$clerigo->deleted_at)
-
-                                                        <a href="{{ route('clerigos.nomeacoes.index', $clerigo->id) }}"
-                                                            title="Nomeações"
-                                                            class="btn btn-primary right btn-rounded">
-                                                            <svg xmlns="http://www.w3.org/2000/svg"
-                                                                width="24" height="24" viewBox="0 0 24 24" fill="none"
-                                                                stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                                                stroke-linejoin="round" class="feather feather-plus-square">
-                                                                <rect x="3" y="3" width="18" height="18" rx="2" ry="2">
-                                                                </rect>
-                                                                <line x1="12" y1="8" x2="12" y2="16"></line>
-                                                                <line x1="8" y1="12" x2="16" y2="12"></line>
-                                                            </svg>
-                                                        </a>
+                                                            <a href="{{ route('clerigos.nomeacoes.index', $clerigo->id) }}"
+                                                                title="Nomeações" class="btn btn-primary right btn-rounded">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="24"
+                                                                    height="24" viewBox="0 0 24 24" fill="none"
+                                                                    stroke="currentColor" stroke-width="2"
+                                                                    stroke-linecap="round" stroke-linejoin="round"
+                                                                    class="feather feather-plus-square">
+                                                                    <rect x="3" y="3" width="18" height="18"
+                                                                        rx="2" ry="2">
+                                                                    </rect>
+                                                                    <line x1="12" y1="8" x2="12"
+                                                                        y2="16"></line>
+                                                                    <line x1="8" y1="12" x2="16"
+                                                                        y2="12"></line>
+                                                                </svg>
+                                                            </a>
                                                             <a href="javascript:void(0);" title="Visualizar"
                                                                 class="btn btn-sm btn-info mr-1 btn-rounded btn-view-details"
                                                                 data-clerigo-id="{{ $clerigo->id }}">
@@ -314,6 +317,5 @@
                 }
             });
         });
-
     </script>
 @endsection

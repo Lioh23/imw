@@ -14,7 +14,6 @@
                 <label for="habilitacao_categoria">Categoria*</label>
                 <select class="form-control @error('habilitacao_categoria') is-invalid @enderror"
                     id="habilitacao_categoria" name="habilitacao_categoria">
-                    <option value="ACC" {{ old('habilitacao_categoria') == 'ACC' ? 'selected' : '' }}>ACC</option>
                     <option value="A" {{ old('habilitacao_categoria') == 'A' ? 'selected' : '' }}>A</option>
                     <option value="B" {{ old('habilitacao_categoria') == 'B' ? 'selected' : '' }}>B</option>
                     <option value="C" {{ old('habilitacao_categoria') == 'C' ? 'selected' : '' }}>C</option>
@@ -37,8 +36,16 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="habilitacao_uf">Estado</label>
-                <input type="text" class="form-control @error('habilitacao_uf') is-invalid @enderror"
-                    id="habilitacao_uf" name="habilitacao_uf" value="{{ old('habilitacao_uf') }}">
+                   <select class="form-control @error('habilitacao_uf') is-invalid @enderror" id="habilitacao_uf"
+                    name="habilitacao_uf">
+                    <option value="">Selecione</option>
+                    @foreach ($ufs as $key => $uf)
+                        <option value="{{ $key }}"
+                            {{ old('habilitacao_uf') == $key ? 'selected' : '' }}>
+                            {{ $uf }}
+                        </option>
+                    @endforeach
+                </select>
                 @error('habilitacao_uf')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
