@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Clérigos', 'url' => '/nomeacoes', 'active' => false],
+        ['text' => 'Clérigos', 'url' => '/clerigos', 'active' => false],
         ['text' => 'Nomeações', 'url' => '/', 'active' => true],
     ]"></x-breadcrumb>
 @endsection

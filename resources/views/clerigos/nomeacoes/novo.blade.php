@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Clerigos', 'url' => '/clerigos', 'active' => false],
-        ['text' => 'Nomeações', 'url' => route('clerigos.nomeacoes.index', ['id' => $id]), 'active' => false],
+        ['text' => 'Nomeações', 'url' => route('clerigos.nomeacoes.index', ['id' => $pessoa->id]), 'active' => false],
         ['text' => 'Novo', 'url' => '#', 'active' => true],
     ]">
     </x-breadcrumb>
@@ -36,9 +36,8 @@
         </div>
 
 
-        <form class="py-2 px-3" method="POST" action="{{ route('clerigos.nomeacoes.store', ['id' => $id]) }}">
+        <form class="py-2 px-3" method="POST" action="{{ route('clerigos.nomeacoes.store', ['id' => $pessoa->id]) }}">
             @csrf
-
             <div class="row">
                 <div class="col-12 mt-3 col-md-4">
                     <label for="funcao_ministerial_id">* Função Ministerial</label>
@@ -76,7 +75,7 @@
                             <option value="{{ $instituicao->id }}"
                                 {{ old('instituicao_id') == $instituicao->id ? 'selected' : '' }}>
                                 {{ $instituicao->nome }}
-                                {{ $instituicao->instituicaoPai ? sprintf('(%s)', $instituicao->instituicaoPai->nome) : '' }}
+                                {{-- {{ $instituicao->instituicaoPai ? sprintf('(%s)', $instituicao->instituicaoPai->nome) : '' }} --}}
                             </option>
                         @endforeach
                         </option>
@@ -88,7 +87,7 @@
             </div>
 
             <div class="row">
-                <input type="hidden" name="pessoa_id" id="pessoa_id" value="{{ $id }}">
+                <input type="hidden" name="pessoa_id" id="pessoa_id" value="{{ $pessoa->id }}">
             </div>
 
             <button class="btn btn-primary my-4">Salvar</button>

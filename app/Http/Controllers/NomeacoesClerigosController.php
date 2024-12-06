@@ -25,8 +25,7 @@ class NomeacoesClerigosController extends Controller
 
     public function novo(PessoasPessoa $pessoa)
     {
-        $id = $pessoa->id;
-        $instituicoes_completa = [];
+
         $instituicoes = InstituicoesInstituicao::whereIn('tipo_instituicao_id', [
             InstituicoesTipoInstituicao::IGREJA_LOCAL,
             InstituicoesTipoInstituicao::DISTRITO,
@@ -39,7 +38,7 @@ class NomeacoesClerigosController extends Controller
 
         $funcoes = PessoaFuncaoMinisterial::orderBy('funcao')->get();
 
-        return view('clerigos.nomeacoes.novo', compact('instituicoes', 'id', 'funcoes', 'pessoa'));
+        return view('clerigos.nomeacoes.novo', compact('instituicoes', 'funcoes', 'pessoa'));
     }
 
     public function store(StoreNomeacoesClerigosRequest $request)
@@ -47,7 +46,7 @@ class NomeacoesClerigosController extends Controller
 
         app(StoreNomeacoesClerigos::class)->execute($request);
 
-        return redirect()->route('clerigos.nomeacoes', ['id' => $request->pessoa_id])->with('success', 'Nomeação criada com sucesso!');
+        return redirect()->route('clerigos.nomeacoes.index', ['id' => $request->pessoa_id])->with('success', 'Nomeação criada com sucesso!');
     }
 
 

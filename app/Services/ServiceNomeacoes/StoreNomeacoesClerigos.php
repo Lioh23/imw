@@ -3,13 +3,17 @@
 namespace App\Services\ServiceNomeacoes;
 
 use App\Models\PessoaNomeacao;
-use App\Models\PessoasPessoa;
-use Carbon\Carbon;
+
 
 class StoreNomeacoesClerigos
 {
     public function execute($request)
     {
-        PessoaNomeacao::create($request->validated());
+        PessoaNomeacao::create([
+            'data_nomeacao' => $request['data_nomeacao'],
+            'instituicao_id' => $request['instituicao_id'],
+            'pessoa_id' => $request['pessoa_id'],
+            'funcao_ministerial_id' => $request['funcao_ministerial_id'],
+        ]);
     }
 }
