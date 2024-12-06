@@ -12,7 +12,7 @@ class StoreRegiaoService
     {
         $dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('data_abertura'))->format('Y-m-d');
         $cep = str_replace('.', '', $request->input('cep'));
-       $instituicoes =  InstituicoesInstituicao::create(
+        $instituicoes =  InstituicoesInstituicao::create(
             [
                 'nome' => $request->input('nome'),
                 'tipo_instituicao_id' => $request->input('tipo_instituicao_id'),

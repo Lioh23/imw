@@ -37,6 +37,7 @@ class InstituicoesInstituicao extends Model
         'uf',
         'pastor',
         'tesoureiro',
+        'regiao_id'
     ];
 
     public function users()
