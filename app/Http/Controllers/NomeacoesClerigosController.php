@@ -46,7 +46,7 @@ class NomeacoesClerigosController extends Controller
 
         app(StoreNomeacoesClerigos::class)->execute($request);
 
-        return redirect()->route('clerigos.nomeacoes', ['id' => $request->pessoa_id])->with('success', 'Nomeação criada com sucesso!');
+        return redirect()->route('clerigos.nomeacoes.index', ['id' => $request->pessoa_id])->with('success', 'Nomeação criada com sucesso!');
     }
 
 
