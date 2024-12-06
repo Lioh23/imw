@@ -81,7 +81,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="{{ route('clerigos.nomeacoes.novo', ['pessoa' => $id]) }}"
+                                <a href="{{ route('clerigos.nomeacoes.novo', ['pessoa' => $clerigoId]) }}"
                                     title="Inserir um novo registro" class="btn btn-primary right btn-rounded"> <svg
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -129,7 +129,7 @@
                                                             <button type="button" class="btn btn-sm btn-danger btn-rounded"
                                                                 data-bs-toggle="modal" data-bs-target="#modalFinalizar"
                                                                 data-nomeacao-id="{{ $nomeacao->id }}"
-                                                                onclick="abrirModal({{ $nomeacao->id }}, {{ $nomeacao->funcao }})">
+                                                                onclick="abrirModal({{$clerigoId}},{{ $nomeacao->id }}, {{ $nomeacao->funcao }})">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -171,7 +171,6 @@
                     <form id="finalizarForm" method="POST">
                         @csrf
                         <meta name="csrf-token" content="{{ csrf_token() }}">
-                        @method('PATCH')
                         <div class="mb-3">
                             <label for="data_termino" class="form-label">Data de Término</label>
                             <input type="date" class="form-control" id="data_termino" name="data_termino" required
@@ -191,12 +190,12 @@
         </div>
     </div>
 
-
     <script>
-        function abrirModal(id, funcao) {
+        function abrirModal(clerigoId,id, funcao) {
             const nomeacaoId = id;
+            console.log(clerigoId)
             const form = $('#finalizarForm');
-            form.attr('action', '/clerigos/nomeacoes/' + id + '/finalizar');
+            form.attr('action', '/clerigos/nomeacoes/' + clerigoId + '/finalizar/' + id);
 
             if (document.getElementById('funcao')) {
                 document.getElementById('funcao').textContent = funcao;
@@ -205,16 +204,14 @@
                 document.getElementById('nomeacao_id').value = id;
             }
 
-            // Verificar se a instância do modal já está criada
+
             const modalElement = document.getElementById('modalFinalizar');
             let modal = bootstrap.Modal.getInstance(modalElement);
 
-            // Se o modal não estiver inicializado, criá-lo
             if (!modal) {
                 modal = new bootstrap.Modal(modalElement);
             }
 
-            // Mostrar o modal
             modal.show();
         }
         $('#modalFinalizar').on('hidden.bs.modal', function() {
@@ -225,7 +222,7 @@
                 $(document).ready(function() {
                     var nome = "{{ old('nome') }}";
                     var id = "{{ old('nomeacao_id') }}";
-                    abrirModal(id, nome);
+                    abrirModal(clerigoId,id, nome);
                 });
         @endif
     </script>

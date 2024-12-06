@@ -26,7 +26,7 @@ class ListaNomeacoesClerigoService
         return [
             'nomeacoes' => $nomeacoes,
             'status'    => $status,
-            'id'        => $clerigoId
+            'clerigoId'        => $clerigoId
         ];
     }
 }
