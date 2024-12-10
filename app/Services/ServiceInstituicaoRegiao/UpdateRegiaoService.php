@@ -10,7 +10,7 @@ class UpdateRegiaoService
     public function execute($request, $id)
     {
         $instituicao = InstituicoesInstituicao::findOrFail($id);
-        $dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('data_abertura'))->format('Y-m-d');
+        $dataAbertura = Carbon::parse($request->input('data_abertura'))->format('Y-m-d');
         $cep = str_replace('.', '', $request->input('cep'));
         $instituicao->update(
             [
