@@ -21,7 +21,8 @@ class InstituicaoRegiaoDistritosController extends Controller
     {
         $tipoInstituicaoId = $request->get('tipo_instituicao_id');
         $searchTerm = $request->input('search');
-        $instituicoes = app(ListarRegiaoServices::class)->execute($searchTerm, $tipoInstituicaoId);
+        $parameters = ['search' => $searchTerm]; // Montando um array para os parâmetros
+        $instituicoes = app(ListarRegiaoServices::class)->execute($parameters, $tipoInstituicaoId);
 
         return view('instituicoes.index', compact('instituicoes'));
     }
@@ -49,7 +50,7 @@ class InstituicaoRegiaoDistritosController extends Controller
         $instituicoes_pai = InstituicoesInstituicao::where('regiao_id', session()->get('session_perfil')->instituicao_id)->where('tipo_instituicao_id', '!=', 1)->get();
         $instituicao = InstituicoesInstituicao::findOrFail($id);
         $ufs = $this->fetchUFs();
-        return view('instituicoes.editar', compact('instituicao', 'instituicoes_pai' , 'ufs'));
+        return view('instituicoes.editar', compact('instituicao', 'instituicoes_pai', 'ufs'));
     }
 
 
@@ -64,18 +65,22 @@ class InstituicaoRegiaoDistritosController extends Controller
 
 
 
-    public function deletar($id)
+    public function deletar($id, Request $request)
     {
+        $searchTerm = $request->input('search');
+        // Lógica para inativar a instituição
         app(DeletarRegiaoService::class)->execute($id);
 
-        return redirect()->route('instituicoes-regiao.index')->with('success', 'Instituição inativado com sucesso.');
+        return redirect()->route('instituicoes-regiao.index', ['search' => $searchTerm])->with('success', 'Instituição inativada com sucesso.');
     }
 
-    public function ativar($id)
+    public function ativar($id, Request $request)
     {
+        $searchTerm = $request->input('search');
+        // Lógica para ativar a instituição
         app(AtivarRegiaoService::class)->execute($id);
 
-        return redirect()->route('instituicoes-regiao.index')->with('success', 'Instituição ativado com sucesso.');
+        return redirect()->route('instituicoes-regiao.index', ['search' => $searchTerm])->with('success', 'Instituição ativada com sucesso.');
     }
 
     public function detalhes($id)
