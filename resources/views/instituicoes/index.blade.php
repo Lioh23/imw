@@ -174,17 +174,13 @@
                                                 @endif
                                             </td>
 
-
-
-
                                             <td>
                                                 @if ($instituicao->deleted_at)
-                                                <del>{{ strtoupper($instituicao->cidade) }}</del>
+                                                <del>{{ mb_strtoupper($instituicao->cidade ?? '') }}</del>
                                                 @else
-                                                {{ strtoupper($instituicao->cidade) }}
+                                                {{ mb_strtoupper($instituicao->cidade ?? '') }}
                                                 @endif
                                             </td>
-
 
 
                                             <td class="table-action">
