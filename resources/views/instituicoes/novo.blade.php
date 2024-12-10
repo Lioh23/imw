@@ -200,16 +200,9 @@
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
-            <div class="col-md-3 form-group">
-                <label for="Telefone"><span>*</span> Telefone</label>
-                <input type="text" class="form-control @error('telefone') is-invalid @enderror" id="telefone" name="telefone" value="{{ old('telefone') }}">
-                @error('telefone')
-                <div class="invalid-feedback">{{ $message }}</div>
-                @enderror
-            </div>
         </div>
 
-        <button class="btn btn-primary my-4">Salvar</button>
+        <button class="btn btn-primary">Salvar</button>
     </form>
 </div>
 
