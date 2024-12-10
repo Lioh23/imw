@@ -10,7 +10,7 @@ class StoreRegiaoService
 {
     public function execute($request)
     {
-        $dataAbertura = Carbon::createFromFormat('d/m/Y', $request->input('data_abertura'))->format('Y-m-d');
+        $dataAbertura = Carbon::parse($request->input('data_abertura'))->format('Y-m-d');
         $cep = str_replace('.', '', $request->input('cep'));
         $instituicoes =  InstituicoesInstituicao::create(
             [
