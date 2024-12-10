@@ -38,14 +38,6 @@
         <h4>Dados da Instituição</h4>
     </div>
 
-    @if ($errors->any())
-    <div class="alert alert-danger">
-        <ul class="d-flex flex-column align-items-start justify-content-start m-0 p-0" style="list-style: none">
-            <li>{{ $errors->first() }}</li>
-        </ul>
-    </div>
-    @endif
-
     <form class="py-2 px-3" method="POST"
         action="{{ route('instituicoes-regiao.update', ['id' => $instituicao['id']]) }}">
         @csrf
