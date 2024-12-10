@@ -32,7 +32,18 @@ class InstituicaoRegiaoDistritosController extends Controller
     {
         //Enviar Lista de insituicões pai, todas da regiao_id exceto igrejas
         $ufs = $this->fetchUFs();
-        $instituicoes_pai = InstituicoesInstituicao::where('regiao_id', session()->get('session_perfil')->instituicao_id)->where('tipo_instituicao_id', '!=', 1)->get();
+        $instituicoes_pai = InstituicoesInstituicao::where(function($query) {
+            // Quando tipo_instituicao_id = 3, ignora o filtro de regiao_id
+            $query->where('tipo_instituicao_id', 3);
+        })
+        ->orWhere(function($query) {
+            // Aplica o filtro de regiao_id e tipo_instituicao_id != 1
+            $query->where('regiao_id', session()->get('session_perfil')->instituicao_id)
+                  ->where('tipo_instituicao_id', '!=', 1);
+        })
+        ->get();
+
+
         return view('instituicoes.novo', compact('instituicoes_pai', 'ufs'));
     }
 

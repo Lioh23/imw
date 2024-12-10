@@ -38,7 +38,7 @@
 @section('content')
 <div class="container-fluid" style="background: #fff">
     <div class="widget-header">
-        <h4>Dados do usuário</h4>
+        <h4>Dados da instituição</h4>
     </div>
 
     <form class="py-2 px-3" method="POST" action="{{ route('instituicoes-regiao.store') }}">
@@ -95,15 +95,14 @@
             <div class="col-md-4 form-group">
                 <label for="instituicao_pai_id"><span>*</span> Instituição Pai</label>
                 <select name="instituicao_pai_id" id="instituicao_pai_id" class="form-control @error('instituicao_pai_id') is-invalid @enderror">
-                    <option value="" disabled {{ !request('instituicao_pai_id') ? 'selected' : '' }}>Selecione</option>
-                    @foreach ($instituicoes_pai as $ip)
-                    <option value="{{ $ip['id'] }}" {{ old('instituicao_pai_id') == $ip['id'] ? 'selected' : '' }}>{{ $ip['nome'] }}</option>
-                    @endforeach
+                    <option value="" disabled selected>Selecione</option>
+                    <!-- As opções serão preenchidas dinamicamente pelo JavaScript -->
                 </select>
                 @error('instituicao_pai_id')
                 <div class="invalid-feedback">{{ $message }}</div>
                 @enderror
             </div>
+
 
             <input type="hidden" name="regiao_id" id="regiao_id" value="23">
         </div>
@@ -155,7 +154,7 @@
 
         <div class="row">
             <div class="col-md-8 form-group">
-                <label for="cidade">Cidade</label>
+                <label for="cidade"><span>*</span>Cidade</label>
                 <input type="text" class="form-control @error('cidade') is-invalid @enderror" id="cidade" name="cidade" value="{{ old('cidade') }}">
                 @error('cidade')
                 <div class="invalid-feedback">{{ $message }}</div>
@@ -221,6 +220,43 @@
 </script>
 <script src="{{ asset('theme/plugins/fullcalendar/moment.min.js') }}"></script>
 <script>
+    $(document).ready(function() {
+        // Função para carregar as instituições pai baseadas no tipo
+        function loadInstituicoesPai(tipo_instituicao_id) {
+            var instituicoesPai = @json($instituicoes_pai); // Passa o array PHP para o JS
+
+            // Filtra as instituições pai conforme o tipo
+            var filteredInstituicoes = instituicoesPai.filter(function(instituicao) {
+                if (tipo_instituicao_id == 1 && instituicao.tipo_instituicao_id == 2) {
+                    return true;
+                }
+                if (tipo_instituicao_id == 2 && instituicao.tipo_instituicao_id == 5) {
+                    return true;
+                }
+                if (tipo_instituicao_id == 5 && instituicao.tipo_instituicao_id == 3) {
+                    return true;
+                }
+                return false;
+            });
+
+            // Limpa o select antes de adicionar as novas opções
+            $('#instituicao_pai_id').empty();
+            $('#instituicao_pai_id').append('<option value="" disabled selected>Selecione</option>');
+
+            // Adiciona as opções filtradas
+            filteredInstituicoes.forEach(function(instituicao) {
+                $('#instituicao_pai_id').append('<option value="' + instituicao.id + '">' + instituicao.nome + '</option>');
+            });
+        }
+
+        // Quando o select tipo_instituicao_id for alterado, atualiza o select de instituicao_pai_id
+        $('#tipo_instituicao_id').change(function() {
+            var tipo_instituicao_id = $(this).val();
+            loadInstituicoesPai(tipo_instituicao_id);
+        });
+    });
+
+
     // Preenchimento automático de endereço pelo CEP
     $('#cep').blur(function() {
         var cep = $(this).val().replace(/\D/g, '');
