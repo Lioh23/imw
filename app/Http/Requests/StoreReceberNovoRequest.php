@@ -33,13 +33,13 @@ class StoreReceberNovoRequest extends FormRequest
             'cidade' => 'required',
             'cnpj' => 'required',
             'complemento' => '',
-            'data_abertura' => 'required|date',
+            'data_abertura' => 'required|date|before_or_equal:today|after_or_equal:1969-01-01',
             'numero' => 'required',
             'pais' => 'required|String',
             'telefone' => 'required|max:11',
             'uf' => 'required',
             'endereco' => 'required',
-            'ddd' => 'max:2'
+            'ddd' => 'required|max:2'
         ];
     }
     public function messages()
@@ -47,7 +47,7 @@ class StoreReceberNovoRequest extends FormRequest
         return [
             'nome.required' => 'O nome é obrigatório.',
             'tipo_instituicao_id.required' => 'O tipo de instituição é obrigatório.',
-            'instituicao_pai_id.required' => 'O ID da instituição pai é obrigatório.',
+            'instituicao_pai_id.required' => 'A instituição pai é obrigatório.',
             'bairro.required' => 'O bairro é obrigatório.',
             'cep.required' => 'O CEP é obrigatório.',
             'cidade.required' => 'A cidade é obrigatória.',
@@ -62,6 +62,7 @@ class StoreReceberNovoRequest extends FormRequest
             'uf.required' => 'O estado é obrigatório.',
             'uf.max' => 'O estado não pode ter mais que 2 caracteres.',
             'endereco.required' => 'O endereço é obrigatório.',
+            'ddd.required' => 'O DDD é obrigatório'
         ];
     }
 }
