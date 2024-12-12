@@ -17,6 +17,7 @@ class AdminEditarUsuarioService
             'email' => $data['email'],
             'cpf'  => preg_replace('/[^0-9]/', '', $data['cpf']),
             'telefone' => preg_replace('/[^0-9]/', '', $data['telefone']),
+            'pessoa_id' => $data['pessoa_id'] ?? null
         ]);
 
         if (isset($data['password']) && !empty($data['password'])) {

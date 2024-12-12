@@ -54,6 +54,7 @@ class StoreUsuarioLocalRequest extends FormRequest
             'perfil_id' => 'required',
             'cpf' => $cpfRules,
             'telefone' => $telefoneRules,
+            'pessoa_id' => 'nullable'
         ];
     }
 

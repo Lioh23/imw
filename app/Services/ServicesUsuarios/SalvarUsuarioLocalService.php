@@ -12,7 +12,6 @@ class SalvarUsuarioLocalService
     public function execute($data)
     {
 
-
         if($data['tipo'] == 'cadastro'){
             $user = User::create([
                 'name' => $data['name'],
@@ -20,6 +19,7 @@ class SalvarUsuarioLocalService
                 'password' => Hash::make($data['password']),
                 'cpf'  => preg_replace('/[^0-9]/', '', $data['cpf']),
                 'telefone' => preg_replace('/[^0-9]/', '', $data['telefone']),
+                'pessoa_id' => $data['pessoa_id'] ?? null
             ]);
 
             PerfilUser::create([

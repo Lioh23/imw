@@ -29,6 +29,7 @@ class StoreUsuarioRequest extends FormRequest
             'password' => 'required|string|min:8|confirmed',
             'perfil_id.*' => 'required',
             'instituicao_id.*' => 'required',
+            'pessoa_id' => 'nullable'
         ];
     }
     public function messages()

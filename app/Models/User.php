@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -28,6 +29,7 @@ class User extends Authenticatable
         'password',
         'cpf',
         'telefone',
+        'pessoa_id',
     ];
 
     /**
@@ -62,6 +64,11 @@ class User extends Authenticatable
     public function instituicoes()
     {
         return $this->belongsToMany(InstituicoesInstituicao::class, 'user_instituicoes', 'user_id', 'instituicao_id', 'users.id', 'instituicoes_instituicoes.id');
+    }
+
+    public function pessoa(): HasOne
+    {
+        return $this->hasOne(PessoasPessoa::class, 'id', 'pessoa_id');
     }
 
     public function perfis()

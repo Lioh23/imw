@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\PessoaNotFoundException;
 use App\Models\Formacao;
 use Illuminate\Http\Request;
 use App\Models\PessoasPessoa;
 use App\Traits\LocationUtils;
 use App\Http\Requests\StoreReceberNovoClerigoRequest;;
 use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
+use App\Services\ServiceClerigosRegiao\BuscarClerigoPorCpfService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
 use App\Services\ServiceClerigosRegiao\StoreClerigosService;
 use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
@@ -109,5 +111,14 @@ class ClerigosRegiaoController extends Controller
         return response()->json($clerigos);
     }
 
-
+    public function findByCpf(string $cpf)
+    {
+        try {
+            $clerigo = app(BuscarClerigoPorCpfService::class)->execute($cpf);
+    
+            return response()->json(['clerigo' => $clerigo]);
+        } catch (PessoaNotFoundException $e) {
+            return response()->json(['message' => $e->getMessage()], 400);
+        }
+    }
 }

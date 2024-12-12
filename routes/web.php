@@ -323,16 +323,19 @@ Route::middleware(['auth'])->group(function () {
         //Clérigos
         Route::prefix('clerigos')->name('clerigos.')
             ->controller(ClerigosRegiaoController::class)
-            ->middleware(['seguranca:menu-instituicoes'])
+            ->group(function () {})
             ->group(function () {
-                Route::get('/', 'index')->name('index');
-                Route::get('/novo', 'novo')->name('novo');
-                Route::delete('/deletar/{id}', 'deletar')->name('deletar');
-                Route::get('/editar/{id}', 'editar')->name('editar');
-                Route::post('/store', 'store')->name('store');
-                Route::post('/update/{id}', 'update')->name('update');
-                Route::put('/ativar/{id}', 'ativar')->name('ativar');
-                Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
+                Route::middleware(['seguranca:menu-instituicoes'])->group(function () {
+                    Route::get('/', 'index')->name('index');
+                    Route::get('/novo', 'novo')->name('novo');
+                    Route::delete('/deletar/{id}', 'deletar')->name('deletar');
+                    Route::get('/editar/{id}', 'editar')->name('editar');
+                    Route::post('/store', 'store')->name('store');
+                    Route::post('/update/{id}', 'update')->name('update');
+                    Route::put('/ativar/{id}', 'ativar')->name('ativar');
+                    Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
+                });
+                Route::get('/buscar-por-cpf/{cpf}', 'findByCpf')->name('findByCpf');
             });
 
         Route::prefix('clerigos/nomeacoes')->name('clerigos.nomeacoes.')

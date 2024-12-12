@@ -2,6 +2,8 @@
 
 use App\Models\Formacao;
 use App\Models\InstituicoesInstituicao;
+use App\Models\PessoasPessoa;
+use App\Traits\FakerUtils;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
 use PhpParser\Node\Stmt\Foreach_;
@@ -80,5 +82,20 @@ Artisan::command('formacao', function () {
             ]
             );
     };
-  
+
+});
+
+Artisan::command('cpf-aleatorio-pessoas', function () {
+    $pessoas = PessoasPessoa::all();
+
+    $this->info('Iniciando geração de CPF\'s randômicos para pessoas');
+
+    $this->withProgressBar($pessoas, function (PessoasPessoa $pessoa) {
+        $pessoa->cpf = FakerUtils::generateRandomCpf();
+        $pessoa->save();
+    });
+
+    $this->line('');
+    $this->info('CPF\'s randômicos gerados com sucesso');
+
 });
