@@ -1,8 +1,8 @@
 @extends('template.layout')
 @section('breadcrumb')
   <x-breadcrumb :breadcrumbs="[
-    ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Visitantes', 'url' => '/visitante/', 'active' => true],
+    ['text' => 'Home', 'url' => '/', 'active' => false],
+    ['text' => 'Visitantes', 'url' => '#', 'active' => true],
   ]"></x-breadcrumb>
 @endsection
 
@@ -61,7 +61,23 @@
                   <td>{{ $dependente->data_nascimento->format('d/m/Y') }}</td>
                   <td>{{ $dependente->parentesco }}</td>
                   <td>{{ $dependente->declarar_em_irpf ? 'Sim' : 'Não' }}</td>
-                  <td></td>
+                  <td>
+                    <a href="{{ route('clerigos.perfil.dependentes.edit', $dependente) }}" class="btn btn-primary btn-sm btn-rounded bs-tooltip" title="Editar dependente">
+                      <x-bx-edit/>
+                    </a>
+                    
+                    <form action="{{ route('clerigos.perfil.dependentes.delete', $dependente) }}" method="POST" style="display: inline-block;" id="form_delete_dependente_{{ $dependente->id }}">
+                      @csrf
+                      @method('DELETE')
+                      <button 
+                          type="button"
+                          class="btn btn-danger btn-sm btn-rounded bs-tooltip btn-confirm-delete" 
+                          title="Excluir dependente" 
+                          data-form-id="form_delete_dependente_{{ $dependente->id }}">
+                        <x-bx-trash/>
+                      </button>
+                    </form>
+                  </td>
                 </tr>
               @empty
                 <tr>
@@ -90,9 +106,5 @@
   <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
   <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
   <script src="{{ asset('custom/js/imw_datatables.js') }}?time={{ time() }}"></script>
-  <script>
-    $(document).ready(function() {
-      initDataTable('#datatable', { serverSide: false });
-    });
-  </script>
+  <script src="{{ asset('perfil/clerigos/dependentes/js/index.js') }}?time={{ time() }}"></script>
 @endsection

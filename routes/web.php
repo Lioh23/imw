@@ -347,6 +347,10 @@ Route::middleware(['auth'])->group(function () {
             Route::prefix('dependentes')->name('dependentes.')->group(function() {
                 Route::get('', 'indexDependentes')->name('index');
                 Route::get('novo', 'createDependente')->name('create');
+                Route::post('novo', 'storeDependente')->name('store');
+                Route::get('/{dependente}/editar', 'editDependente')->name('edit');
+                Route::put('/{dependente}/atualizar', 'updateDependente')->name('update');
+                Route::delete('/{dependente}', 'deleteDependente')->name('delete');
             });
         });
 

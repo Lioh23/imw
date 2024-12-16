@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Models\CongregacoesCongregacao;
+use App\Models\PessoasDependente;
 use App\Observers\CongregacoesCongregacaoObserver;
+use App\Observers\PessoasDependenteObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -23,7 +25,8 @@ class EventServiceProvider extends ServiceProvider
     ];
 
     protected $observers = [
-        CongregacoesCongregacao::class => [CongregacoesCongregacaoObserver::class]
+        CongregacoesCongregacao::class => [CongregacoesCongregacaoObserver::class],
+        PessoasDependente::class => [PessoasDependenteObserver::class]
     ];
 
     /**
