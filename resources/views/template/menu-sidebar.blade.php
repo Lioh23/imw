@@ -534,13 +534,7 @@
              <li class="menu">
                  <a href="#segurancaLocal" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                      <div class="">
-                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                             fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                             stroke-linejoin="round" class="feather feather-lock">
-                             <rect x="3" y="11" width="18" height="11" rx="2" ry="2">
-                             </rect>
-                             <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
-                         </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
                          <span>Segurança</span>
                      </div>
                      <div>
@@ -552,10 +546,6 @@
                      </div>
                  </a>
                  <ul class="collapse submenu list-unstyled" id="segurancaLocal" data-parent="#segurancaLocal">
-                     <li>
-                         <a href="{{ route('perfil.index') }}"> Meu Perfil</a>
-                     </li>
-
                      @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-usuarios-instituicao'))
                          @php
                              // Obtém o perfil_id da sessão
@@ -577,6 +567,30 @@
                      @endif
 
                  </ul>
+
+                 <a href="#perfil" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                    <div class="">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                        <span>Perfil</span>
+                    </div>
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" class="feather feather-chevron-right">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </div>
+                </a>
+                <ul class="collapse submenu list-unstyled" id="perfil" data-parent="#perfil">
+                    <li>
+                        <a href="{{ route('perfil.index') }}"> Dados Pessoais</a>
+                    </li>
+                    @if(auth()->user()->pessoa_id)
+                        <li>
+                            <a href="{{ route('clerigos.perfil.dependentes.index') }}"> Dependentes</a>
+                        </li>
+                    @endif
+                </ul>
              </li>
 
          </ul>

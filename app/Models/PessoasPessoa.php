@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class PessoasPessoa extends Model
@@ -78,5 +79,10 @@ class PessoasPessoa extends Model
     public function nomeacoes()
     {
         return $this->hasMany(PessoaNomeacao::class, 'pessoa_id', 'id');
+    }
+
+    public function dependentes(): HasMany
+    {
+        return $this->hasMany(PessoasDependente::class, 'pessoa_id', 'id');
     }
 }

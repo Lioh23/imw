@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\ClerigosRegiaoController;
 use App\Http\Controllers\CongregacoesController;
 use App\Http\Controllers\CongregadosController;
+use App\Http\Controllers\ClerigoPerfilController;
 use App\Http\Controllers\DistritoRelatorioController;
 use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
@@ -321,41 +322,8 @@ Route::middleware(['auth'])->group(function () {
         );
 
         //Clérigos
-        Route::prefix('clerigos')->name('clerigos.')
-            ->controller(ClerigosRegiaoController::class)
-            ->group(function () {})
-            ->group(function () {
-                Route::middleware(['seguranca:menu-instituicoes'])->group(function () {
-                    Route::get('/', 'index')->name('index');
-                    Route::get('/novo', 'novo')->name('novo');
-                    Route::delete('/deletar/{id}', 'deletar')->name('deletar');
-                    Route::get('/editar/{id}', 'editar')->name('editar');
-                    Route::post('/store', 'store')->name('store');
-                    Route::post('/update/{id}', 'update')->name('update');
-                    Route::put('/ativar/{id}', 'ativar')->name('ativar');
-                    Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
-                });
-                Route::get('/buscar-por-cpf/{cpf}', 'findByCpf')->name('findByCpf');
-            });
-
-        Route::prefix('clerigos/nomeacoes')->name('clerigos.nomeacoes.')
-            ->controller(NomeacoesClerigosController::class)
-            ->middleware(['seguranca:menu-instituicoes'])
-            ->group(function () {
-                Route::get('/{id}', 'index')->name('index');
-                Route::get('/{pessoa}/novo', 'novo')->name('novo');
-                Route::post('/{id}/novo', 'store')->name('store');
-                Route::post('/{clerigoId}/finalizar/{id}','finalizar')->name('finalizar');
-            });
-
-
-
-        //Instituicoes
-        Route::prefix('instituicoes-regiao')
-            ->name('instituicoes-regiao.')
-            ->middleware(['seguranca:menu-instituicoes'])
-            ->controller(InstituicaoRegiaoDistritosController::class)
-            ->group(function () {
+        Route::prefix('clerigos')->name('clerigos.')->controller(ClerigosRegiaoController::class)->group(function () {
+            Route::middleware(['seguranca:menu-instituicoes'])->group(function () {
                 Route::get('/', 'index')->name('index');
                 Route::get('/novo', 'novo')->name('novo');
                 Route::delete('/deletar/{id}', 'deletar')->name('deletar');
@@ -365,9 +333,37 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/ativar/{id}', 'ativar')->name('ativar');
                 Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
             });
-    });
+            Route::get('/buscar-por-cpf/{cpf}', 'findByCpf')->name('findByCpf');
+        });
 
-    Route::prefix('instituicoes')->name('instituicoes.')->controller(HandleInstituicoesController::class)->group(function () {
-        Route::get('igrejasByDistrito/{distritoId}', 'igrejasByDistrito');
+        Route::prefix('clerigos/nomeacoes')->name('clerigos.nomeacoes.')->controller(NomeacoesClerigosController::class)->middleware(['seguranca:menu-instituicoes'])->group(function () {
+            Route::get('/{id}', 'index')->name('index');
+            Route::get('/{pessoa}/novo', 'novo')->name('novo');
+            Route::post('/{id}/novo', 'store')->name('store');
+            Route::post('/{clerigoId}/finalizar/{id}','finalizar')->name('finalizar');
+        });
+
+        Route::prefix('clerigos/perfil')->name('clerigos.perfil.')->controller(ClerigoPerfilController::class)->middleware(['user-clerigo'])->group(function () {
+            Route::prefix('dependentes')->name('dependentes.')->group(function() {
+                Route::get('', 'indexDependentes')->name('index');
+                Route::get('novo', 'createDependente')->name('create');
+            });
+        });
+
+        //Instituicoes
+        Route::prefix('instituicoes-regiao')->name('instituicoes-regiao.')->middleware(['seguranca:menu-instituicoes'])->controller(InstituicaoRegiaoDistritosController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/novo', 'novo')->name('novo');
+            Route::delete('/deletar/{id}', 'deletar')->name('deletar');
+            Route::get('/editar/{id}', 'editar')->name('editar');
+            Route::post('/store', 'store')->name('store');
+            Route::post('/update/{id}', 'update')->name('update');
+            Route::put('/ativar/{id}', 'ativar')->name('ativar');
+            Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
+        });
+
+        Route::prefix('instituicoes')->name('instituicoes.')->controller(HandleInstituicoesController::class)->group(function () {
+            Route::get('igrejasByDistrito/{distritoId}', 'igrejasByDistrito');
+        });
     });
 });
