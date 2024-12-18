@@ -13,6 +13,7 @@ class PessoaFuncaoMinisterial extends Model
         'ordem',
         'titulo',
         'excluido',
+        'qtd_prebendas',
         'created_at',
         'updated_at',
     ];

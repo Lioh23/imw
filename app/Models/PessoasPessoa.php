@@ -85,4 +85,9 @@ class PessoasPessoa extends Model
     {
         return $this->hasMany(PessoasDependente::class, 'pessoa_id', 'id');
     }
+
+    public function prebendas()
+    {
+        return $this->hasMany(PessoasPrebenda::class, 'pessoa_id');
+    }
 }

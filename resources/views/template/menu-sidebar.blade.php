@@ -216,6 +216,11 @@
                             <a href="{{ route('clerigos.index') }}">Clérigos</a>
                         @endif
                     </li>
+                    <li>
+                        @if (auth()->check() && auth()->user()->hasPerfilRegra('instituicoes-igrejas'))
+                            <a href="{{ route('clerigos.prebendas.index') }}">Prebendas</a>
+                        @endif
+                    </li>
                 </ul>
              @endif
 

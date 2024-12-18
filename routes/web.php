@@ -26,6 +26,7 @@ use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\NomeacoesClerigosController;
 use App\Http\Controllers\NotificacoesTranferenciaController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\PrebendasClerigosController;
 use App\Http\Controllers\RegiaoRelatorioController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\UsuarioController;
@@ -340,11 +341,11 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}', 'index')->name('index');
             Route::get('/{pessoa}/novo', 'novo')->name('novo');
             Route::post('/{id}/novo', 'store')->name('store');
-            Route::post('/{clerigoId}/finalizar/{id}','finalizar')->name('finalizar');
+            Route::post('/{clerigoId}/finalizar/{id}', 'finalizar')->name('finalizar');
         });
 
         Route::prefix('clerigos/perfil')->name('clerigos.perfil.')->controller(ClerigoPerfilController::class)->middleware(['user-clerigo'])->group(function () {
-            Route::prefix('dependentes')->name('dependentes.')->group(function() {
+            Route::prefix('dependentes')->name('dependentes.')->group(function () {
                 Route::get('', 'indexDependentes')->name('index');
                 Route::get('novo', 'createDependente')->name('create');
                 Route::post('novo', 'storeDependente')->name('store');
@@ -352,6 +353,18 @@ Route::middleware(['auth'])->group(function () {
                 Route::put('/{dependente}/atualizar', 'updateDependente')->name('update');
                 Route::delete('/{dependente}', 'deleteDependente')->name('delete');
             });
+        });
+
+        Route::prefix('clerigos/prebendas')->name('clerigos.prebendas.')->controller(PrebendasClerigosController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{id}/editar', 'edit')->name('edit');
+            Route::post('/atualizar/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'delete')->name('delete');
+
+            Route::get('/nova-prebenda', 'createPrebenda')->name('createPrebenda');
+            Route::post('/nova-prebenda', 'storePrebenda')->name('storePrebenda');
+            Route::get('/update-prebenda', 'updatePrebenda')->name('update.prebenda');
+            Route::get('/valor', 'getValor')->name('valor');
         });
 
         //Instituicoes
