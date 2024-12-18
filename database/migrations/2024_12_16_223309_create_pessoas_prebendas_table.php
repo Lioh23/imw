@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pessoas_prebendas', function (Blueprint $table) {
             $table->id();
-            $table->foreigniId('pessoa_id')->constrained('pessoas_pessoas');
+            $table->foreignId('pessoa_id')->constrained('pessoas_pessoas');
             $table->integer('ano');
             $table->decimal('valor', 12, 2);
             $table->timestamps();

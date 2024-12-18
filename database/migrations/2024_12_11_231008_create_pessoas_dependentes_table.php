@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('pessoas_dependentes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('')->constrained('pessoas_pessoas');
+            $table->foreignId('pessoa_id')->constrained('pessoas_pessoas');
             $table->string('nome', 100);
             $table->string('cpf', 11);
             $table->date('data_nascimento');
