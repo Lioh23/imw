@@ -6,7 +6,7 @@ use App\Http\Requests\FinalizarNomeacoesRequest;
 use App\Http\Requests\StoreNomeacoesClerigosRequest;
 use App\Models\InstituicoesInstituicao;
 use App\Models\InstituicoesTipoInstituicao;
-use App\Models\PessoaFuncaoMinisterial;
+use App\Models\PessoaFuncaoministerial;
 use App\Models\PessoasPessoa;
 use App\Services\ServiceClerigosRegiao\DeletarNomeacoesClerigos;
 use App\Services\ServiceClerigosRegiao\FinalizarNomeacoesClerigos;
@@ -36,7 +36,7 @@ class NomeacoesClerigosController extends Controller
             ->orderBy('nome')
             ->get();
 
-        $funcoes = PessoaFuncaoMinisterial::orderBy('funcao')->get();
+        $funcoes = PessoaFuncaoministerial::orderBy('funcao')->get();
 
         return view('clerigos.nomeacoes.novo', compact('instituicoes', 'funcoes', 'pessoa'));
     }
