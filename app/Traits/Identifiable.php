@@ -110,6 +110,11 @@ trait Identifiable
         return $distrito;
     }
 
+    public static function fetchSessionPessoa(): PessoasPessoa
+    {
+        return PessoasPessoa::find(session('session_perfil')->pessoa_id);
+    }
+
     public static function fetchRolAtual($membroId, $numeroRol)
     {
         return MembresiaRolPermanente::where('membro_id', $membroId)
