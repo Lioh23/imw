@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class PessoaFuncaoMinisterial extends Model
+class PessoaFuncaoministerial extends Model
 {
     protected $table = 'pessoas_funcaoministerial';
 
@@ -15,6 +15,7 @@ class PessoaFuncaoMinisterial extends Model
         'excluido',
         'created_at',
         'updated_at',
+        'qtd_prebendas',
     ];
 
     // Relacionamento inverso com PessoaNomeacao

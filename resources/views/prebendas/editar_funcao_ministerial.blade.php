@@ -3,7 +3,8 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Clérigos', 'url' => '/clerigos', 'active' => false],
-        ['text' => 'Prebenda', 'url' => '#', 'active' => true],
+        ['text' => 'Prebendas', 'url' => '/clerigos/prebendas', 'active' => false],
+        ['text' => 'Alterar quantidade de prebendas', 'url' => '#', 'active' => true],
     ]">
     </x-breadcrumb>
 @endsection
@@ -31,7 +32,7 @@
 @section('content')
     <div class="container-fluid" style="background: #fff">
         <div class="widget-header">
-            <h4>Atualizar Registro</h4>
+            <h4>Atualizar Registro - {{ $funcao->funcao }}</h4>
         </div>
 
         <form class="py-2 px-3" method="POST" action="{{ route('clerigos.prebendas.update', ['id' => $funcao->id]) }}">
@@ -39,7 +40,7 @@
             <div class="row">
                 <div class="col-12 mt-3 col-md-4">
                     <label for="qtd_prebendas">* Quantidade de Prebendas</label>
-                    <input class="form-control" type="number" id="qtd_prebendas" name="qtd_prebendas"
+                    <input class="form-control" type="text" id="qtd_prebendas" name="qtd_prebendas"
                         value="{{ old('qtd_prebendas', $funcao->qtd_prebendas) }}"
                         @error('qtd_prebendas') is-invalid @enderror>
                     @error('qtd_prebendas')
@@ -63,5 +64,7 @@
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/select2/select2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/select2/custom-select2.js') }}"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/i18n/pt-BR.js"></script>
+    <script>
+        $('#qtd_prebendas').mask('00,0', {reverse: true });
+    </script>
 @endsection

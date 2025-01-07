@@ -47,10 +47,10 @@ class PessoaNomeacao extends Model
         return Carbon::parse($value)->format('d/m/Y');
     }
 
-    // Relacionamento com PessoaFuncaoMinisterial
+    // Relacionamento com PessoaFuncaoministerial
     public function funcaoMinisterial()
     {
-        return $this->belongsTo(PessoaFuncaoMinisterial::class, 'funcao_ministerial_id', 'id');
+        return $this->belongsTo(PessoaFuncaoministerial::class, 'funcao_ministerial_id', 'id');
     }
 
     // Relacionamento com Instituicao

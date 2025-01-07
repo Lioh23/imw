@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\CongregacoesCongregacao;
+use App\Models\PessoaFuncaoministerial;
 use App\Models\PessoasDependente;
 use App\Observers\CongregacoesCongregacaoObserver;
+use App\Observers\PessoaFuncaoministerialObserver;
 use App\Observers\PessoasDependenteObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
@@ -26,7 +28,8 @@ class EventServiceProvider extends ServiceProvider
 
     protected $observers = [
         CongregacoesCongregacao::class => [CongregacoesCongregacaoObserver::class],
-        PessoasDependente::class => [PessoasDependenteObserver::class]
+        PessoasDependente::class => [PessoasDependenteObserver::class],
+        PessoaFuncaoministerial::class => [PessoaFuncaoministerialObserver::class]
     ];
 
     /**
