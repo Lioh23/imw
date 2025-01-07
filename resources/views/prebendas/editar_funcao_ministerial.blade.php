@@ -32,7 +32,7 @@
 @section('content')
     <div class="container-fluid" style="background: #fff">
         <div class="widget-header">
-            <h4>Atualizar Registro</h4>
+            <h4>Atualizar Registro - {{ $funcao->funcao }}</h4>
         </div>
 
         <form class="py-2 px-3" method="POST" action="{{ route('clerigos.prebendas.update', ['id' => $funcao->id]) }}">
