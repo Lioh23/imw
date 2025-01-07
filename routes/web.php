@@ -26,6 +26,7 @@ use App\Http\Controllers\MembrosController;
 use App\Http\Controllers\NomeacoesClerigosController;
 use App\Http\Controllers\NotificacoesTranferenciaController;
 use App\Http\Controllers\PerfilController;
+use App\Http\Controllers\PrebendaController;
 use App\Http\Controllers\PrebendasClerigosController;
 use App\Http\Controllers\RegiaoRelatorioController;
 use App\Http\Controllers\RelatorioController;
@@ -363,8 +364,18 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/nova-prebenda', 'createPrebenda')->name('createPrebenda');
             Route::post('/nova-prebenda', 'storePrebenda')->name('storePrebenda');
-            Route::get('/update-prebenda', 'updatePrebenda')->name('update.prebenda');
+            Route::get('/update-prebenda', 'update')->name('update.prebenda');
             Route::get('/valor', 'getValor')->name('valor');
+        });
+
+        Route::prefix('prebendas')->name('prebendas.')->controller(PrebendaController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{id}/editar', 'edit')->name('edit');
+            Route::post('/atualizar/{id}', 'update')->name('update');
+            Route::delete('/{id}', 'delete')->name('delete');
+            Route::get('/nova-prebenda', 'create')->name('create');
+            Route::post('/nova-prebenda', 'store')->name('store');
+            Route::get('/update-prebenda', 'update')->name('update');
         });
 
         //Instituicoes

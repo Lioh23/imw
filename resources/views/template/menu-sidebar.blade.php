@@ -594,6 +594,9 @@
                         <li>
                             <a href="{{ route('clerigos.perfil.dependentes.index') }}"> Dependentes</a>
                         </li>
+                        <li>
+                            <a href="{{ route('prebendas.index') }}"> Prebendas</a>
+                        </li>
                     @endif
                 </ul>
              </li>
