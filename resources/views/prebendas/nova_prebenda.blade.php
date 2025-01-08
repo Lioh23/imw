@@ -49,7 +49,7 @@
 
                 <div class="col-12 mt-3 col-md-4">
                     <label for="valor">* Valor</label>
-                    <input class="form-control" type="number" id="valor" name="valor" step="0.01"
+                    <input class="form-control" type="text" id="valor" name="valor" step="0.01"
                         value="{{ old('valor') }}" @error('valor') is-invalid @enderror>
                     @error('valor')
                         <span class="help-block text-danger">{{ $message }}</span>
@@ -74,6 +74,14 @@
         $('.basic').select2({
             placeholder: 'Selecione',
             allowClear: true
+        });
+
+        $('#valor').mask('000.000.000.000,00', {
+            reverse: true
+        }).on('change', function() {
+            if (!$(this).val().startsWith('R$ ')) {
+                $(this).val('R$ ' + $(this).val());
+            }
         });
     </script>
 @endsection

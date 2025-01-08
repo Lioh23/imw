@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Prebendas', 'url' => '/prebendas', 'active' => true],
+        ['text' => 'Prebendas', 'url' => '/clerigos/perfil/prebendas', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -25,7 +25,8 @@
     @include('extras.alerts')
     <div class="container-fluid d-flex justify-content-between">
         <div>
-            <a href="{{ route('prebendas.create') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
+            <a href="{{ route('clerigos.perfil.prebendas.create') }}"
+                class="btn btn-primary position-relative mt-3 mb-3 ml-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="feather feather-plus-circle">
@@ -55,27 +56,33 @@
                             <tr>
                                 <th>Ano</th>
                                 <th>Valor</th>
-                                <th></th>
+                                <th width='120px'></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($prebendas as $prebenda)
-                                <td>{{ $prebenda->ano }}</td>
-                                <td>{{ $prebenda->valor }}</td>
-                                <td>
-                                    <form action="{{ route('clerigos.perfil.dependentes.delete', $dependente) }}"
-                                        method="POST" style="display: inline-block;"
-                                        id="form_delete_dependente_{{ $dependente->id }}">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button"
-                                            class="btn btn-danger btn-sm btn-rounded bs-tooltip btn-confirm-delete"
-                                            title="Excluir dependente"
-                                            data-form-id="form_delete_dependente_{{ $dependente->id }}">
-                                            <x-bx-trash />
-                                        </button>
-                                    </form>
-                                </td>
+                                <tr>
+                                    <td>{{ $prebenda->ano }}</td>
+                                    <td>{{ $prebenda->valor }}</td>
+                                    <td>
+                                        <a href="{{ route('clerigos.perfil.prebendas.edit', $prebenda->id) }}"
+                                            class="btn btn-primary btn-sm btn-rounded bs-tooltip" title="Editar prebenda">
+                                            <x-bx-edit />
+                                        </a>
+                                        <form action="{{ route('clerigos.perfil.prebendas.delete', $prebenda) }}"
+                                            method="POST" style="display: inline-block;"
+                                            id="form_delete_prebenda_{{ $prebenda->id }}">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                class="btn btn-danger btn-sm btn-rounded bs-tooltip btn-confirm-delete"
+                                                title="Excluir prebenda"
+                                                data-form-id="form_delete_prebenda_{{ $prebenda->id }}">
+                                                <x-bx-trash />
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -99,5 +106,5 @@
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
     <script src="{{ asset('custom/js/imw_datatables.js') }}?time={{ time() }}"></script>
-    <script src="{{ asset('perfil/clerigos/dependentes/js/index.js') }}?time={{ time() }}"></script>
+    <script src="{{ asset('perfil/clerigos/prebendas/js/index.js') }}?time={{ time() }}"></script>
 @endsection

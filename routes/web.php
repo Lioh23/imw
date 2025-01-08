@@ -368,14 +368,14 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/valor', 'getValor')->name('valor');
         });
 
-        Route::prefix('prebendas')->name('prebendas.')->controller(PrebendaController::class)->group(function () {
+        Route::prefix('clerigos/perfil/prebendas')->name('clerigos.perfil.prebendas.')->controller(PrebendaController::class)->group(function () {
             Route::get('/', 'index')->name('index');
-            Route::get('/{id}/editar', 'edit')->name('edit');
-            Route::post('/atualizar/{id}', 'update')->name('update');
+            Route::get('/edit/{id}', 'edit')->name('edit');
+            Route::post('/update/{id}', 'update')->name('update');
+            Route::get('/create', 'create')->name('create');
+            Route::post('/create', 'store')->name('store');
             Route::delete('/{id}', 'delete')->name('delete');
-            Route::get('/nova-prebenda', 'create')->name('create');
-            Route::post('/nova-prebenda', 'store')->name('store');
-            Route::get('/update-prebenda', 'update')->name('update');
+            Route::get('/maxPrebenda/{ano}', 'maxPrebenda')->name('maxPrebenda');
         });
 
         //Instituicoes

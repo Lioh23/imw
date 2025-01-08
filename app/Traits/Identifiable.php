@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Traits;
 
@@ -36,7 +36,7 @@ trait Identifiable
                 switch ($vinculo) {
                     case MembresiaMembro::VINCULO_MEMBRO:
                         throw new MembroNotFoundException();
-                    
+
                     case MembresiaMembro::VINCULO_CONGREGADO:
                         throw new CongregadoNotFoundException();
 
@@ -73,7 +73,7 @@ trait Identifiable
         /** @var SessionInstituicoesDto $sessionInstituicoes */
         $sessionInstituicoes = session('session_perfil')->instituicoes;
 
-        if(! ($sessionInstituicoes->igrejaLocal) ) 
+        if(! ($sessionInstituicoes->igrejaLocal) )
             throw new MissingSessionIgrejaLocalException();
 
         return [
@@ -112,7 +112,7 @@ trait Identifiable
 
     public static function fetchSessionPessoa(): PessoasPessoa
     {
-        return PessoasPessoa::find(session('session_perfil')->pessoa_id);
+        return PessoasPessoa::find(session('session_perfil')->perfil_id);
     }
 
     public static function fetchRolAtual($membroId, $numeroRol)
@@ -130,7 +130,7 @@ trait Identifiable
                 ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
                 ->whereNotNull('numero_rol')
                 ->first();
-            
+
             if ($rolExistente) {
                 return $rolExistente->numero_rol;
             }

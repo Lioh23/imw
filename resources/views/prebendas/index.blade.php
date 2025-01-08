@@ -67,7 +67,8 @@
                                     <select name="ano" id="ano" class="form-control form-control-sm">
                                         <option value="" disabled selected>Selecione um ano</option>
                                         @foreach ($prebendas as $index => $prebenda)
-                                            <option value="{{ $prebenda->ano }}" {{ $index == 0 && !old('ano') ? 'data-recent-year selected' : '' }}
+                                            <option value="{{ $prebenda->ano }}"
+                                                {{ $index == 0 && !old('ano') ? 'data-recent-year selected' : '' }}
                                                 {{ old('ano') == $prebenda->ano ? 'selected' : '' }}>
                                                 {{ $prebenda->ano }}
                                             </option>
@@ -114,20 +115,22 @@
                                     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                         <thead class="thead-light">
                                             <tr>
-                                                <th>Funcao</th>
+                                                <th>Função</th>
                                                 <th>Ordem</th>
                                                 <th class="text-center">Quantidade de Prebendas</th>
-                                                <th class="text-center">valor calculado</th>
+                                                <th class="text-center">Valor Calculado</th>
                                                 <th width="110px">Ações</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             @foreach ($funcoes as $funcao)
-                                                <tr  data-qtd-prebendas="{{ $funcao->qtd_prebendas }}">
+                                                <tr data-qtd-prebendas="{{ $funcao->qtd_prebendas }}">
                                                     <td>{{ $funcao->funcao }}</td>
                                                     <td>{{ $funcao->ordem }}</td>
-                                                    <td class="text-center">{{ $funcao->qtd_prebendas ?? 'Não informado' }}</td>
-                                                    <td class="text-center valor-calculado"> {{ $funcao->valor_calculado }}</td>
+                                                    <td class="text-center">{{ $funcao->qtd_prebendas ?? 'Não informado' }}
+                                                    </td>
+                                                    <td class="text-center valor-calculado"> {{ $funcao->valor_calculado }}
+                                                    </td>
                                                     <td class="table-action">
                                                         <a href="{{ route('clerigos.prebendas.edit', $funcao->id) }}"
                                                             title="Editar" class="btn btn-sm btn-dark mr-1 btn-rounded">
@@ -161,22 +164,31 @@
         </div>
     </div>
 
-    @section('extras-scripts')
+@section('extras-scripts')
     <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script>        
+    <script>
+            $('#valor').mask('000.000.000.000,00', {
+            reverse: true
+        }).on('change', function() {
+            if (!$(this).val().startsWith('R$ ')) {
+                $(this).val('R$ ' + $(this).val());
+            }
+        });
         $('#ano').on('change', function() {
             const ano = $(this).val();
-    
+
             if (ano) calcularPrebendasPorAno(ano);
         });
-        
+
         function calcularPrebendasPorAno(ano) {
             $.ajax({
                 url: "{{ route('clerigos.prebendas.valor') }}", // Rota para obter o valor
                 type: "GET",
-                data: { ano },
+                data: {
+                    ano
+                },
                 success: function(response) {
                     if (response.valor) {
                         const valorPrebenda = response.valor; // Obtém o valor da resposta
@@ -184,11 +196,16 @@
 
                         // Atualiza a tabela com o valor calculado para cada função
                         $('tr').each(function() {
-                            const qtdPrebendas = $(this).data('qtd-prebendas'); // Pega a quantidade de prebendas da linha
+                            const qtdPrebendas = $(this).data(
+                            'qtd-prebendas'); // Pega a quantidade de prebendas da linha
                             if (qtdPrebendas) {
                                 const valorCalculado = valorPrebenda * qtdPrebendas;
-                                
-                                $(this).find('.valor-calculado').text(valorCalculado.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})); // Atualiza o valor na célula da tabela
+
+                                $(this).find('.valor-calculado').text(valorCalculado.toLocaleString(
+                                    'pt-br', {
+                                        style: 'currency',
+                                        currency: 'BRL'
+                                    })); // Atualiza o valor na célula da tabela
                             } else {
                                 $(this).find('.valor-calculado').text(' - ');
                             }
