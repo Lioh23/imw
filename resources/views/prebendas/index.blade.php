@@ -127,7 +127,10 @@
                                                 <tr data-qtd-prebendas="{{ $funcao->qtd_prebendas }}">
                                                     <td>{{ $funcao->funcao }}</td>
                                                     <td>{{ $funcao->ordem }}</td>
-                                                    <td class="text-center">{{ $funcao->qtd_prebendas ?? 'Não informado' }}
+                                                    <td class="text-center">{{ number_format(
+     $funcao->qtd_prebendas,
+    $decimals = 1,
+     $decimal_separator = ",",) ?? 'Não informado' }}
                                                     </td>
                                                     <td class="text-center valor-calculado"> {{ $funcao->valor_calculado }}
                                                     </td>
