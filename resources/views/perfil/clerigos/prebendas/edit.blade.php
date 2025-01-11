@@ -64,10 +64,10 @@
                             <label class="control-label">* Ano</label>
                             <select name="ano" id="ano" class="form-control @error('ano') is-invalid @enderror">
                                 <option value="">Seleciona o Ano</option>
-                                @foreach ($prebenda_anos as $prebenda_ano)
-                                    <option value="{{ $prebenda_ano->ano }}"
-                                        {{ old('ano', $prebenda->ano) == $prebenda_ano->ano ? 'selected' : '' }}>
-                                        {{ $prebenda_ano->ano }}
+                                @foreach ($prebendas as $prebenda)
+                                    <option value="{{ $prebenda->ano }}"
+                                        {{ old('ano', $prebenda->ano) == $prebenda->ano ? 'selected' : '' }}>
+                                        {{ $prebenda->ano }}
                                     </option>
                                 @endforeach
                             </select>

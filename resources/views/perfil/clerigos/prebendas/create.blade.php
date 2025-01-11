@@ -60,14 +60,15 @@
                 <form class="form-vertical" action="{{ route('clerigos.perfil.prebendas.store') }}" method="POST">
                     @csrf
                     <div class="row">
-                        <div class="form-group mb-4 col-sm-12 col-md-6">
+                        <div class="form-group mb-4 col-sm-12 col-md-3">
                             <label class="control-label">* Ano</label>
                             <select name="ano" id="ano" class="form-control @error('ano') is-invalid @enderror"
                                 value="{{ old('ano') }}">
                                 <option value="">Seleciona o Ano</option>
-                                @foreach ($prebenda_anos as $prebenda_ano)
-                                    <option value="{{ $prebenda_ano->ano }}"
-                                        {{ old('ano') == $prebenda_ano->ano ? 'selected' : '' }}>{{ $prebenda_ano->ano }}
+                                @foreach ($prebendas as $index =>  $prebenda)
+                                    <option value="{{ $prebenda->ano }}"
+                                        {{ $index == 0 && !old('ano') ? 'data-recent-year selected' : '' }}
+                                        {{ old('ano') == $prebenda->ano ? 'selected' : '' }}>{{ $prebenda->ano }}
                                     </option>
                                 @endforeach
                             </select>
@@ -85,7 +86,7 @@
                             @enderror
                         </div>
                     </div>
-                    <p id="valor-maximo-prebenda"></p>
+                    <p id="valor-maximo-prebenda" style="position: relative; bottom: 15px; font-style: italic"></p>
                     <div class="row mt-3">
                         <div class="col-12">
                             <a href="{{ route('clerigos.perfil.prebendas.index') }}" class="btn btn-secondary">
@@ -113,9 +114,8 @@
                             @foreach ($funcoes as $funcao)
                                 <tr data-qtd-prebendas="{{ $funcao->qtd_prebendas }}">
                                     <td>{{ $funcao->funcao }}</td>
-                                    <td class="text-center">{{ $funcao->qtd_prebendas ?? 'Não informado' }}</td>
+                                    <td class="text-center">{{ round($funcao->qtd_prebendas, 1) }}</td>
                                     <td class="text-center valor-calculado"> {{ $funcao->valor_calculado }}</td>
-
                                 </tr>
                             @endforeach
                         </tbody>
@@ -160,7 +160,7 @@
                         const valorMaxPrebenda = response.valor;
                         $('#valor').attr('max',
                             valorMaxPrebenda);
-                        $('#valor-maximo-prebenda').text('O valor máximo da prebenda de ' + ano + ' é R$ ' +
+                        $('#valor-maximo-prebenda').text('O valor máximo da sua prebenda de ' + ano + ' é de R$ ' +
                             valorMaxPrebenda);
                     }
                 },
@@ -210,6 +210,9 @@
 
         // pegar o ano mais recente da option
         const anoMaisRecente = $('#ano option[data-recent-year]').val();
-        anoMaisRecente && calcularPrebendasPorAno(anoMaisRecente);
+        if(anoMaisRecente) {
+            calcularPrebendasPorAno(anoMaisRecente)
+            pegarValorMaxPrebenda(anoMaisRecente);
+        }
     </script>
 @endsection
