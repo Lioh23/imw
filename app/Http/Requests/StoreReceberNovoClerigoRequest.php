@@ -83,8 +83,6 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'sexo.required' => 'O campo sexo é obrigatório.',
             'escolaridade.required' => 'O campo escolaridade é obrigatório.',
             'telefone_preferencial.required' => 'O campo telefone preferencial é obrigatório.',
-            'ctps.required' => 'O campo CTPS é obrigatório.',
-            'ctps_emissao.required' => 'O campo data de emissão da CTPS é obrigatório.',
             'titulo_eleitor.required' => 'O campo título de eleitor é obrigatório.',
             'titulo_eleitor_secao.required' => 'O campo seção do título de eleitor é obrigatório.',
             'titulo_eleitor_zona.required' => 'O campo zona do título de eleitor é obrigatório.',
