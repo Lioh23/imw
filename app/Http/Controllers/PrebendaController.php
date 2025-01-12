@@ -24,7 +24,10 @@ class PrebendaController extends Controller
      */
     public function index()
     {
-        $prebendas = PessoasPrebenda::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)->get();
+        $prebendas = PessoasPrebenda::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)
+            ->orderBy('ano', 'desc')
+            ->get();
+        
         return view("perfil.clerigos.prebendas.index", ['prebendas' => $prebendas]);
     }
 
