@@ -47,7 +47,6 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'nome_pai' => 'nullable|string|max:255',
             'telefone_preferencial' => 'required|string|max:15',
             'ctps' => 'max:20',
-            'ctps_emissao' => 'date',
             'titulo_eleitor' => 'required|string|max:20',
             'titulo_eleitor_secao' => 'required|string|max:10',
             'titulo_eleitor_zona' => 'required|string|max:10',
