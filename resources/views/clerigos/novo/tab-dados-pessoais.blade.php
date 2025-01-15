@@ -105,6 +105,11 @@
                         <input type="text" class="form-control" id="nome_pai" name="nome_pai"
                             value="{{ old('nome_pai') }}">
                     </div>
+                    <div class="col-12 mt-3 col-md-4">
+                        <label for="data_nascimento">Nascimento</label>
+                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento"
+                            value="{{ old('data_nascimento') }}">
+                    </div>
                 </div>
             </div>
         </div>

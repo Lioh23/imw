@@ -46,7 +46,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'nome_mae' => 'nullable|string|max:255',
             'nome_pai' => 'nullable|string|max:255',
             'telefone_preferencial' => 'required|string|max:15',
-            'ctps' => 'max:20',
+            'ctps' => 'max:20|nullable',
             'titulo_eleitor' => 'required|string|max:20',
             'titulo_eleitor_secao' => 'required|string|max:10',
             'titulo_eleitor_zona' => 'required|string|max:10',
@@ -56,6 +56,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'habilitacao_categoria' =>  'nullable',
             'habilitacao_emissor' =>'nullable',
             'habilitacao_uf' => 'nullable',
+            'data_nascimento' => 'required',
 
         ];
     }
@@ -73,6 +74,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'numero.required' => 'O campo número é obrigatório.',
             'bairro.required' => 'O campo bairro é obrigatório.',
             'cidade.required' => 'O campo cidade é obrigatório.',
+            'data_nascimento.required' => 'O campo data de nascimento é obrigatório.',
             'uf.required' => 'O campo estado é obrigatório.',
 
             'cep.required' => 'O campo CEP é obrigatório.',
