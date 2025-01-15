@@ -3,10 +3,12 @@
 namespace App\Providers;
 
 use App\Models\CongregacoesCongregacao;
+use App\Models\InstituicoesInstituicao;
 use App\Models\PessoaFuncaoministerial;
 use App\Models\PessoasDependente;
 use App\Models\PessoasPrebenda;
 use App\Observers\CongregacoesCongregacaoObserver;
+use App\Observers\InstituicoesObserver;
 use App\Observers\PessoaFuncaoministerialObserver;
 use App\Observers\PessoaPrebendasObserver;
 use App\Observers\PessoasDependenteObserver;
@@ -32,7 +34,8 @@ class EventServiceProvider extends ServiceProvider
         CongregacoesCongregacao::class => [CongregacoesCongregacaoObserver::class],
         PessoasDependente::class => [PessoasDependenteObserver::class],
         PessoaFuncaoministerial::class => [PessoaFuncaoministerialObserver::class],
-        PessoasPrebenda::class => [PessoaPrebendasObserver::class]
+        PessoasPrebenda::class => [PessoaPrebendasObserver::class],
+        InstituicoesInstituicao::class => [InstituicoesObserver::class]
     ];
 
     /**
