@@ -33,8 +33,8 @@ class InstituicoesObserver
             $instituicoesInstituicao->telefone = preg_replace('/[^\d]/', '', $instituicoesInstituicao->telefone);
         }
 
-        if (!empty($instituicoesInstituicao->cnpj)) {
-            $instituicoesInstituicao->cnpj = preg_replace('/[^\d]/', '', trim($instituicoesInstituicao->cnpj));
+        if ($instituicoesInstituicao->cnpj) {
+            $instituicoesInstituicao->cnpj = preg_replace('/[^\d]/', '', $instituicoesInstituicao->cnpj);
         }
     }
 }
