@@ -17,7 +17,7 @@ use App\Http\Requests\UpdateDisciplinarRequest;
 use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Models\NotificacaoTransferencia;
-use App\Services\ServiceDatatable\RolMembroDatatable;
+use App\DataTables\RolMembroDatatable;
 use App\Services\ServiceMembros\DeletarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreVisitanteRequest;
 use App\Http\Requests\UpdateVisitanteRequest;
 use App\Rules\ValidDateOfBirth;
-use App\Services\ServiceDatatable\VisitantesDatatable;
+use App\DataTables\VisitantesDatatable;
 use App\Services\ServiceVisitantes\DeletarVisitanteService;
 use App\Services\ServiceVisitantes\EditarVisitanteService;
 use App\Services\ServiceVisitantes\IdentificaDadosIndexService;

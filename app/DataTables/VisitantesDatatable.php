@@ -1,13 +1,14 @@
 <?php 
 
-namespace App\Services\ServiceDatatable;
+namespace App\DataTables;
 
 use App\Models\MembresiaMembro;
 use App\Traits\Identifiable;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
 
-class VisitantesDatatable extends Datatable implements DatatableInterface
+class VisitantesDatatable extends AbstractDatatable
 {
     use Identifiable;
 
@@ -26,7 +27,7 @@ class VisitantesDatatable extends Datatable implements DatatableInterface
             });
     }
 
-    public function dataTable($queryBuilder, $requestData = [])
+    public function dataTable(Builder $queryBuilder, array $requestData): JsonResponse
     {
         return DataTables::of($queryBuilder)
             ->order(function ($query) use ($requestData) {

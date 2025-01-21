@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SaveCongregacaoRequest;
 use App\Models\CongregacoesCongregacao;
 use App\Services\ServiceCongregacoes\RestaurarCongregacaoService;
-use App\Services\ServiceDatatable\CongregacoesDatatable;
+use App\DataTables\CongregacoesDatatable;
 use App\Traits\Identifiable;
 use App\Traits\LocationUtils;
 use Illuminate\Http\Request;
