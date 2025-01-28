@@ -17,6 +17,6 @@ class MaxPrebendasClerigoCalculator implements MaxPrebendasClerigoCalculatorInte
 			->first()
 			->qtd_prebendas;
 
-        return $maxQtdPrebendas * $prebenda->valor;
+        return (float) $maxQtdPrebendas * (float) $prebenda->valor;
     }
 }
