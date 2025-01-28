@@ -53,6 +53,7 @@ class PrebendasClerigosController extends Controller
     {
         $prebendas = Prebenda::all();
         $pessoa = PessoasPessoa::findOrFail($id);
+        
         return view('prebendas.novo', ['prebendas' => $prebendas, 'pessoa' => $pessoa]);
     }
 
