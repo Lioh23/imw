@@ -102,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('perfil', 'perfil')->name('perfil');
         });
 
-        Route::prefix('perfil')->name('perfil.')->group(function () {
+        Route::prefix('perfis')->name('perfil.')->group(function () {
             Route::get('/', [PerfilController::class, 'index'])->name('index');
             Route::post('/perfil/{id}', [PerfilController::class, 'update'])->name('update');
         });
