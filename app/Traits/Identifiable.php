@@ -17,6 +17,7 @@ use App\Models\MembresiaRolPermanente;
 use App\Models\MembresiaSituacao;
 use App\Models\PessoasPessoa;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Auth;
 
 trait Identifiable
 {
@@ -112,7 +113,7 @@ trait Identifiable
 
     public static function fetchSessionPessoa(): PessoasPessoa
     {
-        return PessoasPessoa::find(session('session_perfil')->perfil_id);
+        return Auth::user()->pessoa;
     }
 
     public static function fetchRolAtual($membroId, $numeroRol)
