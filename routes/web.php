@@ -102,7 +102,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('perfil', 'perfil')->name('perfil');
         });
 
-        Route::prefix('perfil')->name('perfil.')->group(function () {
+        Route::prefix('perfis')->name('perfil.')->group(function () {
             Route::get('/', [PerfilController::class, 'index'])->name('index');
             Route::post('/perfil/{id}', [PerfilController::class, 'update'])->name('update');
         });
@@ -345,14 +345,26 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{clerigoId}/finalizar/{id}', 'finalizar')->name('finalizar');
         });
 
-        Route::prefix('clerigos/perfil')->name('clerigos.perfil.')->controller(ClerigoPerfilController::class)->middleware(['user-clerigo'])->group(function () {
-            Route::prefix('dependentes')->name('dependentes.')->group(function () {
+        Route::prefix('clerigos/perfil')->name('clerigos.perfil.')->group(function () {
+            // dependentes
+            Route::prefix('dependentes')->controller(ClerigoPerfilController::class)->middleware(['user-clerigo'])->name('dependentes.')->group(function () {
                 Route::get('', 'indexDependentes')->name('index');
                 Route::get('novo', 'createDependente')->name('create');
                 Route::post('novo', 'storeDependente')->name('store');
                 Route::get('/{dependente}/editar', 'editDependente')->name('edit');
                 Route::put('/{dependente}/atualizar', 'updateDependente')->name('update');
                 Route::delete('/{dependente}', 'deleteDependente')->name('delete');
+            });
+
+            // prebendas
+            Route::prefix('prebendas')->name('prebendas.')->controller(PrebendaController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('/edit/{id}', 'edit')->name('edit');
+                Route::post('/update/{id}', 'update')->name('update');
+                Route::get('/create', 'create')->name('create');
+                Route::post('/create', 'store')->name('store');
+                Route::delete('/{id}', 'delete')->name('delete');
+                Route::get('/maxPrebenda/{ano}', 'maxPrebenda')->name('maxPrebenda');
             });
         });
 
@@ -366,16 +378,6 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/nova-prebenda', 'storePrebenda')->name('storePrebenda');
             Route::get('/update-prebenda', 'update')->name('update.prebenda');
             Route::get('/valor', 'getValor')->name('valor');
-        });
-
-        Route::prefix('clerigos/perfil/prebendas')->name('clerigos.perfil.prebendas.')->controller(PrebendaController::class)->group(function () {
-            Route::get('/', 'index')->name('index');
-            Route::get('/edit/{id}', 'edit')->name('edit');
-            Route::post('/update/{id}', 'update')->name('update');
-            Route::get('/create', 'create')->name('create');
-            Route::post('/create', 'store')->name('store');
-            Route::delete('/{id}', 'delete')->name('delete');
-            Route::get('/maxPrebenda/{ano}', 'maxPrebenda')->name('maxPrebenda');
         });
 
         //Instituicoes
