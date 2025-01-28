@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Calculators\PrebendasClerigos\MaxPrebendasClerigoCalculator;
 use App\Http\Requests\StorePrebendaRequest;
-use App\Models\PessoaFuncaoministerial;
-use App\Models\PessoaNomeacao;
 use App\Models\PessoasPrebenda;
-use App\Models\Prebenda;
 use App\Services\ServicePrebendas\BuscarDadosPrebendasService;
+use App\Services\ServicePrebendas\CalculateMaxValorPrebendaClerigoService;
 use App\Services\ServicePrebendas\DeletePrebendaService;
 use App\Services\ServicePrebendas\StorePrebendasService;
 use App\Services\ServicePrebendas\UpdatePrebendaService;
@@ -39,23 +38,15 @@ class PrebendaController extends Controller
     public function create()
     {
         $data = app(BuscarDadosPrebendasService::class)->execute();
+
         return view('perfil.clerigos.prebendas.create', $data);
     }
 
     public function maxPrebenda($ano)
     {
-        $pessoa_nomeacoes = PessoaNomeacao::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)->get();
+        $calculator = new MaxPrebendasClerigoCalculator();
+        $valorMaxPrebenda = (new CalculateMaxValorPrebendaClerigoService($calculator))->execute($ano);
 
-        $maiorOrdem = '';
-        foreach ($pessoa_nomeacoes as $nomeacoes_id) {
-            $nomeacao = PessoaFuncaoministerial::where('id', $nomeacoes_id->funcao_ministerial_id)->first();
-            if ($nomeacao && ($maiorOrdem == null || $nomeacao->ordem > $maiorOrdem)) {
-                $maiorOrdem = $nomeacao->ordem;
-            }
-        }
-
-        $prebenda = Prebenda::where('ano', $ano)->first();
-        $valorMaxPrebenda = $prebenda->valor * $maiorOrdem;
         return response()->json(['valor' => $valorMaxPrebenda]);
     }
 
