@@ -2,13 +2,10 @@
 
 namespace App\Http\Requests;
 
+use App\Calculators\PrebendasClerigos\MaxPrebendasClerigoCalculator;
 use App\Rules\PrebendaExistis;
 use App\Rules\TakeMaxPrebendaForAnoAndFuncaoMinisterial;
-use App\Rules\TodaysDeadlineRule;
-use App\Rules\UniqueRolIgrejaRule;
-use App\Rules\ValidDataGreaterThanCreationClerigo;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Support\Facades\Route;
 
 class StorePrebendaRequest extends FormRequest
 {
@@ -33,8 +30,7 @@ class StorePrebendaRequest extends FormRequest
         $valor = $this->input('valor');
         return [
             'ano' => ['required', new PrebendaExistis($ano)],
-            'valor' => ['required', new TakeMaxPrebendaForAnoAndFuncaoMinisterial($ano, $valor) ],
-
+            'valor' => 'required',
         ];
     }
 }

@@ -21,7 +21,7 @@ return new class extends Migration
             $table->date('data_nascimento');
             $table->string('parentesco', 50);
             $table->string('sexo', 1);
-            $table->boolean('declarar_epessoa_idm_irpf');
+            $table->boolean('declarar_em_irpf');
             $table->timestamps();
         });
     }

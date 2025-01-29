@@ -2,11 +2,9 @@
 
 namespace App\Rules;
 
-use App\Models\PessoaFuncaoministerial;
-use App\Models\PessoaNomeacao;
+use App\Calculators\PrebendasClerigos\MaxPrebendasClerigoCalculatorInterface;
 use App\Traits\Identifiable;
 use Illuminate\Contracts\Validation\Rule;
-use App\Models\PessoasPessoa;
 use App\Models\Prebenda;
 
 class TakeMaxPrebendaForAnoAndFuncaoMinisterial implements Rule
@@ -15,11 +13,14 @@ class TakeMaxPrebendaForAnoAndFuncaoMinisterial implements Rule
     protected $valor;
     protected $valorMaxPrebenda;
 
+    private MaxPrebendasClerigoCalculatorInterface $calculator;
 
-    public function __construct($ano, $valor)
+
+    public function __construct(MaxPrebendasClerigoCalculatorInterface $calculator, $ano, $valor)
     {
         $this->ano = $ano;
         $this->valor = $this->parseFloat($valor);
+        $this->calculator = $calculator;
     }
 
     /**
@@ -31,26 +32,14 @@ class TakeMaxPrebendaForAnoAndFuncaoMinisterial implements Rule
      */
     public function passes($attribute, $value)
     {
+        if(!$this->ano) return false;
 
-        $pessoa_nomeacoes = PessoaNomeacao::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)->get();
+        $pessoa = Identifiable::fetchSessionPessoa();
+        $prebenda = Prebenda::where('ano', $this->ano)->where('ativo', 1)->first();
 
-        $maiorOrdem = '';
-        foreach ($pessoa_nomeacoes as $nomeacoes_id) {
-            $nomeacao = PessoaFuncaoministerial::where('id', $nomeacoes_id->funcao_ministerial_id)->first();
-            if ($nomeacao && ($maiorOrdem == null || $nomeacao->ordem > $maiorOrdem)) {
-                $maiorOrdem = $nomeacao->ordem;
-            }
-        }
+        $this->valorMaxPrebenda = $this->calculator->calculate($pessoa, $prebenda);
 
-        if (!$this->ano) {
-            return false;
-        }
-        $prebenda = Prebenda::where('ano', $this->ano)->first();
-
-        $this->valorMaxPrebenda = (float) $prebenda->valor * (float) $maiorOrdem;
-        if ($this->valor <= $this->valorMaxPrebenda) {
-            return true;
-        }
+        return $this->valor <= $this->valorMaxPrebenda ? true : false;
     }
 
     private function parseFloat($value)

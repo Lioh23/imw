@@ -81,6 +81,11 @@ class PessoasPessoa extends Model
         return $this->hasMany(PessoaNomeacao::class, 'pessoa_id', 'id');
     }
 
+    public function nomeacoesAtivas()
+    {
+        return $this->hasMany(PessoaNomeacao::class, 'pessoa_id', 'id')->whereNull('data_termino');
+    }
+
     public function dependentes(): HasMany
     {
         return $this->hasMany(PessoasDependente::class, 'pessoa_id', 'id');

@@ -1,17 +1,18 @@
 <?php 
 
-namespace App\Services\ServiceDatatable;
+namespace App\DataTables;
 
 use App\Models\CongregacoesCongregacao;
 use App\Traits\Identifiable;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
 
-class CongregacoesDatatable extends Datatable implements DatatableInterface
+class CongregacoesDatatable extends AbstractDatatable
 {
     use Identifiable;
 
-    public function getQueryBuilder($parameters = []): Builder
+    public function getQueryBuilder(array $parameters): Builder
     {
         return CongregacoesCongregacao::query()
             ->where('instituicao_id', Identifiable::fetchSessionIgrejaLocal()->id)
@@ -23,7 +24,7 @@ class CongregacoesDatatable extends Datatable implements DatatableInterface
             ->withTrashed();
     }
 
-    public function dataTable($queryBuilder, $requestData = [])
+    public function dataTable(Builder $queryBuilder, array $requestData): JsonResponse
     {
         return DataTables::of($queryBuilder)
             ->order(function ($query) use ($requestData) {

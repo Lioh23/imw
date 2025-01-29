@@ -14,7 +14,6 @@ class BuscarDadosPrebendasService
             ->orderBy('ordem', 'desc')
             ->get();
         $prebendas = Prebenda::where('ativo', 1)->orderBy('ano', 'desc')->get();
-        $prebenda_anos = Prebenda::all();
 
         return [
             'funcoes' => $funcoes,

@@ -1,17 +1,18 @@
 <?php 
 
-namespace App\Services\ServiceDatatable;
+namespace App\DataTables;
 
 use App\Models\RolMembro;
 use App\Traits\Identifiable;
 use Yajra\DataTables\Facades\DataTables;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 
-class RolMembroDatatable extends Datatable implements DatatableInterface
+class RolMembroDatatable extends AbstractDatatable
 {
     use Identifiable;
 
-    public function getQueryBuilder($parameters = []): Builder
+    public function getQueryBuilder($parameters): Builder
     {
         return RolMembro::with('notificacaoTransferenciaAtiva.igrejaDestino')
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
@@ -32,7 +33,7 @@ class RolMembroDatatable extends Datatable implements DatatableInterface
             });
     }
 
-    public function dataTable($queryBuilder, $requestData = [])
+    public function dataTable(Builder $queryBuilder, array $requestData): JsonResponse
     {
         return DataTables::of($queryBuilder)
             ->order(function ($query) use ($requestData) {

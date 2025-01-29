@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Exceptions\MembroNotFoundException;
 use App\Http\Requests\StoreCongregadoRequest;
 use App\Models\MembresiaMembro;
-use App\Services\ServiceDatatable\CongregadosDatatable;
+use App\DataTables\CongregadosDatatable;
 use App\Services\ServiceMembrosGeral\DeletarMembroService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;

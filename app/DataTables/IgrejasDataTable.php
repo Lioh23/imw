@@ -1,17 +1,18 @@
 <?php 
 
-namespace App\Services\ServiceDatatable;
+namespace App\DataTables;
 
 use App\Models\VwIgreja;
 use App\Traits\Identifiable;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Http\JsonResponse;
 use Yajra\DataTables\Facades\DataTables;
 
-class IgrejasDataTable extends Datatable implements DatatableInterface
+class IgrejasDataTable extends AbstractDatatable
 {
     use Identifiable;
 
-    public function getQueryBuilder($parameters = []):  Builder
+    protected function getQueryBuilder(array $parameters):  Builder
     {
         return VwIgreja::where('distrito_id', Identifiable::fetchtSessionDistrito()->id)
             ->when(isset($parameters['search']) && trim($parameters['search']), function ($query) use ($parameters) {
@@ -19,7 +20,7 @@ class IgrejasDataTable extends Datatable implements DatatableInterface
             });
     }
 
-    public function dataTable($queryBuilder, $requestData = [])
+    protected function dataTable(Builder $queryBuilder, array $requestData): JsonResponse
     {
         return DataTables::of($queryBuilder)
             ->order(function ($query) use ($requestData) {
