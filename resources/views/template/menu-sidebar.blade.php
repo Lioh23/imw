@@ -597,6 +597,9 @@
                         <li>
                             <a href="{{ route('clerigos.perfil.prebendas.index') }}"> Prebendas</a>
                         </li>
+                        <li>
+                            <a href="{{ route('clerigos.perfil.impostoDeRenda.index') }}"> Imposto de Renda</a>
+                        </li>
                     @endif
                 </ul>
              </li>
