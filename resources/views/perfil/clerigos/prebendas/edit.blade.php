@@ -63,13 +63,10 @@
                         <div class="form-group mb-4 col-sm-12 col-md-6">
                             <label class="control-label">* Ano</label>
                             <select name="ano" id="ano" class="form-control @error('ano') is-invalid @enderror">
-                                <option value="">Seleciona o Ano</option>
-                                @foreach ($prebendas as $prebenda)
                                     <option value="{{ $prebenda->ano }}"
                                         {{ old('ano', $prebenda->ano) == $prebenda->ano ? 'selected' : '' }}>
                                         {{ $prebenda->ano }}
                                     </option>
-                                @endforeach
                             </select>
                             @error('ano')
                                 <div class="invalid-feedback">{{ $message }}</div>

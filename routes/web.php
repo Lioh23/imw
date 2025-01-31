@@ -368,9 +368,10 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/maxPrebenda/{ano}', 'maxPrebenda')->name('maxPrebenda');
             });
 
+            // imposto de renda
             Route::prefix('imposto-de-renda')->name('impostoDeRenda.')->controller(ImpostoDeRendaController::class)->group(function () {
                 Route::get('/', 'index')->name('index');
-                Route::get('load-html/{prebenda}', 'loadHTML')->name('loadHTML');
+                Route::get('load-html/{prebendaId}', 'loadHTML')->name('loadHTML');
             });
         });
 

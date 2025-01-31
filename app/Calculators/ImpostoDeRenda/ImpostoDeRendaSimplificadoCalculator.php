@@ -38,8 +38,8 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
 
         $totalDeducoes = $deducoes->valor * $qtdeDependentes;
 
-        $this->responseIrDto->valorDedutivel = $totalDeducoes > $deducaoSimplificada->valor 
-            ? $totalDeducoes 
+        $this->responseIrDto->valorDedutivel = $totalDeducoes > $deducaoSimplificada->valor
+            ? $totalDeducoes
             : $deducaoSimplificada->valor;
 
         $this->responseIrDto->valorBase = $this->responseIrDto->rendimentosTributaveis - $this->responseIrDto->valorDedutivel;
@@ -48,7 +48,7 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
     private function handleIrCalculation(int $ano): void
     {
         $faixas = TabelaIr::where('ano', $ano)->get();
-        
+
         $valorBaseADeduzir = $this->responseIrDto->valorBase;
         $somaImposto = 0;
 
@@ -64,11 +64,11 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
         $this->responseIrDto->valorImposto = $somaImposto;
     }
 
-    private function handleValorImposto($valorBaseADeduzir, TabelaIr $faixa) 
+    private function handleValorImposto($valorBaseADeduzir, TabelaIr $faixa)
     {
         if ($valorBaseADeduzir <= 0 || $faixa->faixa == 1) return 0;
 
-        return $valorBaseADeduzir < $faixa->deducao_faixa 
+        return $valorBaseADeduzir < $faixa->deducao_faixa
             ? round($valorBaseADeduzir * ($faixa->aliquota / 100), 4)
             : round($faixa->deducao_faixa * ($faixa->aliquota / 100), 4);
     }
@@ -88,7 +88,7 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
         } else if (!$faixa->valor_max) {
             $valorMinimo = $this->formatCurrencyBRL($faixa->valor_min, true);
             $dto->textBaseCalculo = "$valorMinimo ou maior";
-        
+
         } else {
             $valorMaximo = $this->formatCurrencyBRL($faixa->valor_max, true);
             $valorMinimo = $this->formatCurrencyBRL($faixa->valor_min, true);

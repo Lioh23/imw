@@ -2,12 +2,10 @@
 
 namespace App\Http\Requests;
 
-use App\Calculators\PrebendasClerigos\MaxPrebendasClerigoCalculator;
-use App\Rules\PrebendaExistis;
-use App\Rules\TakeMaxPrebendaForAnoAndFuncaoMinisterial;
+
 use Illuminate\Foundation\Http\FormRequest;
 
-class StorePrebendaRequest extends FormRequest
+class UpdatePrebendaRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -31,7 +29,7 @@ class StorePrebendaRequest extends FormRequest
 
         return [
 
-            'ano' => ['required', new PrebendaExistis($ano)],
+            'ano' => ['required'],
             'valor' => 'required',
         ];
     }

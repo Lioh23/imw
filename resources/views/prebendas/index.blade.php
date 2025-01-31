@@ -127,10 +127,8 @@
                                                 <tr data-qtd-prebendas="{{ $funcao->qtd_prebendas }}">
                                                     <td>{{ $funcao->funcao }}</td>
                                                     <td>{{ $funcao->ordem }}</td>
-                                                    <td class="text-center">{{ number_format(
-     $funcao->qtd_prebendas,
-    $decimals = 1,
-     $decimal_separator = ",",) ?? 'Não informado' }}
+                                                    <td class="text-center">
+                                                        {{ number_format($funcao->qtd_prebendas, $decimals = 1, $decimal_separator = ',') ?? 'Não informado' }}
                                                     </td>
                                                     <td class="text-center valor-calculado"> {{ $funcao->valor_calculado }}
                                                     </td>
@@ -172,7 +170,7 @@
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script>
-            $('#valor').mask('000.000.000.000,00', {
+        $('#valor').mask('000.000.000.000,00', {
             reverse: true
         }).on('change', function() {
             if (!$(this).val().startsWith('R$ ')) {
@@ -200,7 +198,7 @@
                         // Atualiza a tabela com o valor calculado para cada função
                         $('tr').each(function() {
                             const qtdPrebendas = $(this).data(
-                            'qtd-prebendas'); // Pega a quantidade de prebendas da linha
+                                'qtd-prebendas'); // Pega a quantidade de prebendas da linha
                             if (qtdPrebendas) {
                                 const valorCalculado = valorPrebenda * qtdPrebendas;
 
