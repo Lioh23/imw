@@ -2,7 +2,7 @@
     <blockquote class="blockquote">
         <div class="row mb-4">
             <div class="col-xl-3">
-                <label for="telefone_preferencial">Telefone</label>
+                <label for="telefone_preferencial">Celular*</label>
                 <input type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror"
                     id="telefone_preferencial" name="telefone_preferencial" value="{{ old('telefone_preferencial') }}">
                 @error('telefone_preferencial')
@@ -11,7 +11,7 @@
             </div>
 
             <div class="col-xl-3">
-                <label for="telefone_alternativo">Celular*</label>
+                <label for="telefone_alternativo">Telefone</label>
                 <input type="text" class="form-control @error('telefone_alternativo') is-invalid @enderror" id="telefone_alternativo"
                     name="telefone_alternativo" value="{{ old('telefone_alternativo') }}" >
                 @error('telefone_alternativo')
