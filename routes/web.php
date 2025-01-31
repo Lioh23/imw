@@ -289,7 +289,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Grupo de rotas para 'usuarios'
-        Route::prefix('usuarios')->name('usuarios.')->group(function () {
+        Route::prefix('users')->name('usuarios.')->group(function () {
             Route::get('/', [UsuarioController::class, 'index'])->name('index')->middleware(['seguranca:usuarios-index']);
             Route::get('/novo', [UsuarioController::class, 'novo'])->name('novo')->middleware(['seguranca:usuarios-cadastrar']);
             Route::post('/update/{id}', [UsuarioController::class, 'update'])->name('update')->middleware(['seguranca:usuarios-atualizar']);

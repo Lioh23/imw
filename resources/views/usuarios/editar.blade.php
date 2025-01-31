@@ -8,9 +8,9 @@
 
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
-        ['text' => 'Segurança', 'url' => '/', 'active' => false],
-        ['text' => 'Usuarios', 'url' => '/usuarios/', 'active' => false],
-        ['text' => 'Editar', 'url' => '/usuarios/editar/' . $user->id, 'active' => true],
+        ['text' => 'Home', 'url' => '/', 'active' => false],
+        ['text' => 'Usuários', 'url' => route('usuarios.index'), 'active' => false],
+        ['text' => 'Editar', 'url' => '', 'active' => true],
     ]">
     </x-breadcrumb>
 @endsection
