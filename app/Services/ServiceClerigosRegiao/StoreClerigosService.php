@@ -35,6 +35,7 @@ class StoreClerigosService
             'nome_pai' => $request['nome_pai'],
             'data_nascimento' => $request['data_nascimento'],
             'telefone_preferencial' => $request['telefone_preferencial'],
+            'telefone_alternativo' => $request['telefone_alternativo'],
             'habilitacao' => $request->input('habilitacao'),
             'habilitacao_categoria' => $request->input('habilitacao_categoria'),
             'habilitacao_emissor' => $request->input('habilitacao_emissor'),

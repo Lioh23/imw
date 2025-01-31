@@ -21,6 +21,9 @@ class ClerigosObserver
         if ($pessoasPessoas->telefone_preferencial) {
             $pessoasPessoas->telefone_preferencial = preg_replace('/[^\d]/', '', $pessoasPessoas->telefone_preferencial);
         }
+        if ($pessoasPessoas->telefone_alternativo) {
+            $pessoasPessoas->telefone_alternativo = preg_replace('/[^\d]/', '', $pessoasPessoas->telefone_alternativo);
+        }
 
         if ($pessoasPessoas->celular) {
             $pessoasPessoas->celular = preg_replace('/[^\d]/', '', $pessoasPessoas->celular);
@@ -38,9 +41,14 @@ class ClerigosObserver
             $pessoasPessoas->cpf = preg_replace('/[^\d]/', '', $pessoasPessoas->cpf);
         }
 
+
         if ($pessoasPessoas->telefone_preferencial) {
             $pessoasPessoas->telefone_preferencial = preg_replace('/[^\d]/', '', $pessoasPessoas->telefone_preferencial);
         }
+        if ($pessoasPessoas->telefone_alternativo) {
+            $pessoasPessoas->telefone_alternativo = preg_replace('/[^\d]/', '', $pessoasPessoas->telefone_alternativo);
+        }
+
 
         if ($pessoasPessoas->celular) {
             $pessoasPessoas->celular = preg_replace('/[^\d]/', '', $pessoasPessoas->celular);

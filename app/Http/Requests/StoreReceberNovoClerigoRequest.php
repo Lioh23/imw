@@ -31,7 +31,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'identidade' => 'required|string|max:20',
             'orgao_emissor' => 'required|string|max:50',
             'data_emissao' => 'required|date',
-            'cpf' => 'required|string', // Supondo que você tenha uma regra de validação para CPF
+            'cpf' => 'required|string',
             'endereco' => 'required|string|max:255',
             'numero' => 'required|integer',
             'complemento' => 'nullable|string|max:50',
@@ -39,13 +39,14 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'cidade' => 'required|string|max:100',
             'uf' => 'required|string|max:2',
             'pais' => '',
-            'cep' => 'required|string', // Se o CEP for de 8 caracteres
+            'cep' => 'required|string',
             'email' => 'required|email|max:255',
             'estado_civil' => 'required|string|max:20',
-            'sexo' => 'required|string|in:M,F', // M ou F
+            'sexo' => 'required|string|in:M,F',
             'nome_mae' => 'nullable|string|max:255',
             'nome_pai' => 'nullable|string|max:255',
             'telefone_preferencial' => 'required|string|max:15',
+            'telefone_alternativo' => 'required|string|max:15',
             'ctps' => 'max:20|nullable',
             'titulo_eleitor' => 'required|string|max:20',
             'titulo_eleitor_secao' => 'required|string|max:10',
