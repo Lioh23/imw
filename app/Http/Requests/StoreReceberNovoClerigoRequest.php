@@ -46,7 +46,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'nome_mae' => 'nullable|string|max:255',
             'nome_pai' => 'nullable|string|max:255',
             'telefone_preferencial' => 'required|string|max:15',
-            'telefone_alternativo' => 'string|max:15',
+            'telefone_alternativo' => 'nullable',
             'ctps' => 'max:20|nullable',
             'titulo_eleitor' => 'required|string|max:20',
             'titulo_eleitor_secao' => 'required|string|max:10',
@@ -84,11 +84,17 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'regiao_id.required' => 'O campo região é obrigatório.',
             'sexo.required' => 'O campo sexo é obrigatório.',
             'escolaridade.required' => 'O campo escolaridade é obrigatório.',
-            'telefone_preferencial.required' => 'O campo telefone preferencial é obrigatório.',
+            'telefone_preferencial.required' => 'O campo celular é obrigatório.',
             'titulo_eleitor.required' => 'O campo título de eleitor é obrigatório.',
             'titulo_eleitor_secao.required' => 'O campo seção do título de eleitor é obrigatório.',
             'titulo_eleitor_zona.required' => 'O campo zona do título de eleitor é obrigatório.',
             'formacao_id.required' => 'O campo formação é obrigatório.',
+        ];
+    }
+    public function attributes()
+    {
+        return [
+            'telefone_preferencial' => 'celular',
         ];
     }
 }
