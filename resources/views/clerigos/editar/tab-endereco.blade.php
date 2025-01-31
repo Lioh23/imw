@@ -12,14 +12,14 @@
                 @enderror
             </div>
 
-            <div class="col-xl-3">
+            {{-- <div class="col-xl-3">
                 <label for="celular">Celular*</label>
                 <input type="text" class="form-control @error('celular') is-invalid @enderror" id="celular"
                     name="celular" value="{{ old('celular', $clerigo->celular) }}" >
                 @error('celular')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
-            </div>
+            </div> --}}
             <div class="col-xl-3">
                 <label for="pais">País</label>
                 <select class="form-control @error('pais') is-invalid @enderror" id="pais" name="pais">
