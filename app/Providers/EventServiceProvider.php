@@ -6,7 +6,9 @@ use App\Models\CongregacoesCongregacao;
 use App\Models\InstituicoesInstituicao;
 use App\Models\PessoaFuncaoministerial;
 use App\Models\PessoasDependente;
+use App\Models\PessoasPessoa;
 use App\Models\PessoasPrebenda;
+use App\Observers\ClerigosObserver;
 use App\Observers\CongregacoesCongregacaoObserver;
 use App\Observers\InstituicoesObserver;
 use App\Observers\PessoaFuncaoministerialObserver;
@@ -35,7 +37,8 @@ class EventServiceProvider extends ServiceProvider
         PessoasDependente::class => [PessoasDependenteObserver::class],
         PessoaFuncaoministerial::class => [PessoaFuncaoministerialObserver::class],
         PessoasPrebenda::class => [PessoaPrebendasObserver::class],
-        InstituicoesInstituicao::class => [InstituicoesObserver::class]
+        InstituicoesInstituicao::class => [InstituicoesObserver::class],
+        PessoasPessoa::class => [ClerigosObserver::class]
     ];
 
     /**
