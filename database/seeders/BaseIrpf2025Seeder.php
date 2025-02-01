@@ -19,7 +19,7 @@ class BaseIrpf2025Seeder extends Seeder
             [ 'ano' => 2025, 'faixa' => 2, 'deducao_faixa' => 567.45,  'valor_min' => 2259.21, 'valor_max' => 2828.65, 'aliquota' => 7.5,  'deducao' => 169.44 ],
             [ 'ano' => 2025, 'faixa' => 3, 'deducao_faixa' => 924.40,  'valor_min' => 2828.66, 'valor_max' => 3751.05, 'aliquota' => 15,   'deducao' => 381.44 ],
             [ 'ano' => 2025, 'faixa' => 4, 'deducao_faixa' => 913.63,  'valor_min' => 3751.06, 'valor_max' => 4664.08, 'aliquota' => 22.5, 'deducao' => 662.77 ],
-            [ 'ano' => 2025, 'faixa' => 5, 'deducao_faixa' => 2770.52, 'valor_min' => 4664.09, 'valor_max' => null,    'aliquota' => 22.5, 'deducao' => 896    ],
+            [ 'ano' => 2025, 'faixa' => 5, 'deducao_faixa' => 2770.52, 'valor_min' => 4664.09, 'valor_max' => null,    'aliquota' => 27.5, 'deducao' => 896    ],
         ];
 
         foreach ($faixas as $faixa) {

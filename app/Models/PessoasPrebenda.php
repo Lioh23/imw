@@ -2,12 +2,13 @@
 
 namespace App\Models;
 
+use App\Traits\FormatterUtils;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class PessoasPrebenda extends Model
 {
-    use HasFactory;
+    use HasFactory, FormatterUtils;
 
     protected $table = 'pessoas_prebendas';
 
@@ -33,5 +34,12 @@ class PessoasPrebenda extends Model
             'pessoa_id',
             'id'
         );
+    }
+
+    public function getValorFormatadoAttribute()
+    {
+        $valor = $this->valor ?? 0;
+        return $this->formatCurrencyBRL($valor, true);
+
     }
 }

@@ -15,8 +15,20 @@ class CalculaImpostoDeRendaService
 {
     public function __construct(private ImpostoDeRendaCalculatorInterface $irCalculator) {}
 
-    public function execute($prebenda): ResponseIrDto
+    public function execute(PessoasPrebenda $prebenda): ResponseIrDto
     {
+
+
+        if (!$prebenda) {
+            throw new \Exception('Prebenda não encontrada.');
+        }
+
+        $TabelaIr = TabelaIr::where('ano', $prebenda->ano)->get();
+        $DeducaoIr = DeducaoIr::where('ano', $prebenda->ano)->where('simplificado', true)->first();
+
+        if ($TabelaIr->isEmpty() && !$DeducaoIr) {
+            throw new \Exception('A prebenda de ' . $prebenda->ano . ' ainda não esta parametrizada no sistema ');
+        };
 
 
         $qtdDependentes = PessoasDependente::where('pessoa_id', $prebenda->pessoa_id)
