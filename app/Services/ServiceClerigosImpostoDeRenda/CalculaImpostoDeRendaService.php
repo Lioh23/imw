@@ -32,7 +32,7 @@ class CalculaImpostoDeRendaService
 
 
         $qtdDependentes = PessoasDependente::where('pessoa_id', $prebenda->pessoa_id)
-            ->where('declarar_epessoa_idm_irpf', 1)
+            ->where('declarar_em_irpf', 1)
             ->count();
 
 
