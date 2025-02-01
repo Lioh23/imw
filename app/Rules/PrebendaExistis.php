@@ -28,8 +28,8 @@ class PrebendaExistis implements Rule
      */
     public function passes($attribute, $value)
     {
-        $prebenda = PessoasPrebenda::where('ano', $this->ano)->where('id', Identifiable::fetchSessionPessoa()->id)->first();
 
+        $prebenda = PessoasPrebenda::where('ano', $this->ano)->where('pessoa_id', Identifiable::fetchSessionPessoa()->id)->first();
         if (!$prebenda) {
             return true;
         }

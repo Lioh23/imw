@@ -16,6 +16,7 @@ use App\Http\Controllers\HandleInstituicoesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IgrejasController;
 use App\Http\Controllers\IgrejasRegiaoController;
+use App\Http\Controllers\ImpostoDeRendaController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\InstituicaoRegiaoController;
 use App\Http\Controllers\InstituicaoRegiaoDistritosController;
@@ -365,6 +366,12 @@ Route::middleware(['auth'])->group(function () {
                 Route::post('/create', 'store')->name('store');
                 Route::delete('/{id}', 'delete')->name('delete');
                 Route::get('/maxPrebenda/{ano}', 'maxPrebenda')->name('maxPrebenda');
+            });
+
+            // imposto de renda
+            Route::prefix('imposto-de-renda')->name('impostoDeRenda.')->controller(ImpostoDeRendaController::class)->group(function () {
+                Route::get('/', 'index')->name('index');
+                Route::get('load-html/{prebenda}', 'loadHTML')->name('loadHTML');
             });
         });
 

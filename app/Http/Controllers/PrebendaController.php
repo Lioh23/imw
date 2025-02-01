@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Calculators\PrebendasClerigos\MaxPrebendasClerigoCalculator;
+use App\Http\Requests\CreatePrebendaRequest;
 use App\Http\Requests\StorePrebendaRequest;
+use App\Http\Requests\UpdatePrebendaRequest;
 use App\Models\PessoasPrebenda;
 use App\Services\ServicePrebendas\BuscarDadosPrebendasService;
 use App\Services\ServicePrebendas\CalculateMaxValorPrebendaClerigoService;
@@ -26,7 +28,7 @@ class PrebendaController extends Controller
         $prebendas = PessoasPrebenda::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)
             ->orderBy('ano', 'desc')
             ->get();
-        
+
         return view("perfil.clerigos.prebendas.index", ['prebendas' => $prebendas]);
     }
 
@@ -94,7 +96,7 @@ class PrebendaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(StorePrebendaRequest $request, $id)
+    public function update(UpdatePrebendaRequest $request, $id)
     {
         app(UpdatePrebendaService::class)->execute($request, $id);
 
