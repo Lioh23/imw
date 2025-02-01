@@ -8,12 +8,14 @@ use App\Models\PessoaFuncaoministerial;
 use App\Models\PessoasDependente;
 use App\Models\PessoasPessoa;
 use App\Models\PessoasPrebenda;
+use App\Models\Prebenda;
 use App\Observers\ClerigosObserver;
 use App\Observers\CongregacoesCongregacaoObserver;
 use App\Observers\InstituicoesObserver;
 use App\Observers\PessoaFuncaoministerialObserver;
 use App\Observers\PessoaPrebendasObserver;
 use App\Observers\PessoasDependenteObserver;
+use App\Observers\PrebendaObserver;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -38,7 +40,8 @@ class EventServiceProvider extends ServiceProvider
         PessoaFuncaoministerial::class => [PessoaFuncaoministerialObserver::class],
         PessoasPrebenda::class => [PessoaPrebendasObserver::class],
         InstituicoesInstituicao::class => [InstituicoesObserver::class],
-        PessoasPessoa::class => [ClerigosObserver::class]
+        PessoasPessoa::class => [ClerigosObserver::class],
+        Prebenda::class => [PrebendaObserver::class],
     ];
 
     /**
