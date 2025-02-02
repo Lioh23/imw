@@ -35,4 +35,13 @@ class StorePrebendaRequest extends FormRequest
             'valor' => 'required',
         ];
     }
+
+
+    public function messages()
+    {
+        return [
+            'ano.required' => 'Você precisa informar o ano da prebenda.',
+            'valor.required' => 'O valor da prebenda deve ser informado.',
+        ];
+    }
 }

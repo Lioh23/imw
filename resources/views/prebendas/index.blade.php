@@ -45,7 +45,7 @@
                     </div>
                     <!--/.bg-holder-->
                     <div class="card-body">
-                        <form method="GET" action="{{ route('clerigos.prebendas.update.prebenda') }}">
+                        <form method="POST" action="{{ route('clerigos.prebendas.updatePrebenda') }}">
                             @csrf
 
                             <div class="row mb-4">

@@ -4,7 +4,7 @@
             <div class="col-12 mt-3 col-md-4">
                 <label for="pispasep">Número do PIS/PASEP*</label>
                 <input type="text" class="form-control @error('pispasep') is-invalid @enderror" id="pispasep"
-                    name="pispasep" value="{{ old('pispasep') }}" >
+                    name="pispasep" value="{{ old('pispasep') }}" maxlength="11" >
                 @error('pispasep')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror

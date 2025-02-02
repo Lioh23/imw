@@ -73,7 +73,8 @@ class PessoasPessoa extends Model
         'isento_pis',
         'isento_reservista',
         'isento_titulo_eleitor',
-        'formacao_id'
+        'formacao_id',
+        'categoria'
     ];
 
     public function nomeacoes()

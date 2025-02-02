@@ -9,17 +9,20 @@ class PrebendaObserver
 
     public function creating(Prebenda $prebenda)
     {
-        if ($prebenda->valor) {
-            $valor = str_replace(['R$', '.'], '', $prebenda->valor);
-            $prebenda->valor = str_replace(',', '.', $valor);
+        if (!empty($prebenda->valor)) {
+            $valor = preg_replace('/[^0-9,]/', '', $prebenda->valor);
+            $valor = str_replace(',', '.', $valor);
+            $prebenda->valor = (float) $valor;
         }
     }
 
-    public function updating(Prebenda $prebenda)
+    public function updating(Prebenda $prebenda): void
     {
-        if ($prebenda->valor) {
-            $valor = str_replace(['R$', '.'], '', $prebenda->valor);
-            $prebenda->valor = str_replace(',', '.', $valor);
+
+        if (!empty($prebenda->valor)) {
+            $valor = preg_replace('/[^0-9,]/', '', $prebenda->valor);
+            $valor = str_replace(',', '.', $valor);
+            $prebenda->valor = (float) $valor;
         }
     }
 }

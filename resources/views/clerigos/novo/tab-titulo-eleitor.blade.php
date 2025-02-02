@@ -15,7 +15,7 @@
                 <label for="titulo_eleitor_zona">Zona*</label>
                 <input type="text" class="form-control @error('titulo_eleitor_zona') is-invalid @enderror"
                     id="titulo_eleitor_zona" name="titulo_eleitor_zona"
-                    value="{{ old('titulo_eleitor_zona') }}" >
+                    value="{{ old('titulo_eleitor_zona') }}"  maxlength="5">
                 @error('titulo_eleitor_zona')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -25,7 +25,7 @@
                 <label for="titulo_eleitor_secao">Seção*</label>
                 <input type="text" class="form-control @error('titulo_eleitor_secao') is-invalid @enderror"
                     id="titulo_eleitor_secao" name="titulo_eleitor_secao"
-                    value="{{ old('titulo_eleitor_secao') }}" >
+                    value="{{ old('titulo_eleitor_secao') }}" maxlength="5" >
                 @error('titulo_eleitor_secao')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror

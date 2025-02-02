@@ -10,6 +10,7 @@ class UpdateClerigosService
     {
         $clerigo = PessoasPessoa::findOrFail($id);
 
+
         $clerigo->update([
             'nome' => $request->input('nome'),
             'identidade' => $request->input('identidade'),
@@ -50,5 +51,6 @@ class UpdateClerigosService
             'titulo_eleitor_zona' => $request->input('titulo_eleitor_zona', ''),
             'categoria' => $request->input('categoria', ''),
         ]);
+        
     }
 }

@@ -3,7 +3,8 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Clérigos', 'url' => '/clerigos', 'active' => false],
-        ['text' => 'Prebenda', 'url' => '#', 'active' => true],
+        ['text' => 'Prebendas', 'url' => '/clerigos/prebendas', 'active' => false],
+        ['text' => 'Nova Prebenda', 'url' => '#', 'active' => true],
     ]">
     </x-breadcrumb>
 @endsection
@@ -39,8 +40,8 @@
             <div class="row">
                 <div class="col-12 mt-3 col-md-4">
                     <label for="ano">* Ano</label>
-                    <input class="form-control" type="number" id="ano" name="ano" value="{{ old('ano') }}"
-                        @error('ano') is-invalid @enderror>
+                    <input class="form-control @error('ano') is-invalid @enderror" type="number" id="ano"
+                        name="ano" value="{{ old('ano') }}">
 
                     @error('ano')
                         <span class="help-block text-danger">{{ $message }}</span>
@@ -49,8 +50,8 @@
 
                 <div class="col-12 mt-3 col-md-4">
                     <label for="valor">* Valor</label>
-                    <input class="form-control" type="text" id="valor" name="valor" step="0.01"
-                        value="{{ old('valor') }}" @error('valor') is-invalid @enderror>
+                    <input class="form-control @error('valor') is-invalid @enderror" type="text" id="valor"
+                        name="valor" step="0.01" value="{{ old('valor') }}">
                     @error('valor')
                         <span class="help-block text-danger">{{ $message }}</span>
                     @enderror

@@ -4,7 +4,7 @@
             <div class="col-12 mt-3 col-md-4">
                 <label for="identidade">Identidade*</label>
                 <input type="text" class="form-control @error('identidade') is-invalid @enderror" id="identidade" name="identidade"
-                    value="{{ old('identidade', $clerigo->identidade) }}" >
+                    value="{{ old('identidade', $clerigo->identidade) }}" maxlength="30">
                 @error('identidade')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -22,7 +22,7 @@
             <div class="col-12 mt-3 col-md-4">
                 <label for="orgao_emissor">Órgão Emissor*</label>
                 <input type="text" class="form-control @error('orgao_emissor') is-invalid @enderror" id="orgao_emissor" name="orgao_emissor"
-                    value="{{ old('orgao_emissor', $clerigo->orgao_emissor) }}" >
+                    value="{{ old('orgao_emissor', $clerigo->orgao_emissor) }}" maxlength="50" >
                 @error('orgao_emissor')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror

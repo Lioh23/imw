@@ -61,7 +61,7 @@
             <div class="col-xl-4">
                 <label for="complemento">Complemento</label>
                 <input type="text" class="form-control @error('complemento') is-invalid @enderror" id="complemento"
-                    name="complemento" value="{{ old('complemento') }}" maxlength="100">
+                    name="complemento" value="{{ old('complemento') }}" maxlength="30">
                 @error('complemento')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror

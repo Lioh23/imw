@@ -380,10 +380,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/editar', 'edit')->name('edit');
             Route::post('/atualizar/{id}', 'update')->name('update');
             Route::delete('/{id}', 'delete')->name('delete');
-
             Route::get('/nova-prebenda', 'createPrebenda')->name('createPrebenda');
             Route::post('/nova-prebenda', 'storePrebenda')->name('storePrebenda');
-            Route::get('/update-prebenda', 'update')->name('update.prebenda');
+            Route::post('/update-prebenda', 'updatePrebenda')->name('updatePrebenda');
+            Route::post('/', 'update')->name('update.prebenda');
             Route::get('/valor', 'getValor')->name('valor');
         });
 

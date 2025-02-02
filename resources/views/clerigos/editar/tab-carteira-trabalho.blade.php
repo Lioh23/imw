@@ -4,7 +4,7 @@
             <div class="col-12 mt-3 col-md-4">
                 <label for="ctps">Número da CTPS</label>
                 <input type="text" class="form-control @error('ctps') is-invalid @enderror" id="ctps"
-                    name="ctps" value="{{ old('ctps', $clerigo->ctps) }}" >
+                    name="ctps" value="{{ old('ctps', $clerigo->ctps) }}" maxlength="10">
                 @error('ctps')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror

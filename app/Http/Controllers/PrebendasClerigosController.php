@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StorePrebendaClerigosRequest;
 use App\Http\Requests\UpdateQtdPrebendasRequest;
 use App\Models\PessoaFuncaoministerial;
 use App\Models\PessoaNomeacao;
@@ -19,7 +20,7 @@ class PrebendasClerigosController extends Controller
     public function index()
     {
         $data = app(IdentificaDadosIndexService::class)->execute();
-        
+
         return view('prebendas.index', $data);
     }
 
@@ -53,7 +54,7 @@ class PrebendasClerigosController extends Controller
     {
         $prebendas = Prebenda::all();
         $pessoa = PessoasPessoa::findOrFail($id);
-        
+
         return view('prebendas.novo', ['prebendas' => $prebendas, 'pessoa' => $pessoa]);
     }
 
@@ -108,7 +109,7 @@ class PrebendasClerigosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function storePrebenda(Request $request)
+    public function storePrebenda(StorePrebendaClerigosRequest $request)
     {
         app(StorePrebendasClerigosService::class)->execute($request);
         return redirect()->route('clerigos.prebendas.index')->with('success', 'Prebenda criada com sucesso');

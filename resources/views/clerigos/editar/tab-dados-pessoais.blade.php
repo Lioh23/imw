@@ -31,7 +31,7 @@
                     <div class="col-xl-3">
                         <label for="cpf">* CPF</label>
                         <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf"
-                            name="cpf" value="{{ old('cpf', $clerigo->cpf) }}" maxlength="100">
+                            name="cpf" value="{{ old('cpf', $clerigo->cpf) }}" maxlength="18">
                         @error('cpf')
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
@@ -40,7 +40,7 @@
                     <div class="col-xl-4">
                         <label for="email ">Email</label>
                         <input type="email" class="form-control  @error('email') is-invalid @enderror" id="email"
-                            name="email" value="{{ old('email', $clerigo->email) }}">
+                            name="email" value="{{ old('email', $clerigo->email) }}" maxlength="255">
                     </div>
                     @error('email')
                         <span class="help-block text-danger">{{ $message }}</span>
@@ -49,10 +49,10 @@
                 </div>
                 <div class="row mb-4">
                     <div class="col-xl-3">
-                        <label for="categoria">* Categoaria</label>
+                        <label for="categoria">* Categoria</label>
                         <select class="form-control  @error('categoria') is-invalid @enderror" type="text"
                             id="categoria" name="categoria">
-                            <option value="missionaria" {{ $clerigo->categoria == 'missionaria' ? 'selected' : '' }}>
+                            <option value="missionária" {{ $clerigo->categoria == 'missionária' ? 'selected' : '' }}>
                                 Missionária</option>
                             <option value="pastor" {{ $clerigo->categoria == 'pastor' ? 'selected' : '' }}>Pastor
                             </option>
@@ -99,7 +99,7 @@
                         @enderror
                     </div>
                     <div class="col-xl-3">
-                        <label for="formacao_id">Formação</label>
+                        <label for="formacao_id">* Formação</label>
                         <select class="form-control @error('formacao_id') is-invalid @enderror" name="formacao_id"
                             id="formacao_id">
                             <option value="">Selecione</option>
@@ -121,12 +121,12 @@
                     <div class="col-12 mt-3 col-md-4">
                         <label for="nome_mae">Nome da Mãe</label>
                         <input type="text" class="form-control" id="nome_mae" name="nome_mae"
-                            value="{{ old('nome_mae', $clerigo->nome_mae) }}">
+                            value="{{ old('nome_mae', $clerigo->nome_mae) }}" maxlength="50">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="nome_pai">Nome do Pai</label>
                         <input type="text" class="form-control" id="nome_pai" name="nome_pai"
-                            value="{{ old('nome_pai', $clerigo->nome_pai) }}">
+                            value="{{ old('nome_pai', $clerigo->nome_pai) }}" maxlength="50">
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="data_nascimento">Nascimento</label>

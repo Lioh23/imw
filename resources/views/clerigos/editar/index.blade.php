@@ -198,6 +198,7 @@
             Inputmask("(99) 99999-9999").mask(document.getElementById("telefone_preferencial"));
             Inputmask("(99) 99999-9999").mask(document.getElementById("telefone_alternativo"));
             Inputmask("99999-9999").mask(document.getElementById("celular"));
+            Inputmask("9999 9999 9999").mask(document.getElementById("titulo_eleitor"));
         });
     </script>
     @stack('tab-scripts')

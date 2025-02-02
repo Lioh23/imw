@@ -4,7 +4,7 @@
             <div class="col-12 mt-3 col-md-4">
                 <label for="habilitacao">Número da Habilitação*</label>
                 <input type="text" class="form-control @error('habilitacao') is-invalid @enderror" id="habilitacao"
-                    name="habilitacao" value="{{ old('habilitacao') }}" >
+                    name="habilitacao" value="{{ old('habilitacao') }}" maxlength="15" >
                 @error('habilitacao')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -28,7 +28,7 @@
             <div class="col-12 mt-3 col-md-4">
                 <label for="habilitacao_emissor">Emissor</label>
                 <input type="text" class="form-control @error('habilitacao_emissor') is-invalid @enderror"
-                    id="habilitacao_emissor" name="habilitacao_emissor" value="{{ old('habilitacao_emissor') }}">
+                    id="habilitacao_emissor" name="habilitacao_emissor" value="{{ old('habilitacao_emissor') }}" maxlength="30">
                 @error('habilitacao_emissor')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror

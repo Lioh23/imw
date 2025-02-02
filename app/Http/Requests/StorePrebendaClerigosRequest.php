@@ -2,10 +2,10 @@
 
 namespace App\Http\Requests;
 
-
+use App\Rules\PrebendaExistis;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdatePrebendaRequest extends FormRequest
+class StorePrebendaClerigosRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -28,10 +28,13 @@ class UpdatePrebendaRequest extends FormRequest
         $valor = $this->input('valor');
 
         return [
-            'ano' => 'required',
+
+            'ano' => ['required', new PrebendaExistis($ano)],
             'valor' => 'required',
         ];
     }
+
+
     public function messages()
     {
         return [
