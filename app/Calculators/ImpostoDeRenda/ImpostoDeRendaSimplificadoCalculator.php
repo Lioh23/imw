@@ -68,7 +68,7 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
     {
         if ($valorBaseADeduzir <= 0 || $faixa->faixa == 1) return 0;
 
-        return $valorBaseADeduzir < $faixa->deducao_faixa
+        return ($valorBaseADeduzir < $faixa->deducao_faixa || !$faixa->valor_max)
             ? round($valorBaseADeduzir * ($faixa->aliquota / 100), 4)
             : round($faixa->deducao_faixa * ($faixa->aliquota / 100), 4);
     }
