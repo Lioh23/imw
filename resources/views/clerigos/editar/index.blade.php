@@ -190,7 +190,7 @@
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.js"></script>
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-     <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             Inputmask("999.999.999-99").mask(document.getElementById("cpf"));
@@ -199,6 +199,7 @@
             Inputmask("(99) 99999-9999").mask(document.getElementById("telefone_alternativo"));
             Inputmask("99999-9999").mask(document.getElementById("celular"));
             Inputmask("9999 9999 9999").mask(document.getElementById("titulo_eleitor"));
+            Inputmask("99.999.999-9").mask(document.getElementById("identidade"));
         });
     </script>
     @stack('tab-scripts')

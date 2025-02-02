@@ -31,6 +31,9 @@ class ClerigosObserver
         if ($pessoasPessoas->titulo_eleitor) {
             $pessoasPessoas->titulo_eleitor = preg_replace('/[^\d]/', '', $pessoasPessoas->titulo_eleitor);
         }
+        if ($pessoasPessoas->identidade) {
+            $pessoasPessoas->identidade = preg_replace('/[^\d]/', '', $pessoasPessoas->identidade);
+        }
     }
 
     public function updating(PessoasPessoa $pessoasPessoas)
@@ -59,6 +62,10 @@ class ClerigosObserver
 
         if ($pessoasPessoas->titulo_eleitor) {
             $pessoasPessoas->titulo_eleitor = preg_replace('/[^\d]/', '', $pessoasPessoas->titulo_eleitor);
+        }
+
+        if ($pessoasPessoas->identidade) {
+            $pessoasPessoas->identidade = preg_replace('/[^\d]/', '', $pessoasPessoas->identidade);
         }
     }
 }
