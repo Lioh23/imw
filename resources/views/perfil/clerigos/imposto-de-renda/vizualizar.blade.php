@@ -19,7 +19,7 @@
                         {{ $data->qtdeDependentes }}
                     </td>
                     <td class="d-flex justify-content-between">
-                        <p>Valor dedútivel:</p>
+                        <p>Valor dedutível:</p>
                         R$ {{ number_format($data->valorDedutivel, 2, ',', '.') ?? 'Não informado' }}
                     </td>
                     <td class="d-flex justify-content-between">
