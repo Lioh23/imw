@@ -7,9 +7,7 @@ use App\Dtos\ImpostoDeRenda\ResponseIrDto;
 use App\Models\DeducaoIr;
 use App\Models\PessoasDependente;
 use App\Models\PessoasPrebenda;
-use App\Models\Prebenda;
 use App\Models\TabelaIr;
-use Carbon\Carbon;
 
 class CalculaImpostoDeRendaService
 {

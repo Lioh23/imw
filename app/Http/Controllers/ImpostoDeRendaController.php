@@ -15,7 +15,7 @@ class ImpostoDeRendaController extends Controller
     use Identifiable;
     public function index()
     {
-        $prebendas = PessoasPrebenda::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)->get();
+        $prebendas = PessoasPrebenda::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)->orderBy('ano', 'desc')->get();
         return view('perfil.clerigos.imposto-de-renda.index', ['prebendas' =>  $prebendas]);
     }
 
