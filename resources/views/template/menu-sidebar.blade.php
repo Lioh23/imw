@@ -505,12 +505,32 @@
                  </a>
                  <ul class="collapse submenu list-unstyled" id="estatistica-regiao"
                      data-parent="#estatistica-regiao">
-                     <li class="submenu-fixo mt-3 mb-3">
+                       <li class="submenu-fixo mt-3 mb-3">
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                         <span>Clérigos</span>
+                         <span>Membros</span>
                          @endif
                      </li>
                      <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-evolucao'))
+                         <a href="{{ route('regiao.estatistica.evolucao') }}">Evolução</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-total'))
+                         <a href="#">Total de Membros</a>
+                         @endif
+                     </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-recebimento-saida'))
+                         <a href="#">Recebimento / Saída</a>
+                         @endif
+                     </li>
+                    <!--  <li class="submenu-fixo mt-3 mb-3">
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                         <span>Clérigos</span>
+                         @endif
+                     </li> -->
+                     <!-- <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-clerigo-faixa-etaria'))
                          <a href="#">Faixa Etária</a>
                          @endif
@@ -518,9 +538,9 @@
 
                      <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-clerigo-recebimento-desligamento'))
-                         <a href="#">Recebimento e Saída</a>
+                         <a href="#">Recebimento / Saída</a>
                          @endif
-                     </li>
+                     </li> -->
                  </ul>
              </li>
              @endif

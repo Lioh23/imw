@@ -29,6 +29,7 @@ use App\Http\Controllers\NotificacoesTranferenciaController;
 use App\Http\Controllers\PerfilController;
 use App\Http\Controllers\PrebendaController;
 use App\Http\Controllers\PrebendasClerigosController;
+use App\Http\Controllers\RegiaoEstatisticasController;
 use App\Http\Controllers\RegiaoRelatorioController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\UsuarioController;
@@ -251,6 +252,11 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/relatorio/estatisticagenero', [RegiaoRelatorioController::class, 'estatisticagenero'])->name('relatorio.estatisticagenero')->middleware(['seguranca:regiao-menu-relatorio']);
             Route::post('/relatorio/estatisticagenero/pdf', [RegiaoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+
+            //Estatitisca de Membros
+            Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-estatistica-membros-evolucao']);
+
+
         });
 
 
