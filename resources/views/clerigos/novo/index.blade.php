@@ -175,7 +175,6 @@
             Inputmask("999.999.999-99").mask(document.getElementById("cpf"));
             Inputmask("(99) 99999-9999").mask(document.getElementById("telefone_preferencial"));
             Inputmask("(99) 99999-9999").mask(document.getElementById("telefone_alternativo"));
-            Inputmask("99999-9999").mask(document.getElementById("celular"));
             Inputmask("9999 9999 9999").mask(document.getElementById("titulo_eleitor"));
             Inputmask("99.999.999-9").mask(document.getElementById("identidade"));
         });
