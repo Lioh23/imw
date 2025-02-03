@@ -3,8 +3,8 @@
         <div class="row">
             <div class="col-12 mt-3 col-md-4">
                 <label for="identidade">Identidade*</label>
-                <input type="text" class="form-control @error('identidade') is-invalid @enderror" id="identidade" name="identidade"
-                    value="{{ old('identidade', $clerigo->identidade) }}">
+                <input type="text" class="form-control @error('identidade') is-invalid @enderror" id="identidade"
+                    name="identidade" value="{{ old('identidade', $clerigo->identidade) }}">
                 @error('identidade')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -12,8 +12,8 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="data_emissao">Data de Emissão*</label>
-                <input type="date" class="form-control @error('data_emissao') is-invalid @enderror" id="data_emissao" name="data_emissao"
-                    value="{{ old('data_emissao', $clerigo->data_emissao) }}" >
+                <input type="date" class="form-control @error('data_emissao') is-invalid @enderror" id="data_emissao"
+                    name="data_emissao" value="{{ old('data_emissao', $clerigo->data_emissao) }}">
                 @error('data_emissao')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
@@ -21,21 +21,24 @@
 
             <div class="col-12 mt-3 col-md-4">
                 <label for="orgao_emissor">Órgão Emissor*</label>
-                <input type="text" class="form-control @error('orgao_emissor') is-invalid @enderror" id="orgao_emissor" name="orgao_emissor"
-                    value="{{ old('orgao_emissor', $clerigo->orgao_emissor) }}" maxlength="50" >
+                <input type="text" class="form-control @error('orgao_emissor') is-invalid @enderror"
+                    id="orgao_emissor" name="orgao_emissor" value="{{ old('orgao_emissor', $clerigo->orgao_emissor) }}"
+                    maxlength="50">
                 @error('orgao_emissor')
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
             </div>
 
             <div class="col-12 mt-3 col-md-4">
-                <label for="identidade_uf">Estado</label>
-                <select class="form-control @error('identidade_uf') is-invalid @enderror" id="identidade_uf" name="identidade_uf">
+                <label for="identidade_uf">Estado*</label>
+                <select class="form-control @error('identidade_uf') is-invalid @enderror" id="identidade_uf"
+                    name="identidade_uf">
                     <option value="">Selecione</option>
                     <option value="{{ old('identidade_uf', $clerigo->identidade_uf) }}" selected>
                         {{ old('identidade_uf', $clerigo->identidade_uf) }}</option>
-                    @foreach ($ufs as $uf)
-                        <option value="{{ $uf }}" {{ old('identidade_uf', $clerigo->identidade_uf) == $uf ? 'selected' : '' }}>
+                    @foreach ($ufs as $i => $uf)
+                        <option value="{{ $i }}"
+                            {{ old('identidade_uf', $clerigo->identidade_uf) == $uf ? 'selected' : '' }}>
                             {{ $uf }}
                         </option>
                     @endforeach
@@ -44,7 +47,7 @@
                     <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
             </div>
-             <input type="hidden" name="regiao_id" value="23">
+            <input type="hidden" name="regiao_id" value="23">
         </div>
 
     </blockquote>

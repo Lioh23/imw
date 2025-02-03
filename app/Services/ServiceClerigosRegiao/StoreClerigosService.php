@@ -14,6 +14,7 @@ class StoreClerigosService
         PessoasPessoa::create([
             'nome' => $request['nome'],
             'identidade' => $request['identidade'],
+            'identidade_uf' => $request['identidade_uf'],
             'orgao_emissor' => $request['orgao_emissor'],
             'data_emissao' => $request['data_emissao'],
             'cpf' => $request['cpf'],

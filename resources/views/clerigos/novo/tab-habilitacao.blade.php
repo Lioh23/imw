@@ -2,7 +2,7 @@
     <blockquote class="blockquote">
         <div class="row">
             <div class="col-12 mt-3 col-md-4">
-                <label for="habilitacao">Número da Habilitação*</label>
+                <label for="habilitacao">Número da Habilitação</label>
                 <input type="text" class="form-control @error('habilitacao') is-invalid @enderror" id="habilitacao"
                     name="habilitacao" value="{{ old('habilitacao') }}" maxlength="15" >
                 @error('habilitacao')
@@ -11,7 +11,7 @@
             </div>
 
             <div class="col-12 mt-3 col-md-4">
-                <label for="habilitacao_categoria">Categoria*</label>
+                <label for="habilitacao_categoria">Categoria</label>
                 <select class="form-control @error('habilitacao_categoria') is-invalid @enderror"
                     id="habilitacao_categoria" name="habilitacao_categoria">
                     <option value="A" {{ old('habilitacao_categoria') == 'A' ? 'selected' : '' }}>A</option>

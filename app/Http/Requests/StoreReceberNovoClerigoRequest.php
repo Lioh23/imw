@@ -26,9 +26,11 @@ class StoreReceberNovoClerigoRequest extends FormRequest
      */
     public function rules()
     {
+
         return [
             'nome' => 'required|max:255',
             'identidade' => 'required|max:20',
+            'identidade_uf' => 'required',
             'orgao_emissor' => 'required|max:50',
             'data_emissao' => 'required|date',
             'cpf' => 'required',
@@ -39,7 +41,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'cidade' => 'required|max:100',
             'uf' => 'required|max:2',
             'pais' => 'nullable',
-            'cep' => 'required',
+            'cep' => 'required|min:8',
             'email' => 'required|email|max:255',
             'estado_civil' => 'required|max:20',
             'sexo' => 'required|in:M,F',
@@ -55,9 +57,11 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'categoria' => 'required',
             'habilitacao' => 'nullable',
             'habilitacao_categoria' =>  'nullable',
-            'habilitacao_emissor' =>'nullable',
+            'habilitacao_emissor' => 'nullable',
             'habilitacao_uf' => 'nullable',
-            'data_nascimento' => 'required',
+            'data_nascimento' => ['required', new RangeDateRule],
+            'pispasep' => 'nullable',
+            'pispasep_emissao' => 'nullable',
 
         ];
     }
@@ -68,6 +72,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'tipo.required' => 'O campo tipo é obrigatório.',
             'nome.required' => 'O campo nome é obrigatório.',
             'identidade.required' => 'O campo identidade é obrigatório.',
+            'identidade_uf.required' => 'O campo estado em identidade é obrigatório.',
             'orgao_emissor.required' => 'O campo órgão emissor é obrigatório.',
             'data_emissao.required' => 'O campo data de emissão é obrigatório.',
             'cpf.required' => 'O campo CPF é obrigatório.',
@@ -79,6 +84,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'uf.required' => 'O campo estado é obrigatório.',
 
             'cep.required' => 'O campo CEP é obrigatório.',
+            'cep.min' => 'O campo CEP deve conter pelo menos 8 caracteres..',
             'email.required' => 'O campo email é obrigatório.',
             'estado_civil.required' => 'O campo estado civil é obrigatório.',
             'regiao_id.required' => 'O campo região é obrigatório.',

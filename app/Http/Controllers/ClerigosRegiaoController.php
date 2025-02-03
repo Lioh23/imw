@@ -115,7 +115,7 @@ class ClerigosRegiaoController extends Controller
     {
         try {
             $clerigo = app(BuscarClerigoPorCpfService::class)->execute($cpf);
-    
+
             return response()->json(['clerigo' => $clerigo]);
         } catch (PessoaNotFoundException $e) {
             return response()->json(['message' => $e->getMessage()], 400);

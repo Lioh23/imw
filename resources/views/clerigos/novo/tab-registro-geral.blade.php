@@ -29,7 +29,7 @@
             </div>
 
             <div class="col-12 mt-3 col-md-4">
-                <label for="identidade_uf">Estado</label>
+                <label for="identidade_uf">Estado*</label>
                 <select class="form-control @error('identidade_uf') is-invalid @enderror" id="identidade_uf"
                     name="identidade_uf">
                     <option value="">Selecione</option>
