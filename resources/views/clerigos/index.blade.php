@@ -280,12 +280,29 @@
                 url: '/clerigos/' + clerigoId + '/detalhes',
                 method: 'GET',
                 success: function(data) {
+                    let estado_civil = '';
+
+                    switch (data.estado_civil) {
+                        case 'C':
+                            estado_civil = 'Casado';
+                            break;
+                        case 'S':
+                            estado_civil = 'Solteiro';
+                            break;
+                        case 'D':
+                            estado_civil = 'Divorciado';
+                            break;
+                        case 'V':
+                            estado_civil = 'Viúvo';
+                            break;
+                    }
                     // Preenche o modal com as informações do clerigo e as nomeações, ambos em formato de card
                     $(modalId).find('.modal-body').html(`
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">
                         Informações do Clérigos
                     </div>
+
                     <div class="card-body">
                         <p><strong>Nome:</strong> ${data.nome}</p>
                         <p><strong>CEP:</strong> ${data.cep || '-'}</p>
@@ -296,10 +313,10 @@
                         <p><strong>UF:</strong> ${data.uf || '-'}</p>
                         <p><strong>País:</strong> ${data.pais || '-'}</p>
                         <p><strong>Email:</strong> ${data.email || '-'}</p>
-                        <p><strong>Estado Cívil:</strong> ${data.estado_civil || '-'}</p>
+                        <p><strong>Estado Cívil:</strong> ${estado_civil} </p>
                         <p><strong>CPF:</strong> ${data.cpf || '-'}</p>
                         <p><strong>Nascimento:</strong> ${data.data_nascimento || '-'}</p>
-                        <p><strong>Conjugue:</strong> ${data.nome_conjuge || '-'}</p>
+
 
                     </div>
                 </div>

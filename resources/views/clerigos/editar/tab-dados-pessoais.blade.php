@@ -1,9 +1,6 @@
 <div class="tab-pane fade show active" id="border-top-dados-pessoal" role="tabpanel"
     aria-labelledby="border-top-dados-pessoais">
     <blockquote class="blockquote">
-
-
-        <!-- Conteúdo do formulário -->
         <div class="col-12">
             <div class="form-group @error('nome') has-error @enderror">
                 <input type="hidden" id="regiao_id" value="23">
@@ -16,17 +13,6 @@
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    {{--
-
-                    <div class="col-xl-3">
-                        <label for="nascimento">* Data de Nascimento</label>
-                        <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror"
-                            id="data_nascimento" name="data_nascimento"
-                            value="{{ old('data_nascimento', optional($clerigo->data_nascimento)->format('Y-m-d')) }}">
-                        @error('data_nascimento')
-                            <span class="help-block text-danger">{{ $message }}</span>
-                        @enderror
-                    </div> --}}
 
                     <div class="col-xl-3">
                         <label for="cpf">* CPF</label>
@@ -105,7 +91,7 @@
                             <option value="">Selecione</option>
                             @foreach ($formacoes as $formacao)
                                 <option value="{{ $formacao->id }}"
-                                    {{old('formacao_id', $clerigo->formacao_id) == $formacao->id ? 'selected' : '' }}>
+                                    {{ old('formacao_id', $clerigo->formacao_id) == $formacao->id ? 'selected' : '' }}>
                                     {{ $formacao->nivel }}
                                 </option>
                             @endforeach
@@ -130,8 +116,12 @@
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="data_nascimento">Nascimento</label>
-                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento"
+                        <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror"
+                            id="data_nascimento" name="data_nascimento"
                             value="{{ old('data_nascimento', $clerigo->data_nascimento) }}">
+                        @error('data_nascimento')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>

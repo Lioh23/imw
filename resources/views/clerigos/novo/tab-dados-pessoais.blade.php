@@ -26,8 +26,8 @@
 
                     <div class="col-xl-4">
                         <label for="email">Email</label>
-                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email" name="email" maxlength="255"
-                            value="{{ old('email') }}">
+                        <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
+                            name="email" maxlength="255" value="{{ old('email') }}">
                     </div>
                     @error('email')
                         <span class="help-block text-danger">{{ $message }}</span>
@@ -37,7 +37,8 @@
                 <div class="row mb-4">
                     <div class="col-xl-3">
                         <label for="categoria">* Categoaria</label>
-                        <select class="form-control @error('categoria') is-invalid @enderror" type="text" id="categoria" name="categoria">
+                        <select class="form-control @error('categoria') is-invalid @enderror" type="text"
+                            id="categoria" name="categoria">
                             <option value="missionária" {{ old('categoria') == 'missionária' ? 'selected' : '' }}>
                                 Missionária</option>
                             <option value="pastor" {{ old('categoria') == 'pastor' ? 'selected' : '' }}>Pastor</option>
@@ -80,7 +81,8 @@
 
                     <div class="col-xl-3">
                         <label for="formacao_id">* Formação</label>
-                        <select class="form-control @error('formacao_id') is-invalid @enderror" name="formacao_id" id="formacao_id">
+                        <select class="form-control @error('formacao_id') is-invalid @enderror" name="formacao_id"
+                            id="formacao_id">
                             <option value="">Selecione</option>
                             @foreach ($formacoes as $formacao)
                                 <option value="{{ $formacao->id }}"
@@ -107,8 +109,11 @@
                     </div>
                     <div class="col-12 mt-3 col-md-4">
                         <label for="data_nascimento">Nascimento</label>
-                        <input type="date" class="form-control" id="data_nascimento" name="data_nascimento"
+                        <input type="date" class="form-control @error('email') is-invalid @enderror" id="data_nascimento" name="data_nascimento"
                             value="{{ old('data_nascimento') }}">
+                        @error('data_nascimento')
+                            <span class="help-block text-danger">{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
             </div>
