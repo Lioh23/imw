@@ -14,7 +14,7 @@ class RegiaoEstatisticasController extends Controller
         $anofinal = request('anofinal', date('Y'));
         $regiao_id = auth()->user()->pessoa->regiao_id;
 
-        // Buscar os anos reais que existem no banco de dados
+        // Buscar anos reais que existem no banco de dados
         $anosDisponiveis = DB::table('membresia_rolpermanente')
             ->selectRaw('DISTINCT YEAR(dt_recepcao) as ano')
             ->whereBetween(DB::raw('YEAR(dt_recepcao)'), [$anoinicio, $anofinal])
@@ -23,12 +23,11 @@ class RegiaoEstatisticasController extends Controller
             ->pluck('ano')
             ->toArray();
 
-        // Se não houver anos disponíveis, retorna sem consulta SQL
         if (empty($anosDisponiveis)) {
             return view('regiao.estatisticas.evolucao', compact('anoinicio', 'anofinal'))->with('dados', []);
         }
 
-        // Criar as colunas dos anos dinamicamente (apenas anos que existem no banco)
+        // Criar colunas dinâmicas otimizadas
         $colunasAno = [];
         foreach ($anosDisponiveis as $ano) {
             $colunasAno[] = "
@@ -45,11 +44,11 @@ class RegiaoEstatisticasController extends Controller
             ";
         }
 
-        // Obter a primeira e última coluna para evolução
+        // Pegar o primeiro e o último ano da lista
         $valorAnoInicial = "`" . reset($anosDisponiveis) . "`";
         $valorAnoFinal = "`" . end($anosDisponiveis) . "`";
 
-        // Construir a Query SQL otimizada
+        // Query SQL otimizada com subquery para pré-agrupamento
         $sql = "
             SELECT
                 inst.nome,
@@ -61,9 +60,17 @@ class RegiaoEstatisticasController extends Controller
                         (($valorAnoFinal - $valorAnoInicial) / NULLIF($valorAnoInicial, 0)) * 100, 2
                     )
                 END AS Percentual
-            FROM membresia_rolpermanente mrp
+            FROM (
+                SELECT
+                    distrito_id,
+                    YEAR(dt_recepcao) as ano,
+                    COUNT(*) as total_recebido,
+                    (SELECT COUNT(*) FROM membresia_rolpermanente WHERE YEAR(dt_exclusao) = YEAR(mrp.dt_recepcao)) as total_excluido
+                FROM membresia_rolpermanente mrp
+                WHERE status = 'A' AND regiao_id = ?
+                GROUP BY distrito_id, YEAR(dt_recepcao)
+            ) AS mrp
             INNER JOIN instituicoes_instituicoes inst ON inst.id = mrp.distrito_id
-            WHERE mrp.status = 'A' AND mrp.regiao_id = ?
             GROUP BY inst.nome
         ";
 
@@ -72,4 +79,5 @@ class RegiaoEstatisticasController extends Controller
 
         return view('regiao.estatisticas.evolucao', compact('dados', 'anosDisponiveis', 'anoinicio', 'anofinal'));
     }
+
 }
