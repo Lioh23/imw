@@ -515,7 +515,7 @@
                          <a href="{{ route('regiao.estatistica.evolucao') }}">Evolução</a>
                          @endif
                      </li>
-                     <li>
+                    <!--  <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-total'))
                          <a href="#">Total de Membros</a>
                          @endif
@@ -524,7 +524,7 @@
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-recebimento-saida'))
                          <a href="#">Recebimento / Saída</a>
                          @endif
-                     </li>
+                     </li> -->
                     <!--  <li class="submenu-fixo mt-3 mb-3">
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                          <span>Clérigos</span>
