@@ -42,7 +42,7 @@
                     </div>
                     <div class="col-lg-3">
                         <input type="number" class="form-control" id="anoinicio" name="anoinicio"
-                               value="{{ request()->input('anoinicio', date('Y') - 4) }}" required>
+                            value="{{ request()->input('anoinicio', date('Y') - 4) }}" required>
                     </div>
                 </div>
 
@@ -52,7 +52,7 @@
                     </div>
                     <div class="col-lg-3">
                         <input type="number" class="form-control" id="anofinal" name="anofinal"
-                               value="{{ request()->input('anofinal', date('Y')) }}" required>
+                            value="{{ request()->input('anofinal', date('Y')) }}" required>
                     </div>
                 </div>
 
@@ -66,7 +66,6 @@
                 </div>
             </form>
 
-            <!-- Exibir tabela apenas se houver dados -->
             @if(isset($dados) && count($dados) > 0)
             <h4>Resultados de {{ $anoinicio }} a {{ $anofinal }}</h4>
             <div class="table-responsive">
@@ -74,56 +73,55 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            @for ($ano = $anoinicio; $ano <= $anofinal; $ano++)
-                                <th>{{ $ano }}</th>
-                            @endfor
+                            @foreach ($anosDisponiveis as $ano)
+                            <th>{{ $ano }}</th>
+                            @endforeach
                             <th>Evolução</th>
                             <th>Percentual</th>
                         </tr>
                     </thead>
                     <tbody>
                         @php
-                            $totais = [];
-                            $totalEvolucao = 0;
-                            $totalAnoInicial = 0;
+                        $totais = [];
+                        $totalEvolucao = 0;
                         @endphp
 
                         @foreach ($dados as $linha)
                         <tr>
                             <td>{{ $linha->nome }}</td>
-                            @for ($ano = $anoinicio; $ano <= $anofinal; $ano++)
-                                @php
-                                    $valorAno = $linha->$ano ?? 0;
-                                    $totais[$ano] = ($totais[$ano] ?? 0) + $valorAno;
-                                @endphp
-                                <td>{{ $valorAno }}</td>
-                            @endfor
+                            @foreach ($anosDisponiveis as $ano)
+                            @php
+                            $valorAno = $linha->$ano ?? 0;
+                            $totais[$ano] = ($totais[$ano] ?? 0) + $valorAno;
+                            @endphp
+                            <td>{{ $valorAno }}</td>
+                            @endforeach
                             <td>{{ $linha->Evolucao }}</td>
                             <td>{{ $linha->Percentual }}%</td>
                         </tr>
                         @php
-                            $totalEvolucao += $linha->Evolucao;
+                        $totalEvolucao += $linha->Evolucao;
                         @endphp
                         @endforeach
 
                         <!-- Linha de Totalização -->
                         <tr style="font-weight: bold; background-color: #f8f9fa;">
                             <td>{{ auth()->user()->pessoa->regiao->nome }}</td>
-                            @for ($ano = $anoinicio; $ano <= $anofinal; $ano++)
-                                <td>{{ $totais[$ano] ?? 0 }}</td>
-                            @endfor
+                            @foreach ($anosDisponiveis as $ano)
+                            <td>{{ $totais[$ano] ?? 0 }}</td>
+                            @endforeach
                             <td>{{ $totalEvolucao }}</td>
                             @php
-                                $totalAnoInicial = $totais[$anoinicio] ?? 0;
-                                $percentualTotal = ($totalAnoInicial > 0) ? round(($totalEvolucao / $totalAnoInicial) * 100, 2) : 0;
+                            $totalAnoInicial = $totais[reset($anosDisponiveis)] ?? 0;
+                            $percentualTotal = ($totalAnoInicial > 0) ? round(($totalEvolucao / $totalAnoInicial) * 100, 2) : 0;
                             @endphp
                             <td>{{ $percentualTotal }}%</td>
                         </tr>
-
                     </tbody>
                 </table>
             </div>
             @endif
+
 
         </div>
     </div>
@@ -131,47 +129,47 @@
 
 <!-- Validação do Formulário com SweetAlert -->
 <script>
-document.getElementById('filter_form').addEventListener('submit', function(event) {
-    var anoinicio = parseInt(document.getElementById('anoinicio').value);
-    var anofinal = parseInt(document.getElementById('anofinal').value);
-    var anoAtual = new Date().getFullYear();
+    document.getElementById('filter_form').addEventListener('submit', function(event) {
+        var anoinicio = parseInt(document.getElementById('anoinicio').value);
+        var anofinal = parseInt(document.getElementById('anofinal').value);
+        var anoAtual = new Date().getFullYear();
 
-    if (anoinicio >= anofinal) {
-        event.preventDefault();
-        Swal.fire({
-            title: 'Atenção!',
-            text: 'O Ano Inicial não pode ser maior ou igual ao Ano Final.',
-            icon: 'warning',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Ok'
-        });
-        return;
-    }
+        if (anoinicio >= anofinal) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Atenção!',
+                text: 'O Ano Inicial não pode ser maior ou igual ao Ano Final.',
+                icon: 'warning',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
 
-    if ((anofinal - anoinicio) > 10) {
-        event.preventDefault();
-        Swal.fire({
-            title: 'Atenção!',
-            text: 'A diferença entre os anos não pode ser maior que 10 anos.',
-            icon: 'warning',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Ok'
-        });
-        return;
-    }
+        if ((anofinal - anoinicio) > 10) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Atenção!',
+                text: 'A diferença entre os anos não pode ser maior que 10 anos.',
+                icon: 'warning',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
 
-    if (anofinal > anoAtual) {
-        event.preventDefault();
-        Swal.fire({
-            title: 'Atenção!',
-            text: 'O Ano Final não pode ser maior que o ano atual (' + anoAtual + ').',
-            icon: 'warning',
-            confirmButtonColor: '#d33',
-            confirmButtonText: 'Ok'
-        });
-        return;
-    }
-});
+        if (anofinal > anoAtual) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Atenção!',
+                text: 'O Ano Final não pode ser maior que o ano atual (' + anoAtual + ').',
+                icon: 'warning',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
+    });
 </script>
 
 @endsection
