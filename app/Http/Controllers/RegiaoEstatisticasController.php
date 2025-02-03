@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,70 +15,64 @@ class RegiaoEstatisticasController extends Controller
         $anofinal = request('anofinal', date('Y'));
         $regiao_id = auth()->user()->pessoa->regiao_id;
 
-        // Buscar anos reais que existem no banco de dados
-        $anosDisponiveis = DB::table('membresia_rolpermanente')
-            ->selectRaw('DISTINCT YEAR(dt_recepcao) as ano')
-            ->whereBetween(DB::raw('YEAR(dt_recepcao)'), [$anoinicio, $anofinal])
-            ->where('regiao_id', $regiao_id)
-            ->orderBy('ano')
-            ->pluck('ano')
-            ->toArray();
-
-        if (empty($anosDisponiveis)) {
-            return view('regiao.estatisticas.evolucao', compact('anoinicio', 'anofinal'))->with('dados', []);
-        }
-
-        // Criar colunas dinâmicas otimizadas
+        // Criar as colunas dos anos dinamicamente com soma progressiva
         $colunasAno = [];
-        foreach ($anosDisponiveis as $ano) {
-            $colunasAno[] = "
-                SUM(
-                    CASE
-                        WHEN YEAR(mrp.dt_recepcao) = $ano THEN 1 ELSE 0
-                    END
-                ) -
-                SUM(
-                    CASE
-                        WHEN YEAR(mrp.dt_exclusao) = $ano THEN 1 ELSE 0
-                    END
-                ) AS `$ano`
-            ";
+        $colunaAcumulada = "0"; // Iniciar a variável acumulada
+
+        for ($ano = $anoinicio; $ano <= $anofinal; $ano++) {
+                // Contagem de membros recebidos no ano
+                $totalAno = "SUM(CASE WHEN YEAR(mrp.dt_recepcao) = $ano THEN 1 ELSE 0 END)";
+
+                // Contagem de membros excluídos no ano (somente se total > 0)
+                $exclusoes = "SUM(CASE WHEN YEAR(mrp.dt_exclusao) = $ano THEN 1 ELSE 0 END)";
+
+                // Ajustar para não subtrair se o total já for 0
+                $colunaAcumulada = "(
+            $colunaAcumulada +
+            $totalAno -
+            CASE
+                WHEN ($colunaAcumulada + $totalAno) <= 0 THEN 0
+                ELSE $exclusoes
+            END
+        )";
+
+            // Criar a coluna com a soma progressiva
+            $colunasAno[] = "$colunaAcumulada AS `$ano`";
         }
 
-        // Pegar o primeiro e o último ano da lista
-        $valorAnoInicial = "`" . reset($anosDisponiveis) . "`";
-        $valorAnoFinal = "`" . end($anosDisponiveis) . "`";
+        // Obter o acumulado do primeiro ano (Ano Inicial)
+        $valorAnoInicial = str_replace(" AS `$anoinicio`", "", reset($colunasAno));
 
-        // Query SQL otimizada com subquery para pré-agrupamento
+        // Obter o acumulado do último ano (Ano Final)
+        $valorAnoFinal = str_replace(" AS `$anofinal`", "", end($colunasAno));
+
+        // Construir a Query SQL
         $sql = "
             SELECT
                 inst.nome,
                 " . implode(", ", $colunasAno) . ",
+
+                -- Cálculo da Evolução Acumulada
                 ($valorAnoFinal - $valorAnoInicial) AS Evolucao,
+
+                -- Cálculo do Percentual de Crescimento
                 CASE
                     WHEN $valorAnoInicial = 0 THEN 100 * ($valorAnoFinal - $valorAnoInicial)
                     ELSE ROUND(
                         (($valorAnoFinal - $valorAnoInicial) / NULLIF($valorAnoInicial, 0)) * 100, 2
                     )
                 END AS Percentual
-            FROM (
-                SELECT
-                    distrito_id,
-                    YEAR(dt_recepcao) as ano,
-                    COUNT(*) as total_recebido,
-                    (SELECT COUNT(*) FROM membresia_rolpermanente WHERE YEAR(dt_exclusao) = YEAR(mrp.dt_recepcao)) as total_excluido
-                FROM membresia_rolpermanente mrp
-                WHERE status = 'A' AND regiao_id = ?
-                GROUP BY distrito_id, YEAR(dt_recepcao)
-            ) AS mrp
+
+            FROM membresia_rolpermanente mrp
             INNER JOIN instituicoes_instituicoes inst ON inst.id = mrp.distrito_id
-            GROUP BY inst.nome
+            WHERE mrp.status = 'A' AND mrp.regiao_id = ?
+            AND YEAR(mrp.dt_recepcao) BETWEEN ? AND ?
+            GROUP BY inst.nome, mrp.distrito_id, mrp.regiao_id
         ";
 
         // Executar a Query
-        $dados = DB::select($sql, [$regiao_id]);
+        $dados = DB::select($sql, [$regiao_id, $anoinicio, $anofinal]);
 
-        return view('regiao.estatisticas.evolucao', compact('dados', 'anosDisponiveis', 'anoinicio', 'anofinal'));
+        return view('regiao.estatisticas.evolucao', compact('dados', 'anoinicio', 'anofinal'));
     }
-
 }

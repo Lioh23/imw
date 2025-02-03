@@ -41,8 +41,14 @@
                         <label class="control-label">* Ano Inicial:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input type="number" class="form-control" id="anoinicio" name="anoinicio"
-                            value="{{ request()->input('anoinicio', date('Y') - 4) }}" required>
+                        <select class="form-control" id="anoinicio" name="anoinicio" required>
+                            <option value="">Selecione o Ano Inicial</option>
+                            @for ($ano = date('Y') - 10; $ano <= date('Y'); $ano++)
+                                <option value="{{ $ano }}" {{ request()->input('anoinicio') == $ano ? 'selected' : '' }}>
+                                {{ $ano }}
+                                </option>
+                                @endfor
+                        </select>
                     </div>
                 </div>
 
@@ -51,8 +57,14 @@
                         <label class="control-label">* Ano Final:</label>
                     </div>
                     <div class="col-lg-3">
-                        <input type="number" class="form-control" id="anofinal" name="anofinal"
-                            value="{{ request()->input('anofinal', date('Y')) }}" required>
+                        <select class="form-control" id="anofinal" name="anofinal" required>
+                            <option value="">Selecione o Ano Final</option>
+                            @for ($ano = date('Y') - 10; $ano <= date('Y'); $ano++)
+                                <option value="{{ $ano }}" {{ request()->input('anofinal') == $ano ? 'selected' : '' }}>
+                                {{ $ano }}
+                                </option>
+                                @endfor
+                        </select>
                     </div>
                 </div>
 
@@ -66,6 +78,8 @@
                 </div>
             </form>
 
+            <!-- Exibir tabela apenas se houver um request GET válido -->
+            @if(request()->has('anoinicio') && request()->has('anofinal'))
             @if(isset($dados) && count($dados) > 0)
             <h4>Resultados de {{ $anoinicio }} a {{ $anofinal }}</h4>
             <div class="table-responsive">
@@ -73,7 +87,7 @@
                     <thead>
                         <tr>
                             <th>Nome</th>
-                            @foreach ($anosDisponiveis as $ano)
+                            @foreach (range($anoinicio, $anofinal) as $ano)
                             <th>{{ $ano }}</th>
                             @endforeach
                             <th>Evolução</th>
@@ -89,7 +103,7 @@
                         @foreach ($dados as $linha)
                         <tr>
                             <td>{{ $linha->nome }}</td>
-                            @foreach ($anosDisponiveis as $ano)
+                            @foreach (range($anoinicio, $anofinal) as $ano)
                             @php
                             $valorAno = $linha->$ano ?? 0;
                             $totais[$ano] = ($totais[$ano] ?? 0) + $valorAno;
@@ -104,25 +118,33 @@
                         @endphp
                         @endforeach
 
-                        <!-- Linha de Totalização -->
+                        <!-- Linha de Totalização Corrigida -->
                         <tr style="font-weight: bold; background-color: #f8f9fa;">
-                            <td>{{ auth()->user()->pessoa->regiao->nome }}</td>
-                            @foreach ($anosDisponiveis as $ano)
+                            <td>6 Região</td>
+                            @foreach (range($anoinicio, $anofinal) as $ano)
                             <td>{{ $totais[$ano] ?? 0 }}</td>
                             @endforeach
                             <td>{{ $totalEvolucao }}</td>
                             @php
-                            $totalAnoInicial = $totais[reset($anosDisponiveis)] ?? 0;
-                            $percentualTotal = ($totalAnoInicial > 0) ? round(($totalEvolucao / $totalAnoInicial) * 100, 2) : 0;
+                            // Pegar o total do primeiro ano corretamente
+                            $totalAnoInicial = $totais[$anoinicio] ?? 0;
+
+                            // Calcular o percentual corretamente
+                            if ($totalAnoInicial == 0) {
+                            $percentualTotal = ($totalEvolucao > 0) ? ($totalEvolucao * 100) : 0;
+                            } else {
+                            $percentualTotal = round(($totalEvolucao / $totalAnoInicial) * 100, 2);
+                            }
                             @endphp
                             <td>{{ $percentualTotal }}%</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+            @else
+            <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
             @endif
-
-
+            @endif
 
         </div>
     </div>
@@ -134,6 +156,18 @@
         var anoinicio = parseInt(document.getElementById('anoinicio').value);
         var anofinal = parseInt(document.getElementById('anofinal').value);
         var anoAtual = new Date().getFullYear();
+
+        if (!anoinicio || !anofinal) {
+            event.preventDefault();
+            Swal.fire({
+                title: 'Atenção!',
+                text: 'Preencha todos os campos corretamente.',
+                icon: 'warning',
+                confirmButtonColor: '#d33',
+                confirmButtonText: 'Ok'
+            });
+            return;
+        }
 
         if (anoinicio >= anofinal) {
             event.preventDefault();
@@ -172,5 +206,4 @@
         }
     });
 </script>
-
 @endsection
