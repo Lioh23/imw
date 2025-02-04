@@ -96,4 +96,9 @@ class PessoasPessoa extends Model
     {
         return $this->hasMany(PessoasPrebenda::class, 'pessoa_id');
     }
+
+    public function regiao()
+    {
+        return $this->belongsTo(InstituicoesInstituicao::class, 'regiao_id', 'id');
+    }
 }
