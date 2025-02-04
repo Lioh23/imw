@@ -26,7 +26,13 @@ class RangeDateRule implements Rule
      */
     public function passes($attribute, $value)
     {
-        if(!$value) return true;
+        if (!$value) return true;
+
+
+
+        if (!preg_match('/^\d{4}-\d{2}-\d{2}$/', $value)) {
+            return false;
+        }
 
         $date = Carbon::parse($value);
 

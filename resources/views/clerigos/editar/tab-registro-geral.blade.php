@@ -36,9 +36,9 @@
                     <option value="">Selecione</option>
                     <option value="{{ old('identidade_uf', $clerigo->identidade_uf) }}" selected>
                         {{ old('identidade_uf', $clerigo->identidade_uf) }}</option>
-                    @foreach ($ufs as $i => $uf)
-                        <option value="{{ $i }}"
-                            {{ old('identidade_uf', $clerigo->identidade_uf) == $uf ? 'selected' : '' }}>
+                    @foreach ($ufs as $sigla => $uf)
+                        <option value="{{$sigla}}"
+                            {{ old('identidade_uf', $clerigo->identidade_uf) == $sigla ? 'selected' : '' }}>
                             {{ $uf }}
                         </option>
                     @endforeach

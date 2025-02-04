@@ -32,7 +32,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'identidade' => 'required|max:20',
             'identidade_uf' => 'required',
             'orgao_emissor' => 'required|max:50',
-            'data_emissao' => 'required|date',
+            'data_emissao' => ['required', 'date', new RangeDateRule],
             'cpf' => 'required',
             'endereco' => 'required|max:255',
             'numero' => 'required',
@@ -50,6 +50,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'telefone_preferencial' => 'required|max:15',
             'telefone_alternativo' => 'nullable',
             'ctps' => 'max:20|nullable',
+            'ctps_emissao' => ['nullable', new RangeDateRule],
             'titulo_eleitor' => 'required|max:20',
             'titulo_eleitor_secao' => 'required|max:10',
             'titulo_eleitor_zona' => 'required|max:10',
@@ -61,7 +62,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'habilitacao_uf' => 'nullable',
             'data_nascimento' => ['required', new RangeDateRule],
             'pispasep' => 'nullable',
-            'pispasep_emissao' => 'nullable',
+            'pispasep_emissao' => ['nullable', new RangeDateRule],
 
         ];
     }
