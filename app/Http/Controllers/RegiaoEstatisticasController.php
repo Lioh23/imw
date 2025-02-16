@@ -15,66 +15,70 @@ class RegiaoEstatisticasController extends Controller
         $anofinal = request('anofinal', date('Y'));
         $regiao_id = auth()->user()->pessoa->regiao_id;
 
-        // Criar as colunas dos anos dinamicamente com soma progressiva
-        $colunasAno = [];
-        $colunaAcumulada = "0"; // Iniciar a variável acumulada
+        // ===========================
+        // 🔹 Criar colunas de contagem de membros por ano
+        // ===========================
+        $colunasAnoPais = [];
+        $colunasAnoFilhos = [];
 
         for ($ano = $anoinicio; $ano <= $anofinal; $ano++) {
-            // Contagem de membros recebidos no ano
-            $totalAno = "SUM(CASE WHEN YEAR(mrp.dt_recepcao) = $ano THEN 1 ELSE 0 END)";
+            // Para os PAIS (distrito_id)
+            $colunasAnoPais[] = "
+                (SELECT COUNT(*) FROM membresia_rolpermanente
+                 WHERE distrito_id = inst.id
+                 AND YEAR(dt_recepcao) <= $ano
+                ) AS `$ano`
+            ";
 
-            // Contagem de membros excluídos no ano (somente se total > 0)
-            $exclusoes = "SUM(CASE WHEN YEAR(mrp.dt_exclusao) = $ano THEN 1 ELSE 0 END)";
-
-            // Ajustar para não subtrair se o total já for 0
-            $colunaAcumulada = "(
-            $colunaAcumulada +
-            $totalAno -
-            CASE
-                WHEN ($colunaAcumulada + $totalAno) <= 0 THEN 0
-                ELSE $exclusoes
-            END
-        )";
-
-            // Criar a coluna com a soma progressiva
-            $colunasAno[] = "$colunaAcumulada AS `$ano`";
+            // Para os FILHOS (igreja_id)
+            $colunasAnoFilhos[] = "
+                (SELECT COUNT(*) FROM membresia_rolpermanente
+                 WHERE igreja_id = inst.id
+                 AND YEAR(dt_recepcao) <= $ano
+                ) AS `$ano`
+            ";
         }
 
-        // Obter o acumulado do primeiro ano (Ano Inicial)
-        $valorAnoInicial = str_replace(" AS `$anoinicio`", "", reset($colunasAno));
+        $colunasAnoSQLPais = implode(", ", $colunasAnoPais);
+        $colunasAnoSQLFilhos = implode(", ", $colunasAnoFilhos);
 
-        // Obter o acumulado do último ano (Ano Final)
-        $valorAnoFinal = str_replace(" AS `$anofinal`", "", end($colunasAno));
+        // ===========================
+        // 🔹 Buscar os PAIS (instituições na região do usuário)
+        // ===========================
+        $instituicoes_pais = DB::select("
+            SELECT
+                inst.id,
+                inst.nome AS instituicao,
+                inst.instituicao_pai_id,
+                $colunasAnoSQLPais,
+                (SELECT COUNT(*) FROM membresia_rolpermanente WHERE distrito_id = inst.id) AS total_membros
+            FROM instituicoes_instituicoes inst
+            WHERE inst.instituicao_pai_id = ?
+            ORDER BY inst.nome
+        ", [$regiao_id]);
 
-        // Construir a Query SQL
-        $sql = "
-        SELECT
-            inst.nome,
-            " . implode(", ", $colunasAno) . ",
+        // 🔹 PEGAR IDS DOS PAIS ENCONTRADOS PARA BUSCAR FILHOS
+        $ids_pais = array_column($instituicoes_pais, 'id');
 
-            -- Cálculo da Evolução Acumulada
-            ($valorAnoFinal - $valorAnoInicial) AS Evolucao,
+        // ===========================
+        // 🔹 Buscar os FILHOS (instituições que pertencem aos pais encontrados)
+        // ===========================
+        if (!empty($ids_pais)) {
+            $instituicoes_filhos = DB::select("
+                SELECT
+                    inst.id,
+                    inst.nome AS instituicao,
+                    inst.instituicao_pai_id,
+                    $colunasAnoSQLFilhos,
+                    (SELECT COUNT(*) FROM membresia_rolpermanente WHERE igreja_id = inst.id) AS total_membros
+                FROM instituicoes_instituicoes inst
+                WHERE inst.instituicao_pai_id IN (" . implode(',', $ids_pais) . ")
+                ORDER BY inst.nome
+            ");
+        } else {
+            $instituicoes_filhos = [];
+        }
 
-            -- Cálculo do Percentual de Crescimento
-            CASE
-                WHEN $valorAnoInicial = 0 THEN 100 * ($valorAnoFinal - $valorAnoInicial)
-                ELSE ROUND(
-                    (($valorAnoFinal - $valorAnoInicial) / NULLIF($valorAnoInicial, 0)) * 100, 2
-                )
-            END AS Percentual
-
-        FROM membresia_rolpermanente mrp
-        INNER JOIN instituicoes_instituicoes inst ON inst.id = mrp.distrito_id
-        LEFT JOIN instituicoes_instituicoes inst_pai ON inst.instituicao_pai_id = inst_pai.id
-        WHERE mrp.status = 'A'
-        AND (mrp.regiao_id = ? OR inst.instituicao_pai_id IN (SELECT id FROM instituicoes_instituicoes WHERE regiao_id = ?))
-        AND YEAR(mrp.dt_recepcao) BETWEEN ? AND ?
-        GROUP BY inst.nome, inst_pai.nome, mrp.distrito_id, mrp.regiao_id
-    ";
-
-        $dados = DB::select($sql, [$regiao_id, $regiao_id, $anoinicio, $anofinal]);
-
-
-        return view('regiao.estatisticas.evolucao', compact('dados', 'anoinicio', 'anofinal'));
+        return view('regiao.estatisticas.evolucao', compact('instituicoes_pais', 'instituicoes_filhos', 'anoinicio', 'anofinal'));
     }
 }
