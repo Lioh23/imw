@@ -65,9 +65,9 @@ class RegiaoEstatisticasController extends Controller
 
         FROM membresia_rolpermanente mrp
         INNER JOIN instituicoes_instituicoes inst ON inst.id = mrp.distrito_id
-        LEFT JOIN instituicoes_instituicoes inst_pai ON inst.instituicoes_pai_id = inst_pai.id
+        LEFT JOIN instituicoes_instituicoes inst_pai ON inst.instituicao_pai_id = inst_pai.id
         WHERE mrp.status = 'A'
-        AND (mrp.regiao_id = ? OR inst.instituicoes_pai_id IN (SELECT id FROM instituicoes_instituicoes WHERE regiao_id = ?))
+        AND (mrp.regiao_id = ? OR inst.instituicao_pai_id IN (SELECT id FROM instituicoes_instituicoes WHERE regiao_id = ?))
         AND YEAR(mrp.dt_recepcao) BETWEEN ? AND ?
         GROUP BY inst.nome, inst_pai.nome, mrp.distrito_id, mrp.regiao_id
     ";
