@@ -34,16 +34,24 @@
                 let target = this.dataset.target;
                 let rows = document.querySelectorAll(`.child-row[data-parent="${target}"]`);
 
+                let isHidden = rows[0].style.display === 'none' || rows[0].style.display === '';
+
                 rows.forEach(row => {
-                    row.style.display = row.style.display === 'none' ? 'table-row' : 'none';
+                    row.style.display = isHidden ? 'table-row' : 'none';
                 });
 
-                this.classList.toggle('fa-plus-square');
-                this.classList.toggle('fa-minus-square');
+                if (isHidden) {
+                    this.classList.remove('fa-plus-square');
+                    this.classList.add('fa-minus-square');
+                } else {
+                    this.classList.remove('fa-minus-square');
+                    this.classList.add('fa-plus-square');
+                }
             });
         });
     });
 </script>
+
 @endsection
 
 @include('extras.alerts')
