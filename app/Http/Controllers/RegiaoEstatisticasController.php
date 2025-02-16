@@ -20,14 +20,14 @@ class RegiaoEstatisticasController extends Controller
         $colunaAcumulada = "0"; // Iniciar a variável acumulada
 
         for ($ano = $anoinicio; $ano <= $anofinal; $ano++) {
-                // Contagem de membros recebidos no ano
-                $totalAno = "SUM(CASE WHEN YEAR(mrp.dt_recepcao) = $ano THEN 1 ELSE 0 END)";
+            // Contagem de membros recebidos no ano
+            $totalAno = "SUM(CASE WHEN YEAR(mrp.dt_recepcao) = $ano THEN 1 ELSE 0 END)";
 
-                // Contagem de membros excluídos no ano (somente se total > 0)
-                $exclusoes = "SUM(CASE WHEN YEAR(mrp.dt_exclusao) = $ano THEN 1 ELSE 0 END)";
+            // Contagem de membros excluídos no ano (somente se total > 0)
+            $exclusoes = "SUM(CASE WHEN YEAR(mrp.dt_exclusao) = $ano THEN 1 ELSE 0 END)";
 
-                // Ajustar para não subtrair se o total já for 0
-                $colunaAcumulada = "(
+            // Ajustar para não subtrair se o total já for 0
+            $colunaAcumulada = "(
             $colunaAcumulada +
             $totalAno -
             CASE
@@ -48,30 +48,32 @@ class RegiaoEstatisticasController extends Controller
 
         // Construir a Query SQL
         $sql = "
-            SELECT
-                inst.nome,
-                " . implode(", ", $colunasAno) . ",
+        SELECT
+            inst.nome,
+            " . implode(", ", $colunasAno) . ",
 
-                -- Cálculo da Evolução Acumulada
-                ($valorAnoFinal - $valorAnoInicial) AS Evolucao,
+            -- Cálculo da Evolução Acumulada
+            ($valorAnoFinal - $valorAnoInicial) AS Evolucao,
 
-                -- Cálculo do Percentual de Crescimento
-                CASE
-                    WHEN $valorAnoInicial = 0 THEN 100 * ($valorAnoFinal - $valorAnoInicial)
-                    ELSE ROUND(
-                        (($valorAnoFinal - $valorAnoInicial) / NULLIF($valorAnoInicial, 0)) * 100, 2
-                    )
-                END AS Percentual
+            -- Cálculo do Percentual de Crescimento
+            CASE
+                WHEN $valorAnoInicial = 0 THEN 100 * ($valorAnoFinal - $valorAnoInicial)
+                ELSE ROUND(
+                    (($valorAnoFinal - $valorAnoInicial) / NULLIF($valorAnoInicial, 0)) * 100, 2
+                )
+            END AS Percentual
 
-            FROM membresia_rolpermanente mrp
-            INNER JOIN instituicoes_instituicoes inst ON inst.id = mrp.distrito_id
-            WHERE mrp.status = 'A' AND mrp.regiao_id = ?
-            AND YEAR(mrp.dt_recepcao) BETWEEN ? AND ?
-            GROUP BY inst.nome, mrp.distrito_id, mrp.regiao_id
-        ";
+        FROM membresia_rolpermanente mrp
+        INNER JOIN instituicoes_instituicoes inst ON inst.id = mrp.distrito_id
+        LEFT JOIN instituicoes_instituicoes inst_pai ON inst.instituicoes_pai_id = inst_pai.id
+        WHERE mrp.status = 'A'
+        AND (mrp.regiao_id = ? OR inst.instituicoes_pai_id IN (SELECT id FROM instituicoes_instituicoes WHERE regiao_id = ?))
+        AND YEAR(mrp.dt_recepcao) BETWEEN ? AND ?
+        GROUP BY inst.nome, inst_pai.nome, mrp.distrito_id, mrp.regiao_id
+    ";
 
-        // Executar a Query
-        $dados = DB::select($sql, [$regiao_id, $anoinicio, $anofinal]);
+        $dados = DB::select($sql, [$regiao_id, $regiao_id, $anoinicio, $anofinal]);
+
 
         return view('regiao.estatisticas.evolucao', compact('dados', 'anoinicio', 'anofinal'));
     }
