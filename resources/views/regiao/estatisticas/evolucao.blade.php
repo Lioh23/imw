@@ -19,7 +19,7 @@
         margin-right: 5px;
     }
     .child-row {
-        display: none; /* Inicialmente escondidos */
+        display: none; /* Filhos ficam escondidos inicialmente */
     }
 </style>
 @endsection
@@ -60,6 +60,48 @@
         </div>
 
         <div class="widget-content widget-content-area">
+            <!-- 🔹 Formulário de Pesquisa -->
+            <form class="form-vertical" id="filter_form" method="GET">
+                <div class="form-group row mb-4">
+                    <div class="col-lg-2 text-right">
+                        <label class="control-label">* Ano Inicial:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="anoinicio" name="anoinicio" required>
+                            @for ($ano = date('Y') - 10; $ano <= date('Y'); $ano++)
+                                <option value="{{ $ano }}" {{ request()->input('anoinicio') == $ano ? 'selected' : '' }}>
+                                    {{ $ano }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4">
+                    <div class="col-lg-2 text-right">
+                        <label class="control-label">* Ano Final:</label>
+                    </div>
+                    <div class="col-lg-3">
+                        <select class="form-control" id="anofinal" name="anofinal" required>
+                            @for ($ano = date('Y') - 10; $ano <= date('Y'); $ano++)
+                                <option value="{{ $ano }}" {{ request()->input('anofinal') == $ano ? 'selected' : '' }}>
+                                    {{ $ano }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group row mb-4">
+                    <div class="col-lg-2"></div>
+                    <div class="col-lg-6">
+                        <button id="btn_buscar" type="submit" class="btn btn-primary">
+                            <x-bx-search /> Buscar
+                        </button>
+                    </div>
+                </div>
+            </form>
+
             @if(request()->has('anoinicio') && request()->has('anofinal'))
                 @if(isset($instituicoes_pais) && count($instituicoes_pais) > 0)
                 <h4>Resultados de {{ $anoinicio }} a {{ $anofinal }}</h4>
@@ -128,18 +170,6 @@
                                     @endif
                                 @endforeach
                             @endforeach
-
-                            <tr style="font-weight: bold; background-color: #dff0d8;">
-                                <td>Total (somente pais)</td>
-                                @foreach (range($anoinicio, $anofinal) as $ano)
-                                    <td>{{ $totaisPais[$ano] }}</td>
-                                @endforeach
-                                <td>{{ $totalEvolucaoPais }}</td>
-                                @php
-                                    $percentualTotalPais = $totalAnoInicialPais > 0 ? round(($totalEvolucaoPais / $totalAnoInicialPais) * 100, 2) : ($totalAnoFinalPais > 0 ? 100 * $totalAnoFinalPais : 0);
-                                @endphp
-                                <td>{{ $percentualTotalPais }}%</td>
-                            </tr>
                         </tbody>
                     </table>
                 </div>
