@@ -3,30 +3,32 @@
 namespace App\Services\ServiceRegiaoRelatorios;
 
 use App\Models\InstituicoesInstituicao;
+use App\Models\MembresiaFormacao;
+use App\Models\PessoasPessoa;
+use App\Traits\EstatisticaEscolaridadeUtils;
 use App\Traits\EstatisticaGeneroUtils;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
 
-class EstatisticaGeneroService
+class EstatisticaEscolaridadeService
 {
     use EstatisticaGeneroUtils;
     use Identifiable;
 
-    public function execute($dataInicial, $dataFinal, $tipo, $distritoId)
+    public function execute($distritoId, $escolaridadeId)
     {
-        $dataInicial ??= Carbon::now()->format('Y-m-d');
 
-        $dataFinal ??= Carbon::now()->format('Y-m-d');
-
-        $tipo ??= 'M';
 
         $regiao = Identifiable::fetchtSessionRegiao();
+        $escolaridades = MembresiaFormacao::all();
+
 
         return [
-            'lancamentos' => EstatisticaGeneroUtils::fetch($dataInicial, $dataFinal, $tipo, $distritoId, $regiao->id),
+            'lancamentos' => EstatisticaEscolaridadeUtils::fetch($distritoId, $escolaridadeId, $regiao->id),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
             'instituicao' => InstituicoesInstituicao::find($distritoId),
-            'regiao'      => $regiao
+            'regiao'      => $regiao,
+            'escolaridades' => $escolaridades
         ];
     }
 }

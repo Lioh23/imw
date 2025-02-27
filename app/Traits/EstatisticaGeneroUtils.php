@@ -110,7 +110,7 @@ trait EstatisticaGeneroUtils
         }, 'total_feminino_y')
         ->leftJoin('instituicoes_instituicoes as dist', function ($join) {
             $join->on('ii.instituicao_pai_id', '=', 'dist.id')
-                ->where('dist.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO);      
+                ->where('dist.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO);
         })
         ->when($distritoId == 'all' && $regiaoId,
             fn ($query) => $query->whereIn('ii.instituicao_pai_id', Identifiable::fetchDistritosIdByRegiao($regiaoId)),
@@ -119,7 +119,6 @@ trait EstatisticaGeneroUtils
         ->orderBy('dist.nome')
         ->orderBy('ii.nome')
         ->get();
-
         return $results;
     }
 }
