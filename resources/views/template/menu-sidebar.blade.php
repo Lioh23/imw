@@ -477,6 +477,12 @@
                              Gênero</a>
                          @endif
                      </li>
+                     <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
+                         <a href="{{ route('regiao.relatorio.estatisticaescolaridade') }}">Estatística por
+                             Escolaridade</a>
+                         @endif
+                     </li>
                  </ul>
              </li>
              @endif

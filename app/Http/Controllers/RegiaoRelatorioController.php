@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ServiceRegiaoRelatorios\EstatisticaEscolaridadeService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaGeneroService;
 use App\Services\ServiceRegiaoRelatorios\LancamentoIgrejasService;
 use App\Services\ServiceRegiaoRelatorios\LivroRazaoGeralService;
@@ -17,7 +18,8 @@ use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 class RegiaoRelatorioController extends Controller
 {
     //Membresia
-    public function membrosministerio(Request $request) {
+    public function membrosministerio(Request $request)
+    {
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
@@ -27,14 +29,15 @@ class RegiaoRelatorioController extends Controller
         return view('regiao.relatorios.membrosministerio', $data);
     }
 
-    public function membrosministerioPdf(Request $request) {
+    public function membrosministerioPdf(Request $request)
+    {
         $dataInicial = $request->input('dt_inicial');
         $dataFinal = $request->input('dt_final');
         $tipo = $request->input('tipo');
         $distritoId = $request->input('distrito');
 
         $data = app(MembrosMinisterioService::class)->execute($dataInicial, $dataFinal, $tipo, $distritoId);
-        
+
         $pdf = FacadePdf::loadView('regiao.relatorios.membrosministerio_pdf', $data)
             ->setPaper('a4', 'landscape');
 
@@ -42,7 +45,8 @@ class RegiaoRelatorioController extends Controller
     }
 
 
-    public function quantidademembros(Request $request) {
+    public function quantidademembros(Request $request)
+    {
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
@@ -52,7 +56,8 @@ class RegiaoRelatorioController extends Controller
         return view('regiao.relatorios.quantidademembros', $data);
     }
 
-    public function quantidademembrosPdf(Request $request) {
+    public function quantidademembrosPdf(Request $request)
+    {
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
@@ -66,7 +71,8 @@ class RegiaoRelatorioController extends Controller
     }
 
 
-    public function estatisticagenero(Request $request) {
+    public function estatisticagenero(Request $request)
+    {
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
@@ -76,15 +82,41 @@ class RegiaoRelatorioController extends Controller
         return view('regiao.relatorios.estatisticagenero', $data);
     }
 
-    public function estatisticageneroPdf(Request $request) {
+    public function estatisticageneroPdf(Request $request)
+    {
         $dataInicial = $request->input('data_inicial');
         $dataFinal = $request->input('data_final');
         $tipo = $request->input('tipo');
         $distritoId = $request->input('distrito');
 
         $data = app(EstatisticaGeneroService::class)->execute($dataInicial, $dataFinal, $tipo, $distritoId);
-        
+
         $pdf = FacadePdf::loadView('regiao.relatorios.estatisticagenero_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_estatisticagenero.pdf' . date('YmdHis'));
+    }
+    //Escorlaridade
+    public function estatisticaescolaridade(Request $request)
+    {
+
+        $distritoId = $request->input('distrito');
+        $escolaridadeId = $request->input('escolaridade');
+
+        $data = app(EstatisticaEscolaridadeService::class)->execute($distritoId, $escolaridadeId);
+
+
+        return view('regiao.relatorios.estatisticaescolaridade', $data);
+    }
+
+    public function estatisticaescolaridadePdf(Request $request)
+    {
+         $distritoId = $request->input('distrito');
+        $escolaridadeId = $request->input('escolaridade');
+
+        $data = app(EstatisticaEscolaridadeService::class)->execute($distritoId, $escolaridadeId);
+
+        $pdf = FacadePdf::loadView('regiao.relatorios.estatisticaescolaridade_pdf', $data)
             ->setPaper('a4', 'landscape');
 
         return $pdf->stream('relatorio_estatisticagenero.pdf' . date('YmdHis'));
