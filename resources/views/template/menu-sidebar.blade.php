@@ -476,7 +476,7 @@
                                  <a href="{{ route('regiao.relatorio.estatisticagenero') }}">Estatística por
                                      Gênero</a>
                              @endif
-                         </li>
+
 
                      </ul>
                  </li>
@@ -522,6 +522,12 @@
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                                  <a href="{{ route('regiao.relatorio.estatisticaescolaridade') }}">Estatística por
                                      Escolaridade</a>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.relatorio.estatisticaestadocivil') }}">Estatística por
+                                     Estado Cívil</a>
                              @endif
                          </li>
                          <!--  <li>
