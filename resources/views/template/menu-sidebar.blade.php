@@ -476,7 +476,7 @@
                                  <a href="{{ route('regiao.relatorio.estatisticagenero') }}">Estatística por
                                      Gênero</a>
                              @endif
-
+                         </li>
 
                      </ul>
                  </li>
