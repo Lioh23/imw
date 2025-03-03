@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Relatório de Estatística por Escolaridade - IMW PGA</title>
+    <title>Relatório de Estatística Estado Civil- IMW PGA</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -91,9 +91,7 @@
 <body>
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
-        <div class="info">
-            <div class="title">ESTATÍSTICA POR Escolaridade - {{$lancamentos[0]->instituicao }}</div>
-        </div>
+
         <div class="date">Data do Relatório: {{ \Carbon\Carbon::now()->format('m/Y') }}</div>
     </div>
 
@@ -103,20 +101,36 @@
             <div class="row">
                 <div class="col-12">
                     <h6 class="mt-3">QUANTIDADE DE MEMBROS -
-                        {{ $lancamentos[0]->escolaridade  }}</h6>
+                        {{ $lancamentos->sum('total') }}</h6>
                     <div class="table-responsive">
                         <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                             <thead class="thead-dark">
                                 <tr>
-                                    <th style="text-align: left;"></th>
+                                    <th style="text-align: left;">Estado Civil</th>
                                     <th style="text-align: center;">Total</th>
                                     <th style="text-align: center;">Percentual</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach ($lancamentos as $lancamento)
+                                    @php
+                                        switch ($lancamento->estado_civil) {
+                                            case 'S':
+                                                $lancamento->estado_civil = 'Solteiro';
+                                                break;
+                                            case 'V':
+                                                $lancamento->estado_civil = 'Viúvo';
+                                                break;
+                                            case 'C':
+                                                $lancamento->estado_civil = 'Casado';
+                                                break;
+                                            case 'D':
+                                                $lancamento->estado_civil = 'Divorciado';
+                                                break;
+                                        }
+                                    @endphp
                                     <tr>
-                                        <td>{{ $lancamento->instituicao }}</td>
+                                        <td>{{ $lancamento->estado_civil }}</td>
                                         <td style="text-align: center;">{{ $lancamento->total }}</td>
                                         <td style="text-align: center;">
                                             {{ number_format($lancamento->percentual, 2) }}%</td>

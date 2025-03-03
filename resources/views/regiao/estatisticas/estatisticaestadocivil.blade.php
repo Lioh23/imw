@@ -3,8 +3,8 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Relatórios Regionais', 'url' => '#', 'active' => false],
-        ['text' => 'Estatística por Escolaridade', 'url' => '#', 'active' => true],
+        ['text' => 'Estatísticas', 'url' => '#', 'active' => false],
+        ['text' => 'Estatística por Estado civil', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -27,7 +27,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Estatísticas por Escolaridade - {{ optional($instituicao)->nome ?? $regiao->nome }}</h4>
+                        <h4>Estatísticas por Estado civil - {{ optional($instituicao)->nome ?? $regiao->nome }}</h4>
                     </div>
                 </div>
             </div>
@@ -51,21 +51,6 @@
                         </div>
 
                     </div>
-                    <div class="for-group row mb-4">
-                        <div class="col-lg-3 text-right">
-                            <label class="control-label">* Escolaridade:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select class="form-control" id="escolaridade" name="escolaridade" required>
-                                <option value="">Selecione</option>
-                                @foreach ($escolaridades as $escolaridade)
-                                    <option value="{{ $escolaridade->id }}"
-                                        {{ request()->input('escolaridade') == $escolaridade->id ? 'selected' : '' }}>
-                                        {{ $escolaridade->descricao }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
                     <div class="form-group row mb-4">
                         <div class="col-lg-2"></div>
                         <div class="col-lg-6">
@@ -80,11 +65,11 @@
                     </div>
                 </form>
 
-                <form id="report_form" action="{{ url('regiao/relatorio/estatisticaescolaridade/pdf') }}" method="POST"
+                <form id="report_form" action="{{ url('regiao/relatorio/estatisticaestadocivil/pdf') }}" method="POST"
                     target="_blank" style="display: none;">
                     @csrf
                     <input type="hidden" name="distrito" id="report_distrito">
-                    <input type="hidden" name="escolaridade" id="report_escolaridade">
+                    <input type="hidden" name="estado_civil" id="report_estado_civil">
                 </form>
             </div>
         </div>
@@ -105,15 +90,31 @@
                                         <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                             <thead class="thead-dark">
                                                 <tr>
-                                                    <th style="text-align: left;">Instituição</th>
+                                                    <th style="text-align: left;">Estado Civil</th>
                                                     <th style="text-align: center;">Total</th>
                                                     <th style="text-align: center;">Percentual</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($lancamentos as $lancamento)
+                                                @php
+                                                    switch($lancamento->estado_civil ){
+                                                        case'S':
+                                                            $lancamento->estado_civil  = 'Solteiro';
+                                                            break;
+                                                        case 'V':
+                                                             $lancamento->estado_civil  = 'Viúvo';
+                                                            break;
+                                                        case 'C':
+                                                             $lancamento->estado_civil  = 'Casado';
+                                                            break;
+                                                        case 'D':
+                                                             $lancamento->estado_civil  = 'Divorciado';
+                                                            break;
+                                                    }
+                                                @endphp
                                                     <tr>
-                                                        <td>{{ $lancamento->instituicao }}</td>
+                                                        <td>{{ $lancamento->estado_civil  }}</td>
                                                         <td style="text-align: center;">{{ $lancamento->total }}</td>
                                                         <td style="text-align: center;">
                                                             {{ number_format($lancamento->percentual, 2) }}%</td>
@@ -158,25 +159,22 @@
 
             $('#btn_relatorio').on('click', function(event) {
                 var distrito = $('#distrito').val();
-                var escolaridade = $('#escolaridade').val();
 
 
-                if (!distrito || !escolaridade) {
+                if (!distrito ) {
                     event.preventDefault();
                     alert('Por favor, preencha todos os campos.');
                 } else {
                     $('#report_distrito').val(distrito);
-                    $('#report_escolaridade').val(escolaridade);
                     $('#report_form').submit();
                 }
             });
 
             $('#filter_form').submit(function(event) {
                 var distrito = $('#distrito').val();
-                var escolaridade = $('#escolaridade').val();
 
 
-                if (!distrito || !escolaridade) {
+                if (!distrito ) {
                     event.preventDefault();
                     alert('Por favor, preencha todos os campos.');
                 }

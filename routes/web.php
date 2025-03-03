@@ -258,6 +258,9 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/relatorio/estatisticaestadocivil', [RegiaoRelatorioController::class, 'estatisticaestadocivil'])->name('relatorio.estatisticaestadocivil')->middleware(['seguranca:regiao-menu-relatorio']);
             Route::post('/relatorio/estatisticaestadocivil/pdf', [RegiaoRelatorioController::class, 'estatisticaestadocivilPdf'])->name('relatorio.estatisticaestadocivil-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+
+            Route::get('/relatorio/estatisticatotalmembros', [RegiaoRelatorioController::class, 'estatisticatotalmembros'])->name('relatorio.estatisticatotalmembros')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/relatorio/estatisticatotalmembros/pdf', [RegiaoRelatorioController::class, 'estatisticatotalmembrosPdf'])->name('relatorio.estatisticatotalmembros-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
             //Estatitisca de Membros
             Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-estatistica-membros-evolucao']);
 

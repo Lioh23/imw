@@ -15,7 +15,7 @@ class EstatisticaEscolaridadeService
     use EstatisticaGeneroUtils;
     use Identifiable;
 
-    public function execute($distritoId, $escolaridadeId)
+    public function execute($distritoId)
     {
 
 
@@ -24,7 +24,7 @@ class EstatisticaEscolaridadeService
 
 
         return [
-            'lancamentos' => EstatisticaEscolaridadeUtils::fetch($distritoId, $escolaridadeId, $regiao->id),
+            'lancamentos' => EstatisticaEscolaridadeUtils::fetch($distritoId, $regiao->id),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
             'instituicao' => InstituicoesInstituicao::find($distritoId),
             'regiao'      => $regiao,

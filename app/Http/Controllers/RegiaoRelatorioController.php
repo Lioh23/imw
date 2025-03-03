@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEscolaridadeService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEstadoCivilService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaGeneroService;
+use App\Services\ServiceRegiaoRelatorios\EstatisticaTotalMembrosService;
 use App\Services\ServiceRegiaoRelatorios\LancamentoIgrejasService;
 use App\Services\ServiceRegiaoRelatorios\LivroRazaoGeralService;
 use App\Services\ServiceRegiaoRelatorios\MembrosMinisterioService;
@@ -102,22 +103,20 @@ class RegiaoRelatorioController extends Controller
     {
 
         $distritoId = $request->input('distrito');
-        $escolaridadeId = $request->input('escolaridade');
-
-        $data = app(EstatisticaEscolaridadeService::class)->execute($distritoId, $escolaridadeId);
 
 
-        return view('regiao.relatorios.estatisticaescolaridade', $data);
+        $data = app(EstatisticaEscolaridadeService::class)->execute($distritoId);
+
+
+        return view('regiao.estatisticas.estatisticaescolaridade', $data);
     }
 
     public function estatisticaescolaridadePdf(Request $request)
     {
-         $distritoId = $request->input('distrito');
-        $escolaridadeId = $request->input('escolaridade');
+        $distritoId = $request->input('distrito');
+        $data = app(EstatisticaEscolaridadeService::class)->execute($distritoId);
 
-        $data = app(EstatisticaEscolaridadeService::class)->execute($distritoId, $escolaridadeId);
-
-        $pdf = FacadePdf::loadView('regiao.relatorios.estatisticaescolaridade_pdf', $data)
+        $pdf = FacadePdf::loadView('regiao.estatisticas.estatisticaescolaridade_pdf', $data)
             ->setPaper('a4', 'landscape');
 
         return $pdf->stream('relatorio_estatisticaescolaridade.pdf' . date('YmdHis'));
@@ -126,25 +125,43 @@ class RegiaoRelatorioController extends Controller
     {
 
         $distritoId = $request->input('distrito');
-        $estadoCivil = $request->input('estado_civil');
-
-        $data = app(EstatisticaEstadoCivilService::class)->execute($distritoId, $estadoCivil);
 
 
-        return view('regiao.relatorios.estatisticaestadocivil', $data);
+        $data = app(EstatisticaEstadoCivilService::class)->execute($distritoId );
+
+
+        return view('regiao.estatisticas.estatisticaestadocivil', $data);
     }
 
     public function estatisticaestadocivilPdf(Request $request)
     {
-         $distritoId = $request->input('distrito');
-        $estadoCivil = $request->input('estado_civil');
+        $distritoId = $request->input('distrito');
 
-        $data = app(EstatisticaEstadoCivilService::class)->execute($distritoId, $estadoCivil);
 
-        $pdf = FacadePdf::loadView('regiao.relatorios.estatisticaestadocivil_pdf', $data)
+        $data = app(EstatisticaEstadoCivilService::class)->execute($distritoId);
+
+        $pdf = FacadePdf::loadView('regiao.estatisticas.estatisticaestadocivil_pdf', $data)
             ->setPaper('a4', 'landscape');
 
         return $pdf->stream('relatorio_estatisticaestadocivil.pdf' . date('YmdHis'));
+    }
+    public function estatisticatotalmembros(Request $request)
+    {
+        $regiaoId = $request->input('regiao');
+
+        $data = app(EstatisticaTotalMembrosService::class)->execute($regiaoId);
+        return view('regiao.estatisticas.estatisticatotalmembros', $data);
+    }
+
+    public function estatisticatotalmembrosPdf(Request $request)
+    {
+        $regiaoId = $request->input('regiao');
+        $data = app(EstatisticaTotalMembrosService::class)->execute($regiaoId);
+
+        $pdf = FacadePdf::loadView('regiao.estatisticas.estatisticatotalmembros_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_quantidademembros.pdf' . date('YmdHis'));
     }
 
 

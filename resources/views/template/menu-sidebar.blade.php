@@ -478,6 +478,7 @@
                              @endif
                          </li>
 
+
                      </ul>
                  </li>
              @endif
@@ -530,6 +531,13 @@
                                      Estado Cívil</a>
                              @endif
                          </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
+                                 <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Estatística por
+                                     Quantidade de membros</a>
+                             @endif
+                         </li>
+
                          <!--  <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-total'))
 <a href="#">Total de Membros</a>

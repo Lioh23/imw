@@ -3,8 +3,8 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Relatórios Regionais', 'url' => '#', 'active' => false],
-        ['text' => 'Estatística por Estado civil', 'url' => '#', 'active' => true],
+        ['text' => 'Estatísticas', 'url' => '#', 'active' => false],
+        ['text' => 'Estatística Total Membros', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -27,7 +27,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Estatísticas por Estado civil - {{ optional($instituicao)->nome ?? $regiao->nome }}</h4>
+                        <h4>Estatística Total Membros</h4>
                     </div>
                 </div>
             </div>
@@ -35,35 +35,18 @@
                 <form class="form-vertical" id="filter_form" method="GET">
                     <div class="form-group row mb-4">
                         <div class="col-lg-3 text-right">
-                            <label class="control-label">* Distrito:</label>
+                            <label class="control-label">* Região:</label>
                         </div>
                         <div class="col-lg-3">
-                            <select class="form-control" id="distrito" name="distrito" required>
+                            <select class="form-control" id="regiao" name="regiao" required>
                                 <option value="">Selecione</option>
-                                <option value="all" {{ request()->input('distrito') == 'all' ? 'selected' : '' }}>Todos
+                                <option {{ request()->input('regiao') == 'all' ? 'selected' : '' }} value="all">Todos
                                 </option>
-                                @foreach ($distritos as $distrito)
-                                    <option value="{{ $distrito->id }}"
-                                        {{ request()->input('distrito') == $distrito->id ? 'selected' : '' }}>
-                                        {{ $distrito->nome }}</option>
+                                @foreach ($regioes as $regiao)
+                                    <option value="{{ $regiao->id }}"
+                                        {{ request()->input('regiao') == $regiao->id ? 'selected' : '' }}>
+                                        {{ $regiao->nome }}</option>
                                 @endforeach
-                            </select>
-                        </div>
-
-                    </div>
-                    <div class="for-group row mb-4">
-                        <div class="col-lg-3 text-right">
-                            <label class="control-label">* Estado civil:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <select class="form-control" id="estado_civil" name="estado_civil" required>
-                                <option value="">Selecione</option>
-                                <option value="S" {{ request()->input('estado_civil')  == 'S' ? 'selected' : '' }}>Solteiro
-                                </option>
-                                <option value="C" {{ request()->input('estado_civil')  == 'C' ? 'selected' : '' }}>Casado</option>
-                                <option value="D" {{ request()->input('estado_civil')  == 'D' ? 'selected' : '' }}>Divorciado
-                                </option>
-                                <option value="V" {{ request()->input('estado_civil')  == 'V' ? 'selected' : '' }}>Viúvo</option>
                             </select>
                         </div>
                     </div>
@@ -81,17 +64,16 @@
                     </div>
                 </form>
 
-                <form id="report_form" action="{{ url('regiao/relatorio/estatisticaestadocivil/pdf') }}" method="POST"
+                <form id="report_form" action="{{ url('regiao/relatorio/quantidademembros/pdf') }}" method="POST"
                     target="_blank" style="display: none;">
                     @csrf
-                    <input type="hidden" name="distrito" id="report_distrito">
-                    <input type="hidden" name="estado_civil" id="report_estado_civil">
+                    <input type="hidden" name="regiao" id="report_regiao">
                 </form>
             </div>
         </div>
     </div>
 
-    @if (request()->input('distrito'))
+    @if (request()->input('regiao'))
         <div class="col-lg-12 col-12 layout-spacing">
             <div class="statbox widget box box-shadow">
                 <div class="widget-content widget-content-area">
@@ -100,10 +82,9 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <h6 class="mt-3">QUANTIDADE DE MEMBROS -
-                                        {{ optional($instituicao)->nome ?? $regiao->nome }}</h6>
+                                    <h6 class="mt-3">QUANTIDADE DE MEMBROS -</h6>
                                     <div class="table-responsive">
-                                        <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
+                                      <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th style="text-align: left;">Instituição</th>
@@ -129,7 +110,11 @@
                                                 </tr>
                                             </tfoot>
                                         </table>
+
+
                                     </div>
+
+
                                 </div>
                             </div>
                         </div>
@@ -158,26 +143,22 @@
             $('.selectpicker').selectpicker();
 
             $('#btn_relatorio').on('click', function(event) {
-                var distrito = $('#distrito').val();
-                var estado_civil = $('#estado_civil').val();
+                var regiao = $('#regiao').val();
 
 
-                if (!distrito || !estado_civil) {
+                if (!regiao) {
                     event.preventDefault();
                     alert('Por favor, preencha todos os campos.');
                 } else {
-                    $('#report_distrito').val(distrito);
-                    $('#report_estado_civil').val(estado_civil);
-                    $('#report_form').submit();
+                    $('#report_regiao').val(regiao);
                 }
             });
 
             $('#filter_form').submit(function(event) {
-                var distrito = $('#distrito').val();
-                var estado_civil = $('#estado_civil').val();
+                var regiao = $('#regiao').val();
 
 
-                if (!distrito || !estado_civil) {
+                if (!regiao) {
                     event.preventDefault();
                     alert('Por favor, preencha todos os campos.');
                 }
