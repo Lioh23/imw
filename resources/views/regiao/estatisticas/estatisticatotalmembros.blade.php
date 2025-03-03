@@ -64,7 +64,7 @@
                     </div>
                 </form>
 
-                <form id="report_form" action="{{ url('regiao/relatorio/quantidademembros/pdf') }}" method="POST"
+                <form id="report_form" action="{{ url('regiao/relatorio/estatisticatotalmembros/pdf') }}" method="POST"
                     target="_blank" style="display: none;">
                     @csrf
                     <input type="hidden" name="regiao" id="report_regiao">

@@ -2,54 +2,55 @@
 
 namespace App\Traits;
 
-
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 trait EstatisticaEstadoCivilUtils
 {
-    public static function fetch($distritoId ,$regiaoId = null): Collection
+    public static function fetch($distritoId, $regiaoId = null): Collection
     {
 
-        $result = [];
+        $estadosCivis = collect([
+            (object) ['estado_civil' => 'S', 'descricao' => 'Solteiro'],
+            (object) ['estado_civil' => 'C', 'descricao' => 'Casado'],
+            (object) ['estado_civil' => 'V', 'descricao' => 'Viúvo'],
+            (object) ['estado_civil' => 'D', 'descricao' => 'Divorciado'],
+            (object) ['estado_civil' => 'N', 'descricao' => 'Não informado'],
+        ]);
+
+
+        $query = DB::table('membresia_membros as mm')
+            ->leftJoin('membresia_rolpermanente as mr', function ($join) {
+                $join->on('mr.membro_id', '=', 'mm.id')
+                    ->whereNull('mr.dt_exclusao');
+            })
+            ->selectRaw('COUNT(mm.id) as total, COALESCE(mm.estado_civil, "N") as estado_civil');
+
 
         if ($distritoId != "all") {
-
-            $result = DB::table('membresia_membros as mm')
-                ->join('membresia_rolpermanente as mr', function ($join) {
-                    $join->on('mr.membro_id', '=', 'mm.id')
-                        ->whereNull('mr.dt_exclusao');
-                })
-                ->join('instituicoes_instituicoes as ii', 'ii.id', '=', 'mm.distrito_id')
-                ->where('ii.id', $distritoId)
-                ->selectRaw('count(mm.id) as total, mm.distrito_id, mm.estado_civil')
-                ->groupBy('mm.estado_civil', 'mm.distrito_id')
-                ->orderByDesc('total')
-                ->get();
+            $query->where('mm.distrito_id', $distritoId);
         } else {
-
-            $result = DB::table('membresia_membros as mm')
-                ->join('membresia_rolpermanente as mr', function ($join) {
-                    $join->on('mr.membro_id', '=', 'mm.id')
-                        ->whereNull('mr.dt_exclusao');
-                })
-                ->join('instituicoes_instituicoes as ii', 'ii.id', '=', 'mm.distrito_id')
-                ->where('mm.regiao_id', $regiaoId)
-                ->selectRaw('count(mm.id) as total, mm.estado_civil, mm.regiao_id')
-                ->groupBy('mm.estado_civil', 'mm.regiao_id')
-                ->orderByDesc('total')
-                ->get();
+            $query->where('mm.regiao_id', $regiaoId);
         }
 
+        $query->groupBy(DB::raw('COALESCE(mm.estado_civil, "N")'));
 
-        $total = $result->sum('total');
+        $result = $query->get()->keyBy('estado_civil');
 
-        $estadocivilComPercentual = $result->map(function ($estadocivil) use ($total) {
-            $estadocivil->percentual = ($total > 0) ? ($estadocivil->total * 100) / $total : 0;
-            return $estadocivil;
+        $finalResult = $estadosCivis->map(function ($estado) use ($result) {
+            return (object) [
+                'estado_civil' => $estado->descricao,
+                'total' => $result->has($estado->estado_civil) ? $result[$estado->estado_civil]->total : 0
+            ];
         });
 
 
-        return $estadocivilComPercentual;
+        $totalGeral = $finalResult->sum('total');
+        $finalResult = $finalResult->map(function ($item) use ($totalGeral) {
+            $item->percentual = ($totalGeral > 0) ? ($item->total * 100) / $totalGeral : 0;
+            return $item;
+        });
+
+        return $finalResult;
     }
 }
