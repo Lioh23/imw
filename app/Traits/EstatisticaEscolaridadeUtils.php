@@ -15,18 +15,20 @@ trait EstatisticaEscolaridadeUtils
             $result = DB::table('membresia_formacoes as mf')
                 ->leftJoin('membresia_membros as mm', function ($join) use ($distritoId) {
                     $join->on('mm.escolaridade_id', '=', 'mf.id')
-                        ->where('mm.distrito_id', $distritoId);
+                        ->where('mm.distrito_id', $distritoId)
+                        ->where('mm.status', 'A')
+                        ->whereIn('mm.vinculo', ['M']);
                 })
                 ->leftJoin('membresia_rolpermanente as mr', function ($join) {
                     $join->on('mr.membro_id', '=', 'mm.id')
                         ->whereNull('mr.dt_exclusao');
                 })
                 ->selectRaw('
-        COALESCE(mf.descricao, "Não informado") as escolaridade,
-        COALESCE(count(mm.id), 0) as total
-    ')
-
-                ->groupBy('mf.descricao')->union(
+                    COALESCE(mf.descricao, "Não informado") as escolaridade,
+                    COALESCE(count(mm.id), 0) as total
+                ')
+                ->groupBy('mf.descricao')
+                ->union(
                     DB::table('membresia_membros as mm')
                         ->leftJoin('membresia_rolpermanente as mr', function ($join) {
                             $join->on('mr.membro_id', '=', 'mm.id')
@@ -34,33 +36,39 @@ trait EstatisticaEscolaridadeUtils
                         })
                         ->selectRaw('"Não informado" as escolaridade, count(mm.id) as total')
                         ->whereNull('mm.escolaridade_id')
+                        ->where('mm.status', 'A')
+                        ->whereIn('mm.vinculo', ['M'])
                 )
                 ->get();
         } else {
             $result = DB::table('membresia_formacoes as mf')
-                ->leftJoin('membresia_membros as mm', function ($join) use ($regiaoId) {
-                    $join->on('mm.escolaridade_id', '=', 'mf.id')
-                        ->where('mm.regiao_id', $regiaoId);
-                })
-                ->leftJoin('membresia_rolpermanente as mr', function ($join) {
-                    $join->on('mr.membro_id', '=', 'mm.id')
-                        ->whereNull('mr.dt_exclusao');
-                })
-                ->selectRaw('
-        COALESCE(mf.descricao, "Não informado") as escolaridade,
-        COALESCE(count(mm.id), 0) as total
-    ')
-
-                ->groupBy('mf.descricao')->union(
-                    DB::table('membresia_membros as mm')
-                        ->leftJoin('membresia_rolpermanente as mr', function ($join) {
-                            $join->on('mr.membro_id', '=', 'mm.id')
-                                ->whereNull('mr.dt_exclusao');
-                        })
-                        ->selectRaw('"Não informado" as escolaridade, count(mm.id) as total')
-                        ->whereNull('mm.escolaridade_id')
-                )
-                ->get();
+            ->leftJoin('membresia_membros as mm', function ($join) use ($regiaoId) {
+                $join->on('mm.escolaridade_id', '=', 'mf.id')
+                    ->where('mm.regiao_id', $regiaoId)
+                    ->where('mm.status', 'A')
+                    ->whereIn('mm.vinculo', ['M']);
+            })
+            ->leftJoin('membresia_rolpermanente as mr', function ($join) {
+                $join->on('mr.membro_id', '=', 'mm.id')
+                    ->whereNull('mr.dt_exclusao');
+            })
+            ->selectRaw('
+                COALESCE(mf.descricao, "Não informado") as escolaridade,
+                COALESCE(count(mm.id), 0) as total
+            ')
+            ->groupBy('mf.descricao')
+            ->union(
+                DB::table('membresia_membros as mm')
+                    ->leftJoin('membresia_rolpermanente as mr', function ($join) {
+                        $join->on('mr.membro_id', '=', 'mm.id')
+                            ->whereNull('mr.dt_exclusao');
+                    })
+                    ->selectRaw('"Não informado" as escolaridade, count(mm.id) as total')
+                    ->whereNull('mm.escolaridade_id')
+                    ->where('mm.status', 'A')
+                    ->whereIn('mm.vinculo', ['M'])
+            )
+            ->get();
         }
 
         $total = $result->sum('total');
