@@ -521,7 +521,7 @@
                          </li>
                          <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-total-membresia'))
-                                <a href="{{ route('estatistica.totalMembresia') }}">Total Membresia</a>
+                                <a href="{{ route('regiao.estatistica.totalMembresia') }}">Total Membresia</a>
                              @endif
 
                          </li>
