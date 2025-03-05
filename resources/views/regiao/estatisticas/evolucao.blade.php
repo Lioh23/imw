@@ -97,7 +97,10 @@
                     </div>
                     <div class="col-lg-3">
                         <select class="form-control" id="anoinicio" name="anoinicio" required>
-                            @for ($ano = date('Y') - 10; $ano <= date('Y'); $ano++)
+                            @php
+                            $anoAtual = date('Y'); // Obtém o ano atual
+                            @endphp
+                            @for ($ano = $anoAtual - 10; $ano <= $anoAtual; $ano++)
                                 <option value="{{ $ano }}" {{ request()->input('anoinicio') == $ano ? 'selected' : '' }}>
                                 {{ $ano }}
                                 </option>
