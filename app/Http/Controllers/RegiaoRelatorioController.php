@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEscolaridadeService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEstadoCivilService;
+use App\Services\ServiceRegiaoRelatorios\EstatisticaGeneroPorcentagemService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaGeneroService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaTotalMembrosService;
 use App\Services\ServiceRegiaoRelatorios\LancamentoIgrejasService;
@@ -144,6 +145,30 @@ class RegiaoRelatorioController extends Controller
             ->setPaper('a4', 'landscape');
 
         return $pdf->stream('relatorio_estatisticaestadocivil.pdf' . date('YmdHis'));
+    }
+    public function estatisticageneroporcentagem(Request $request)
+    {
+
+        $distritoId = $request->input('distrito');
+
+
+        $data = app(EstatisticaGeneroPorcentagemService::class)->execute($distritoId );
+
+
+        return view('regiao.estatisticas.estatisticagenero', $data);
+    }
+
+    public function estatisticageneroporcentagemPdf(Request $request)
+    {
+        $distritoId = $request->input('distrito');
+
+
+        $data = app(EstatisticaGeneroPorcentagemService::class)->execute($distritoId);
+
+        $pdf = FacadePdf::loadView('regiao.estatisticas.estatisticagenero_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_estatisticageneroporcentagem.pdf' . date('YmdHis'));
     }
     public function estatisticatotalmembros(Request $request)
     {

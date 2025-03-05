@@ -536,6 +536,11 @@
                              @endif
                          </li>
                          <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.relatorio.estatisticageneroporcentagem') }}">Gênero</a>
+                             @endif
+                         </li>
+                         <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
                                  <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Quantidade de Membros</a>
                              @endif
