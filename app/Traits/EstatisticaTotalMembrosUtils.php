@@ -12,45 +12,47 @@ trait EstatisticaTotalMembrosUtils
     public static function fetch($regiaoId): Collection
     {
         $result = [];
-        if ($regiaoId != "all") {;
-            $result = DB::table('membresia_membros as mm')
-                ->join('membresia_rolpermanente as mr', function ($join) {
+        if ($regiaoId != "all") {
+            $result = DB::table('instituicoes_instituicoes as ii')
+                ->leftJoin('membresia_membros as mm', 'mm.distrito_id', '=', 'ii.id')
+                ->leftJoin('membresia_rolpermanente as mr', function ($join) {
                     $join->on('mr.membro_id', '=', 'mm.id')
                         ->whereNull('mr.dt_exclusao');
                 })
-                ->join('instituicoes_instituicoes as ii', 'mm.distrito_id', '=', 'ii.id')
-                ->select(DB::raw('count(*) as total'), 'mm.distrito_id', 'mm.regiao_id', 'ii.nome as instituicao')
-                ->groupBy('mm.distrito_id', 'mm.regiao_id', 'ii.nome')
-                ->where('mm.regiao_id', $regiaoId)
-                ->orderByDesc(DB::raw('count(*)'))
+                ->select(
+                    'ii.id as distrito_id',
+                    'ii.nome as instituicao',
+                    DB::raw('COALESCE(COUNT(mm.id), 0) as total')
+                )
+                ->where('ii.regiao_id', $regiaoId)
+                ->groupBy('ii.id', 'ii.nome')
+                ->orderByDesc('total')
                 ->get();
         } else {
-            $result = DB::table('membresia_membros as mm')
-                ->join('membresia_rolpermanente as mr', function ($join) {
+            $result = DB::table('instituicoes_instituicoes as ii')
+                ->leftJoin('membresia_membros as mm', 'mm.distrito_id', '=', 'ii.id')
+                ->leftJoin('membresia_rolpermanente as mr', function ($join) {
                     $join->on('mr.membro_id', '=', 'mm.id')
                         ->whereNull('mr.dt_exclusao');
                 })
-                ->join('instituicoes_instituicoes as ii', 'ii.id', '=', 'mm.distrito_id')
-                ->join('instituicoes_instituicoes as ii_nome', 'ii_nome.id', '=', 'ii.regiao_id')
+                ->leftJoin('instituicoes_instituicoes as ii_nome', 'ii.regiao_id', '=', 'ii_nome.id')
                 ->select(
-                    DB::raw('count(mm.id) as total'),
                     'ii.regiao_id',
-                    'ii_nome.nome as instituicao'
+                    'ii_nome.nome as instituicao',
+                    DB::raw('COALESCE(COUNT(mm.id), 0) as total')
                 )
                 ->groupBy('ii.regiao_id', 'ii_nome.nome')
                 ->orderByDesc('total')
                 ->get();
-
         }
 
-
         $total = $result->sum('total');
-
 
         $totalMembros = $result->map(function ($escolaridade) use ($total) {
             $escolaridade->percentual = ($total > 0) ? ($escolaridade->total * 100) / $total : 0;
             return $escolaridade;
         });
+
 
         return $totalMembros;
     }
