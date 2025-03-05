@@ -4,7 +4,7 @@
 <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
         ['text' => 'Estatísticas', 'url' => '#', 'active' => false],
-        ['text' => 'Estatística Total de Membresia', 'url' => '#', 'active' => true],
+        ['text' => 'Estatísticas Total Membresia', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -36,8 +36,8 @@
                 <div class="form-group row mb-4">
                     <div class="col-lg-3 d-flex align-items-center">
                         <select class="form-control" name="checkIgreja" id="checkIgreja">
-                            <option value="distrito" {{ request()->input('checkIgreja') == 'distrito' ? 'selected' : '' }}>Somente Distritos</option>
-                            <option value="igreja" {{ request()->input('checkIgreja') == 'igreja' ? 'selected' : '' }}>Exibir Igrejas</option>
+                            <option value="distrito" {{ request()->input('checkIgreja') == 'distrito' ? 'selected' : '' }}>Filtro por Distrito</option>
+                            <option value="igreja" {{ request()->input('checkIgreja') == 'igreja' ? 'selected' : '' }}>Filtro por Igreja</option>
                         </select>
                     </div>
                     <div class="col-lg-2">
@@ -55,6 +55,10 @@
                         <tr>
                             <th style="text-align: left;">Nome</th>
                             <th style="text-align: right;">Total de Membros</th>
+                            @if ($tipo == 'igreja')
+                                <th style="text-align: right;" width="150px">% do Distrito</th>
+                            @endif
+                            <th style="text-align: right;" width="150px">% da Região</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -63,23 +67,49 @@
                         @foreach ($dados as $dado)
                             @if ($tipo == 'igreja')
                                 @if ($ultimoDistrito !== $dado->distrito_id)
+                                    @php
+                                        $totalDistrito = $dados->where('distrito_id', $dado->distrito_id)->sum('total_membros');
+                                    @endphp
                                     <tr class="distrito-row" data-distrito="{{ $dado->distrito_id }}">
                                         <td>
                                             <span class="toggle-icon" onclick="toggleDistrito({{ $dado->distrito_id }})">▼</span>
                                             <strong>{{ $dado->distrito_nome }}</strong>
                                         </td>
-                                        <td style="text-align: right;"><strong>{{ $dados->where('distrito_id', $dado->distrito_id)->sum('total_membros') }}</strong></td>
+                                        <td style="text-align: right;"><strong>{{ $totalDistrito }}</strong></td>
+                                        <td></td>
+                                        <td style="text-align: right;">
+                                            @if ($totalGeral > 0)
+                                                <strong>{{ number_format(($totalDistrito / $totalGeral) * 100, 2, ',', '.') }}%</strong>
+                                            @else
+                                                0,00%
+                                            @endif
+                                        </td>
                                     </tr>
                                     @php $ultimoDistrito = $dado->distrito_id; @endphp
                                 @endif
                                 <tr class="igreja-row hidden-row" data-parent="{{ $dado->distrito_id }}">
                                     <td style="padding-left: 30px;">- {{ $dado->igreja_nome }}</td>
                                     <td style="text-align: right;">{{ $dado->total_membros }}</td>
+                                    <td style="text-align: right;">
+                                        @if ($totalDistrito > 0)
+                                            {{ number_format(($dado->total_membros / $totalDistrito) * 100, 2, ',', '.') }}%
+                                        @else
+                                            0,00%
+                                        @endif
+                                    </td>
+                                    <td></td>
                                 </tr>
                             @else
                                 <tr>
                                     <td>{{ $dado->distrito_nome }}</td>
                                     <td style="text-align: right;">{{ $dado->total_membros }}</td>
+                                    <td style="text-align: right;">
+                                        @if ($totalGeral > 0)
+                                            {{ number_format(($dado->total_membros / $totalGeral) * 100, 2, ',', '.') }}%
+                                        @else
+                                            0,00%
+                                        @endif
+                                    </td>
                                 </tr>
                             @endif
                         @endforeach
@@ -88,6 +118,10 @@
                         <tr>
                             <th style="text-align: left;">Total Geral</th>
                             <th style="text-align: right;">{{ $totalGeral }}</th>
+                            @if ($tipo == 'igreja')
+                                <th></th>
+                            @endif
+                            <th style="text-align: right;">100,00%</th>
                         </tr>
                     </tfoot>
                 </table>
