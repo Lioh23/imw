@@ -41,7 +41,8 @@ class RegiaoEstatisticasController extends Controller
             // Para os PAIS (distrito_id)
             $colunasAnoPais[] = "
                 (SELECT COUNT(*) FROM membresia_rolpermanente
-                 WHERE distrito_id = inst.id
+                 WHERE distrito_id = inst.id AND
+                 and dt_exclusao is null and lastrec = 1
                  AND YEAR(dt_recepcao) <= $ano
                 ) AS `$ano`
             ";
@@ -50,6 +51,7 @@ class RegiaoEstatisticasController extends Controller
             $colunasAnoFilhos[] = "
                 (SELECT COUNT(*) FROM membresia_rolpermanente
                  WHERE igreja_id = inst.id
+                 and dt_exclusao is null and lastrec = 1
                  AND YEAR(dt_recepcao) <= $ano
                 ) AS `$ano`
             ";
