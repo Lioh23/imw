@@ -520,21 +520,24 @@
                              @endif
                          </li>
                          <li>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-total-membresia'))
+                                <a href="{{ route('estatistica.totalMembresia') }}">Total Membresia</a>
+                             @endif
+
+                         </li>
+                         <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.relatorio.estatisticaescolaridade') }}">Estatística por
-                                     Escolaridade</a>
+                                 <a href="{{ route('regiao.relatorio.estatisticaescolaridade') }}">Escolaridade</a>
                              @endif
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.relatorio.estatisticaestadocivil') }}">Estatística por
-                                     Estado Cívil</a>
+                                 <a href="{{ route('regiao.relatorio.estatisticaestadocivil') }}">Estado Cívil</a>
                              @endif
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
-                                 <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Estatística por
-                                     Quantidade de membros</a>
+                                 <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Quantidade de membros</a>
                              @endif
                          </li>
 
