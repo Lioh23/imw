@@ -68,6 +68,7 @@ trait EstatisticaEscolaridadeUtils
                     ->whereNull('mm.escolaridade_id')
                     ->where('mm.status', 'A')
                     ->whereIn('mm.vinculo', ['M'])
+                    ->where('mm.regiao_id', $regiaoId)
             )
             ->get();
         }
