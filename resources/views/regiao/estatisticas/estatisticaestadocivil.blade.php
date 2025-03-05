@@ -27,7 +27,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Estatísticas por Estado civil - {{ optional($instituicao)->nome ?? $regiao->nome }}</h4>
+                        <h4>Estatísticas por Estado Civil - {{ optional($instituicao)->nome ?? $regiao->nome }}</h4>
                     </div>
                 </div>
             </div>
