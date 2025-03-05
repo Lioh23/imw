@@ -116,7 +116,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th style="text-align: left;">Total Geral</th>
+                            <th style="text-align: left;">Total da 6 Região</th>
                             <th style="text-align: right;">{{ $totalGeral }}</th>
                             @if ($tipo == 'igreja')
                                 <th></th>
