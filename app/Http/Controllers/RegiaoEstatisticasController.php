@@ -41,7 +41,7 @@ class RegiaoEstatisticasController extends Controller
             // Para os PAIS (distrito_id)
             $colunasAnoPais[] = "
                 (SELECT COUNT(*) FROM membresia_rolpermanente
-                 WHERE distrito_id = inst.id AND
+                 WHERE distrito_id = inst.id
                  AND dt_exclusao is null
                  AND YEAR(dt_recepcao) <= $ano
                 ) AS `$ano`
