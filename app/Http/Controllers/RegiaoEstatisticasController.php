@@ -3,11 +3,27 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Services\ServiceEstatisticas\TotalMembresiaServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class RegiaoEstatisticasController extends Controller
 {
+    public function totalMembresia(Request $request) {
+        $checkIgreja = $request->input('checkIgreja', 'distrito'); // Padrão para 'distrito' se nada for selecionado
+
+        $dados = app(TotalMembresiaServices::class)->execute($checkIgreja);
+
+        return view('regiao.estatisticas.totalmembresia', [
+            'regiao' => $dados['regiao'],
+            'dados' => $dados['resultado'],
+            'totalGeral' => $dados['totalGeral'],
+            'tipo' => $checkIgreja // Passa o tipo para a view
+        ]);
+    }
+
+
+
     public function estatisticaEvolucao(Request $request)
     {
         // Capturar os anos do request
