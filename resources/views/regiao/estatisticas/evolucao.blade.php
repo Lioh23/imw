@@ -96,8 +96,13 @@
                         <label class="control-label">* Ano Inicial:</label>
                     </div>
                     <div class="col-lg-3">
+                        @php
+                        $anoAtual = intval(date('Y')); // Garante que seja um número inteiro
+                        $anoInicio = $anoAtual - 10;
+                        @endphp
+
                         <select class="form-control" id="anoinicio" name="anoinicio" required>
-                            @for ($ano = date('Y') - 10; $ano <= date('Y'); $ano++)
+                            @for ($ano = $anoInicio; $ano <= $anoAtual; $ano++)
                                 <option value="{{ $ano }}" {{ request()->input('anoinicio') == $ano ? 'selected' : '' }}>
                                 {{ $ano }}
                                 </option>

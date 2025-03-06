@@ -544,7 +544,7 @@
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
                                  <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Quantidade de Membros</a>
                              @endif
-                         </li>
+                         </li> -->
 
                          <!--  <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-total'))

@@ -42,6 +42,7 @@ class RegiaoEstatisticasController extends Controller
             $colunasAnoPais[] = "
                 (SELECT COUNT(*) FROM membresia_rolpermanente
                  WHERE distrito_id = inst.id
+                 AND dt_exclusao is null
                  AND YEAR(dt_recepcao) <= $ano
                 ) AS `$ano`
             ";
@@ -50,6 +51,7 @@ class RegiaoEstatisticasController extends Controller
             $colunasAnoFilhos[] = "
                 (SELECT COUNT(*) FROM membresia_rolpermanente
                  WHERE igreja_id = inst.id
+                 AND dt_exclusao is null
                  AND YEAR(dt_recepcao) <= $ano
                 ) AS `$ano`
             ";
@@ -67,7 +69,7 @@ class RegiaoEstatisticasController extends Controller
                 inst.nome AS instituicao,
                 inst.instituicao_pai_id,
                 $colunasAnoSQLPais,
-                (SELECT COUNT(*) FROM membresia_rolpermanente WHERE distrito_id = inst.id) AS total_membros
+                (SELECT COUNT(*) FROM membresia_rolpermanente WHERE distrito_id = inst.id and dt_exclusao is null and lastrec = 1) AS total_membros
             FROM instituicoes_instituicoes inst
             WHERE inst.instituicao_pai_id = ?
             ORDER BY inst.nome
@@ -86,7 +88,7 @@ class RegiaoEstatisticasController extends Controller
                     inst.nome AS instituicao,
                     inst.instituicao_pai_id,
                     $colunasAnoSQLFilhos,
-                    (SELECT COUNT(*) FROM membresia_rolpermanente WHERE igreja_id = inst.id) AS total_membros
+                    (SELECT COUNT(*) FROM membresia_rolpermanente WHERE igreja_id = inst.id and dt_exclusao is null and lastrec = 1) AS total_membros
                 FROM instituicoes_instituicoes inst
                 WHERE inst.instituicao_pai_id IN (" . implode(',', $ids_pais) . ")
                 ORDER BY inst.nome

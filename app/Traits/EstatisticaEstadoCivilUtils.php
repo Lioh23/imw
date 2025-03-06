@@ -9,7 +9,6 @@ trait EstatisticaEstadoCivilUtils
 {
     public static function fetch($distritoId, $regiaoId = null): Collection
     {
-
         $estadosCivis = collect([
             (object) ['estado_civil' => 'S', 'descricao' => 'Solteiro'],
             (object) ['estado_civil' => 'C', 'descricao' => 'Casado'],
@@ -18,14 +17,14 @@ trait EstatisticaEstadoCivilUtils
             (object) ['estado_civil' => 'N', 'descricao' => 'Não informado'],
         ]);
 
-
         $query = DB::table('membresia_membros as mm')
             ->leftJoin('membresia_rolpermanente as mr', function ($join) {
                 $join->on('mr.membro_id', '=', 'mm.id')
                     ->whereNull('mr.dt_exclusao');
             })
-            ->selectRaw('COUNT(mm.id) as total, COALESCE(mm.estado_civil, "N") as estado_civil');
-
+            ->selectRaw('COUNT(mm.id) as total, COALESCE(mm.estado_civil, "N") as estado_civil')
+            ->where('mm.status', 'A')
+            ->whereIn('mm.vinculo', ['M']);
 
         if ($distritoId != "all") {
             $query->where('mm.distrito_id', $distritoId);
@@ -43,7 +42,6 @@ trait EstatisticaEstadoCivilUtils
                 'total' => $result->has($estado->estado_civil) ? $result[$estado->estado_civil]->total : 0
             ];
         });
-
 
         $totalGeral = $finalResult->sum('total');
         $finalResult = $finalResult->map(function ($item) use ($totalGeral) {

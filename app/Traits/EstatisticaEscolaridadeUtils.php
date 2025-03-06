@@ -36,6 +36,7 @@ trait EstatisticaEscolaridadeUtils
                         })
                         ->selectRaw('"Não informado" as escolaridade, count(mm.id) as total')
                         ->whereNull('mm.escolaridade_id')
+                        ->where('mm.distrito_id', $distritoId)
                         ->where('mm.status', 'A')
                         ->whereIn('mm.vinculo', ['M'])
                 )
@@ -67,6 +68,7 @@ trait EstatisticaEscolaridadeUtils
                     ->whereNull('mm.escolaridade_id')
                     ->where('mm.status', 'A')
                     ->whereIn('mm.vinculo', ['M'])
+                    ->where('mm.regiao_id', $regiaoId)
             )
             ->get();
         }
