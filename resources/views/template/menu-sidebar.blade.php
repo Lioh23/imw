@@ -520,8 +520,8 @@
                              @endif
                          </li>
                          <li>
-                         @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-total-membresia'))
-                                <a href="{{ route('regiao.estatistica.totalMembresia') }}">Total Membresia</a>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-total-membresia'))
+                                 <a href="{{ route('regiao.estatistica.totalMembresia') }}">Total Membresia</a>
                              @endif
 
                          </li>
@@ -542,9 +542,39 @@
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
-                                 <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Quantidade de Membros</a>
+                                 <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Quantidade de
+                                     Membros</a>
                              @endif
-                         </li> -->
+                         </li>
+
+                         <li class="submenu-fixo mt-3 mb-3">
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <span>Totalização</span>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.totalizacao.totaldistritoregiao') }}">Total de
+                                     Distrito na Região</a>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.totalizacao.totaligrejasdistritos') }}">Total de
+                                     Igrejas no Distrito</a>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.totalizacao.totalcongregacoesigrejas') }}">Total de
+                                     Congregações por Igrejas</a>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.totalizacao.totalcongregacoesdistritos') }}">Total de Congregações por Distritos</a>
+                             @endif
+                         </li>
 
                          <!--  <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-total'))

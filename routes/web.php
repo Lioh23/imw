@@ -32,6 +32,7 @@ use App\Http\Controllers\PrebendasClerigosController;
 use App\Http\Controllers\RegiaoEstatisticasController;
 use App\Http\Controllers\RegiaoRelatorioController;
 use App\Http\Controllers\RelatorioController;
+use App\Http\Controllers\TotalizacaoController;
 use App\Http\Controllers\UsuarioController;
 use App\Http\Controllers\VisitantesController;
 use App\Http\Middleware\VerificaInstituicao;
@@ -268,6 +269,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-estatistica-membros-evolucao']);
             //Estatitisca de Membros
             Route::get('/relatorio/estatistica-total-membresia', [RegiaoEstatisticasController::class, 'totalMembresia'])->name('estatistica.totalMembresia')->middleware(['seguranca:regiao-estatistica-total-membresia']);
+
+
+            Route::get('/relatorio/totaldistritoregiao', [TotalizacaoController::class, 'totalDitritoPorRegiao'])->name('totalizacao.totaldistritoregiao')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/totaligrejasdistritos', [TotalizacaoController::class, 'totaligrejasdistritos'])->name('totalizacao.totaligrejasdistritos')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/totalcongregacoesigrejas', [TotalizacaoController::class, 'totalcongregacoesigrejas'])->name('totalizacao.totalcongregacoesigrejas')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/totalcongregacoesdistritos', [TotalizacaoController::class, 'totalcongregacoesdistritos'])->name('totalizacao.totalcongregacoesdistritos')->middleware(['seguranca:regiao-menu-relatorio']);
 
 
         });
