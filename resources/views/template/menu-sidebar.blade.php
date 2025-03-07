@@ -554,25 +554,26 @@
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.totalizacao.totaldistritoregiao') }}">Total de
-                                     Distrito na Região</a>
+                                 <a href="{{ route('regiao.totalizacao.totaldistritoregiao') }}">
+                                     Distrito por Região</a>
                              @endif
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.totalizacao.totaligrejasdistritos') }}">Total de
-                                     Igrejas no Distrito</a>
+                                 <a href="{{ route('regiao.totalizacao.totaligrejasdistritos') }}">
+                                     Igrejas por Distrito</a>
                              @endif
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.totalizacao.totalcongregacoesigrejas') }}">Total de
+                                 <a href="{{ route('regiao.totalizacao.totalcongregacoesigrejas') }}">
                                      Congregações por Igrejas</a>
                              @endif
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.totalizacao.totalcongregacoesdistritos') }}">Total de Congregações por Distritos</a>
+                                 <a href="{{ route('regiao.totalizacao.totalcongregacoesdistritos') }}"> Congregações
+                                     por Distritos</a>
                              @endif
                          </li>
 
