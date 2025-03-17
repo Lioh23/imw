@@ -576,6 +576,24 @@
                                      por Distritos</a>
                              @endif
                          </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.dezmais.distritomaisbatismo') }}"> 10+ Distritos que Batizaram
+                                     </a>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.dezmais.distritomaismembros') }}"> 10+ Distritos em Números de Membros
+                                     </a>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.dezmais.distritomaiscrescerammembros') }}"> 10+ Distritos Cresceram em Membros
+                                     </a>
+                             @endif
+                         </li>
 
                          <!--  <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-total'))

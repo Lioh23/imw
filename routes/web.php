@@ -277,6 +277,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/totalcongregacoesdistritos', [TotalizacaoController::class, 'totalcongregacoesdistritos'])->name('totalizacao.totalcongregacoesdistritos')->middleware(['seguranca:regiao-menu-relatorio']);
 
 
+            Route::get('/relatorio/distritomaisbatismo', [TotalizacaoController::class, 'distritomaisbatismo'])->name('dezmais.distritomaisbatismo')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/distritomaismembros', [TotalizacaoController::class, 'distritomaismembros'])->name('dezmais.distritomaismembros')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/distritomaiscrescerammembros', [TotalizacaoController::class, 'distritomaiscrescerammembros'])->name('dezmais.distritomaiscrescerammembros')->middleware(['seguranca:regiao-menu-relatorio']);
+
+
+
         });
 
 
