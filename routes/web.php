@@ -281,7 +281,9 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/distritomaismembros', [TotalizacaoController::class, 'distritomaismembros'])->name('dezmais.distritomaismembros')->middleware(['seguranca:regiao-menu-relatorio']);
             Route::get('/relatorio/distritomaiscrescerammembros', [TotalizacaoController::class, 'distritomaiscrescerammembros'])->name('dezmais.distritomaiscrescerammembros')->middleware(['seguranca:regiao-menu-relatorio']);
 
-
+            Route::get('/relatorio/totalclerigosnomeacoes', [TotalizacaoController::class, 'totalclerigosnomeacoes'])->name('estatisticaclerigos.totalclerigosnomeacoes')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/totalclerigosstatus', [TotalizacaoController::class, 'totalclerigosstatus'])->name('estatisticaclerigos.totalclerigosstatus')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/totalclerigosfaxiaetaria', [TotalizacaoController::class, 'totalclerigosfaxiaetaria'])->name('estatisticaclerigos.totalclerigosfaxiaetaria')->middleware(['seguranca:regiao-menu-relatorio']);
 
         });
 

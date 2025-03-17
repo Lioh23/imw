@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\EstatisticaClerigosService\TotalClerigosFaxiaEtaria;
+use App\Services\EstatisticaClerigosService\TotalClerigosNomeacoes;
+use App\Services\EstatisticaClerigosService\TotalClerigosStatus;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisBatismoService;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisMembrosService;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisReceberamMembrosService;
@@ -80,5 +83,32 @@ class TotalizacaoController extends Controller
         $data = app(DezDisitritosMaisReceberamMembrosService::class)->execute($dataFinal, $dataInicial);
 
         return view('regiao.dezmais.distritomaiscrescerammembros', $data);
+    }
+
+    public function totalclerigosnomeacoes(Request $request)
+    {
+
+
+        $data = app(TotalClerigosNomeacoes::class)->execute();
+
+        return view('regiao.estatisticas.clerigos.totalclerigosnomeacao', $data);
+    }
+
+    public function totalclerigosstatus(Request $request)
+    {
+
+
+        $data = app(TotalClerigosStatus::class)->execute();
+
+        return view('regiao.estatisticas.clerigos.totalclerigosstatus', $data);
+    }
+
+    public function totalclerigosfaxiaetaria(Request $request)
+    {
+
+
+        $data = app(TotalClerigosFaxiaEtaria::class)->execute();
+
+        return view('regiao.estatisticas.clerigos.totalclerigosfaxiaetaria', $data);
     }
 }
