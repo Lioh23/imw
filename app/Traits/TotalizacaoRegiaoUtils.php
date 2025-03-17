@@ -114,15 +114,16 @@ trait TotalizacaoRegiaoUtils
     public static function fetchDezDistritoMembros($dataFinal, $dataInicial)
     {
 
-
-        $instituicoes =  DB::table('instituicoes_instituicoes as ii')->selectRaw('COUNT(*) as total, ii.nome')
-            ->from('instituicoes_instituicoes as ii')
-            ->join('membresia_membros as mm', 'mm.distrito_id', '=', 'ii.id')
-            ->where('ii.tipo_instituicao_id', 2)
-            ->where('mm.status', 'A')
+        $instituicoes = DB::table('instituicoes_instituicoes as ii')
+            ->selectRaw('COUNT(mm.id) as total, ii.nome')
+            ->leftJoin('membresia_membros as mm', function ($join) use ($dataInicial, $dataFinal) {
+                $join->on('mm.distrito_id', '=', 'ii.id')
+                    ->where('mm.status', 'A')
+                    ->whereBetween('mm.created_at', [$dataInicial, $dataFinal]);
+            })
+            ->where('ii.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO)
             ->where('ii.ativo', 1)
-            ->whereBetween('mm.created_at', [$dataInicial, $dataFinal])
-            ->groupBy('mm.distrito_id', 'ii.nome')
+            ->groupBy('ii.id', 'ii.nome')
             ->orderByDesc('total')
             ->limit(10)
             ->get();
@@ -141,7 +142,7 @@ trait TotalizacaoRegiaoUtils
 
         $instituicoes =  DB::table('instituicoes_instituicoes as ii')->selectRaw('COUNT(*) as total, ii.nome')
             ->from('instituicoes_instituicoes as ii')
-            ->join('membresia_membros as mm', 'mm.distrito_id', '=', 'ii.id')
+            ->leftJoin('membresia_membros as mm', 'mm.distrito_id', '=', 'ii.id')
             ->where('ii.tipo_instituicao_id', 2)
             ->where('mm.status', 'A')
             ->where('ii.ativo', 1)
