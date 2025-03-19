@@ -17,6 +17,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IgrejasController;
 use App\Http\Controllers\IgrejasRegiaoController;
 use App\Http\Controllers\ImpostoDeRendaController;
+use App\Http\Controllers\InformeRendimentosController;
 use App\Http\Controllers\InstituicaoController;
 use App\Http\Controllers\InstituicaoRegiaoController;
 use App\Http\Controllers\InstituicaoRegiaoDistritosController;
@@ -407,6 +408,10 @@ Route::middleware(['auth'])->group(function () {
 
         Route::prefix('instituicoes')->name('instituicoes.')->controller(HandleInstituicoesController::class)->group(function () {
             Route::get('igrejasByDistrito/{distritoId}', 'igrejasByDistrito');
+        });
+
+        Route::prefix('informe-rendimentos')->name('informe_rendimentos.')->controller(InformeRendimentosController::class)->group(function () {
+            Route::get('exibirPdf/{ano}', 'exibirPdf')->name('exibirPdf');
         });
     });
 });

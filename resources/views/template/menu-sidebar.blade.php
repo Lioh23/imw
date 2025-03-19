@@ -669,6 +669,12 @@
                      <li>
                          <a href="{{ route('clerigos.perfil.impostoDeRenda.index') }}"> Imposto de Renda</a>
                      </li>
+
+                        @if(App\Services\InformeRendimentos\ChecaArquivoExistenteService::execute(date('Y')))
+                        <li>
+                            <a href="{{ route('informe_rendimentos.exibirPdf', ['ano' => date('Y')]) }}" target="_blank">Informe de Rendimentos</a>
+                        </li>
+                        @endif
                      @endif
                  </ul>
              </li>
