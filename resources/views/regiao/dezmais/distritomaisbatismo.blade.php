@@ -4,7 +4,7 @@
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
         ['text' => 'Totalização', 'url' => '#', 'active' => false],
-        ['text' => '10+ Distrios que Batizaram', 'url' => '#', 'active' => true],
+        ['text' => '10+ Distritos que Batizaram', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -27,7 +27,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>10+ Distrios que Batizaram- {{ $regiao->nome }}</h4>
+                        <h4>10+ Distritos que Batizaram- {{ $regiao->nome }}</h4>
                     </div>
                 </div>
             </div>
@@ -90,7 +90,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <h6 class="mt-3 text-uppercase">10+ Distrios que Batizaram -
+                                    <h6 class="mt-3 text-uppercase">10+ Distritos que Batizaram -
                                         {{ $regiao->nome }}</h6>
                                     <div class="table-responsive">
                                         <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">

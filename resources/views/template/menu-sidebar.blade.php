@@ -570,30 +570,64 @@
                                      Congregações por Igrejas</a>
                              @endif
                          </li>
+
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                                  <a href="{{ route('regiao.totalizacao.totalcongregacoesdistritos') }}"> Congregações
                                      por Distritos</a>
                              @endif
                          </li>
+                         <li class="submenu-fixo mt-3 mb-3">
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <span>Os 10 Distritos</span>
+                             @endif
+                         </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.dezmais.distritomaisbatismo') }}"> 10+ Distritos que
+                                 <a href="{{ route('regiao.dezmais.distritomaisbatismo') }}"> Mais
                                      Batizaram
                                  </a>
                              @endif
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.dezmais.distritomaismembros') }}"> 10+ Distritos em Números
+                                 <a href="{{ route('regiao.dezmais.distritomaismembros') }}"> Mais Números
                                      de Membros
+                                 </a>
+                             @endif
+                         </li>
+
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.dezmais.distritomaiscrescerammembros') }}">
+                                     Mais Cresceram em Membros
+                                 </a>
+                             @endif
+                         </li>
+                         <li class="submenu-fixo mt-3 mb-3">
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <span>Os 10 Igrejas</span>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.dezmais.igrejamaisbatismo') }}"> Mais
+                                     Batizaram
                                  </a>
                              @endif
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.dezmais.distritomaiscrescerammembros') }}"> 10+ Distritos
-                                     Cresceram em Membros
+                                 <a href="{{ route('regiao.dezmais.igrejamaismembros') }}"> Mais Números
+                                     de Membros
+                                 </a>
+                             @endif
+                         </li>
+
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.dezmais.igrejamaiscrescerammembros') }}">
+                                     Mais Cresceram em Membros
                                  </a>
                              @endif
                          </li>
@@ -618,7 +652,8 @@
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <a href="{{ route('regiao.estatisticaclerigos.totalclerigosfaxiaetaria') }}">Faxia etária
+                                 <a href="{{ route('regiao.estatisticaclerigos.totalclerigosfaxiaetaria') }}">Faxia
+                                     etária
                                  </a>
                              @endif
                          </li>

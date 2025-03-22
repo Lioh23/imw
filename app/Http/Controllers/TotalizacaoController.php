@@ -8,6 +8,9 @@ use App\Services\EstatisticaClerigosService\TotalClerigosStatus;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisBatismoService;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisMembrosService;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisReceberamMembrosService;
+use App\Services\TotalizacaoRegiaoService\DezIgrejasMaisBatismoService;
+use App\Services\TotalizacaoRegiaoService\DezIgrejasMaisMembrosService;
+use App\Services\TotalizacaoRegiaoService\DezIgrejasMaisReceberamMembrosService;
 use App\Services\TotalizacaoRegiaoService\TotalizacaoCongregacoesDistritos;
 use App\Services\TotalizacaoRegiaoService\TotalizacaoCongregacoesIgrejas;
 use App\Services\TotalizacaoRegiaoService\TotalizacaoDistritosRegiaoService;
@@ -83,6 +86,37 @@ class TotalizacaoController extends Controller
         $data = app(DezDisitritosMaisReceberamMembrosService::class)->execute($dataFinal, $dataInicial);
 
         return view('regiao.dezmais.distritomaiscrescerammembros', $data);
+    }
+    //Top 10 Igrejas
+    public function igrejamaisbatismo(Request $request)
+    {
+
+        $dataFinal = $request->input('data_final');
+        $dataInicial = $request->input('data_inicial');
+
+        $data = app(DezIgrejasMaisBatismoService::class)->execute($dataFinal, $dataInicial);
+
+        return view('regiao.dezmais.igrejamaisbatismo', $data);
+    }
+    public function igrejamaismembros(Request $request)
+    {
+
+        $dataFinal = $request->input('data_final');
+        $dataInicial = $request->input('data_inicial');
+
+        $data = app(DezIgrejasMaisMembrosService::class)->execute($dataFinal, $dataInicial);
+
+        return view('regiao.dezmais.igrejamaismembros', $data);
+    }
+    public function igrejamaiscrescerammembros(Request $request)
+    {
+
+        $dataFinal = $request->input('data_final');
+        $dataInicial = $request->input('data_inicial');
+
+        $data = app(DezIgrejasMaisReceberamMembrosService::class)->execute($dataFinal, $dataInicial);
+
+        return view('regiao.dezmais.igrejamaiscrescerammembros', $data);
     }
 
     public function totalclerigosnomeacoes(Request $request)
