@@ -582,6 +582,11 @@
                                      por Distritos</a>
                              @endif
                          </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.totalizacao.totalfrentemissionaria') }}"> Frentes Missionárias</a>
+                             @endif
+                         </li>
                          <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                                  <span>Os 10 Distritos</span>

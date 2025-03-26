@@ -238,4 +238,31 @@ trait TotalizacaoRegiaoUtils
 
         return $totalPorcentagem;
     }
+    public static function fetchFrenteMissionaria($instituicao)
+    {
+
+
+        $results = DB::table('instituicoes_instituicoes as ii')
+            ->join('instituicoes_instituicoes as ip', function ($join) use($instituicao) {
+                $join->on('ip.id', '=', 'ii.instituicao_pai_id')
+                    ->where('ip.tipo_instituicao_id', $instituicao); // Instituição pai tipo 2
+            })
+            ->where('ii.nome', 'LIKE', '%Frente Missionária%') // Filtro pelo nome
+            ->where('ii.tipo_instituicao_id', 1) // Filtro para instituição filha tipo 1
+            ->select(DB::raw('COUNT(*) as total'), 'ip.nome') // Contagem e seleção do nome da instituição pai
+            ->groupBy('ip.nome') // Agrupar pelo nome da instituição pai
+            ->orderByDesc(DB::raw('total')) // Ordenar pela contagem de forma decrescente
+            ->get(); // Obter o resultsado
+
+        // Exibir o resultsado
+
+
+        $total = $results->sum('total');
+        $totalPorcentagem = $results->map(function ($instituicao) use ($total) {
+            $instituicao->percentual = ($total > 0) ? ($instituicao->total * 100) / $total : 0;
+            return $instituicao;
+        });
+
+        return $totalPorcentagem;
+    }
 }

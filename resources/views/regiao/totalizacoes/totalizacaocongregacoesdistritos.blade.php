@@ -92,7 +92,7 @@
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th style="text-align: left;">Igrejas</th>
-                                                    <th style="text-align: center;">Quantide de Congregações</th>
+                                                    <th style="text-align: center;">Quantidade de Congregações</th>
                                                     <th style="text-align: center;">Percentual</th>
                                                 </tr>
                                             </thead>

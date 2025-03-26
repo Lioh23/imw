@@ -92,7 +92,7 @@
                                             <thead class="thead-dark">
                                                 <tr>
                                                     <th style="text-align: left;">Distritos</th>
-                                                    <th style="text-align: center;">Quantide de Igrejas</th>
+                                                    <th style="text-align: center;">Quantidade de Igrejas</th>
                                                     <th style="text-align: center;">Percentual</th>
                                                 </tr>
                                             </thead>

@@ -15,6 +15,7 @@ use App\Services\TotalizacaoRegiaoService\DezIgrejasMaisReceberamMembrosService;
 use App\Services\TotalizacaoRegiaoService\TotalizacaoCongregacoesDistritos;
 use App\Services\TotalizacaoRegiaoService\TotalizacaoCongregacoesIgrejas;
 use App\Services\TotalizacaoRegiaoService\TotalizacaoDistritosRegiaoService;
+use App\Services\TotalizacaoRegiaoService\TotalizacaoFrenteMissionaria;
 use App\Services\TotalizacaoRegiaoService\TotalizacaoIgrejasDistritosService;
 use Illuminate\Http\Request;
 
@@ -55,6 +56,15 @@ class TotalizacaoController extends Controller
         $data = app(TotalizacaoCongregacoesDistritos::class)->execute();
 
         return view('regiao.totalizacoes.totalizacaocongregacoesdistritos', $data);
+    }
+    public function totalfrentemissionaria(Request $request)
+    {
+
+
+        $instituicao = $request->input('instituicao');
+        $data = app(TotalizacaoFrenteMissionaria::class)->execute($instituicao);
+
+        return view('regiao.totalizacoes.totalfrentemissionaria', $data);
     }
 
 
