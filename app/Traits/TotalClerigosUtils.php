@@ -96,6 +96,28 @@ trait TotalClerigosUtils
         return $faixasComPercentual;
     }
 
+
+
+    public static function fetchTotalClerigosTipoVinculo($regiaoId)
+    {
+        $results = DB::table('pessoas_nomeacoes as pn')
+            ->join('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
+            ->leftJoin('pessoas_pessoas as pp', function ($join) {
+                $join->on('pp.id', '=', 'pn.pessoa_id')
+                    ->where('pp.status', '=', 1);  // Condição do status na junção
+            })
+            ->whereNull('pn.deleted_at')
+            ->whereNull('pn.data_termino')
+            ->select(DB::raw('COUNT(*) as total'), 'pf.onus')
+            ->groupBy('pf.onus')
+            ->get();
+
+
+
+        return self::somaPorcentual($results);
+    }
+
+
     private static function somaPorcentual($results)
     {
 

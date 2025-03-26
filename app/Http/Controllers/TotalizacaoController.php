@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\EstatisticaClerigosService\TotalClerigosFaxiaEtaria;
 use App\Services\EstatisticaClerigosService\TotalClerigosNomeacoes;
 use App\Services\EstatisticaClerigosService\TotalClerigosStatus;
+use App\Services\EstatisticaClerigosService\TotalClerigosTipoVinculo;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisBatismoService;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisMembrosService;
 use App\Services\TotalizacaoRegiaoService\DezDisitritosMaisReceberamMembrosService;
@@ -144,5 +145,13 @@ class TotalizacaoController extends Controller
         $data = app(TotalClerigosFaxiaEtaria::class)->execute();
 
         return view('regiao.estatisticas.clerigos.totalclerigosfaxiaetaria', $data);
+    }
+    public function totalclerigosporvinculo(Request $request)
+    {
+
+
+        $data = app(TotalClerigosTipoVinculo::class)->execute();
+
+        return view('regiao.estatisticas.clerigos.totalclerigosporvinculo', $data);
     }
 }

@@ -541,9 +541,14 @@
                              @endif
                          </li>
                          <li>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                                  <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Quantidade de
                                      Membros</a>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.estatistica.historiconomeacoes') }}">Histórico de Nomeacões</a>
                              @endif
                          </li>
 
@@ -630,7 +635,7 @@
                                      Mais Cresceram em Membros
                                  </a>
                              @endif
-                         </li>
+                         </li>s
 
                          <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
@@ -654,6 +659,12 @@
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                                  <a href="{{ route('regiao.estatisticaclerigos.totalclerigosfaxiaetaria') }}">Faxia
                                      etária
+                                 </a>
+                             @endif
+                         </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.estatisticaclerigos.totalclerigosporvinculo') }}">Tipo de vínculo
                                  </a>
                              @endif
                          </li>

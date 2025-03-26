@@ -270,6 +270,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-estatistica-membros-evolucao']);
             //Estatitisca de Membros
             Route::get('/relatorio/estatistica-total-membresia', [RegiaoEstatisticasController::class, 'totalMembresia'])->name('estatistica.totalMembresia')->middleware(['seguranca:regiao-estatistica-total-membresia']);
+            Route::get('/relatorio/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-relatorio']);
 
 
             Route::get('/relatorio/totaldistritoregiao', [TotalizacaoController::class, 'totalDitritoPorRegiao'])->name('totalizacao.totaldistritoregiao')->middleware(['seguranca:regiao-menu-relatorio']);
@@ -289,6 +290,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/totalclerigosnomeacoes', [TotalizacaoController::class, 'totalclerigosnomeacoes'])->name('estatisticaclerigos.totalclerigosnomeacoes')->middleware(['seguranca:regiao-menu-relatorio']);
             Route::get('/relatorio/totalclerigosstatus', [TotalizacaoController::class, 'totalclerigosstatus'])->name('estatisticaclerigos.totalclerigosstatus')->middleware(['seguranca:regiao-menu-relatorio']);
             Route::get('/relatorio/totalclerigosfaxiaetaria', [TotalizacaoController::class, 'totalclerigosfaxiaetaria'])->name('estatisticaclerigos.totalclerigosfaxiaetaria')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/totalclerigosporvinculo', [TotalizacaoController::class, 'totalclerigosporvinculo'])->name('estatisticaclerigos.totalclerigosporvinculo')->middleware(['seguranca:regiao-menu-relatorio']);
 
         });
 
