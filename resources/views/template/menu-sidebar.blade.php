@@ -635,7 +635,7 @@
                                      Mais Cresceram em Membros
                                  </a>
                              @endif
-                         </li>s
+                         </li>
 
                          <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
