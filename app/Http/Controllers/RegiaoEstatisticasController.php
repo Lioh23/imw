@@ -3,13 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Services\EstatisticaClerigosService\HistoricoNomeacoes;
 use App\Services\ServiceEstatisticas\TotalMembresiaServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class RegiaoEstatisticasController extends Controller
 {
-    public function totalMembresia(Request $request) {
+    public function totalMembresia(Request $request)
+    {
         $checkIgreja = $request->input('checkIgreja', 'distrito'); // Padrão para 'distrito' se nada for selecionado
 
         $dados = app(TotalMembresiaServices::class)->execute($checkIgreja);
@@ -98,5 +100,13 @@ class RegiaoEstatisticasController extends Controller
         }
 
         return view('regiao.estatisticas.evolucao', compact('instituicoes_pais', 'instituicoes_filhos', 'anoinicio', 'anofinal'));
+    }
+
+
+    public function historiconomeacoes(Request $request)
+    {
+        $visao = $request->input('visao');
+        $data = app(HistoricoNomeacoes::class)->execute($visao);
+        return view('regiao.estatisticas.estatisticanomeacoes', $data);
     }
 }
