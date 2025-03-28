@@ -13,11 +13,66 @@
 <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+<style>
+    .swal2-popup .swal2-styled.swal2-cancel {
+        color: white !important;
+    }
+
+    .toggle-icon {
+        cursor: pointer;
+        margin-right: 5px;
+    }
+
+    .child-row {
+        display: none;
+        /* Filhos ficam escondidos inicialmente */
+    }
+</style>
 @endsection
 
 @section('extras-scripts')
 <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
 <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.toggle-icon').forEach(function(icon) {
+            icon.addEventListener('click', function() {
+                let target = this.dataset.target;
+                let rows = document.querySelectorAll(`.child-row[data-parent="${target}"]`);
+
+                let isHidden = rows[0].style.display === 'none' || rows[0].style.display === '';
+
+                rows.forEach(row => {
+                    row.style.display = isHidden ? 'table-row' : 'none';
+                });
+
+                if (isHidden) {
+                    this.classList.remove('fa-plus-square');
+                    this.classList.add('fa-minus-square');
+                } else {
+                    this.classList.remove('fa-minus-square');
+                    this.classList.add('fa-plus-square');
+                }
+            });
+        });
+        // Validação do formulário
+        document.getElementById('filter_form').addEventListener('submit', function(event) {
+            let anoinicio = parseInt(document.getElementById('anoinicio').value);
+            let anofinal = parseInt(document.getElementById('anofinal').value);
+
+            if (anofinal < anoinicio) {
+                event.preventDefault(); // Impede o envio do formulário
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Erro na seleção de datas',
+                    text: 'O ano final não pode ser menor que o ano inicial!',
+                    confirmButtonText: 'Entendi',
+                });
+            }
+        });
+    });
+</script>
+
 @endsection
 
 @include('extras.alerts')
@@ -34,16 +89,20 @@
         </div>
 
         <div class="widget-content widget-content-area">
-            <!-- Formulário de Filtro -->
+            <!-- 🔹 Formulário de Pesquisa -->
             <form class="form-vertical" id="filter_form" method="GET">
                 <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
                         <label class="control-label">* Ano Inicial:</label>
                     </div>
                     <div class="col-lg-3">
+                        @php
+                        $anoAtual = intval(date('Y')); // Garante que seja um número inteiro
+                        $anoInicio = $anoAtual - 10;
+                        @endphp
+
                         <select class="form-control" id="anoinicio" name="anoinicio" required>
-                            <option value="">Selecione o Ano Inicial</option>
-                            @for ($ano = date('Y') - 10; $ano <= date('Y'); $ano++)
+                            @for ($ano = $anoInicio; $ano <= $anoAtual; $ano++)
                                 <option value="{{ $ano }}" {{ request()->input('anoinicio') == $ano ? 'selected' : '' }}>
                                 {{ $ano }}
                                 </option>
@@ -58,7 +117,6 @@
                     </div>
                     <div class="col-lg-3">
                         <select class="form-control" id="anofinal" name="anofinal" required>
-                            <option value="">Selecione o Ano Final</option>
                             @for ($ano = date('Y') - 10; $ano <= date('Y'); $ano++)
                                 <option value="{{ $ano }}" {{ request()->input('anofinal') == $ano ? 'selected' : '' }}>
                                 {{ $ano }}
@@ -78,9 +136,8 @@
                 </div>
             </form>
 
-            <!-- Exibir tabela apenas se houver um request GET válido -->
             @if(request()->has('anoinicio') && request()->has('anofinal'))
-            @if(isset($dados) && count($dados) > 0)
+            @if(isset($instituicoes_pais) && count($instituicoes_pais) > 0)
             <h4>Resultados de {{ $anoinicio }} a {{ $anofinal }}</h4>
             <div class="table-responsive">
                 <table class="table table-bordered">
@@ -96,48 +153,57 @@
                     </thead>
                     <tbody>
                         @php
-                        $totais = [];
-                        $totalEvolucao = 0;
+                        $totaisPais = array_fill_keys(range($anoinicio, $anofinal), 0);
+                        $totalEvolucaoPais = 0;
+                        $totalAnoInicialPais = 0;
+                        $totalAnoFinalPais = 0;
                         @endphp
 
-                        @foreach ($dados as $linha)
-                        <tr>
-                            <td>{{ $linha->nome }}</td>
-                            @foreach (range($anoinicio, $anofinal) as $ano)
-                            @php
-                            $valorAno = $linha->$ano ?? 0;
-                            $totais[$ano] = ($totais[$ano] ?? 0) + $valorAno;
-                            @endphp
-                            <td>{{ $valorAno }}</td>
-                            @endforeach
-                            <td>{{ $linha->Evolucao }}</td>
-                            <td>{{ $linha->Percentual }}%</td>
-                        </tr>
-                        @php
-                        $totalEvolucao += $linha->Evolucao;
-                        @endphp
-                        @endforeach
-
-                        <!-- Linha de Totalização Corrigida -->
+                        @foreach ($instituicoes_pais as $pai)
                         <tr style="font-weight: bold; background-color: #f8f9fa;">
-                            <td>6 Região</td>
-                            @foreach (range($anoinicio, $anofinal) as $ano)
-                            <td>{{ $totais[$ano] ?? 0 }}</td>
-                            @endforeach
-                            <td>{{ $totalEvolucao }}</td>
+                            <td>
+                                <i class="fas fa-plus-square toggle-icon" data-target="pai-{{ $pai->id }}"></i>
+                                {{ $pai->instituicao }}
+                            </td>
                             @php
-                            // Pegar o total do primeiro ano corretamente
-                            $totalAnoInicial = $totais[$anoinicio] ?? 0;
+                            $valorAnoInicial = $pai->$anoinicio ?? 0;
+                            $valorAnoFinal = $pai->$anofinal ?? 0;
+                            $evolucao = $valorAnoFinal - $valorAnoInicial;
 
-                            // Calcular o percentual corretamente
-                            if ($totalAnoInicial == 0) {
-                            $percentualTotal = ($totalEvolucao > 0) ? ($totalEvolucao * 100) : 0;
-                            } else {
-                            $percentualTotal = round(($totalEvolucao / $totalAnoInicial) * 100, 2);
-                            }
+                            $percentual = $valorAnoInicial > 0 ? round(($evolucao / $valorAnoInicial) * 100, 2) : ($valorAnoFinal > 0 ? 100 * $valorAnoFinal : 0);
+
+                            $totalAnoInicialPais += $valorAnoInicial;
+                            $totalAnoFinalPais += $valorAnoFinal;
+                            $totalEvolucaoPais += $evolucao;
                             @endphp
-                            <td>{{ $percentualTotal }}%</td>
+                            @foreach (range($anoinicio, $anofinal) as $ano)
+                            <td>{{ $pai->$ano ?? 0 }}</td>
+                            @php $totaisPais[$ano] += $pai->$ano ?? 0; @endphp
+                            @endforeach
+                            <td>{{ $evolucao }}</td>
+                            <td>{{ $percentual }}%</td>
                         </tr>
+
+                        @foreach ($instituicoes_filhos as $filho)
+                        @if ($filho->instituicao_pai_id == $pai->id)
+                        <tr class="child-row" data-parent="pai-{{ $pai->id }}">
+                            <td>➜ {{ $filho->instituicao }}</td>
+                            @php
+                            $valorAnoInicialFilho = $filho->$anoinicio ?? 0;
+                            $valorAnoFinalFilho = $filho->$anofinal ?? 0;
+                            $evolucaoFilho = $valorAnoFinalFilho - $valorAnoInicialFilho;
+
+                            $percentualFilho = $valorAnoInicialFilho > 0 ? round(($evolucaoFilho / $valorAnoInicialFilho) * 100, 2) : ($valorAnoFinalFilho > 0 ? 100 * $valorAnoFinalFilho : 0);
+                            @endphp
+                            @foreach (range($anoinicio, $anofinal) as $ano)
+                            <td>{{ $filho->$ano ?? 0 }}</td>
+                            @endforeach
+                            <td>{{ $evolucaoFilho }}</td>
+                            <td>{{ $percentualFilho }}%</td>
+                        </tr>
+                        @endif
+                        @endforeach
+                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -145,65 +211,7 @@
             <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
             @endif
             @endif
-
         </div>
     </div>
 </div>
-
-<!-- Validação do Formulário com SweetAlert -->
-<script>
-    document.getElementById('filter_form').addEventListener('submit', function(event) {
-        var anoinicio = parseInt(document.getElementById('anoinicio').value);
-        var anofinal = parseInt(document.getElementById('anofinal').value);
-        var anoAtual = new Date().getFullYear();
-
-        if (!anoinicio || !anofinal) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Atenção!',
-                text: 'Preencha todos os campos corretamente.',
-                icon: 'warning',
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Ok'
-            });
-            return;
-        }
-
-        if (anoinicio >= anofinal) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Atenção!',
-                text: 'O Ano Inicial não pode ser maior ou igual ao Ano Final.',
-                icon: 'warning',
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Ok'
-            });
-            return;
-        }
-
-        if ((anofinal - anoinicio) > 10) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Atenção!',
-                text: 'A diferença entre os anos não pode ser maior que 10 anos.',
-                icon: 'warning',
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Ok'
-            });
-            return;
-        }
-
-        if (anofinal > anoAtual) {
-            event.preventDefault();
-            Swal.fire({
-                title: 'Atenção!',
-                text: 'O Ano Final não pode ser maior que o ano atual (' + anoAtual + ').',
-                icon: 'warning',
-                confirmButtonColor: '#d33',
-                confirmButtonText: 'Ok'
-            });
-            return;
-        }
-    });
-</script>
 @endsection

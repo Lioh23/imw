@@ -3,11 +3,30 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Services\EstatisticaClerigosService\HistoricoNomeacoes;
+use App\Services\EstatisticaClerigosService\TotalTicketMedio;
+use App\Services\ServiceEstatisticas\TotalMembresiaServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class RegiaoEstatisticasController extends Controller
 {
+    public function totalMembresia(Request $request)
+    {
+        $checkIgreja = $request->input('checkIgreja', 'distrito'); // Padrão para 'distrito' se nada for selecionado
+
+        $dados = app(TotalMembresiaServices::class)->execute($checkIgreja);
+
+        return view('regiao.estatisticas.totalmembresia', [
+            'regiao' => $dados['regiao'],
+            'dados' => $dados['resultado'],
+            'totalGeral' => $dados['totalGeral'],
+            'tipo' => $checkIgreja // Passa o tipo para a view
+        ]);
+    }
+
+
+
     public function estatisticaEvolucao(Request $request)
     {
         // Capturar os anos do request
@@ -15,64 +34,87 @@ class RegiaoEstatisticasController extends Controller
         $anofinal = request('anofinal', date('Y'));
         $regiao_id = auth()->user()->pessoa->regiao_id;
 
-        // Criar as colunas dos anos dinamicamente com soma progressiva
-        $colunasAno = [];
-        $colunaAcumulada = "0"; // Iniciar a variável acumulada
+        // ===========================
+        // 🔹 Criar colunas de contagem de membros por ano
+        // ===========================
+        $colunasAnoPais = [];
+        $colunasAnoFilhos = [];
 
         for ($ano = $anoinicio; $ano <= $anofinal; $ano++) {
-                // Contagem de membros recebidos no ano
-                $totalAno = "SUM(CASE WHEN YEAR(mrp.dt_recepcao) = $ano THEN 1 ELSE 0 END)";
+            // Para os PAIS (distrito_id)
+            $colunasAnoPais[] = "
+                (SELECT COUNT(*) FROM membresia_rolpermanente
+                 WHERE distrito_id = inst.id
+                 AND dt_exclusao is null
+                 AND YEAR(dt_recepcao) <= $ano
+                ) AS `$ano`
+            ";
 
-                // Contagem de membros excluídos no ano (somente se total > 0)
-                $exclusoes = "SUM(CASE WHEN YEAR(mrp.dt_exclusao) = $ano THEN 1 ELSE 0 END)";
-
-                // Ajustar para não subtrair se o total já for 0
-                $colunaAcumulada = "(
-            $colunaAcumulada +
-            $totalAno -
-            CASE
-                WHEN ($colunaAcumulada + $totalAno) <= 0 THEN 0
-                ELSE $exclusoes
-            END
-        )";
-
-            // Criar a coluna com a soma progressiva
-            $colunasAno[] = "$colunaAcumulada AS `$ano`";
+            // Para os FILHOS (igreja_id)
+            $colunasAnoFilhos[] = "
+                (SELECT COUNT(*) FROM membresia_rolpermanente
+                 WHERE igreja_id = inst.id
+                 AND dt_exclusao is null
+                 AND YEAR(dt_recepcao) <= $ano
+                ) AS `$ano`
+            ";
         }
 
-        // Obter o acumulado do primeiro ano (Ano Inicial)
-        $valorAnoInicial = str_replace(" AS `$anoinicio`", "", reset($colunasAno));
+        $colunasAnoSQLPais = implode(", ", $colunasAnoPais);
+        $colunasAnoSQLFilhos = implode(", ", $colunasAnoFilhos);
 
-        // Obter o acumulado do último ano (Ano Final)
-        $valorAnoFinal = str_replace(" AS `$anofinal`", "", end($colunasAno));
-
-        // Construir a Query SQL
-        $sql = "
+        // ===========================
+        // 🔹 Buscar os PAIS (instituições na região do usuário)
+        // ===========================
+        $instituicoes_pais = DB::select("
             SELECT
-                inst.nome,
-                " . implode(", ", $colunasAno) . ",
+                inst.id,
+                inst.nome AS instituicao,
+                inst.instituicao_pai_id,
+                $colunasAnoSQLPais,
+                (SELECT COUNT(*) FROM membresia_rolpermanente WHERE distrito_id = inst.id and dt_exclusao is null and lastrec = 1) AS total_membros
+            FROM instituicoes_instituicoes inst
+            WHERE inst.instituicao_pai_id = ?
+            ORDER BY inst.nome
+        ", [$regiao_id]);
 
-                -- Cálculo da Evolução Acumulada
-                ($valorAnoFinal - $valorAnoInicial) AS Evolucao,
+        // 🔹 PEGAR IDS DOS PAIS ENCONTRADOS PARA BUSCAR FILHOS
+        $ids_pais = array_column($instituicoes_pais, 'id');
 
-                -- Cálculo do Percentual de Crescimento
-                CASE
-                    WHEN $valorAnoInicial = 0 THEN 100 * ($valorAnoFinal - $valorAnoInicial)
-                    ELSE ROUND(
-                        (($valorAnoFinal - $valorAnoInicial) / NULLIF($valorAnoInicial, 0)) * 100, 2
-                    )
-                END AS Percentual
+        // ===========================
+        // 🔹 Buscar os FILHOS (instituições que pertencem aos pais encontrados)
+        // ===========================
+        if (!empty($ids_pais)) {
+            $instituicoes_filhos = DB::select("
+                SELECT
+                    inst.id,
+                    inst.nome AS instituicao,
+                    inst.instituicao_pai_id,
+                    $colunasAnoSQLFilhos,
+                    (SELECT COUNT(*) FROM membresia_rolpermanente WHERE igreja_id = inst.id and dt_exclusao is null and lastrec = 1) AS total_membros
+                FROM instituicoes_instituicoes inst
+                WHERE inst.instituicao_pai_id IN (" . implode(',', $ids_pais) . ")
+                ORDER BY inst.nome
+            ");
+        } else {
+            $instituicoes_filhos = [];
+        }
 
-            FROM membresia_rolpermanente mrp
-            INNER JOIN instituicoes_instituicoes inst ON inst.id = mrp.distrito_id
-            WHERE mrp.status = 'A' AND mrp.regiao_id = ?
-            AND YEAR(mrp.dt_recepcao) BETWEEN ? AND ?
-            GROUP BY inst.nome, mrp.distrito_id, mrp.regiao_id
-        ";
+        return view('regiao.estatisticas.evolucao', compact('instituicoes_pais', 'instituicoes_filhos', 'anoinicio', 'anofinal'));
+    }
 
-        // Executar a Query
-        $dados = DB::select($sql, [$regiao_id, $anoinicio, $anofinal]);
 
-        return view('regiao.estatisticas.evolucao', compact('dados', 'anoinicio', 'anofinal'));
+    public function historiconomeacoes(Request $request)
+    {
+        $visao = $request->input('visao');
+        $data = app(HistoricoNomeacoes::class)->execute($visao);
+        return view('regiao.estatisticas.estatisticanomeacoes', $data);
+    }
+    public function ticketmedio(Request $request)
+    {
+        $anoinicio =  $request->input('anoinicio', date('Y') - 4);
+        $anofinal =  $request->input('anofinal', date('Y'));
+        $data = app(TotalTicketMedio::class)->execute($anoinicio, $anofinal);
+        return view('regiao.estatisticas.clerigos.estatisticaticketmedio', data: $data);
     }
 }

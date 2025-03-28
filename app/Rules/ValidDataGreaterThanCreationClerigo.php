@@ -26,8 +26,8 @@ class ValidDataGreaterThanCreationClerigo implements Rule
     {
 
         $clerg = PessoasPessoa::find($this->clergId);
-
-        if (strtotime(date('Y-m-d', strtotime($value))) < strtotime(date('Y-m-d', strtotime($clerg->created_at)))) {
+       
+        if (strtotime(date('Y-m-d', strtotime($value))) >= strtotime(date('Y-m-d', strtotime($clerg->created_at)))) {
             return false;
         }
 

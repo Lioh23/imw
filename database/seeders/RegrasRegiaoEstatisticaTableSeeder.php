@@ -25,6 +25,7 @@ class RegrasRegiaoEstatisticaTableSeeder extends Seeder
             ['id' => 103,'nome' => 'regiao-estatistica-membros-evolucao'],
             ['id' => 104,'nome' => 'regiao-estatistica-membros-total'],
             ['id' => 105,'nome' => 'regiao-estatistica-membros-recebimento-saida'],
+            ['id' => 106,'nome' => 'regiao-estatistica-total-membresia'],
 
         ]);
 
@@ -35,7 +36,8 @@ class RegrasRegiaoEstatisticaTableSeeder extends Seeder
             ['perfil_id' => 3, 'regra_id' => 102, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 3, 'regra_id' => 103, 'created_at' => null, 'updated_at' => null],
             ['perfil_id' => 3, 'regra_id' => 104, 'created_at' => null, 'updated_at' => null],
-            ['perfil_id' => 3, 'regra_id' => 105, 'created_at' => null, 'updated_at' => null]
+            ['perfil_id' => 3, 'regra_id' => 105, 'created_at' => null, 'updated_at' => null],
+            ['perfil_id' => 3, 'regra_id' => 106, 'created_at' => null, 'updated_at' => null]
         ]);
     }
 }

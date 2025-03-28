@@ -5,12 +5,12 @@ namespace App\Services\ServiceRegiaoRelatorios;
 use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaFormacao;
 use App\Models\PessoasPessoa;
-use App\Traits\EstatisticaEscolaridadeUtils;
+use App\Traits\EstatisticaEstadoCivilUtils;
 use App\Traits\EstatisticaGeneroUtils;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
 
-class EstatisticaEscolaridadeService
+class EstatisticaEstadoCivilService
 {
     use EstatisticaGeneroUtils;
     use Identifiable;
@@ -20,15 +20,13 @@ class EstatisticaEscolaridadeService
 
 
         $regiao = Identifiable::fetchtSessionRegiao();
-        $escolaridades = MembresiaFormacao::all();
 
 
         return [
-            'lancamentos' => EstatisticaEscolaridadeUtils::fetch($distritoId, $regiao->id),
+            'lancamentos' => EstatisticaEstadoCivilUtils::fetch($distritoId, $regiao->id),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
             'instituicao' => InstituicoesInstituicao::find($distritoId),
             'regiao'      => $regiao,
-            'escolaridades' => $escolaridades
         ];
     }
 }
