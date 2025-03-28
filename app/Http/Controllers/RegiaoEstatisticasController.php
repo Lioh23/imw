@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Services\EstatisticaClerigosService\HistoricoNomeacoes;
+use App\Services\EstatisticaClerigosService\TotalTicketMedio;
 use App\Services\ServiceEstatisticas\TotalMembresiaServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -108,5 +109,12 @@ class RegiaoEstatisticasController extends Controller
         $visao = $request->input('visao');
         $data = app(HistoricoNomeacoes::class)->execute($visao);
         return view('regiao.estatisticas.estatisticanomeacoes', $data);
+    }
+    public function ticketmedio(Request $request)
+    {
+        $anoinicio =  $request->input('anoinicio', date('Y') - 4);
+        $anofinal =  $request->input('anofinal', date('Y'));
+        $data = app(TotalTicketMedio::class)->execute($anoinicio, $anofinal);
+        return view('regiao.estatisticas.clerigos.estatisticaticketmedio', data: $data);
     }
 }

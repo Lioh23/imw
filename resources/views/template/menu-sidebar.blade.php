@@ -673,6 +673,12 @@
                                  </a>
                              @endif
                          </li>
+                         <li>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <a href="{{ route('regiao.estatistica.ticketmedio') }}">Ticket Médio
+                                 </a>
+                             @endif
+                         </li>
                          <!--  <li>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-total'))
 <a href="#">Total de Membros</a>
