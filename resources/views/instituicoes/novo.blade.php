@@ -245,7 +245,7 @@
 
             // Adiciona as opções filtradas
             filteredInstituicoes.forEach(function(instituicao) {
-                $('#instituicao_pai_id').append('<option value="' + instituicao.id + '">' + instituicao.nome + '</option>');
+                $('#instituicao_pai_id').append('<option value="' + instituicao.id + '">' + instituicao.nome + `(${instituicao.instituicao_pai_nome})` + '</option>');
             });
         }
 

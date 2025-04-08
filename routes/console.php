@@ -103,19 +103,16 @@ Artisan::command('cpf-aleatorio-pessoas', function () {
 
 
 Artisan::command('atualizar-onus', function () {
-    // Exibe uma mensagem informando o início do processo
     $this->info('Iniciando a atualização da coluna "onus" na tabela "pessoas_funçãoministerial"...');
 
-    // Atualiza os registros onde a função contém 'sem ônus' para 'onus' = false
     DB::table('pessoas_funcaoministerial')
         ->where('funcao', 'like', '%sem ônus%')
         ->update(['onus' => false]);
 
-    // Atualiza os registros onde a função não contém 'sem ônus' para 'onus' = true
+
     DB::table('pessoas_funcaoministerial')
         ->where('funcao', 'not like', '%sem ônus%')
         ->update(['onus' => true]);
 
-    // Exibe uma mensagem informando que o processo foi concluído
     $this->info('Coluna "onus" atualizada com sucesso.');
 });

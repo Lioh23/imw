@@ -270,8 +270,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-estatistica-membros-evolucao']);
             //Estatitisca de Membros
             Route::get('/relatorio/estatistica-total-membresia', [RegiaoEstatisticasController::class, 'totalMembresia'])->name('estatistica.totalMembresia')->middleware(['seguranca:regiao-estatistica-total-membresia']);
+
             Route::get('/relatorio/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/relatorio/historiconomeacoes/pdf', [RegiaoEstatisticasController::class, 'historiconomeacoesPdf'])->name('relatorio.historiconomeacoes-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+
             Route::get('/relatorio/ticketmedio', [RegiaoEstatisticasController::class, 'ticketmedio'])->name('estatistica.ticketmedio')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/relatorio/ticketmedio/pdf', [RegiaoEstatisticasController::class, 'ticketmedioPdf'])->name('relatorio.ticketmedio-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
 
             Route::get('/relatorio/totaldistritoregiao', [TotalizacaoController::class, 'totalDitritoPorRegiao'])->name('totalizacao.totaldistritoregiao')->middleware(['seguranca:regiao-menu-relatorio']);

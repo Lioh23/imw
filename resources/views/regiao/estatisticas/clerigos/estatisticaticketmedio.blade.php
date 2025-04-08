@@ -150,7 +150,7 @@
                     </div>
                     <div class="row">
                         <div class="col-12 text-center">
-                            <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i
+                        <button class="btn btn-success btn-rounded" onclick="exportRepotirtToExcel();"><i
                                     class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
                         </div>
                     </div>

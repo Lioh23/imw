@@ -8,7 +8,7 @@ use App\Services\EstatisticaClerigosService\TotalTicketMedio;
 use App\Services\ServiceEstatisticas\TotalMembresiaServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 class RegiaoEstatisticasController extends Controller
 {
     public function totalMembresia(Request $request)
@@ -110,11 +110,34 @@ class RegiaoEstatisticasController extends Controller
         $data = app(HistoricoNomeacoes::class)->execute($visao);
         return view('regiao.estatisticas.estatisticanomeacoes', $data);
     }
+
+
+    public function historiconomeacoesPdf(Request $request)
+    {
+        $visao = $request->input('visao');
+        $data = app(HistoricoNomeacoes::class)->execute($visao);
+
+        $pdf = FacadePdf::loadView('regiao.estatisticas.estatisticanomeacoes_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_estatisticanomeacoes.pdf' . date('YmdHis'));
+    }
     public function ticketmedio(Request $request)
     {
         $anoinicio =  $request->input('anoinicio', date('Y') - 4);
         $anofinal =  $request->input('anofinal', date('Y'));
         $data = app(TotalTicketMedio::class)->execute($anoinicio, $anofinal);
         return view('regiao.estatisticas.clerigos.estatisticaticketmedio', data: $data);
+    }
+
+    public function ticketmedioPdf(Request $request)
+    {
+        $anoinicio =  $request->input('anoinicio', date('Y') - 4);
+        $anofinal =  $request->input('anofinal', date('Y'));
+        $data = app(TotalTicketMedio::class)->execute($anoinicio, $anofinal);
+        $pdf = FacadePdf::loadView('regiao.estatisticas.estatisticaticketmedio_pdf', $data)
+            ->setPaper('a4', 'landscape');
+
+        return $pdf->stream('relatorio_estatisticaticketmedio.pdf' . date('YmdHis'));
     }
 }
