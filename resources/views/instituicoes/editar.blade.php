@@ -235,19 +235,19 @@
             function loadInstituicoesPai(tipo_instituicao_id) {
                 var instituicoesPai = @json($instituicoes_pai); // Passa o array PHP para o JS
 
-                // Filtra as instituições pai conforme o tipo
-                var filteredInstituicoes = instituicoesPai.filter(function(instituicao) {
-                    if (tipo_instituicao_id == 1 && instituicao.tipo_instituicao_id == 2) {
-                        return true;
-                    }
-                    if (tipo_instituicao_id == 2 && instituicao.tipo_instituicao_id == 5) {
-                        return true;
-                    }
-                    if (tipo_instituicao_id == 5 && instituicao.tipo_instituicao_id == 3) {
-                        return true;
-                    }
-                    return false;
-                });
+        // Filtra as instituições pai conforme o tipo
+        var filteredInstituicoes = instituicoesPai.filter(function(instituicao) {
+            if (tipo_instituicao_id == 1 && instituicao.tipo_instituicao_id == 2) {
+                return true;
+            }
+            if (tipo_instituicao_id == 2 && instituicao.tipo_instituicao_id == 3) {
+                return true;
+            }
+            if (tipo_instituicao_id == 5 && instituicao.tipo_instituicao_id == 3) {
+                return true;
+            }
+            return false;
+        });
 
                 // Limpa o select antes de adicionar as novas opções
                 $('#instituicao_pai_id').empty();

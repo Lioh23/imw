@@ -46,7 +46,7 @@
                             <div class="row">
                                 <div class="col-12">
                                     <h6 class="mt-3">TOTAL DE DISTRITOS-
-                                        {{ value: $regiao->nome }}</h6>
+                                        {{ $regiao->nome }}</h6>
                                     <div class="table-responsive">
                                         <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                             <thead class="thead-dark">
