@@ -241,7 +241,7 @@
             if (tipo_instituicao_id == 1 && instituicao.tipo_instituicao_id == 2) {
                 return true;
             }
-            if (tipo_instituicao_id == 2 && instituicao.tipo_instituicao_id == 5) {
+            if (tipo_instituicao_id == 2 && instituicao.tipo_instituicao_id == 3) {
                 return true;
             }
             if (tipo_instituicao_id == 5 && instituicao.tipo_instituicao_id == 3) {
