@@ -240,13 +240,13 @@
 
                 // Filtra as instituições pai conforme o tipo
                 var filteredInstituicoes = instituicoesPai.filter(function(instituicao) {
-                    if (tipo_instituicao_id == 1 && instituicao.tipo_instituicao_id == 2) {
+                    if (tipo_instituicao_id == 1 && instituicao.tipo_instituicao_id == 2 && instituicao.ativo == 1) {
                         return true;
                     }
-                    if (tipo_instituicao_id == 2 && instituicao.tipo_instituicao_id == 3) {
+                    if (tipo_instituicao_id == 2 && instituicao.tipo_instituicao_id == 3 && instituicao.ativo == 1) {
                         return true;
                     }
-                    if (tipo_instituicao_id == 5 && instituicao.tipo_instituicao_id == 3) {
+                    if (tipo_instituicao_id == 5 && instituicao.tipo_instituicao_id == 3 && instituicao.ativo == 1) {
                         return true;
                     }
                     return false;
