@@ -510,7 +510,7 @@
                      <ul class="collapse submenu list-unstyled" id="estatistica-regiao"
                          data-parent="#estatistica-regiao">
                          <li class="submenu-fixo mt-3 mb-3">
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-evolucao'))
                                  <span>Membros</span>
                              @endif
                          </li>
@@ -553,7 +553,7 @@
                          </li>
 
                          <li class="submenu-fixo mt-3 mb-3">
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-totalizacao-distrito'))
                                  <span>Totalização</span>
                              @endif
                          </li>
@@ -588,7 +588,7 @@
                              @endif
                          </li>
                          <li class="submenu-fixo mt-3 mb-3">
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-distrito-membros'))
                                  <span>Os 10 Distritos</span>
                              @endif
                          </li>
@@ -615,7 +615,7 @@
                              @endif
                          </li>
                          <li class="submenu-fixo mt-3 mb-3">
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-igreja-batismo'))
                                  <span>Os 10 Igrejas</span>
                              @endif
                          </li>
@@ -649,7 +649,7 @@
                              @endif
                          </li>
                          <li>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-clerigo-situacao'))
                                  <a href="{{ route('regiao.estatisticaclerigos.totalclerigosnomeacoes') }}">Nomeação
                                  </a>
                              @endif
