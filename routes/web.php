@@ -255,46 +255,45 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/estatisticagenero', [RegiaoRelatorioController::class, 'estatisticagenero'])->name('relatorio.estatisticagenero')->middleware(['seguranca:regiao-menu-relatorio']);
             Route::post('/relatorio/estatisticagenero/pdf', [RegiaoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
-            Route::get('/relatorio/estatisticaescolaridade', [RegiaoRelatorioController::class, 'estatisticaescolaridade'])->name('relatorio.estatisticaescolaridade')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/estatisticaescolaridade/pdf', [RegiaoRelatorioController::class, 'estatisticaescolaridadePdf'])->name('relatorio.estatisticaescolaridade-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/estatisticaescolaridade', [RegiaoRelatorioController::class, 'estatisticaescolaridade'])->name('relatorio.estatisticaescolaridade')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::post('/relatorio/estatisticaescolaridade/pdf', [RegiaoRelatorioController::class, 'estatisticaescolaridadePdf'])->name('relatorio.estatisticaescolaridade-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
 
-            Route::get('/relatorio/estatisticaestadocivil', [RegiaoRelatorioController::class, 'estatisticaestadocivil'])->name('relatorio.estatisticaestadocivil')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/estatisticaestadocivil/pdf', [RegiaoRelatorioController::class, 'estatisticaestadocivilPdf'])->name('relatorio.estatisticaestadocivil-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/estatisticaestadocivil', [RegiaoRelatorioController::class, 'estatisticaestadocivil'])->name('relatorio.estatisticaestadocivil')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::post('/relatorio/estatisticaestadocivil/pdf', [RegiaoRelatorioController::class, 'estatisticaestadocivilPdf'])->name('relatorio.estatisticaestadocivil-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
 
-            Route::get('/relatorio/estatisticageneroporcentagem', [RegiaoRelatorioController::class, 'estatisticageneroporcentagem'])->name('relatorio.estatisticageneroporcentagem')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/estatisticageneroporcentagem/pdf', [RegiaoRelatorioController::class, 'estatisticageneroporcentagemPdf'])->name('relatorio.estatisticageneroporcentagem-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/estatisticageneroporcentagem', [RegiaoRelatorioController::class, 'estatisticageneroporcentagem'])->name('relatorio.estatisticageneroporcentagem')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::post('/relatorio/estatisticageneroporcentagem/pdf', [RegiaoRelatorioController::class, 'estatisticageneroporcentagemPdf'])->name('relatorio.estatisticageneroporcentagem-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
 
-            Route::get('/relatorio/estatisticatotalmembros', [RegiaoRelatorioController::class, 'estatisticatotalmembros'])->name('relatorio.estatisticatotalmembros')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/estatisticatotalmembros/pdf', [RegiaoRelatorioController::class, 'estatisticatotalmembrosPdf'])->name('relatorio.estatisticatotalmembros-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/estatisticatotalmembros', [RegiaoRelatorioController::class, 'estatisticatotalmembros'])->name('relatorio.estatisticatotalmembros')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::post('/relatorio/estatisticatotalmembros/pdf', [RegiaoRelatorioController::class, 'estatisticatotalmembrosPdf'])->name('relatorio.estatisticatotalmembros-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
             //Estatitisca de Membros
-            Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-estatistica-membros-evolucao']);
+            Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-menu-estatistica']);
             //Estatitisca de Membros
-            Route::get('/relatorio/estatistica-total-membresia', [RegiaoEstatisticasController::class, 'totalMembresia'])->name('estatistica.totalMembresia')->middleware(['seguranca:regiao-estatistica-total-membresia']);
-            Route::get('/relatorio/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/ticketmedio', [RegiaoEstatisticasController::class, 'ticketmedio'])->name('estatistica.ticketmedio')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/estatistica-total-membresia', [RegiaoEstatisticasController::class, 'totalMembresia'])->name('estatistica.totalMembresia')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/ticketmedio', [RegiaoEstatisticasController::class, 'ticketmedio'])->name('estatistica.ticketmedio')->middleware(['seguranca:regiao-menu-estatistica']);
 
 
-            Route::get('/relatorio/totaldistritoregiao', [TotalizacaoController::class, 'totalDitritoPorRegiao'])->name('totalizacao.totaldistritoregiao')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/totaligrejasdistritos', [TotalizacaoController::class, 'totaligrejasdistritos'])->name('totalizacao.totaligrejasdistritos')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/totalcongregacoesigrejas', [TotalizacaoController::class, 'totalcongregacoesigrejas'])->name('totalizacao.totalcongregacoesigrejas')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/totalcongregacoesdistritos', [TotalizacaoController::class, 'totalcongregacoesdistritos'])->name('totalizacao.totalcongregacoesdistritos')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/totalfrentemissionaria', [TotalizacaoController::class, 'totalfrentemissionaria'])->name('totalizacao.totalfrentemissionaria')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/totaldistritoregiao', [TotalizacaoController::class, 'totalDitritoPorRegiao'])->name('totalizacao.totaldistritoregiao')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/totaligrejasdistritos', [TotalizacaoController::class, 'totaligrejasdistritos'])->name('totalizacao.totaligrejasdistritos')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/totalcongregacoesigrejas', [TotalizacaoController::class, 'totalcongregacoesigrejas'])->name('totalizacao.totalcongregacoesigrejas')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/totalcongregacoesdistritos', [TotalizacaoController::class, 'totalcongregacoesdistritos'])->name('totalizacao.totalcongregacoesdistritos')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/totalfrentemissionaria', [TotalizacaoController::class, 'totalfrentemissionaria'])->name('totalizacao.totalfrentemissionaria')->middleware(['seguranca:regiao-menu-estatistica']);
 
 
 
-            Route::get('/relatorio/distritomaisbatismo', [TotalizacaoController::class, 'distritomaisbatismo'])->name('dezmais.distritomaisbatismo')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/distritomaismembros', [TotalizacaoController::class, 'distritomaismembros'])->name('dezmais.distritomaismembros')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/distritomaiscrescerammembros', [TotalizacaoController::class, 'distritomaiscrescerammembros'])->name('dezmais.distritomaiscrescerammembros')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/distritomaisbatismo', [TotalizacaoController::class, 'distritomaisbatismo'])->name('dezmais.distritomaisbatismo')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/distritomaismembros', [TotalizacaoController::class, 'distritomaismembros'])->name('dezmais.distritomaismembros')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/distritomaiscrescerammembros', [TotalizacaoController::class, 'distritomaiscrescerammembros'])->name('dezmais.distritomaiscrescerammembros')->middleware(['seguranca:regiao-menu-estatistica']);
 
-            Route::get('/relatorio/igrejamaisbatismo', [TotalizacaoController::class, 'igrejamaisbatismo'])->name('dezmais.igrejamaisbatismo')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/igrejamaismembros', [TotalizacaoController::class, 'igrejamaismembros'])->name('dezmais.igrejamaismembros')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/igrejamaiscrescerammembros', [TotalizacaoController::class, 'igrejamaiscrescerammembros'])->name('dezmais.igrejamaiscrescerammembros')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/relatorio/igrejamaisbatismo', [TotalizacaoController::class, 'igrejamaisbatismo'])->name('dezmais.igrejamaisbatismo')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/igrejamaismembros', [TotalizacaoController::class, 'igrejamaismembros'])->name('dezmais.igrejamaismembros')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/igrejamaiscrescerammembros', [TotalizacaoController::class, 'igrejamaiscrescerammembros'])->name('dezmais.igrejamaiscrescerammembros')->middleware(['seguranca:regiao-menu-estatistica']);
 
-            Route::get('/relatorio/totalclerigosnomeacoes', [TotalizacaoController::class, 'totalclerigosnomeacoes'])->name('estatisticaclerigos.totalclerigosnomeacoes')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/totalclerigosstatus', [TotalizacaoController::class, 'totalclerigosstatus'])->name('estatisticaclerigos.totalclerigosstatus')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/totalclerigosfaxiaetaria', [TotalizacaoController::class, 'totalclerigosfaxiaetaria'])->name('estatisticaclerigos.totalclerigosfaxiaetaria')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::get('/relatorio/totalclerigosporvinculo', [TotalizacaoController::class, 'totalclerigosporvinculo'])->name('estatisticaclerigos.totalclerigosporvinculo')->middleware(['seguranca:regiao-menu-relatorio']);
-
+            Route::get('/relatorio/totalclerigosnomeacoes', [TotalizacaoController::class, 'totalclerigosnomeacoes'])->name('estatisticaclerigos.totalclerigosnomeacoes')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/totalclerigosstatus', [TotalizacaoController::class, 'totalclerigosstatus'])->name('estatisticaclerigos.totalclerigosstatus')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/totalclerigosfaxiaetaria', [TotalizacaoController::class, 'totalclerigosfaxiaetaria'])->name('estatisticaclerigos.totalclerigosfaxiaetaria')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/totalclerigosporvinculo', [TotalizacaoController::class, 'totalclerigosporvinculo'])->name('estatisticaclerigos.totalclerigosporvinculo')->middleware(['seguranca:regiao-menu-estatistica']);
         });
 
 

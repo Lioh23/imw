@@ -548,7 +548,8 @@
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-hitorico-nomeacoes'))
-                                 <a href="{{ route('regiao.estatistica.historiconomeacoes') }}">Histórico de Nomeacões</a>
+                                 <a href="{{ route('regiao.estatistica.historiconomeacoes') }}">Histórico de
+                                     Nomeacões</a>
                              @endif
                          </li>
 
@@ -584,7 +585,8 @@
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-frente-missionaria'))
-                                 <a href="{{ route('regiao.totalizacao.totalfrentemissionaria') }}"> Frentes Missionárias</a>
+                                 <a href="{{ route('regiao.totalizacao.totalfrentemissionaria') }}"> Frentes
+                                     Missionárias</a>
                              @endif
                          </li>
                          <li class="submenu-fixo mt-3 mb-3">
@@ -669,7 +671,8 @@
                          </li>
                          <li>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-clerigo-tipo-vinculo'))
-                                 <a href="{{ route('regiao.estatisticaclerigos.totalclerigosporvinculo') }}">Tipo de vínculo
+                                 <a href="{{ route('regiao.estatisticaclerigos.totalclerigosporvinculo') }}">Tipo de
+                                     vínculo
                                  </a>
                              @endif
                          </li>
@@ -837,11 +840,12 @@
                          <li>
                              <a href="{{ route('clerigos.perfil.impostoDeRenda.index') }}"> Imposto de Renda</a>
                          </li>
-                         @if(App\Services\InformeRendimentos\ChecaArquivoExistenteService::execute(date('Y')))
-                        <li>
-                            <a href="{{ route('informe_rendimentos.exibirPdf', ['ano' => date('Y')]) }}" target="_blank">Informe de Rendimentos</a>
-                        </li>
-                        @endif
+                         @if (App\Services\InformeRendimentos\ChecaArquivoExistenteService::execute(date('Y')))
+                             <li>
+                                 <a href="{{ route('informe_rendimentos.exibirPdf', ['ano' => date('Y')]) }}"
+                                     target="_blank">Informe de Rendimentos</a>
+                             </li>
+                         @endif
                      @endif
                  </ul>
              </li>
