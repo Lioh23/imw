@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Rules;
 
 use Illuminate\Contracts\Validation\Rule;
@@ -26,12 +27,14 @@ class ValidDataGreaterThanCreationClerigo implements Rule
     {
 
         $clerg = PessoasPessoa::find($this->clergId);
-       
-        if (strtotime(date('Y-m-d', strtotime($value))) >= strtotime(date('Y-m-d', strtotime($clerg->created_at)))) {
-            return false;
+        $clergCreatedDate = strtotime($clerg->created_at);
+        $valueDate = strtotime($value);
+        // Comparação direta das datas
+        if ($valueDate >= $clergCreatedDate) {
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
