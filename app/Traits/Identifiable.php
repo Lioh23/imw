@@ -18,7 +18,7 @@ use App\Models\MembresiaSituacao;
 use App\Models\PessoasPessoa;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\DB;
 trait Identifiable
 {
     public static function fetchPastores()
@@ -31,6 +31,9 @@ trait Identifiable
     public static function fetchPessoa($id, $vinculo, $trashed = false)
     {
         $membro = MembresiaMembro::where('id', $id)
+            ->select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+                              WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
+                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = '$id') AS telefone") )
             ->when($trashed, fn($query) => $query->onlyTrashed())
             ->where('vinculo', $vinculo)
             ->firstOr(function() use ($vinculo) {

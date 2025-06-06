@@ -36,10 +36,10 @@
                             </select>
                         </td>
                         <td>
-                            <input type="date" class="form-control" name="ministerial-nomeacao[]" value="{{ $funcaoMinisterial->data_entrada }}">
+                            <input type="date" class="form-control" name="ministerial-nomeacao[]" value="{{ $funcaoMinisterial->data_entrada ? $funcaoMinisterial->data_entrada->format('Y-m-d') : '' }}">
                         </td>
                         <td>
-                            <input type="date" class="form-control" name="ministerial-exoneracao[]" value="{{ $funcaoMinisterial->data_saida }}">
+                            <input type="date" class="form-control" name="ministerial-exoneracao[]" value="{{ $funcaoMinisterial->data_saida ? $funcaoMinisterial->data_saida->format('Y-m-d') : '' }}">
                         </td>
                         <td>
                             <input type="text" class="form-control" name="ministerial-observacao[]" value="{{ $funcaoMinisterial->observacoes }}">

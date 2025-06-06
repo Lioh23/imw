@@ -31,7 +31,6 @@ class RelatorioController extends Controller
     {
         try {
             $data = app(IdentificaDadosRelatorioAniversariantesService::class)->execute($request->all());
-            
             if($data['render'] == 'view') {
                 return view('relatorios.aniversariantes', $data);
             }
@@ -48,15 +47,14 @@ class RelatorioController extends Controller
     {
         try {
             $data = app(IdentificaDadosRelatorioHistoricoEclesiasticoService::class)->execute($request->all());
-
             if($data['render'] == 'view') {
                 return view('relatorios.historico-eclesiastico', $data);
             }
-
             $pdf = PDF::loadView('relatorios.pdf.historico-eclesiastico', $data);
             return $pdf->inline('RELATORIO_MEMBROS_' . date('YmdHis') . '.pdf');
 
         } catch (\Exception $e) {
+            dd($e);
             return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de histórico eclesiástico');
         }
     }
