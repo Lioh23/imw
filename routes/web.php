@@ -78,7 +78,7 @@ Route::middleware(['auth'])->group(function () {
 
 
         // Grupo de rotas para 'membresia'
-        Route::prefix('membro')->name('membro.')->group(function () {
+        Route::prefix('secretaria/membro')->name('membro.')->group(function () {
             Route::get('', [MembrosController::class, 'index'])->name('index')->middleware(['seguranca:membros-index']);
             Route::get('list', [MembrosController::class, 'list'])->name('list')->middleware(['seguranca:membros-index']);
             Route::get('editar/{id}', [MembrosController::class, 'editar'])->name('editar')->middleware(['seguranca:membros-editar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
@@ -102,11 +102,11 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::controller(HomeController::class)->group(function () {
-            Route::get('', 'dashboard')->name('dashboard');
+            Route::get('/', 'dashboard')->name('dashboard');
             Route::get('perfil', 'perfil')->name('perfil');
         });
 
-        Route::prefix('perfis')->name('perfil.')->group(function () {
+        Route::prefix('usuario/perfis')->name('perfil.')->group(function () {
             Route::get('/', [PerfilController::class, 'index'])->name('index');
             Route::post('/perfil/{id}', [PerfilController::class, 'update'])->name('update');
         });
@@ -120,7 +120,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Grupo de rotas para 'visitantes'
-        Route::prefix('visitante')->name('visitante.')->group(function () {
+        Route::prefix('secretaria/visitante')->name('visitante.')->group(function () {
             Route::get('/', [VisitantesController::class, 'index'])->name('index')->middleware(['seguranca:visitantes-index']);
             Route::get('list', [VisitantesController::class, 'list'])->name('list')->middleware(['seguranca:visitantes-index']);
             Route::get('/novo', [VisitantesController::class, 'novo'])->name('novo')->middleware(['seguranca:visitantes-cadastrar']);
@@ -131,7 +131,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Grupo de rotas para 'congregado'
-        Route::prefix('congregado')->name('congregado.')->group(function () {
+        Route::prefix('secretaria/congregado')->name('congregado.')->group(function () {
             Route::get('/', [CongregadosController::class, 'index'])->name('index')->middleware(['seguranca:congregados-index']);
             Route::get('list', [CongregadosController::class, 'list'])->name('list')->middleware(['seguranca:congregados-index']);
             Route::get('/novo', [CongregadosController::class, 'novo'])->name('novo')->middleware(['seguranca:congregados-cadastrar']);
@@ -227,34 +227,42 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/relatorio/estatisticagenero/pdf', [DistritoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
         });
 
-        Route::prefix('regiao')->name('regiao.')->group(function () {
-            Route::get('/relatorio/lancamentodasigrejas', [RegiaoRelatorioController::class, 'lancamentodasigrejas'])->name('relatorio.lancamentodasigrejas')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/lancamentodasigrejas/pdf', [RegiaoRelatorioController::class, 'lancamentodasigrejasPdf'])->name('relatorio.lancamentodasigrejas-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+        Route::prefix('regiao/relatorio')->name('regiao.')->group(function () {
+            Route::get('/lancamentodasigrejas', [RegiaoRelatorioController::class, 'lancamentodasigrejas'])->name('relatorio.lancamentodasigrejas')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/lancamentodasigrejas/pdf', [RegiaoRelatorioController::class, 'lancamentodasigrejasPdf'])->name('relatorio.lancamentodasigrejas-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
-            Route::get('/relatorio/saldodasigrejas', [RegiaoRelatorioController::class, 'saldodasigrejas'])->name('relatorio.saldodasigrejas')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/saldodasigrejas/pdf', [RegiaoRelatorioController::class, 'saldodasigrejasPdf'])->name('relatorio.saldodasigrejas-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/saldodasigrejas', [RegiaoRelatorioController::class, 'saldodasigrejas'])->name('relatorio.saldodasigrejas')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/saldodasigrejas/pdf', [RegiaoRelatorioController::class, 'saldodasigrejasPdf'])->name('relatorio.saldodasigrejas-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
-            Route::get('/relatorio/livrorazaogeral', [RegiaoRelatorioController::class, 'livrorazaogeral'])->name('relatorio.livrorazaogeral')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/livrorazaogeral/pdf', [RegiaoRelatorioController::class, 'livrorazaogeralPdf'])->name('relatorio.livrorazaogeral-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/livrorazaogeral', [RegiaoRelatorioController::class, 'livrorazaogeral'])->name('relatorio.livrorazaogeral')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/livrorazaogeral/pdf', [RegiaoRelatorioController::class, 'livrorazaogeralPdf'])->name('relatorio.livrorazaogeral-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
-            Route::get('/relatorio/orcamento', [RegiaoRelatorioController::class, 'orcamento'])->name('relatorio.orcamento')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/orcamento/pdf', [RegiaoRelatorioController::class, 'orcamentoPdf'])->name('relatorio.orcamento-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/orcamento', [RegiaoRelatorioController::class, 'orcamento'])->name('relatorio.orcamento')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/orcamento/pdf', [RegiaoRelatorioController::class, 'orcamentoPdf'])->name('relatorio.orcamento-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
-            Route::get('/relatorio/variacaofinanceira', [RegiaoRelatorioController::class, 'variacaofinanceira'])->name('relatorio.variacaofinanceira')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/variacaofinanceira/pdf', [RegiaoRelatorioController::class, 'variacaofinanceiraPdf'])->name('relatorio.variacaofinanceira-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/variacaofinanceira', [RegiaoRelatorioController::class, 'variacaofinanceira'])->name('relatorio.variacaofinanceira')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/variacaofinanceira/pdf', [RegiaoRelatorioController::class, 'variacaofinanceiraPdf'])->name('relatorio.variacaofinanceira-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
 
             //Membresia DEV
-            Route::get('/relatorio/membrosministerio', [RegiaoRelatorioController::class, 'membrosministerio'])->name('relatorio.membrosministerio')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/membrosministerio/pdf', [RegiaoRelatorioController::class, 'membrosministerioPdf'])->name('relatorio.membrosministerio-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/membrosministerio', [RegiaoRelatorioController::class, 'membrosministerio'])->name('relatorio.membrosministerio')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/membrosministerio/pdf', [RegiaoRelatorioController::class, 'membrosministerioPdf'])->name('relatorio.membrosministerio-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
             //
-            Route::get('/relatorio/quantidademembros', [RegiaoRelatorioController::class, 'quantidademembros'])->name('relatorio.quantidademembros')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/quantidademembros/pdf', [RegiaoRelatorioController::class, 'quantidademembrosPdf'])->name('relatorio.quantidademembros-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/quantidademembros', [RegiaoRelatorioController::class, 'quantidademembros'])->name('relatorio.quantidademembros')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/quantidademembros/pdf', [RegiaoRelatorioController::class, 'quantidademembrosPdf'])->name('relatorio.quantidademembros-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
-            Route::get('/relatorio/estatisticagenero', [RegiaoRelatorioController::class, 'estatisticagenero'])->name('relatorio.estatisticagenero')->middleware(['seguranca:regiao-menu-relatorio']);
-            Route::post('/relatorio/estatisticagenero/pdf', [RegiaoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::get('/estatisticagenero', [RegiaoRelatorioController::class, 'estatisticagenero'])->name('relatorio.estatisticagenero')->middleware(['seguranca:regiao-menu-relatorio']);
+            Route::post('/estatisticagenero/pdf', [RegiaoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
+        });
+
+        Route::prefix('regiao/estatistica')->name('regiao.')->group(function () {
+        //Estatitisca de Membros
+            Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-menu-estatistica']);
+            //Estatitisca de Membros
+            Route::get('/relatorio/estatistica-total-membresia', [RegiaoEstatisticasController::class, 'totalMembresia'])->name('estatistica.totalMembresia')->middleware(['seguranca:regiao-menu-estatistica']);
+            
             Route::get('/relatorio/estatisticaescolaridade', [RegiaoRelatorioController::class, 'estatisticaescolaridade'])->name('relatorio.estatisticaescolaridade')->middleware(['seguranca:regiao-menu-estatistica']);
             Route::post('/relatorio/estatisticaescolaridade/pdf', [RegiaoRelatorioController::class, 'estatisticaescolaridadePdf'])->name('relatorio.estatisticaescolaridade-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
 
@@ -265,11 +273,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/relatorio/estatisticageneroporcentagem/pdf', [RegiaoRelatorioController::class, 'estatisticageneroporcentagemPdf'])->name('relatorio.estatisticageneroporcentagem-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
 
             Route::get('/relatorio/estatisticatotalmembros', [RegiaoRelatorioController::class, 'estatisticatotalmembros'])->name('relatorio.estatisticatotalmembros')->middleware(['seguranca:regiao-menu-estatistica']);
-            Route::post('/relatorio/estatisticatotalmembros/pdf', [RegiaoRelatorioController::class, 'estatisticatotalmembrosPdf'])->name('relatorio.estatisticatotalmembros-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
-            //Estatitisca de Membros
-            Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-menu-estatistica']);
-            //Estatitisca de Membros
-            Route::get('/relatorio/estatistica-total-membresia', [RegiaoEstatisticasController::class, 'totalMembresia'])->name('estatistica.totalMembresia')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::post('/relatorio/estatisticatotalmembros/pdf', [RegiaoRelatorioController::class, 'estatisticatotalmembrosPdf'])->name('relatorio.estatisticatotalmembros-pdf')->middleware(['seguranca:regiao-menu-estatistica']); 
+            
             Route::get('/relatorio/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-estatistica']);
             Route::get('/relatorio/ticketmedio', [RegiaoEstatisticasController::class, 'ticketmedio'])->name('estatistica.ticketmedio')->middleware(['seguranca:regiao-menu-estatistica']);
 
@@ -295,7 +300,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/totalclerigosfaxiaetaria', [TotalizacaoController::class, 'totalclerigosfaxiaetaria'])->name('estatisticaclerigos.totalclerigosfaxiaetaria')->middleware(['seguranca:regiao-menu-estatistica']);
             Route::get('/relatorio/totalclerigosporvinculo', [TotalizacaoController::class, 'totalclerigosporvinculo'])->name('estatisticaclerigos.totalclerigosporvinculo')->middleware(['seguranca:regiao-menu-estatistica']);
         });
-
 
         // Crud congregações
         Route::prefix('congregacao')->name('congregacao.')->group(function () {
@@ -323,7 +327,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         /* Por enquanto somente visualiações */
-        Route::prefix('fornecedor')->name('fornecedor.')->group(function () {
+        Route::prefix('financeiro/fornecedor')->name('fornecedor.')->group(function () {
             Route::get('/', [FornecedorController::class, 'index'])->name('index')->middleware(['seguranca:fornecedores-index']);
             Route::get('/novo', [FornecedorController::class, 'novo'])->name('novo')->middleware(['seguranca:fornecedores-cadastrar']);
             Route::delete('/deletar/{id}', [FornecedorController::class, 'deletar'])->name('deletar')->middleware(['seguranca:fornecedores-deletar']);
@@ -333,7 +337,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Grupo de rotas para 'usuarios'
-        Route::prefix('users')->name('usuarios.')->group(function () {
+        Route::prefix('seguranca/users')->name('usuarios.')->group(function () {
             Route::get('/', [UsuarioController::class, 'index'])->name('index')->middleware(['seguranca:usuarios-index']);
             Route::get('/novo', [UsuarioController::class, 'novo'])->name('novo')->middleware(['seguranca:usuarios-cadastrar']);
             Route::post('/update/{id}', [UsuarioController::class, 'update'])->name('update')->middleware(['seguranca:usuarios-atualizar']);
@@ -344,7 +348,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         // Relatórios
-        Route::prefix('relatorio')->name('relatorio.')->controller(RelatorioController::class)->group(function () {
+        Route::prefix('secretaria/relatorio')->name('relatorio.')->controller(RelatorioController::class)->group(function () {
             Route::get('/membresia', 'membresia')->name('membresia')->middleware('seguranca:relatorio-membresia');
             Route::get('/aniversariantes', 'aniversariantes')->name('aniversariantes')->middleware('seguranca:relatorio-aniversariantes');
             Route::get('/historico-eclesiastico', 'historicoEclesiastico')->name('historico-eclesiastico')->middleware('seguranca:relatorio-historico-eclesiastico');
@@ -389,7 +393,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{clerigoId}/finalizar/{id}', 'finalizar')->name('finalizar');
         });
 
-        Route::prefix('clerigos/perfil')->name('clerigos.perfil.')->group(function () {
+        Route::prefix('usuario/clerigos/perfil')->name('clerigos.perfil.')->group(function () {
             // dependentes
             Route::prefix('dependentes')->controller(ClerigoPerfilController::class)->middleware(['user-clerigo'])->name('dependentes.')->group(function () {
                 Route::get('', 'indexDependentes')->name('index');
