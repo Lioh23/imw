@@ -29,7 +29,7 @@ trait HistoricoNomeacoesUtils
                         ->where('ii.ativo', '=', 1);
                 })
                 ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
-                ->where('pp.status', 0)
+                ->where(['pp.status' => 0, 'pp.regiao_id' => 23])
                 ->orderBy('pp.nome')
                 ->orderByDesc('pn.data_nomeacao')
                 ->get()
@@ -56,8 +56,7 @@ trait HistoricoNomeacoesUtils
                         ->where('ii.tipo_instituicao_id', '=', InstituicoesTipoInstituicao::IGREJA_LOCAL);
                 })
                 ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
-                ->where('pp.status', 0)
-
+                ->where(['ii.ativo' => 1, 'pp.regiao_id' => 23])
                 ->orderBy('ii.nome') // Ordena pelo nome da igreja
                 ->orderByDesc('pn.data_nomeacao') // Ordena por data de nomeação (mais recente primeiro)
                 ->get()
