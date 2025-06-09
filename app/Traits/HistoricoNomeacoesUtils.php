@@ -18,7 +18,8 @@ trait HistoricoNomeacoesUtils
                     'ii_pai.nome as distrito',
                     'ii.nome as igreja',
                     'pn.data_nomeacao as inicio_nomeacao',
-                    'pn.data_termino as fim_nomeacao'
+                    'pn.data_termino as fim_nomeacao',
+                    'pf.funcao as funcao_ministerial'
                 )
                 ->join('pessoas_nomeacoes as pn', function ($join) {
                     $join->on('pp.id', '=', 'pn.pessoa_id')
@@ -28,6 +29,7 @@ trait HistoricoNomeacoesUtils
                     $join->on('pn.instituicao_id', '=', 'ii.id')
                         ->where('ii.ativo', '=', 1);
                 })
+                ->leftJoin('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
                 ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
                 ->where(['pp.status' => 0, 'pp.regiao_id' => 23])
                 ->orderBy('pp.nome')
@@ -44,7 +46,8 @@ trait HistoricoNomeacoesUtils
                     'pn.data_nomeacao as inicio_nomeacao',
                     'pn.data_termino as fim_nomeacao',
                     'pp.id as clerigo_id',
-                    'pp.nome as clerigo'
+                    'pp.nome as clerigo',
+                    'pf.funcao as funcao_ministerial'
                 )
                 ->join('pessoas_nomeacoes as pn', function ($join) {
                     $join->on('pp.id', '=', 'pn.pessoa_id')
@@ -55,8 +58,10 @@ trait HistoricoNomeacoesUtils
                         ->where('ii.ativo', '=', 1)
                         ->where('ii.tipo_instituicao_id', '=', InstituicoesTipoInstituicao::IGREJA_LOCAL);
                 })
+                ->leftJoin('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
                 ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
                 ->where(['ii.ativo' => 1, 'pp.regiao_id' => 23])
+                ->orderBy('ii_pai.nome') // Ordena pelo nome da igreja
                 ->orderBy('ii.nome') // Ordena pelo nome da igreja
                 ->orderByDesc('pn.data_nomeacao') // Ordena por data de nomeação (mais recente primeiro)
                 ->get()

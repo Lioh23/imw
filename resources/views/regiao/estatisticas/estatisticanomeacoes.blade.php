@@ -121,6 +121,7 @@
                                         <th>Nome</th>
                                         <th>Distrito</th>
                                         <th>Igreja</th>
+                                        <th>Função Ministerial</th>
                                         <th>Data Início</th>
                                         <th>Data Termino</th>
 
@@ -129,7 +130,7 @@
                                 <tbody>
                                     @foreach ($lancamentos as $lancamento)
                                         <tr>
-                                            <td colspan="5">
+                                            <td colspan="6">
                                                 <i class="fas fa-plus-square toggle-icon"
                                                     data-target="pai-{{ $lancamento[0]->id }}"></i>
                                                 {{ $lancamento[0]->nome }}
@@ -140,6 +141,7 @@
                                                 <td>{{ $nomeacao->nome }}</td>
                                                 <td>{{ $nomeacao->distrito }}</td>
                                                 <td>{{ $nomeacao->igreja }}</td>
+                                                <td>{{ $nomeacao->funcao_ministerial }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($nomeacao->inicio_nomeacao)->format('d/m/Y') }}
                                                 </td>
                                                 <td>{{ $nomeacao->fim_nomeacao ? \Carbon\Carbon::parse($nomeacao->fim_nomeacao)->format('d/m/Y') : 'Atual' }}
@@ -164,6 +166,7 @@
                                         <th>Nome</th>
                                         <th>Clérigo</th>
                                         <th>Distrito</th>
+                                        <th>Função Ministerial</th>
                                         <th>Data Início</th>
                                         <th>Data Termino</th>
 
@@ -172,7 +175,7 @@
                                 <tbody>
                                     @foreach ($lancamentos as $lancamento)
                                         <tr>
-                                            <td colspan="5">
+                                            <td colspan="6">
                                                 <i class="fas fa-plus-square toggle-icon"
                                                     data-target="pai-{{ $lancamento[0]->id }}"></i>
                                                 {{ $lancamento[0]->nome }}
@@ -183,6 +186,7 @@
                                                 <td>{{ $nomeacao->nome }}</td>
                                                 <td>{{ $nomeacao->clerigo }}</td>
                                                 <td>{{ $nomeacao->distrito }}</td>
+                                                <td>{{ $nomeacao->funcao_ministerial }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($nomeacao->inicio_nomeacao)->format('d/m/Y') }}
                                                 </td>
                                                 <td>{{ $nomeacao->fim_nomeacao ? \Carbon\Carbon::parse($nomeacao->fim_nomeacao)->format('d/m/Y') : 'Atual' }}
