@@ -31,7 +31,7 @@ trait HistoricoNomeacoesUtils
                 })
                 ->leftJoin('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
                 ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
-                ->where(['pp.status' => 0, 'pp.regiao_id' => 23])
+                ->where(['pp.status_id' => 1, 'pp.regiao_id' => 23])
                 ->orderBy('pp.nome')
                 ->orderByDesc('pn.data_nomeacao')
                 ->get()
