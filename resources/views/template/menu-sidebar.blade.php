@@ -662,7 +662,7 @@
                          </li>
                          <li {!! Request::is('regiao/estatistica/relatorio/totalclerigosfaxiaetaria') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-clerigo-faixa-etaria'))
-                                 <a href="{{ route('regiao.estatisticaclerigos.totalclerigosfaxiaetaria') }}">Faxia
+                                 <a href="{{ route('regiao.estatisticaclerigos.totalclerigosfaxiaetaria') }}">Faixa
                                      etária
                                  </a>
                              @endif
