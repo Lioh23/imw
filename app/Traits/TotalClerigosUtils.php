@@ -12,11 +12,11 @@ trait TotalClerigosUtils
     public static function fetchTotalClerigosStatus($regiaoId)
     {
         $results = DB::table('pessoas_pessoas as pp')
-            ->rightJoin('pessoas_status as ps', 'pp.status', '=', 'ps.id')
+            ->rightJoin('pessoas_status as ps', 'pp.status_id', '=', 'ps.id')
             ->whereNull('pp.deleted_at')
             ->where('pp.regiao_id', '=', $regiaoId)
             ->select(DB::raw('count(*) as total'), 'ps.descricao')
-            ->groupBy('pp.status', 'ps.descricao')
+            ->groupBy('pp.status_id', 'ps.descricao')
             ->orderByDesc('total')
             ->get();
 
@@ -49,7 +49,7 @@ trait TotalClerigosUtils
             ->select(
                 DB::raw('count(*) as total'),
                 DB::raw('FLOOR(DATEDIFF(CURDATE(), pp.data_nascimento) / 365.25) as idade')
-            )->where('pp.status', 1)
+            )->where('pp.status_id', 1)
             ->where('pp.regiao_id', '=', $regiaoId)
             ->groupBy('pp.data_nascimento')
             ->orderByDesc('total')

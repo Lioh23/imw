@@ -60,7 +60,7 @@ trait HistoricoNomeacoesUtils
                 })
                 ->leftJoin('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
                 ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
-                ->where(['ii.ativo' => 1, 'pp.regiao_id' => 23])
+                ->where(['ii.ativo' => 1, 'ii.regiao_id' => 23])
                 ->orderBy('ii_pai.nome') // Ordena pelo nome da igreja
                 ->orderBy('ii.nome') // Ordena pelo nome da igreja
                 ->orderByDesc('pn.data_nomeacao') // Ordena por data de nomeação (mais recente primeiro)
