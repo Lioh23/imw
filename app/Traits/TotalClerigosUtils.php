@@ -49,7 +49,7 @@ trait TotalClerigosUtils
             ->select(
                 DB::raw('count(*) as total'),
                 DB::raw('FLOOR(DATEDIFF(CURDATE(), pp.data_nascimento) / 365.25) as idade')
-            )->where('pp.status', 1)
+            )->where('pp.status_id', 1)
             ->where('pp.regiao_id', '=', $regiaoId)
             ->groupBy('pp.data_nascimento')
             ->orderByDesc('total')
