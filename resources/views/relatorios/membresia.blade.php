@@ -69,9 +69,8 @@
             </div>
             <div class="form-check form-check-inline">
               <div class="n-chk">
-                <label {{ request()->get('vinculo') == 'V' ? 'checked' : '' }}
-                       class="new-control new-checkbox checkbox-outline-success">
-                  <input type="radio" name="vinculo" value="V" class="new-control-input">
+                <label class="new-control new-checkbox checkbox-outline-success">
+                  <input {{ request()->get('vinculo') == 'V' ? 'checked' : '' }} type="radio" name="vinculo" value="V" class="new-control-input">
                   <span class="new-control-indicator"></span>Visitante
                 </label>
               </div>
@@ -196,7 +195,7 @@
         <div class="widget-header">
           <div class="row">
               <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA MEMBRESIA - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
+                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
                   <p class="pl-3">Registros Encontrados: {{ $membros->count() }}</p>
                   <p class="pl-3">Vínculo: {{ $vinculos }}</p>
                   <p class="pl-3">Situação: {{ $situacao }}</p>
@@ -212,6 +211,7 @@
                         <tr>
                             <th>ROL</th>
                             <th>NOME</th>
+                            <th>TELEFONE</th>
                             <th>SITUAÇÃO</th>
                             <th>VÍNCULO</th>
                             <th>NASCIMENTO</th>
@@ -225,6 +225,7 @@
                           <tr>
                             <td>{{ $membro->rol_atual ?? 0 }}</td>
                             <td>{{ $membro->nome }}</td>
+                            <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
                             <td>
                               @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
                                 {{ $membro->rolAtualSessionIgreja->statusText }}

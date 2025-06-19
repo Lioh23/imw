@@ -48,7 +48,7 @@
         </div>
     </header>
 
-    <h2>RELATÓRIO SECRETARIA MEMBRESIA - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h2>
+    <h2>RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h2>
     <h4>Registros Encontrados: {{ $membros->count() }}</h4>
     <h4>Vínculo: {{ $vinculos }}</h4>
     <h4>Situação: {{ $situacao }}</h4>
@@ -57,14 +57,15 @@
     <table>
         <thead>
             <tr>
-                <th style="width: 6%">ROL</th>
-                <th style="width: 30%">NOME</th>
-                <th style="width: 10%">SITUAÇÃO</th>
+                <th style="width: 5%">ROL</th>
+                <th style="width: 20%">NOME</th>
+                <th style="width: 15%">TELEFONE</th>
+                <th style="width: 9%">SITUAÇÃO</th>
                 <th style="width: 12%">VÍNCULO</th>
-                <th style="width: 13%">NASCIMENTO</th>
-                <th style="width: 13%">RECEPÇÃO</th>
-                <th style="width: 13%">EXCLUSÃO</th>
-                <th>LOCAL</th>
+                <th style="width: 12%">NASCIMENTO</th>
+                <th style="width: 10%">RECEPÇÃO</th>
+                <th style="width: 10%">EXCLUSÃO</th>
+                <th style="width: 15%">LOCAL</th>
             </tr>
         </thead>
         <tbody>
@@ -72,6 +73,7 @@
                 <tr>
                     <td>{{ $membro->rol_atual ?? 0 }}</td>
                     <td>{{ $membro->nome }}</td>
+                    <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
                     <td>
                         @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
                             {{ $membro->rolAtualSessionIgreja->statusText }}
