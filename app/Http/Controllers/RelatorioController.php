@@ -23,7 +23,7 @@ class RelatorioController extends Controller
             return $pdf->inline('RELATORIO_MEMBROS_' . date('YmdHis') . '.pdf');
 
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia');
+            return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
         }
     }
 

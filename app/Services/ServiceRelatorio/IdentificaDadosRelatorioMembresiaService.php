@@ -6,13 +6,14 @@ use App\Models\CongregacoesCongregacao;
 use App\Models\MembresiaMembro;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
-
+use Illuminate\Support\Facades\DB;
 class IdentificaDadosRelatorioMembresiaService
 {
     use Identifiable;
 
     public function execute(array $params = [])
     {
+        //dd($params);
         $data = [
             'congregacoes' => Identifiable::fetchCongregacoes(),
             'render'       => isset($params['action']) && $params['action'] == 'relatorio' ? 'pdf' : 'view'
@@ -32,7 +33,10 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchMembrosRelatorio($params)
     {
-        return MembresiaMembro::with('rolAtualSessionIgreja')
+        return MembresiaMembro::select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+                              WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
+                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
+            ->with('rolAtualSessionIgreja')
             ->where('vinculo', $params['vinculo'])
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->withTrashed()
@@ -63,7 +67,10 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchCongregadosVisitantesRelatorio($params)
     {
-        return MembresiaMembro::where('vinculo', $params['vinculo'])
+        return MembresiaMembro::select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+                              WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
+                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
+            ->where('vinculo', $params['vinculo'])
             ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->withTrashed()
             ->when($params['situacao'] == 'ativos', fn ($query) => $query->where('status', 'A')) 
