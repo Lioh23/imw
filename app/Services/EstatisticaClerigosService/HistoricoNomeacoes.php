@@ -17,7 +17,6 @@ class HistoricoNomeacoes
     {
 
         $regiao = Identifiable::fetchtSessionRegiao();
-
         return [
             'lancamentos' => HistoricoNomeacoesUtils::fetchHistoricoNomeacoes($regiao->id, $visao),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),

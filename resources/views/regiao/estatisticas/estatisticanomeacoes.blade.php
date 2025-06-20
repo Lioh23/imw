@@ -88,6 +88,9 @@
                     <option value="2" {{ request()->input('visao') == 2 ? 'selected' : '' }}>
                         Igreja
                     </option>
+                    <option value="3" {{ request()->input('visao') == 3 ? 'selected' : '' }}>
+                        Titular
+                    </option>
 
                 </select>
             </div>
@@ -186,6 +189,51 @@
                                                 <td>{{ $nomeacao->nome }}</td>
                                                 <td>{{ $nomeacao->clerigo }}</td>
                                                 <td>{{ $nomeacao->distrito }}</td>
+                                                <td>{{ $nomeacao->funcao_ministerial }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($nomeacao->inicio_nomeacao)->format('d/m/Y') }}
+                                                </td>
+                                                <td>{{ $nomeacao->fim_nomeacao ? \Carbon\Carbon::parse($nomeacao->fim_nomeacao)->format('d/m/Y') : 'Atual' }}
+                                            </tr>
+                                        @endforeach
+                                    @endforeach
+
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
+
+                    </div>
+                @elseif (request('visao') == 3)
+                    <div class="widget-content widget-content-area">
+                        <div class="table-responsive mt-4">
+                            <table class="table table-striped" style="font-size: 90%;">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Distrito</th>
+                                        <th>Igreja</th>
+                                        <th>Função Ministerial</th>
+                                        <th>Data Início</th>
+                                        <th>Data Termino</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($lancamentos as $lancamento)
+                                        <tr>
+                                            <td colspan="6">
+                                                <i class="fas fa-plus-square toggle-icon"
+                                                    data-target="pai-{{ $lancamento[0]->id }}"></i>
+                                                {{ $lancamento[0]->nome }}
+                                            </td>
+                                        </tr>
+                                        @foreach ($lancamento as $nomeacao)
+                                            <tr class="child-row" data-parent="pai-{{ $nomeacao->id }}">
+                                                <td>{{ $nomeacao->nome }}</td>
+                                                <td>{{ $nomeacao->distrito }}</td>
+                                                <td>{{ $nomeacao->igreja }}</td>
                                                 <td>{{ $nomeacao->funcao_ministerial }}</td>
                                                 <td>{{ \Carbon\Carbon::parse($nomeacao->inicio_nomeacao)->format('d/m/Y') }}
                                                 </td>

@@ -37,6 +37,33 @@ trait HistoricoNomeacoesUtils
                 ->get()
                 ->groupBy('id');
             return $clerigos;
+        }elseif ($visao == 3) {
+            $clerigos = DB::table('pessoas_pessoas as pp')
+                ->select(
+                    'pp.id as id',
+                    'pp.nome as nome',
+                    'ii_pai.nome as distrito',
+                    'ii.nome as igreja',
+                    'pn.data_nomeacao as inicio_nomeacao',
+                    'pn.data_termino as fim_nomeacao',
+                    'pf.funcao as funcao_ministerial'
+                )
+                ->join('pessoas_nomeacoes as pn', function ($join) {
+                    $join->on('pp.id', '=', 'pn.pessoa_id')
+                        ->whereNull('pn.deleted_at');
+                })
+                ->join('instituicoes_instituicoes as ii', function ($join) {
+                    $join->on('pn.instituicao_id', '=', 'ii.id')
+                        ->where('ii.ativo', '=', 1);
+                })
+                ->Join('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
+                ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
+                ->where(['pp.status_id' => 1, 'pp.regiao_id' => 23, 'pf.titular' => 1])
+                ->orderBy('pp.nome')
+                ->orderByDesc('pn.data_nomeacao')
+                ->get()
+                ->groupBy('id');
+            return $clerigos;
         } else {
             $igrejas = DB::table('pessoas_pessoas as pp')
                 ->select(
