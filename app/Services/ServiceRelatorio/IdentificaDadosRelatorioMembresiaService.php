@@ -13,7 +13,6 @@ class IdentificaDadosRelatorioMembresiaService
 
     public function execute(array $params = [])
     {
-        //dd($params);
         $data = [
             'congregacoes' => Identifiable::fetchCongregacoes(),
             'render'       => isset($params['action']) && $params['action'] == 'relatorio' ? 'pdf' : 'view'
@@ -27,7 +26,6 @@ class IdentificaDadosRelatorioMembresiaService
                 ? $this->fetchMembrosRelatorio($params)
                 : $this->fetchCongregadosVisitantesRelatorio($params);
         }
-
         return $data;
     }
 
@@ -61,7 +59,7 @@ class IdentificaDadosRelatorioMembresiaService
                 } else {   
                     return $this->handleRolDates($query, $params['dt_filtro'], $params['dt_inicial'], $params['dt_final']);
                 }
-            })
+            })->orderBy('nome')
             ->get();
     }
 
@@ -82,7 +80,7 @@ class IdentificaDadosRelatorioMembresiaService
                 } else { 
                     return $this->handleDates($query, $params['dt_filtro'], $params['dt_inicial'], $params['dt_final']);
                 }
-            })
+            })->orderBy('nome')
             ->get();
     }
 
