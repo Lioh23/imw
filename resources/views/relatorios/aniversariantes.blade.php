@@ -11,6 +11,21 @@
 @section('extras-css')
   <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
+  <style>
+    .old {
+        color: red;
+    }
+    .middleaged {
+        color: blue;
+    }
+    .young {
+        color: green;
+    }
+  </style>
 @endsection
 
 @include('extras.alerts')
@@ -135,7 +150,7 @@
         <div class="widget-content widget-content-area">
           
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover mb-4">
+                <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="example">
                     <thead>
                         <tr>
                             <th>NOME</th>
@@ -168,6 +183,18 @@
 @endsection
 
 @section('extras-scripts')
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
+<script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
 <script>
   $('#btn_buscar').click(function () {
     $('#filter_form').removeAttr('target');
@@ -176,5 +203,20 @@
   $('#btn_relatorio').click(function () {
     $('#filter_form').attr('target', '_blank');
   })
+
+  new DataTable('#example', {
+    layout: {
+        //top1: 'searchBuilder'
+        topStart: {
+          buttons: ['pageLength','excel', 'pdf', 'print']
+        },
+        topEnd: 'search',
+        bottomStart: 'info',
+       // bottomEnd: 'paging'
+    },
+    language: {
+      url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+    }
+});
 </script>
 @endsection
