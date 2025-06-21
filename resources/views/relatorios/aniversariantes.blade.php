@@ -206,30 +206,49 @@
 
   new DataTable('#aniversariantes', {
     layout: {
-        //top1: 'searchBuilder'
+        //top1: 'searchBuilder',
         topStart: {
           buttons: [
             'pageLength',
             {
               extend: 'excel',
+              className: 'btn btn-primary btn-rounded',
+              text: '<i class="fas fa-file-excel"></i> Excel',
+              titleAttr: 'Excel',
               title: "RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
             },
             {
               extend: 'pdf',
-              title: "RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              className: 'btn btn-primary btn-rounded',
+              text: '<i class="fas fa-file-pdf"></i> PDF',
+              titleAttr: 'PDF',
+              title: "RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
             },
             {
               extend: 'print',
-              title: "RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              className: 'btn btn-primary btn-rounded',
+              text: '<i class="fas fa-print"></i> Imprimir',
+              titleAttr: 'Imprimir',
+              title: "RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
+              customize: function ( win ) {
+                $(win.document.body)
+                  .css( 'font-size', '14pt' )
+                  .find( 'h1' )
+                        .css( 'text-align', 'center' ).css( 'font-size', '18pt' ).css( 'font-weight', 'bold');
+
+                $(win.document.body).find('table')
+                  .addClass('compact')
+                  .css('font-size', 'inherit');
+              }
             }]
         },
         topEnd: 'search',
         bottomStart: 'info',
-       // bottomEnd: 'paging'
+       bottomEnd: 'paging'
     },
     language: {
       url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
     }
-});
+  });
 </script>
 @endsection

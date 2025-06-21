@@ -127,8 +127,7 @@
                          </li>
                          <li {!! Request::is('secretaria/relatorio/historico-eclesiastico') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-historico-eclesiastico'))
-                                 <a href="{{ route('relatorio.historico-eclesiastico') }}">Histórico
-                                     Eclesiástico</a>
+                                 <a href="{{ route('relatorio.historico-eclesiastico') }}">Membros por Ministério</a>
                              @endif
                          </li>
                      </ul>
