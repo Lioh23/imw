@@ -7,9 +7,8 @@ use Illuminate\Support\Facades\DB;
 
 trait HistoricoNomeacoesUtils
 {
-    public static function fetchHistoricoNomeacoes($regiao, $visao)
+    public static function fetchHistoricoNomeacoes($regiao, $visao, $situacao)
     {
-
         if ($visao == 1) {
             $clerigos = DB::table('pessoas_pessoas as pp')
                 ->select(
@@ -32,33 +31,9 @@ trait HistoricoNomeacoesUtils
                 ->leftJoin('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
                 ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
                 ->where(['pp.status_id' => 1, 'pp.regiao_id' => 23])
-                ->orderBy('pp.nome')
-                ->orderByDesc('pn.data_nomeacao')
-                ->get()
-                ->groupBy('id');
-            return $clerigos;
-        }elseif ($visao == 3) {
-            $clerigos = DB::table('pessoas_pessoas as pp')
-                ->select(
-                    'pp.id as id',
-                    'pp.nome as nome',
-                    'ii_pai.nome as distrito',
-                    'ii.nome as igreja',
-                    'pn.data_nomeacao as inicio_nomeacao',
-                    'pn.data_termino as fim_nomeacao',
-                    'pf.funcao as funcao_ministerial'
-                )
-                ->join('pessoas_nomeacoes as pn', function ($join) {
-                    $join->on('pp.id', '=', 'pn.pessoa_id')
-                        ->whereNull('pn.deleted_at');
+                ->when(request()->get('situacao'), function ($query) {
+                    $query->where('pf.titular', request()->get('situacao'));
                 })
-                ->join('instituicoes_instituicoes as ii', function ($join) {
-                    $join->on('pn.instituicao_id', '=', 'ii.id')
-                        ->where('ii.ativo', '=', 1);
-                })
-                ->Join('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
-                ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
-                ->where(['pp.status_id' => 1, 'pp.regiao_id' => 23, 'pf.titular' => 1])
                 ->orderBy('pp.nome')
                 ->orderByDesc('pn.data_nomeacao')
                 ->get()
@@ -88,6 +63,9 @@ trait HistoricoNomeacoesUtils
                 ->leftJoin('pessoas_funcaoministerial as pf', 'pf.id', '=', 'pn.funcao_ministerial_id')
                 ->leftJoin('instituicoes_instituicoes as ii_pai', 'ii.instituicao_pai_id', '=', 'ii_pai.id')
                 ->where(['ii.ativo' => 1, 'ii.regiao_id' => 23])
+                ->when(request()->get('situacao'), function ($query) {
+                    $query->where('pf.titular', request()->get('situacao'));
+                })
                 ->orderBy('ii_pai.nome') // Ordena pelo nome da igreja
                 ->orderBy('ii.nome') // Ordena pelo nome da igreja
                 ->orderByDesc('pn.data_nomeacao') // Ordena por data de nomeação (mais recente primeiro)

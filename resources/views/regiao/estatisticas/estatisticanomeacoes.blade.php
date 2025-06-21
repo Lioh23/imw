@@ -13,6 +13,7 @@
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .swal2-popup .swal2-styled.swal2-cancel {
             color: white !important;
@@ -88,14 +89,34 @@
                     <option value="2" {{ request()->input('visao') == 2 ? 'selected' : '' }}>
                         Igreja
                     </option>
-                    <option value="3" {{ request()->input('visao') == 3 ? 'selected' : '' }}>
-                        Titular
-                    </option>
-
                 </select>
             </div>
+            <div class="col-lg-7">
+            </div>
+            <div class="col-lg-2 text-right">
+                <label class="control-label"></label>
+            </div>
+            <div class="col-lg-3 mt-4">
+                <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                        <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ request()->get('situacao') == '' ? 'checked' : 'checked' }}
+                                type="radio" name="situacao" value="" class="new-control-input">
+                        <span class="new-control-indicator"></span>Todos
+                        </label>
+                    </div>
+                    </div>
+                    <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                        <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ request()->get('situacao') == '1' ? 'checked' : '' }}
+                                type="radio" name="situacao" value="1" class="new-control-input">
+                        <span class="new-control-indicator"></span>Titular
+                        </label>
+                    </div>
+                    </div>
+            </div>
         </div>
-
         <div class="form-group row mb-4">
             <div class="col-lg-2"></div>
             <div class="col-lg-6">
@@ -196,60 +217,11 @@
                                             </tr>
                                         @endforeach
                                     @endforeach
-
-
                                 </tbody>
                             </table>
                         </div>
-
                         <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
-
-                    </div>
-                @elseif (request('visao') == 3)
-                    <div class="widget-content widget-content-area">
-                        <div class="table-responsive mt-4">
-                            <table class="table table-striped" style="font-size: 90%;">
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th>Nome</th>
-                                        <th>Distrito</th>
-                                        <th>Igreja</th>
-                                        <th>Função Ministerial</th>
-                                        <th>Data Início</th>
-                                        <th>Data Termino</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($lancamentos as $lancamento)
-                                        <tr>
-                                            <td colspan="6">
-                                                <i class="fas fa-plus-square toggle-icon"
-                                                    data-target="pai-{{ $lancamento[0]->id }}"></i>
-                                                {{ $lancamento[0]->nome }}
-                                            </td>
-                                        </tr>
-                                        @foreach ($lancamento as $nomeacao)
-                                            <tr class="child-row" data-parent="pai-{{ $nomeacao->id }}">
-                                                <td>{{ $nomeacao->nome }}</td>
-                                                <td>{{ $nomeacao->distrito }}</td>
-                                                <td>{{ $nomeacao->igreja }}</td>
-                                                <td>{{ $nomeacao->funcao_ministerial }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($nomeacao->inicio_nomeacao)->format('d/m/Y') }}
-                                                </td>
-                                                <td>{{ $nomeacao->fim_nomeacao ? \Carbon\Carbon::parse($nomeacao->fim_nomeacao)->format('d/m/Y') : 'Atual' }}
-                                            </tr>
-                                        @endforeach
-                                    @endforeach
-
-
-                                </tbody>
-                            </table>
-                        </div>
-
-                        <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
-
-                    </div>
+                    </div>                    
                 @endif
     @endif
     </div>
