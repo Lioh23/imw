@@ -139,7 +139,7 @@
         <div class="widget-header">
           <div class="row">
               <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA MEMBRESIA - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
+                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA ANIVERSARIANTE - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
                   <p class="pl-3">Vínculo: {{ $vinculos }}</p>
                   <p class="pl-3">Meses: {{ $mes }}</p>
                   <p class="pl-3">Onde Congrega: {{ $ondeCongrega }}</p>
@@ -150,7 +150,7 @@
         <div class="widget-content widget-content-area">
           
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="example">
+                <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
                             <th>NOME</th>
@@ -204,11 +204,24 @@
     $('#filter_form').attr('target', '_blank');
   })
 
-  new DataTable('#example', {
+  new DataTable('#aniversariantes', {
     layout: {
         //top1: 'searchBuilder'
         topStart: {
-          buttons: ['pageLength','excel', 'pdf', 'print']
+          buttons: [
+            'pageLength',
+            {
+              extend: 'excel',
+              title: "RELATÓRIO SECRETARIA ANIVERSARIANTE - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+            },
+            {
+              extend: 'pdf',
+              title: "RELATÓRIO SECRETARIA ANIVERSARIANTE - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+            },
+            {
+              extend: 'print',
+              title: "RELATÓRIO SECRETARIA ANIVERSARIANTE - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+            }]
         },
         topEnd: 'search',
         bottomStart: 'info',
