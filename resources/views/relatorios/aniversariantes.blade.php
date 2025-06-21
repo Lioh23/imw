@@ -139,7 +139,7 @@
         <div class="widget-header">
           <div class="row">
               <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA ANIVERSARIANTE - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
+                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
                   <p class="pl-3">Vínculo: {{ $vinculos }}</p>
                   <p class="pl-3">Meses: {{ $mes }}</p>
                   <p class="pl-3">Onde Congrega: {{ $ondeCongrega }}</p>
@@ -212,15 +212,15 @@
             'pageLength',
             {
               extend: 'excel',
-              title: "RELATÓRIO SECRETARIA ANIVERSARIANTE - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              title: "RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
             },
             {
               extend: 'pdf',
-              title: "RELATÓRIO SECRETARIA ANIVERSARIANTE - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              title: "RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
             },
             {
               extend: 'print',
-              title: "RELATÓRIO SECRETARIA ANIVERSARIANTE - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              title: "RELATÓRIO SECRETARIA ANIVERSARIANTES - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
             }]
         },
         topEnd: 'search',
