@@ -96,7 +96,7 @@
             <div class="col-lg-2 text-right">
                 <label class="control-label"></label>
             </div>
-            <div class="col-lg-3 mt-4">
+            <div class="col-lg-6 mt-4">
                 <div class="form-check form-check-inline">
                     <div class="n-chk">
                         <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
@@ -105,8 +105,8 @@
                         <span class="new-control-indicator"></span>Todos
                         </label>
                     </div>
-                    </div>
-                    <div class="form-check form-check-inline">
+                </div>
+                <div class="form-check form-check-inline">
                     <div class="n-chk">
                         <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                         <input {{ request()->get('situacao') == '1' ? 'checked' : '' }}
@@ -114,7 +114,15 @@
                         <span class="new-control-indicator"></span>Titular
                         </label>
                     </div>
+                </div>
+                <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                        <label class="new-control new-checkbox checkbox-outline-success">
+                        <input {{ request()->get('ativo') == 1 ? 'checked' : '' }} type="checkbox" name="ativo" value="1" class="new-control-input">
+                        <span class="new-control-indicator"></span>Ativos
+                        </label>
                     </div>
+                </div>
             </div>
         </div>
         <div class="form-group row mb-4">

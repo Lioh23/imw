@@ -5,9 +5,11 @@ namespace App\Traits;
 use App\Models\InstituicoesTipoInstituicao;
 use Illuminate\Support\Facades\DB;
 
+use function PHPUnit\Framework\isNull;
+
 trait HistoricoNomeacoesUtils
 {
-    public static function fetchHistoricoNomeacoes($regiao, $visao, $situacao)
+    public static function fetchHistoricoNomeacoes($regiao, $visao)
     {
         if ($visao == 1) {
             $clerigos = DB::table('pessoas_pessoas as pp')
@@ -33,6 +35,9 @@ trait HistoricoNomeacoesUtils
                 ->where(['pp.status_id' => 1, 'pp.regiao_id' => 23])
                 ->when(request()->get('situacao'), function ($query) {
                     $query->where('pf.titular', request()->get('situacao'));
+                })
+                ->when(request()->get('ativo'), function ($query) {
+                    $query->whereNull('pn.data_termino');
                 })
                 ->orderBy('pp.nome')
                 ->orderByDesc('pn.data_nomeacao')
@@ -66,6 +71,9 @@ trait HistoricoNomeacoesUtils
                 ->when(request()->get('situacao'), function ($query) {
                     $query->where('pf.titular', request()->get('situacao'));
                 })
+                ->when(request()->get('ativo'), function ($query) {
+                    $query->whereNull('pn.data_termino');
+                })                
                 ->orderBy('ii_pai.nome') // Ordena pelo nome da igreja
                 ->orderBy('ii.nome') // Ordena pelo nome da igreja
                 ->orderByDesc('pn.data_nomeacao') // Ordena por data de nomeação (mais recente primeiro)
