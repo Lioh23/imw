@@ -130,6 +130,11 @@
                                  <a href="{{ route('relatorio.historico-eclesiastico') }}">Membros por Ministério</a>
                              @endif
                          </li>
+                         <li {!! Request::is('secretaria/relatorio/membros-disciplinados') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-membro-disciplinado'))
+                                 <a href="{{ route('relatorio.membros-disciplinados') }}">Membros Disciplinados</a>
+                             @endif
+                         </li>
                      </ul>
                  </li>
              @endif

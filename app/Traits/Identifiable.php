@@ -30,10 +30,37 @@ trait Identifiable
 
     public static function fetchPessoa($id, $vinculo, $trashed = false)
     {
+        //dd($id, $vinculo, $trashed);
         $membro = MembresiaMembro::where('id', $id)
             ->select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = '$id') AS telefone") )
+            ->when($trashed, fn($query) => $query->onlyTrashed())
+            ->where('vinculo', $vinculo)
+            ->firstOr(function() use ($vinculo) {
+                switch ($vinculo) {
+                    case MembresiaMembro::VINCULO_MEMBRO:
+                        throw new MembroNotFoundException();
+
+                    case MembresiaMembro::VINCULO_CONGREGADO:
+                        throw new CongregadoNotFoundException();
+
+                    case MembresiaMembro::VINCULO_VISITANTE:
+                        throw new VisitanteNotFoundException();
+                }
+            });
+
+        return $membro;
+    }
+
+    public static function fetchPessoaDisciplina($id, $vinculo, $trashed = false)
+    {
+        //dd($id, $vinculo, $trashed);
+        $membro = MembresiaMembro::where('membresia_membros.id', $id)
+            ->select('imwpgahml.membresia_membros.*', 'imwpgahml.md.dt_inicio', 'imwpgahml.md.dt_termino', 'imwpgahml.md.observacao', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+                              WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
+                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = '$id') AS telefone") )
+            ->Join('membresia_disciplinas as md', 'md.membro_id', 'membresia_membros.id')
             ->when($trashed, fn($query) => $query->onlyTrashed())
             ->where('vinculo', $vinculo)
             ->firstOr(function() use ($vinculo) {

@@ -359,6 +359,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/membresia', 'membresia')->name('membresia')->middleware('seguranca:relatorio-membresia');
             Route::get('/aniversariantes', 'aniversariantes')->name('aniversariantes')->middleware('seguranca:relatorio-aniversariantes');
             Route::get('/historico-eclesiastico', 'historicoEclesiastico')->name('historico-eclesiastico')->middleware('seguranca:relatorio-historico-eclesiastico');
+            Route::get('/membros-disciplinados', 'membrosDisciplinados')->name('membros-disciplinados')->middleware('seguranca:relatorio-membro-disciplinado');
         });
 
         // Segurança

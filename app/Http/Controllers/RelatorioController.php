@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ServiceRelatorio\IdentificaDadosRelatorioAniversariantesService;
 use App\Services\ServiceRelatorio\IdentificaDadosRelatorioHistoricoEclesiasticoService;
 use App\Services\ServiceRelatorio\IdentificaDadosRelatorioMembresiaService;
+use App\Services\ServiceRelatorio\IdentificaDadosRelatorioMembrosDisciplinadosService;
 use Illuminate\Http\Request;
 use PDF;
 
@@ -58,4 +59,21 @@ class RelatorioController extends Controller
             return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de histórico eclesiástico');
         }
     }
+
+    public function membrosDisciplinados(Request $request)
+    {
+        try {
+            $data = app(IdentificaDadosRelatorioMembrosDisciplinadosService::class)->execute($request->all());
+            if($data['render'] == 'view') {
+                return view('relatorios.membros-disciplinados', $data);
+            }
+            $pdf = PDF::loadView('relatorios.pdf.historico-eclesiastico', $data);
+            return $pdf->inline('RELATORIO_MEMBROS_' . date('YmdHis') . '.pdf');
+
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membros disciplinados');
+        }
+    }
+    
 }
