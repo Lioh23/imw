@@ -4,7 +4,7 @@
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Home', 'url' => '/', 'active' => false],
     ['text' => 'Relatórios', 'url' => '#', 'active' => false],
-    ['text' => 'Relatório Membros Disciplinados', 'url' => '#', 'active' => true]
+    ['text' => 'Relatório Funções Eclesiásticas', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
 
@@ -25,7 +25,7 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Membros Disciplinados</h4>
+              <h4>Funções Eclesiásticas</h4>
           </div>
       </div>
   </div>
@@ -35,21 +35,20 @@
         {{-- Congregação --}}
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
-            <label class="control-label">Membro:</label>
+            <label class="control-label">Função:</label>
           </div>
           <div class="col-lg-6">
             <select class="form-control select2 @error('membro_id') is-invalid @enderror" data-bs-toggle="select2" name="membro_id" id="membro_id">              
-              <!-- <option value="" {{ old('membro_id') == '' ? 'selected' : '' }} hidden disabled>selecione</option> -->
               <option value="todos" {{ $select == 'todos' ? 'selected' : '' }} >TODOS</option>
-              <!-- @foreach ($membros as $membro)
-                <option value="{{ $membro->id }}" {{ $select == $membro->id  ? 'selected' : '' }} >{{ $membro->nome }}</option>
-              @endforeach -->
+              @foreach ($funcoes_eclesiasticas as $funcao)
+                <option value="{{ $funcao->id }}" {{ $select == $funcao->id  ? 'selected' : '' }} >{{ $funcao->descricao }}</option>
+              @endforeach
             </select>
           </div>
         </div>
 
         {{-- Nomeação --}}
-        <div class="form-group row mb-4">
+        <!-- <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
             <label class="control-label">Nomeação:</label>
           </div>
@@ -71,7 +70,7 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="form-group row mb-4">
           <div class="col-lg-2"></div>
@@ -79,9 +78,9 @@
             <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
               <x-bx-search /> Buscar 
             </button>
-            <button id="btn_relatorio" type="submit" name="action" value="relatorio" title="Gerar Relatório PDF" class="btn btn-secondary btn ml-4">
+            <!-- <button id="btn_relatorio" type="submit" name="action" value="relatorio" title="Gerar Relatório PDF" class="btn btn-secondary btn ml-4">
               <x-bx-file /> Relatório
-            </button>
+            </button> -->
           </div>
         </div>
       </form>
@@ -91,13 +90,13 @@
 
 <!-- TABELA -->
 
-@if($membro_unico)
+@if(session()->get('membro_id'))
     <div class="col-lg-12 col-12 layout-spacing">
       <div class="statbox widget box box-shadow">
           <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4 style="text-transform: uppercase">RELATÓRIO MEMBROS POR MINISTÉRIO -  - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
+                    <h4 style="text-transform: uppercase">RELATÓRIO MEMBROS DISCIPLINADOS -  - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
                 </div>
             </div>
           </div>
@@ -117,21 +116,7 @@
                           </tr>
                       </thead>
                       <tbody>
-                        @forelse ($historicoEclesiastico as $historico)
-                          <tr>
-                              <td>{{ $membroEclesiastico->rol_atual }}</td>
-                              <td>{{ $membroEclesiastico->nome }}</td>
-                              <td>{{ formatStr($membroEclesiastico->telefone, '## (##) #####-####') }}</td>
-                              <td>{{ $historico->ministerio->descricao }}</td>
-                              <td>{{ $historico->tipoAtuacao->descricao }}</td>
-                              <td>{{ optional($historico->data_entrada)->format('d/m/Y') }}</td>
-                              <td>{{ optional($historico->data_saida)->format('d/m/Y') }}</td>
-                          </tr>
-                        @empty
-                          <tr>
-                              <td colspan="6" style="text-align: center">Não existem registros para este membro</td>
-                          </tr>
-                        @endforelse
+                        
                       </tbody>
                   </table>
               </div>
@@ -145,7 +130,7 @@
           <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4 style="text-transform: uppercase">RELATÓRIO MEMBROS POR MINISTÉRIO - TODOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
+                    <h4 style="text-transform: uppercase">RELATÓRIO MEMBROS DISCIPLINADOS - TODOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
                 </div>
             </div>
           </div>
@@ -169,9 +154,9 @@
                                 <td>{{ $membroEclesiastico['membro']->rol_atual }}</td>
                                 <td>{{ $membroEclesiastico['membro']->nome }}</td>
                                 <td>{{ formatStr($membroEclesiastico['membro']->telefone, '## (##) #####-####') }}</td>
-                                <td>{{ $membroEclesiastico['membro']->dt_inicio }}</td>
-                                <td>{{ $membroEclesiastico['membro']->nome }}</td>
-                                <td>{{ $membroEclesiastico['membro']->nome }}</td>
+                                <td>{{ \Carbon\Carbon::parse($membroEclesiastico['membro']->dt_inicio)->format('d/m/Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($membroEclesiastico['membro']->dt_termino)->format('d/m/Y') }}</td>
+                                <td>{{ $membroEclesiastico['membro']->observacao }}</td>
                             </tr>
                         @empty
                           <tr>
@@ -231,14 +216,14 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-excel"></i> Excel',
               titleAttr: 'Excel',
-              title: "RELATÓRIO MEMBROS POR MINISTÉRIO - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              title: "RELATÓRIO MEMBROS DISCIPLINADOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
             },
             {
               extend: 'pdf',
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
-              title: "RELATÓRIO MEMBROS POR MINISTÉRIO - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
+              title: "RELATÓRIO MEMBROS DISCIPLINADOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
               pageSize: 'A4',
                 exportOptions: {
                     columns: ':visible',
@@ -251,7 +236,7 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-print"></i> Imprimir',
               titleAttr: 'Imprimir',
-              title: "RELATÓRIO MEMBROS POR MINISTÉRIO - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
+              title: "RELATÓRIO MEMBROS DISCIPLINADOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
               customize: function ( win ) {
                 $(win.document.body)
                   .css( 'font-size', '14pt' )

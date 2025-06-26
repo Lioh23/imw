@@ -12,6 +12,7 @@ use App\Exceptions\VisitanteNotFoundException;
 use App\Models\CongregacoesCongregacao;
 use App\Models\InstituicoesInstituicao;
 use App\Models\InstituicoesTipoInstituicao;
+use App\Models\MembresiaFuncaoEclesiastica;
 use App\Models\MembresiaMembro;
 use App\Models\MembresiaRolPermanente;
 use App\Models\MembresiaSituacao;
@@ -55,7 +56,32 @@ trait Identifiable
 
     public static function fetchPessoaDisciplina($id, $vinculo, $trashed = false)
     {
-        //dd($id, $vinculo, $trashed);
+        $membro = MembresiaMembro::where('membresia_membros.id', $id)
+            ->select('imwpgahml.membresia_membros.*', 'imwpgahml.md.dt_inicio', 'imwpgahml.md.dt_termino', 'imwpgahml.md.observacao', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+                              WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
+                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = '$id') AS telefone") )
+            ->Join('membresia_disciplinas as md', 'md.membro_id', 'membresia_membros.id')
+            ->when($trashed, fn($query) => $query->onlyTrashed())
+            ->where('vinculo', $vinculo)
+            ->firstOr(function() use ($vinculo) {
+                switch ($vinculo) {
+                    case MembresiaMembro::VINCULO_MEMBRO:
+                        throw new MembroNotFoundException();
+
+                    case MembresiaMembro::VINCULO_CONGREGADO:
+                        throw new CongregadoNotFoundException();
+
+                    case MembresiaMembro::VINCULO_VISITANTE:
+                        throw new VisitanteNotFoundException();
+                }
+            });
+
+        return $membro;
+    }
+
+    public static function fetchPessoaFuncaoEclesiastica($vinculo)
+    {
+        dd($id, $vinculo, $trashed);
         $membro = MembresiaMembro::where('membresia_membros.id', $id)
             ->select('imwpgahml.membresia_membros.*', 'imwpgahml.md.dt_inicio', 'imwpgahml.md.dt_termino', 'imwpgahml.md.observacao', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
@@ -189,6 +215,11 @@ trait Identifiable
     public static function fetchDistritosIdByRegiao(int $regiaoId): array
     {
         return static::fetchDistritosByRegiao($regiaoId)->pluck('id')->toArray();
+    }
+
+    public static function fetchFuncoesEclesiasticas()
+    {
+        return MembresiaFuncaoEclesiastica::orderBy('descricao')->get();
     }
 
 }

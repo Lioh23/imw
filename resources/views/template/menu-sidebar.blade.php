@@ -135,6 +135,11 @@
                                  <a href="{{ route('relatorio.membros-disciplinados') }}">Membros Disciplinados</a>
                              @endif
                          </li>
+                         <li {!! Request::is('secretaria/relatorio/funcao-eclesiastica') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-funcao-eclesiastica'))
+                                 <a href="{{ route('relatorio.funcao-eclesiastica') }}">Função Eclesiástica</a>
+                             @endif
+                         </li>
                      </ul>
                  </li>
              @endif
