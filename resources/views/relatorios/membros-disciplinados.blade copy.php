@@ -41,9 +41,9 @@
             <select class="form-control select2 @error('membro_id') is-invalid @enderror" data-bs-toggle="select2" name="membro_id" id="membro_id">              
               <!-- <option value="" {{ old('membro_id') == '' ? 'selected' : '' }} hidden disabled>selecione</option> -->
               <option value="todos" {{ $select == 'todos' ? 'selected' : '' }} >TODOS</option>
-              @foreach ($membros as $membro)
+              <!-- @foreach ($membros as $membro)
                 <option value="{{ $membro->id }}" {{ $select == $membro->id  ? 'selected' : '' }} >{{ $membro->nome }}</option>
-              @endforeach
+              @endforeach -->
             </select>
           </div>
         </div>

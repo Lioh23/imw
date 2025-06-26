@@ -73,7 +73,7 @@
                         <td>{{ $membro->aniversario }}</td>
                         <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
                         <td>{{ $membro->idade }}</td>
-                        <td>{{ formatStr($membro->contato, '(##) #####-####') }}</td>
+                        <td>{{ formatStr($membro->contato, '## (##) #####-####') }}</td>
                         <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
                     </tr>
                 </tr>

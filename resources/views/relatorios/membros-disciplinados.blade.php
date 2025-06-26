@@ -41,9 +41,9 @@
             <select class="form-control select2 @error('membro_id') is-invalid @enderror" data-bs-toggle="select2" name="membro_id" id="membro_id">              
               <!-- <option value="" {{ old('membro_id') == '' ? 'selected' : '' }} hidden disabled>selecione</option> -->
               <option value="todos" {{ $select == 'todos' ? 'selected' : '' }} >TODOS</option>
-              @foreach ($membros as $membro)
+              <!-- @foreach ($membros as $membro)
                 <option value="{{ $membro->id }}" {{ $select == $membro->id  ? 'selected' : '' }} >{{ $membro->nome }}</option>
-              @endforeach
+              @endforeach -->
             </select>
           </div>
         </div>
@@ -91,7 +91,7 @@
 
 <!-- TABELA -->
 
-@if($membro_unico)
+@if(session()->get('membro_id'))
     <div class="col-lg-12 col-12 layout-spacing">
       <div class="statbox widget box box-shadow">
           <div class="widget-header">
