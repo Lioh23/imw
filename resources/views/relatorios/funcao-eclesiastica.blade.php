@@ -38,8 +38,8 @@
             <label class="control-label">Função:</label>
           </div>
           <div class="col-lg-6">
-            <select class="form-control select2 @error('membro_id') is-invalid @enderror" data-bs-toggle="select2" name="membro_id" id="membro_id">              
-              <option value="todos" {{ $select == 'todos' ? 'selected' : '' }} >TODOS</option>
+            <select class="form-control select2 @error('funcao_eclesiastica_id') is-invalid @enderror" data-bs-toggle="select2" name="funcao_eclesiastica_id" id="funcao_eclesiastica_id">              
+              <option value="todas" {{ $select == 'todas' ? 'selected' : '' }} >TODAS</option>
               @foreach ($funcoes_eclesiasticas as $funcao)
                 <option value="{{ $funcao->id }}" {{ $select == $funcao->id  ? 'selected' : '' }} >{{ $funcao->descricao }}</option>
               @endforeach
@@ -89,48 +89,14 @@
 </div>
 
 <!-- TABELA -->
-
-@if(session()->get('membro_id'))
-    <div class="col-lg-12 col-12 layout-spacing">
-      <div class="statbox widget box box-shadow">
-          <div class="widget-header">
-            <div class="row">
-                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4 style="text-transform: uppercase">RELATÓRIO MEMBROS DISCIPLINADOS -  - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
-                </div>
-            </div>
-          </div>
-          <div class="widget-content widget-content-area">
-            
-              <div class="table-responsive">
-                  <table class="table table-bordered table-striped table-hover mb-4" id="membros-por-ministerio">
-                      <thead>
-                          <tr>
-                              <th>ROL</th>
-                              <th>NOME</th>
-                              <th>CELULAR</th>
-                              <th>MINISTÉRIO</th>
-                              <th>FUNÇÃO</th>
-                              <th>NOMEAÇÃO</th>
-                              <th>EXONERAÇÃO</th>
-                          </tr>
-                      </thead>
-                      <tbody>
-                        
-                      </tbody>
-                  </table>
-              </div>
-          </div>
-      </div>
-    </div>
-@else
-@isset($todos_membros)
+{{session()->get('funcao_eclesiastica_id')}}
+@isset($membros)
   <div class="col-lg-12 col-12 layout-spacing">
       <div class="statbox widget box box-shadow">
           <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4 style="text-transform: uppercase">RELATÓRIO MEMBROS DISCIPLINADOS - TODOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
+                    <h4 style="text-transform: uppercase">RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ $funcao_eclesiastica }}</h4>
                 </div>
             </div>
           </div>
@@ -143,20 +109,18 @@
                               <th>ROL</th>
                               <th>NOME</th>
                               <th>CELULAR</th>
-                              <th>DATA INÍCIO</th>
-                              <th>DATA TÉRMINO</th>
-                              <th>DESCRIÇÃO</th>
+                              <th>FUNÇÃO ECLESIÁSTICA</th>
+                              <th>IGREJA</th>
                           </tr>
                       </thead>
                       <tbody>
-                        @forelse ($todos_membros as $membroEclesiastico)
+                        @forelse ($membros as $membro)
                             <tr>
-                                <td>{{ $membroEclesiastico['membro']->rol_atual }}</td>
-                                <td>{{ $membroEclesiastico['membro']->nome }}</td>
-                                <td>{{ formatStr($membroEclesiastico['membro']->telefone, '## (##) #####-####') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($membroEclesiastico['membro']->dt_inicio)->format('d/m/Y') }}</td>
-                                <td>{{ \Carbon\Carbon::parse($membroEclesiastico['membro']->dt_termino)->format('d/m/Y') }}</td>
-                                <td>{{ $membroEclesiastico['membro']->observacao }}</td>
+                                <td>{{ $membro->rol_atual }}</td>
+                                <td>{{ $membro->nome }}</td>
+                                <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
+                                <td>{{ $membro->funcao_eclesiastica }}</td>
+                                <td>{{ $membro->igreja }}</td>
                             </tr>
                         @empty
                           <tr>
@@ -170,7 +134,6 @@
       </div>
     </div>
   @endisset
-@endif
 @endsection
 
 @section('extras-scripts')
@@ -216,14 +179,14 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-excel"></i> Excel',
               titleAttr: 'Excel',
-              title: "RELATÓRIO MEMBROS DISCIPLINADOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }}"
             },
             {
               extend: 'pdf',
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
-              title: "RELATÓRIO MEMBROS DISCIPLINADOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
+              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }}",
               pageSize: 'A4',
                 exportOptions: {
                     columns: ':visible',
@@ -236,7 +199,7 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-print"></i> Imprimir',
               titleAttr: 'Imprimir',
-              title: "RELATÓRIO MEMBROS DISCIPLINADOS - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
+              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }}",
               customize: function ( win ) {
                 $(win.document.body)
                   .css( 'font-size', '14pt' )

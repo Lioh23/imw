@@ -2,6 +2,7 @@
 
 namespace App\Services\ServiceRelatorio;
 
+use App\Models\MembresiaFuncaoEclesiastica;
 use App\Models\MembresiaFuncaoMinisterial;
 use App\Models\MembresiaMembro;
 use App\Traits\Identifiable;
@@ -13,29 +14,22 @@ class IdentificaDadosRelatorioFuncoesEclesiasticasService
     public function execute(array $params = [])
     {
         $data = [
-            'select'       => isset($params['membro_id']) ? $params['membro_id'] : '',
-            'congregacoes' => Identifiable::fetchCongregacoes(),
+            'select'       => isset($params['funcao_eclesiastica_id']) ? $params['funcao_eclesiastica_id'] : '',
             'funcoes_eclesiasticas' => Identifiable::fetchFuncoesEclesiasticas(),
-            'render'       => isset($params['action']) && $params['action'] == 'relatorio' ? 'pdf' : 'view',
-            'membro_unico' => true
+            'render'       =>  'view',
         ];
 
-        if(!$params){
-        }else{
-            if($params['membro_id'] == 'todos'){
-                $data['todos_membros']       = [];
-                foreach($data['membros'] as $membro){
-                    $params['membro_id']     = $membro->id;
-                    $data['todos_membros'][] = ['membro' => (object) Identifiable::fetchPessoaFuncaoEclesiastica($params['membro_id'], MembresiaMembro::VINCULO_MEMBRO)];
+        if($params){
+            if(isset($params['action'])) {
+                if($params['funcao_eclesiastica_id'] != 'todas'){
+                    $funcao_eclesiastica =  MembresiaFuncaoEclesiastica::where('id', $params['funcao_eclesiastica_id'])->first();
+                    $funcao = strtoupper($funcao_eclesiastica->descricao);
+                }else{
+                    $funcao = 'TODAS';
                 }
-                $data['membro_unico'] = false;
-            }else{
-                if(isset($params['action'])) {
-                    $data['membro']    = Identifiable::fetchPessoaFuncaoEclesiastica($params['membro_id'], MembresiaMembro::VINCULO_MEMBRO);
-                    $data['membro_unico'] = true;
-                }
-            }
-             
+                $data['membros']    = Identifiable::fetchPessoaFuncaoEclesiastica($params['funcao_eclesiastica_id']);
+                $data['funcao_eclesiastica'] = $funcao;
+            }             
         }     
 
         return $data;

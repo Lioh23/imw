@@ -79,29 +79,18 @@ trait Identifiable
         return $membro;
     }
 
-    public static function fetchPessoaFuncaoEclesiastica($vinculo)
+    public static function fetchPessoaFuncaoEclesiastica($funcao_eclesiastica_id)
     {
-        dd($id, $vinculo, $trashed);
-        $membro = MembresiaMembro::where('membresia_membros.id', $id)
-            ->select('imwpgahml.membresia_membros.*', 'imwpgahml.md.dt_inicio', 'imwpgahml.md.dt_termino', 'imwpgahml.md.observacao', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+        $funcao_eclesiastica_id = $funcao_eclesiastica_id != 'todos' ? intval($funcao_eclesiastica_id) : '';
+        $membro = MembresiaMembro::select('imwpgahml.membresia_membros.*', 'imwpgahml.mf.descricao as funcao_eclesiastica','imwpgahml.ii.nome as igreja',  DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
-                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = '$id') AS telefone") )
-            ->Join('membresia_disciplinas as md', 'md.membro_id', 'membresia_membros.id')
-            ->when($trashed, fn($query) => $query->onlyTrashed())
-            ->where('vinculo', $vinculo)
-            ->firstOr(function() use ($vinculo) {
-                switch ($vinculo) {
-                    case MembresiaMembro::VINCULO_MEMBRO:
-                        throw new MembroNotFoundException();
-
-                    case MembresiaMembro::VINCULO_CONGREGADO:
-                        throw new CongregadoNotFoundException();
-
-                    case MembresiaMembro::VINCULO_VISITANTE:
-                        throw new VisitanteNotFoundException();
-                }
-            });
-
+                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
+            ->Join('membresia_funcoeseclesiasticas as mf', 'mf.id', 'membresia_membros.funcao_eclesiastica_id')
+            ->Join('instituicoes_instituicoes as ii', 'ii.id', 'membresia_membros.igreja_id')
+            ->when((bool) $funcao_eclesiastica_id, function ($query) use ($funcao_eclesiastica_id) {
+                $query->where('membresia_membros.funcao_eclesiastica_id', $funcao_eclesiastica_id);
+            })
+            ->get();
         return $membro;
     }
 
