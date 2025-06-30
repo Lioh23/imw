@@ -32,6 +32,7 @@ use App\Http\Controllers\PrebendaController;
 use App\Http\Controllers\PrebendasClerigosController;
 use App\Http\Controllers\RegiaoEstatisticasController;
 use App\Http\Controllers\RegiaoRelatorioController;
+use App\Http\Controllers\RelatorioClerigoPrebendasController;
 use App\Http\Controllers\RelatorioController;
 use App\Http\Controllers\TotalizacaoController;
 use App\Http\Controllers\UsuarioController;
@@ -393,6 +394,11 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
             });
             Route::get('/buscar-por-cpf/{cpf}', 'findByCpf')->name('findByCpf');
+        });
+
+        // Relatórios Clérigos
+        Route::prefix('clerigos/relatorio')->name('relatorio.')->controller(RelatorioClerigoPrebendasController::class)->group(function () {
+            Route::get('/clerigos-aniversariantes', 'clerigoAniversariante')->name('clerigos-aniversariantes')->middleware('seguranca:relatorio-clerigos-aniversariantes');
         });
 
         Route::prefix('clerigos/nomeacoes')->name('clerigos.nomeacoes.')->controller(NomeacoesClerigosController::class)->middleware(['seguranca:menu-instituicoes'])->group(function () {
