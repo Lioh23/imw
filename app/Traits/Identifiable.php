@@ -82,11 +82,12 @@ trait Identifiable
     public static function fetchPessoaFuncaoEclesiastica($funcao_eclesiastica_id)
     {
         $funcao_eclesiastica_id = $funcao_eclesiastica_id != 'todos' ? intval($funcao_eclesiastica_id) : '';
-        $membro = MembresiaMembro::select('imwpgahml.membresia_membros.*', 'imwpgahml.mf.descricao as funcao_eclesiastica','imwpgahml.ii.nome as igreja',  DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+        $membro = MembresiaMembro::with('congregacao')->select('imwpgahml.membresia_membros.*', 'imwpgahml.mf.descricao as funcao_eclesiastica','imwpgahml.ii.nome as igreja',  DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
             ->Join('membresia_funcoeseclesiasticas as mf', 'mf.id', 'membresia_membros.funcao_eclesiastica_id')
             ->Join('instituicoes_instituicoes as ii', 'ii.id', 'membresia_membros.igreja_id')
+            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->when((bool) $funcao_eclesiastica_id, function ($query) use ($funcao_eclesiastica_id) {
                 $query->where('membresia_membros.funcao_eclesiastica_id', $funcao_eclesiastica_id);
             })
