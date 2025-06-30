@@ -96,7 +96,7 @@
           <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4 style="text-transform: uppercase">RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ $funcao_eclesiastica }}</h4>
+                    <h4 style="text-transform: uppercase">RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ $funcao_eclesiastica }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
                 </div>
             </div>
           </div>
@@ -179,14 +179,14 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-excel"></i> Excel',
               titleAttr: 'Excel',
-              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }}"
+              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }}  - {{ strtoupper(session()->get('session_perfil')->instituicoes->igrejaLocal->nome) }}"
             },
             {
               extend: 'pdf',
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
-              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }}",
+              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }}  - {{ strtoupper(session()->get('session_perfil')->instituicoes->igrejaLocal->nome) }}",
               pageSize: 'A4',
                 exportOptions: {
                     columns: ':visible',
@@ -199,7 +199,7 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-print"></i> Imprimir',
               titleAttr: 'Imprimir',
-              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }}",
+              title: "RELATÓRIO FUNÇÕES ECLESIÁTICAS - {{ isset($funcao_eclesiastica) ? $funcao_eclesiastica : '' }} -  - {{ strtoupper(session()->get('session_perfil')->instituicoes->igrejaLocal->nome) }}",
               customize: function ( win ) {
                 $(win.document.body)
                   .css( 'font-size', '14pt' )
