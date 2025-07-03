@@ -3,17 +3,18 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Clerigos', 'url' => '#', 'active' => false],
+        ['text' => 'Clérigos', 'url' => '#', 'active' => false],
         ['text' => 'Aniversariantes', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
 @section('extras-css')
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
-    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
     <style>
         .swal2-popup .swal2-styled.swal2-cancel {
             color: white !important;
@@ -31,123 +32,110 @@
     </style>
 @endsection
 
-@section('extras-scripts')
-    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('.toggle-icon').forEach(function(icon) {
-                icon.addEventListener('click', function() {
-                    let target = this.dataset.target;
-                    let rows = document.querySelectorAll(`.child-row[data-parent="${target}"]`);
-
-                    let isHidden = rows[0].style.display === 'none' || rows[0].style.display === '';
-
-                    rows.forEach(row => {
-                        row.style.display = isHidden ? 'table-row' : 'none';
-                    });
-
-                    if (isHidden) {
-                        this.classList.remove('fa-plus-square');
-                        this.classList.add('fa-minus-square');
-                    } else {
-                        this.classList.remove('fa-minus-square');
-                        this.classList.add('fa-plus-square');
-                    }
-                });
-            });
-            document.getElementById('filter_form').addEventListener('submit', function(event) {
-                let visao = parseInt(document.getElementById('visao').value);
-
-                if (!visao) {
-                    event.preventDefault();
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Erro na seleção do tipo de visão',
-                        text: 'Erro na seleção do tipo de visão!',
-                        confirmButtonText: 'Entendi',
-                    });
-                }
-            });
-        });
-    </script>
-@endsection
-
-@include('extras.alerts')
-
 @section('content')
-    <form class="form-vertical" id="filter_form" method="GET">
+<div class="col-lg-12 col-12 layout-spacing">
+  <div class="statbox widget box box-shadow">
+    <div class="widget-header">
+      <div class="row">
+          <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+              <h4>Relatório Aniversarintes Clérigos</h4>
+          </div>
+      </div>
+  </div>
+    <div class="widget-content widget-content-area">
+      <form class="form-vertical" id="filter_form"  method="GET">
+        
         <div class="form-group row mb-4">
-            <div class="col-lg-2 text-right">
-                <label class="control-label"></label>
-            </div>
-            <div class="col-lg-3">
-                <select class="form-control" id="buscar" name="buscar" required>
-                    <option value="todos" {{ request()->input('buscar') == 'buscar' ? 'selected' : '' }}>
-                        Todos 
-                    </option>
-                </select>
-            </div>
-            <div class="col-lg-7">
-            </div>
-            <div class="col-lg-2 text-right">
-                <label class="control-label"></label>
-            </div>
-            <!-- <div class="col-lg-6 mt-4">
-                <div class="form-check form-check-inline">
-                    <div class="n-chk">
-                        <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                        <input {{ request()->get('situacao') == '' ? 'checked' : 'checked' }}
-                                type="radio" name="situacao" value="" class="new-control-input">
-                        <span class="new-control-indicator"></span>Todos
-                        </label>
-                    </div>
-                </div>
-                <div class="form-check form-check-inline">
-                    <div class="n-chk">
-                        <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                        <input {{ request()->get('situacao') == '1' ? 'checked' : '' }}
-                                type="radio" name="situacao" value="1" class="new-control-input">
-                        <span class="new-control-indicator"></span>Titular
-                        </label>
-                    </div>
-                </div>
-                <div class="form-check form-check-inline">
-                    <div class="n-chk">
-                        <label class="new-control new-checkbox checkbox-outline-success">
-                        <input {{ request()->get('ativo') == 1 ? 'checked' : '' }} type="checkbox" name="ativo" value="1" class="new-control-input">
-                        <span class="new-control-indicator"></span>Ativos
-                        </label>
-                    </div>
-                </div>
-            </div> -->
+          <div class="col-lg-2 text-right">
+            <label class="control-label">Clérigos:</label>
+          </div>
+          <div class="col-lg-6">
+            <select class="form-control" id="buscar" name="buscar" required>
+                <option value="todos" {{ request()->input('buscar') == 'buscar' ? 'selected' : '' }}>
+                    Todos 
+                </option>
+            </select>
+          </div>
         </div>
+
+        {{-- Meses --}}
         <div class="form-group row mb-4">
-            <div class="col-lg-2"></div>
-            <div class="col-lg-6">
-                <button id="btn_buscar" type="submit" class="btn btn-primary">
-                    <x-bx-search /> Buscar
-                </button>
-            </div>
+          <div class="col-lg-2 text-right">
+            <label class="control-label">Meses:</label>
+          </div>
+          <div class="col-lg-6">
+            <select id="mes" name="mes" class="form-control @error('mes') is-invalid @enderror" >
+              <option value="" {{ request()->get('mes') == '' ? 'selected hidden' : '' }}>Todos</option>
+              <option value="1" {{ request()->get('mes') == '1' ? 'selected' : '' }}>JANEIRO</option>
+              <option value="2" {{ request()->get('mes') == '2' ? 'selected' : '' }}>FEVEREIRO</option>
+              <option value="3" {{ request()->get('mes') == '3' ? 'selected' : '' }}>MARÇO</option>
+              <option value="4" {{ request()->get('mes') == '4' ? 'selected' : '' }}>ABRIL</option>
+              <option value="5" {{ request()->get('mes') == '5' ? 'selected' : '' }}>MAIO</option>
+              <option value="6" {{ request()->get('mes') == '6' ? 'selected' : '' }}>JUNHO</option>
+              <option value="7" {{ request()->get('mes') == '7' ? 'selected' : '' }}>JULHO</option>
+              <option value="8" {{ request()->get('mes') == '8' ? 'selected' : '' }}>AGOSTO</option>
+              <option value="9" {{ request()->get('mes') == '9' ? 'selected' : '' }}>SETEMBRO</option>
+              <option value="10" {{ request()->get('mes') == '10' ? 'selected' : '' }}>OUTUBRO</option>
+              <option value="11" {{ request()->get('mes') == '11' ? 'selected' : '' }}>NOVEMBRO</option>
+              <option value="12" {{ request()->get('mes') == '12' ? 'selected' : '' }}>DEZEMBRO</option>
+            </select>
+          </div>
         </div>
-    </form>
+
+        {{-- Vínculo --}}
+        <!-- <div class="form-group row mb-4">
+          <div class="col-lg-2 text-right">
+            <label class="control-label">Vínculo:</label>
+          </div>
+          <div class="col-lg-6">
+            <div class="form-check form-check-inline">
+              <div class="n-chk">
+                <label class="new-control new-checkbox checkbox-outline-success">
+                  <input checked type="checkbox" name="vinculo[]" id="vinculo_membro" value="M" class="new-control-input">
+                  <span class="new-control-indicator"></span>Membro
+                </label>
+              </div>
+            </div>
+            <div class="form-check form-check-inline">
+              <div class="n-chk">
+                <label class="new-control new-checkbox checkbox-outline-success">
+                  <input checked type="checkbox" name="vinculo[]" value="C" class="new-control-input">
+                  <span class="new-control-indicator"></span>Congregado
+                </label>
+              </div>
+            </div>
+            <div class="form-check form-check-inline">
+              <div class="n-chk">
+                <label class="new-control new-checkbox checkbox-outline-success">
+                  <input checked type="checkbox" name="vinculo[]" value="V" class="new-control-input">
+                  <span class="new-control-indicator"></span>Visitante
+                </label>
+              </div>
+            </div>
+          </div>
+        </div> -->
+
+
+        <div class="form-group row mb-4">
+          <div class="col-lg-2"></div>
+          <div class="col-lg-6">
+            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
+              <x-bx-search /> Buscar 
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
     @if (request()->has('buscar'))
         <div class="col-lg-12 col-12 layout-spacing">
             <div class="statbox widget box box-shadow">
-                <div class="widget-header">
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4>Clérigos Aniversarintes</h4>
-                        </div>
-                    </div>
-                </div>
                 <div class="widget-content widget-content-area">
-                    <div class="table-responsive mt-4">
+                    <div class="table-responsive mt-0">
 
-
-
-
-                    <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
+                    <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes-clerigos">
                     <thead>
                             <tr>
                                 <th>NOME</th>
@@ -159,57 +147,95 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @forelse ($aniversariantes as $membro)
+                                <tr>
+                                    <td>{{ $membro->nome }}</td>
+                                    <td>{{ $membro->aniversario }}</td>
+                                    <td>{{ $membro->data_nascimento }}</td>
+                                    <td>{{ $membro->idade }}</td>
+                                    <td>{{ formatStr($membro->contato, '## (##) #####-####') }}</td>
+                                    <td>{{ $membro->igreja ? $membro->igreja : 'SEDE' }}</td>
+                                </tr>
+                            @empty
+                            <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
+                            @endforelse
                         </tbody>
                     </table>
-
-
-
-
-
-
-                        <!-- <table class="table table-striped" style="font-size: 90%;">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Distrito</th>
-                                    <th>Igreja</th>
-                                    <th>Função Ministerial</th>
-                                    <th>Data Início</th>
-                                    <th>Data Termino</th>
-
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($lancamentos as $lancamento)
-                                    <tr>
-                                        <td colspan="6">
-                                            <i class="fas fa-plus-square toggle-icon"
-                                                data-target="pai-{{ $lancamento[0]->id }}"></i>
-                                            {{ $lancamento[0]->nome }}
-                                        </td>
-                                    </tr>
-                                    @foreach ($lancamento as $nomeacao)
-                                        <tr class="child-row" data-parent="pai-{{ $nomeacao->id }}">
-                                            <td>{{ $nomeacao->nome }}</td>
-                                            <td>{{ $nomeacao->distrito }}</td>
-                                            <td>{{ $nomeacao->igreja }}</td>
-                                            <td>{{ $nomeacao->funcao_ministerial }}</td>
-                                            <td>{{ \Carbon\Carbon::parse($nomeacao->inicio_nomeacao)->format('d/m/Y') }}
-                                            </td>
-                                            <td>{{ $nomeacao->fim_nomeacao ? \Carbon\Carbon::parse($nomeacao->fim_nomeacao)->format('d/m/Y') : 'Atual' }}
-                                        </tr>
-                                    @endforeach
-                                @endforeach
-
-
-                            </tbody>
-                        </table> -->
+                       
                     </div>
-
-                    <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
-
                 </div>
         @endif
     </div>
     </div>
+@endsection
+@section('extras-scripts')
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
+    <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
+    <script>
+    $('#btn_buscar').click(function () {
+        $('#filter_form').removeAttr('target');
+    })
+    
+    $('#btn_relatorio').click(function () {
+        $('#filter_form').attr('target', '_blank');
+    })
+
+    new DataTable('#aniversariantes-clerigos', {
+        layout: {
+            //top1: 'searchBuilder',
+            topStart: {
+            buttons: [
+                'pageLength',
+                {
+                extend: 'excel',
+                className: 'btn btn-primary btn-rounded',
+                text: '<i class="fas fa-file-excel"></i> Excel',
+                titleAttr: 'Excel',
+                title: "RELATÓRIO ANIVERSARIANTES - CLÉRIGOS"
+                },
+                {
+                extend: 'pdf',
+                className: 'btn btn-primary btn-rounded',
+                text: '<i class="fas fa-file-pdf"></i> PDF',
+                titleAttr: 'PDF',
+                title: "RELATÓRIO ANIVERSARIANTES - CLÉRIGOS",
+                },
+                {
+                extend: 'print',
+                className: 'btn btn-primary btn-rounded',
+                text: '<i class="fas fa-print"></i> Imprimir',
+                titleAttr: 'Imprimir',
+                title: "RELATÓRIO ANIVERSARIANTES - CLÉRIGOS",
+                customize: function ( win ) {
+                    $(win.document.body)
+                    .css( 'font-size', '14pt' )
+                    .find( 'h1' )
+                            .css( 'text-align', 'center' ).css( 'font-size', '18pt' ).css( 'font-weight', 'bold');
+
+                    $(win.document.body).find('table')
+                    .addClass('compact')
+                    .css('font-size', 'inherit');
+                }
+                }]
+            },
+            topEnd: 'search',
+            bottomStart: 'info',
+        bottomEnd: 'paging'
+        },
+        language: {
+        url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+        }
+    });
+    </script>
+
 @endsection

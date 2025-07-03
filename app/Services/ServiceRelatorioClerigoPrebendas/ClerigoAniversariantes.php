@@ -7,17 +7,16 @@ use App\Traits\ClerigoPrebenda;
 use App\Traits\Identifiable;
 use App\Traits\TotalClerigosUtils;
 
-
 class ClerigoAniversariantes
 {
     use Identifiable;
 
 
-    public function execute($visao)
+    public function execute(array $params = [])
     {
         $regiao = Identifiable::fetchtSessionRegiao();
         return [
-            'lancamentos' => ClerigoPrebenda::fetchClerigoAniversarinates($regiao->id),
+            'aniversariantes' => ClerigoPrebenda::fetchClerigoAniversarinates($regiao->id, $params),
             'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
             'regiao'      => $regiao
         ];

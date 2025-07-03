@@ -14,7 +14,7 @@ class RelatorioClerigoPrebendasController extends Controller
     public function clerigoAniversariante(Request $request)
     {
         $visao = $request->input('visao');
-        $data = app(ClerigoAniversariantes::class)->execute($visao);
+        $data = app(ClerigoAniversariantes::class)->execute($request->all());
         return view('relatorios.clerigos-prebendas.clerigos-aniversariantes', $data);
     }
 
