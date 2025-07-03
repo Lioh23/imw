@@ -15,10 +15,15 @@ class ClerigoAniversariantes
     public function execute(array $params = [])
     {
         $regiao = Identifiable::fetchtSessionRegiao();
-        return [
-            'aniversariantes' => ClerigoPrebenda::fetchClerigoAniversarinates($regiao->id, $params),
-            'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
-            'regiao'      => $regiao
-        ];
+        $data =  [];
+        if(isset($params['action'])) {
+            $data =  [
+                'aniversariantes'   => ClerigoPrebenda::fetchClerigoAniversarinates($regiao->id, $params),
+                'distritos'         => Identifiable::fetchDistritosByRegiao($regiao->id),
+                'regiao'            => $regiao,
+                'mes'               => ''
+            ];
+        }
+        return $data;
     }
 }

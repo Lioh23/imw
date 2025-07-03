@@ -15,7 +15,7 @@ trait ClerigoPrebenda
             ->select(
                 'pp.id as id',
                 'pp.nome as nome',
-                'pp.data_nascimento',
+                DB::raw("DATE_FORMAT(pp.data_nascimento, '%d/%m/%Y') data_nascimento"),
                 DB::raw("DATE_FORMAT(pp.data_nascimento, '%d/%m') aniversario"),
                 DB::raw("TIMESTAMPDIFF(YEAR, data_nascimento, curdate()) idade"),
                 DB::raw("CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial

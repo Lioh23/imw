@@ -229,17 +229,6 @@
                              <a href="{{ route('clerigos.prebendas.index') }}">Prebendas</a>
                          @endif
                      </li>
-
-                     <li class="submenu-fixo mt-3 mb-3">
-                        @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-instituicoes-igrejas'))
-                            <span>Relatórios</span>
-                        @endif
-                    </li>
-                    <li {!! Request::is('clerigos/relatorio/clerigos-aniversariantes') ? 'class="active"' : '' !!}>
-                        @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-aniversariantes'))
-                            <a href="{{ route('relatorio.clerigos-aniversariantes') }}">Clérigos aniversariantes</a>
-                        @endif
-                    </li>
                  </ul>
                  @endif
 
@@ -386,7 +375,6 @@
                                      Financeira</a>
                              @endif
                          </li>
-
                          <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-relatorio'))
                                  <span>Membresia</span>
@@ -495,7 +483,16 @@
                                      Gênero</a>
                              @endif
                          </li>
-
+                        <li class="submenu-fixo mt-3 mb-3">
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-instituicoes-igrejas'))
+                                <span>Clérigos</span>
+                            @endif
+                        </li>
+                        <li {!! Request::is('regiao/relatorio/clerigos-aniversariantes') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-aniversariantes'))
+                                <a href="{{ route('relatorio.clerigos-aniversariantes') }}">Clérigos aniversariantes</a>
+                            @endif
+                        </li>
 
                      </ul>
                  </li>

@@ -258,6 +258,11 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
+        // Relatórios Clérigos
+        Route::prefix('regiao/relatorio')->name('relatorio.')->controller(RelatorioClerigoPrebendasController::class)->group(function () {
+            Route::get('/clerigos-aniversariantes', 'clerigoAniversariante')->name('clerigos-aniversariantes')->middleware('seguranca:relatorio-clerigos-aniversariantes');
+        });
+
         Route::prefix('regiao/estatistica')->name('regiao.')->group(function () {
         //Estatitisca de Membros
             Route::get('/relatorio/estatistica-membros-evolucao', [RegiaoEstatisticasController::class, 'estatisticaEvolucao'])->name('estatistica.evolucao')->middleware(['seguranca:regiao-menu-estatistica']);
@@ -394,11 +399,6 @@ Route::middleware(['auth'])->group(function () {
                 Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
             });
             Route::get('/buscar-por-cpf/{cpf}', 'findByCpf')->name('findByCpf');
-        });
-
-        // Relatórios Clérigos
-        Route::prefix('clerigos/relatorio')->name('relatorio.')->controller(RelatorioClerigoPrebendasController::class)->group(function () {
-            Route::get('/clerigos-aniversariantes', 'clerigoAniversariante')->name('clerigos-aniversariantes')->middleware('seguranca:relatorio-clerigos-aniversariantes');
         });
 
         Route::prefix('clerigos/nomeacoes')->name('clerigos.nomeacoes.')->controller(NomeacoesClerigosController::class)->middleware(['seguranca:menu-instituicoes'])->group(function () {
