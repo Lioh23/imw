@@ -25,14 +25,13 @@ trait ClerigoPrebenda
             )
             ->join('pessoas_nomeacoes as pn', function ($join) {
                 $join->on('pp.id', '=', 'pn.pessoa_id')
-                    ->whereNull('pn.deleted_at');
+                    ->whereNull('pn.data_termino');
             })
             ->join('instituicoes_instituicoes as ii', function ($join) {
                 $join->on('pn.instituicao_id', '=', 'ii.id')->where('ii.ativo', '=', 1);
             })
             ->when($params['mes'], fn ($query) => $query->whereMonth('data_nascimento', $params['mes']))
             ->where(['pp.status_id' => 1, 'pp.regiao_id' => $regiao])
-            ->whereNull('pn.data_termino')
             ->orderBy('pp.nome')
             ->groupBy('id', 'pp.nome', 'pp.data_nascimento', 'pp.telefone_preferencial', 'pp.telefone_alternativo', 'imwpgahml.pp.igreja_id')
             ->get();
@@ -46,7 +45,7 @@ trait ClerigoPrebenda
             )
             ->join('pessoas_nomeacoes as pn', function ($join) {
                 $join->on('pp.id', '=', 'pn.pessoa_id')
-                    ->whereNull('pn.deleted_at');
+                    ->whereNull('pn.data_termino');
             })
             ->join('instituicoes_instituicoes as ii', function ($join) {
                 $join->on('pn.instituicao_id', '=', 'ii.id')->where('ii.ativo', '=', 1);
