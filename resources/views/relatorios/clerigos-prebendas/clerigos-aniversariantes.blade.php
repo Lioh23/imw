@@ -143,7 +143,7 @@
                                 <th>NASCIMENTO</th>
                                 <th>IDADE</th>
                                 <th>TELEFONE</th>
-                                <th>ONDE CONGREGA</th>
+                                <th>INSTITUIÇAO</th>
                             </tr>
                         </thead>
                         <tbody>

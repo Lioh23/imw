@@ -32,6 +32,7 @@ trait ClerigoPrebenda
             })
             ->when($params['mes'], fn ($query) => $query->whereMonth('data_nascimento', $params['mes']))
             ->where(['pp.status_id' => 1, 'pp.regiao_id' => $regiao])
+            ->whereNull('pn.data_termino')
             ->orderBy('pp.nome')
             ->groupBy('id', 'pp.nome', 'pp.data_nascimento', 'pp.telefone_preferencial', 'pp.telefone_alternativo', 'imwpgahml.pp.igreja_id')
             ->get();
