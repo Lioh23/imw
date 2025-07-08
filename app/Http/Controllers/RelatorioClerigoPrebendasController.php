@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoAniversariantes;
 use App\Services\EstatisticaClerigosService\TotalTicketMedio;
 use App\Services\ServiceEstatisticas\TotalMembresiaServices;
+use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoDados;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -17,6 +18,13 @@ class RelatorioClerigoPrebendasController extends Controller
         $data = app(ClerigoAniversariantes::class)->execute($request->all());
         return view('relatorios.clerigos-prebendas.clerigos-aniversariantes', $data);
     }
+
+    public function clerigoDados(Request $request)
+    {
+        $data = app(ClerigoDados::class)->execute($request->all());
+        return view('relatorios.clerigos-prebendas.clerigos-dados', $data);
+    }
+
 
 
     public function ticketmedio(Request $request)

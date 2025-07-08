@@ -261,6 +261,7 @@ Route::middleware(['auth'])->group(function () {
         // Relatórios Clérigos
         Route::prefix('regiao/relatorio')->name('relatorio.')->controller(RelatorioClerigoPrebendasController::class)->group(function () {
             Route::get('/clerigos-aniversariantes', 'clerigoAniversariante')->name('clerigos-aniversariantes')->middleware('seguranca:relatorio-clerigos-aniversariantes');
+            Route::get('/clerigos-dados', 'clerigoDados')->name('clerigos-dados')->middleware('seguranca:relatorio-clerigos-dados');
         });
 
         Route::prefix('regiao/estatistica')->name('regiao.')->group(function () {

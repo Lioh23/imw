@@ -6,7 +6,7 @@ namespace App\Services\ServiceRelatorioClerigoPrebendas;
 use App\Traits\ClerigoPrebenda;
 use App\Traits\Identifiable;
 
-class ClerigoAniversariantes
+class ClerigoDados
 {
     use Identifiable;
 
@@ -17,10 +17,9 @@ class ClerigoAniversariantes
         $data =  [];
         if(isset($params['action'])) {
             $data =  [
-                'aniversariantes'   => ClerigoPrebenda::fetchClerigoAniversarinates($regiao->id, $params),
-                'distritos'         => Identifiable::fetchDistritosByRegiao($regiao->id),
-                'regiao'            => $regiao,
-                'mes'               => ''
+                'clerigos'   => ClerigoPrebenda::fetchClerigoDados($regiao->id, $params),
+                'distritos'  => Identifiable::fetchDistritosByRegiao($regiao->id),
+                'regiao'     => $regiao,
             ];
         }
         return $data;
