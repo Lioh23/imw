@@ -24,6 +24,7 @@ class ClerigoAniversariantes
                 'mes'               => ''
             ];
         }
+        //dd($data['aniversariantes'][0]['igrejas'][0]->igreja);
         return $data;
     }
 }

@@ -149,12 +149,24 @@
                         <tbody>
                             @forelse ($aniversariantes as $membro)
                                 <tr>
-                                    <td>{{ $membro->nome }}</td>
-                                    <td>{{ $membro->aniversario }}</td>
-                                    <td>{{ $membro->data_nascimento }}</td>
-                                    <td>{{ $membro->idade }}</td>
-                                    <td>{{ formatStr($membro->contato, '## (##) #####-####') }}</td>
-                                    <td>{{ $membro->igreja ? $membro->igreja : 'SEDE' }}</td>
+                                    <td>{{ $membro['clerigo']->nome }}</td>
+                                    <td>{{ $membro['clerigo']->aniversario }}</td>
+                                    <td>{{ $membro['clerigo']->data_nascimento }}</td>
+                                    <td>{{ $membro['clerigo']->idade }}</td>
+                                    <td>{{ formatStr($membro['clerigo']->contato, '## (##) #####-####') }}</td>
+                                    <td>
+                                      <table>
+                                          <tbody>
+                                          @foreach($membro['igrejas'] as $igreja)
+                                            <tr>
+                                              <td>
+                                                {{ $igreja->igreja }}
+                                              </td>
+                                            </tr>
+                                          @endforeach
+                                          </tbody>
+                                      </table>
+                                    </td>
                                 </tr>
                             @empty
                             <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
