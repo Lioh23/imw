@@ -199,6 +199,9 @@
     })
 
     new DataTable('#aniversariantes-clerigos', {
+        scrollX: true,
+        scrollY: 400,
+        scrollCollapse: true,
         layout: {
             //top1: 'searchBuilder',
             topStart: {
