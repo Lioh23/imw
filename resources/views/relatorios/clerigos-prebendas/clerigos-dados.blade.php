@@ -178,7 +178,7 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-excel"></i> Excel',
                   titleAttr: 'Excel',
-                  title: "RELATÓRIO ANIVERSARIANTES - CLÉRIGOS"
+                  title: "RELATÓRIO DADOS - CLÉRIGOS"
                 },
                 {
                   extend: 'pdf',
@@ -186,14 +186,14 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-pdf"></i> PDF',
                   titleAttr: 'PDF',
-                  title: "RELATÓRIO ANIVERSARIANTES - CLÉRIGOS",
+                  title: "RELATÓRIO DADOS - CLÉRIGOS",
                 },
                 {
                   extend: 'print',
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-print"></i> Imprimir',
                   titleAttr: 'Imprimir',
-                  title: "RELATÓRIO ANIVERSARIANTES - CLÉRIGOS",
+                  title: "RELATÓRIO DADOS - CLÉRIGOS",
                   customize: function ( win ) {
                       $(win.document.body)
                       .css( 'font-size', '14pt' )
