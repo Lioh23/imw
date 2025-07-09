@@ -89,8 +89,9 @@ trait ClerigoPrebenda
                     ->whereNull('pn.data_termino');
             })
             ->join('instituicoes_instituicoes as ii', function ($join) {
-                $join->on('pn.instituicao_id', '=', 'ii.id')->where('ii.ativo', '=', 1);
+                $join->on('pn.instituicao_id', '=', 'ii.id');//*->where('ii.ativo', '=', 1);*/
             })
+            ->when($params['status'] === '0' || $params['status'] === '1', fn ($query) => $query->where('ii.ativo', $params['status']))
             ->where(['pp.status_id' => 1, 'pp.regiao_id' => $regiao])
             ->orderBy('pp.nome')
             ->groupBy('id', 'pp.nome', 'pp.data_nascimento', 'pp.telefone_preferencial', 'pp.telefone_alternativo', 'pp.igreja_id','pp.email', 'pp.identidade', 'pp.orgao_emissor', 'pp.data_emissao', 'pp.cpf','pp.pais', 'pp.uf', 'pp.cep', 'pp.cidade', 'pp.bairro', 'pp.endereco', 'pp.numero','pp.complemento')

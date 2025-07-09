@@ -495,7 +495,7 @@
                         </li>
                         <li {!! Request::is('regiao/relatorio/clerigos-dados') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-dados'))
-                                <a href="{{ route('relatorio.clerigos-dados') }}">Clérigos dados</a>
+                                <a href="{{ route('relatorio.clerigos-dados') }}">Clérigos Documentação</a>
                             @endif
                         </li>
                      </ul>

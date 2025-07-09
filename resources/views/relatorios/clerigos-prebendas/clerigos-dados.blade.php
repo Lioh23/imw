@@ -4,7 +4,7 @@
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
         ['text' => 'Clérigos', 'url' => '#', 'active' => false],
-        ['text' => 'Dados', 'url' => '#', 'active' => true],
+        ['text' => 'Documentação', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -38,14 +38,14 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório Cadastro dos Clérigos</h4>
+              <h4>Relatório Documentação dos Clérigos</h4>
           </div>
       </div>
   </div>
     <div class="widget-content widget-content-area">
       <form class="form-vertical" id="filter_form"  method="GET">
         
-        <div class="form-group row mb-4">
+        <!-- <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
             <label class="control-label">Clérigos:</label>
           </div>
@@ -56,8 +56,8 @@
                 </option>
             </select>
           </div>
-        </div>
-
+        </div> -->
+        <input type="hidden" name="buscar" value="todos">
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
             <label class="control-label">Status:</label>
@@ -65,9 +65,21 @@
           <div class="col-lg-6">
             <div class="form-check form-check-inline">
               <div class="n-chk">
-                <label class="new-control new-checkbox checkbox-outline-success">
-                  <input checked type="checkbox" name="vinculo[]" id="vinculo_membro" value="M" class="new-control-input">
-                  <span class="new-control-indicator"></span>Ativo
+                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                  <input {{ request()->get('status') == '' ? 'checked' : 'checked' }} type="radio" name="status" value="" class="new-control-input">
+                  <span class="new-control-indicator"></span>Todos
+                </label>
+              </div>
+              <div class="n-chk">
+                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                  <input {{ request()->get('status') == '1' ? 'checked' : '' }} type="radio" name="status" value="1" class="new-control-input">
+                  <span class="new-control-indicator"></span>Ativos
+                </label>
+              </div>
+              <div class="n-chk">
+                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                  <input {{ request()->get('status') == '0' ? 'checked' : '' }} type="radio" name="status" value="0" class="new-control-input">
+                  <span class="new-control-indicator"></span>Inativos
                 </label>
               </div>
             </div>
@@ -178,7 +190,7 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-excel"></i> Excel',
                   titleAttr: 'Excel',
-                  title: "RELATÓRIO DADOS - CLÉRIGOS"
+                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS"
                 },
                 {
                   extend: 'pdf',
@@ -186,14 +198,14 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-pdf"></i> PDF',
                   titleAttr: 'PDF',
-                  title: "RELATÓRIO DADOS - CLÉRIGOS",
+                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS",
                 },
                 {
                   extend: 'print',
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-print"></i> Imprimir',
                   titleAttr: 'Imprimir',
-                  title: "RELATÓRIO DADOS - CLÉRIGOS",
+                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS",
                   customize: function ( win ) {
                       $(win.document.body)
                       .css( 'font-size', '14pt' )
