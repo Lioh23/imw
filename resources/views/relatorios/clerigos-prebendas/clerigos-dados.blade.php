@@ -99,7 +99,7 @@
                           <th>ORGÃO</th>
                           <th>DATA EMISSÃO</th>
                           <th>CPF</th>
-                          <th>NASCIMENTO</th>
+                          <!-- <th>NASCIMENTO</th>
                           <th>IDADE</th>
                           <th>TELEFONE</th>
                           <th>PAÍS</th>
@@ -109,7 +109,7 @@
                           <th>ENDEREÇO</th>
                           <th>NÚMERO</th>
                           <th>COMPLEMENTO</th>
-                          <th>CEP</th>
+                          <th>CEP</th> -->
                       </tr>
                   </thead>
                   <tbody>
@@ -121,7 +121,7 @@
                               <td>{{ $membro->orgao_emissor }}</td>
                               <td>{{ $membro->data_emissao }}</td>
                               <td>{{ formatStr($membro->cpf, '###.###.###-##') }}</td>
-                              <td>{{ $membro->data_nascimento }}</td>
+                              <!-- <td>{{ $membro->data_nascimento }}</td>
                               <td>{{ $membro->idade }}</td>
                               <td>{{ formatStr($membro->contato, '## (##) #####-####') }}</td>
                               <td>{{ $membro->pais }}</td>
@@ -131,7 +131,7 @@
                               <td>{{ $membro->endereco }}</td>
                               <td>{{ $membro->numero }}</td>
                               <td>{{ $membro->complemento }}</td>
-                              <td>{{ $membro->cep }}</td>
+                              <td>{{ $membro->cep }}</td> -->
                           </tr>
                       @empty
                       <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
