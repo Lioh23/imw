@@ -44,19 +44,7 @@
   </div>
     <div class="widget-content widget-content-area">
       <form class="form-vertical" id="filter_form"  method="GET">
-        
-        <!-- <div class="form-group row mb-4">
-          <div class="col-lg-2 text-right">
-            <label class="control-label">Clérigos:</label>
-          </div>
-          <div class="col-lg-6">
-            <select class="form-control" id="buscar" name="buscar" required>
-                <option value="todos" {{ request()->input('buscar') == 'buscar' ? 'selected' : '' }}>
-                    Todos 
-                </option>
-            </select>
-          </div>
-        </div> -->
+      
         <input type="hidden" name="buscar" value="todos">
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
@@ -99,63 +87,40 @@
 </div>
 @if (request()->has('buscar'))
   <div class="col-lg-12 col-12 layout-spacing">
-      <div class="statbox widget box box-shadow">
-          <div class="widget-content widget-content-area">
-              <div class="table-responsive mt-0">
-                <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="dados-clerigos">
-                  <thead>
-                      <tr>
-                          <th>NOME</th>
-                          <th>E-MAIL</th>
-                          <th>IDENTIDADE</th>
-                          <th>ORGÃO</th>
-                          <th>DATA EMISSÃO</th>
-                          <th>CPF</th>
-                          <!-- <th>NASCIMENTO</th>
-                          <th>IDADE</th>
-                          <th>TELEFONE</th>
-                          <th>PAÍS</th>
-                          <th>UF</th>
-                          <th>CIDADE</th>
-                          <th>BAIRRO</th>
-                          <th>ENDEREÇO</th>
-                          <th>NÚMERO</th>
-                          <th>COMPLEMENTO</th>
-                          <th>CEP</th> -->
-                      </tr>
-                  </thead>
-                  <tbody>
-                      @forelse ($clerigos as $membro)
-                          <tr>
-                              <td>{{ $membro->nome }}</td>
-                              <td>{{ $membro->email }}</td>
-                              <td>{{ $membro->identidade }}</td>
-                              <td>{{ $membro->orgao_emissor }}</td>
-                              <td>{{ $membro->data_emissao }}</td>
-                              <td>{{ formatStr($membro->cpf, '###.###.###-##') }}</td>
-                              <!-- <td>{{ $membro->data_nascimento }}</td>
-                              <td>{{ $membro->idade }}</td>
-                              <td>{{ formatStr($membro->contato, '## (##) #####-####') }}</td>
-                              <td>{{ $membro->pais }}</td>
-                              <td>{{ $membro->uf }}</td>
-                              <td>{{ $membro->cidade }}</td>
-                              <td>{{ $membro->bairro }}</td>
-                              <td>{{ $membro->endereco }}</td>
-                              <td>{{ $membro->numero }}</td>
-                              <td>{{ $membro->complemento }}</td>
-                              <td>{{ $membro->cep }}</td> -->
-                          </tr>
-                      @empty
-                      <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
-                      @endforelse
-                  </tbody>
-                </table>
-                  
-          </div>
+    <div class="statbox widget box box-shadow">
+      <div class="widget-content widget-content-area">
+        <div class="table-responsive mt-0">
+          <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="dados-clerigos">
+            <thead>
+                <tr>
+                    <th>NOME</th>
+                    <th>E-MAIL</th>
+                    <th>IDENTIDADE</th>
+                    <th>ORGÃO</th>
+                    <th>DATA EMISSÃO</th>
+                    <th>CPF</th>
+                </tr>
+            </thead>
+            <tbody>
+                @forelse ($clerigos as $membro)
+                  <tr>
+                      <td>{{ $membro->nome }}</td>
+                      <td>{{ $membro->email }}</td>
+                      <td>{{ $membro->identidade }}</td>
+                      <td>{{ $membro->orgao_emissor }}</td>
+                      <td>{{ $membro->data_emissao }}</td>
+                      <td>{{ formatStr($membro->cpf, '###.###.###-##') }}</td>
+                  </tr>
+                @empty
+                <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
+                @endforelse
+            </tbody>
+          </table>              
         </div>
       </div>
-      </div>
-  @endif
+    </div>
+  </div>
+@endif
 @endsection
 @section('extras-scripts')
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -174,11 +139,7 @@
     $('#btn_buscar').click(function () {
         $('#filter_form').removeAttr('target');
     })
-    
-    $('#btn_relatorio').click(function () {
-        $('#filter_form').attr('target', '_blank');
-    })
-
+  
     new DataTable('#dados-clerigos', {
         scrollX: true,
         scrollY: 400,

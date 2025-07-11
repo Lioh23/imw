@@ -14,6 +14,8 @@ use App\Services\ServiceRegiaoRelatorios\OrcamentoService;
 use App\Services\ServiceRegiaoRelatorios\QuantidadeMembrosService;
 use App\Services\ServiceRegiaoRelatorios\SaldoIgrejasService;
 use App\Services\ServiceRegiaoRelatorios\VariacaoFinanceiraService;
+use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoAniversariantes;
+use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoDados;
 use App\Traits\Identifiable;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -313,5 +315,23 @@ class RegiaoRelatorioController extends Controller
             ->setPaper('a4', 'landscape');
 
         return $pdf->stream('relatorio_lancamentodasigrejas.pdf' . date('YmdHis'));
+    }
+
+    public function clerigoAniversariante(Request $request)
+    {
+        $visao = $request->input('visao');
+        $data = app(ClerigoAniversariantes::class)->execute($request->all());
+        return view('regiao.relatorios.clerigos-prebendas.clerigos-aniversariantes', $data);
+    }
+
+    public function clerigoDados(Request $request)
+    {
+        $data = app(ClerigoDados::class)->execute($request->all());
+        return view('regiao.relatorios.clerigos-prebendas.clerigos-dados', $data);
+    }
+
+    public function CongregacaoPorIgreja(Request $request){
+        $data = app(ClerigoDados::class)->execute($request->all());
+        return view('regiao.relatorios.igreja.congregacoes-por-igreja', $data);
     }
 }

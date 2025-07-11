@@ -258,10 +258,15 @@ Route::middleware(['auth'])->group(function () {
 
         });
 
-        // Relatórios Clérigos
-        Route::prefix('regiao/relatorio')->name('relatorio.')->controller(RelatorioClerigoPrebendasController::class)->group(function () {
-            Route::get('/clerigos-aniversariantes', 'clerigoAniversariante')->name('clerigos-aniversariantes')->middleware('seguranca:relatorio-clerigos-aniversariantes');
-            Route::get('/clerigos-dados', 'clerigoDados')->name('clerigos-dados')->middleware('seguranca:relatorio-clerigos-dados');
+        // Relatórios Região Clérigos
+        Route::prefix('regiao/relatorio')->name('regiao.')->controller(RegiaoRelatorioController::class)->group(function () {
+            Route::get('/clerigos-aniversariantes', 'clerigoAniversariante')->name('relatorio.clerigosaniversariantes')->middleware('seguranca:relatorio-clerigos-aniversariantes');
+            Route::get('/clerigos-dados', 'clerigoDados')->name('relatorio.clerigosdados')->middleware('seguranca:relatorio-clerigos-dados');
+        });
+
+        // Relatórios Região Igreja
+        Route::prefix('regiao/relatorio')->name('regiao.')->controller(RegiaoRelatorioController::class)->group(function () {
+            Route::get('/congregacoes-por-igrejas', 'CongregacaoPorIgreja')->name('relatorio.congregacaoporigreja')->middleware('seguranca:regiao-relatorio-congregacoes-igrejas');
         });
 
         Route::prefix('regiao/estatistica')->name('regiao.')->group(function () {

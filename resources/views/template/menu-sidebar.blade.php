@@ -490,12 +490,22 @@
                         </li>
                         <li {!! Request::is('regiao/relatorio/clerigos-aniversariantes') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-aniversariantes'))
-                                <a href="{{ route('relatorio.clerigos-aniversariantes') }}">Clérigos aniversariantes</a>
+                                <a href="{{ route('regiao.relatorio.clerigosaniversariantes') }}">Clérigos aniversariantes</a>
                             @endif
                         </li>
                         <li {!! Request::is('regiao/relatorio/clerigos-dados') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-dados'))
-                                <a href="{{ route('relatorio.clerigos-dados') }}">Clérigos Documentação</a>
+                                <a href="{{ route('regiao.relatorio.clerigosdados') }}">Clérigos Documentação</a>
+                            @endif
+                        </li>
+                         <li class="submenu-fixo mt-3 mb-3">
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-congregacoes-igrejas'))
+                                <span>Igrejas</span>
+                            @endif
+                        </li>
+                        <li {!! Request::is('regiao/relatorio/congregacoes-por-igrejas') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-congregacoes-igrejas'))
+                                <a href="{{ route('regiao.relatorio.congregacaoporigreja') }}">Congregações por Igrejas</a>
                             @endif
                         </li>
                      </ul>
