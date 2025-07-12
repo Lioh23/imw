@@ -59,7 +59,7 @@
               </div>
              <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('congregacao') == '' ? 'checked' : '' }} type="radio" name="congregacao" value="" class="new-control-input">
+                  <input {{ request()->get('congregacao')  === '0' ? 'checked' : '' }} type="radio" name="congregacao" value="0" class="new-control-input">
                   <span class="new-control-indicator"></span>Sem congregações
                 </label>
               </div>
@@ -88,7 +88,7 @@
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
             <div class="table-responsive mt-0">
-              <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="dado0s-clerigos">
+              <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="regiao-congregacoes-por-igrejas">
                 <thead>
                     <tr>
                         <th>DISTRITO</th>
@@ -102,17 +102,17 @@
                           <td>{{ $item->igreja->distrito_nome }}</td>
                           <td>{{ $item->igreja->igreja_nome }}</td>
                           <td>
-                            <table>
+                              @php $virgula = true; @endphp
                               @forelse ($item->congregacoes as $item)
-                                <tr>
-                                  <td>
-                                      {{ $item->congregacao }}
-                                  </td>
-                                </tr>
+                                @if (!$virgula)
+                                  @php $virgula = ',' @endphp
+                                @else
+                                  @php $virgula = '' @endphp
+                                @endif
+                                <p>{{ $item->congregacao }}</p>
                               @empty
                                 <p> - </p>
                               @endforelse
-                            </table>
                           </td>
                       </tr>
                     @empty
@@ -121,6 +121,7 @@
                 </tbody>
               </table>
                 
+              
         </div>
       </div>
     </div>
@@ -149,7 +150,7 @@
         $('#filter_form').attr('target', '_blank');
     })
 
-    new DataTable('#dado0s-clerigos', {
+    new DataTable('#regiao-congregacoes-por-igrejas', {
         scrollX: true,
         scrollY: 400,
         scrollCollapse: true,

@@ -53,13 +53,13 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('congregacao') == 1 ? 'checked' : 'checked' }} type="radio" name="congregacao" value="1" class="new-control-input">
+                  <input checked {{ request()->get('congregacao') == 1 ? 'checked' : 'checked' }} type="radio" name="congregacao" value="1" class="new-control-input">
                   <span class="new-control-indicator"></span>Com congregações
                 </label>
               </div>
              <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('congregacao') == '' ? 'checked' : '' }} type="radio" name="congregacao" value="" class="new-control-input">
+                  <input {{ request()->get('congregacao') === '0' ? 'checked' : '' }} type="radio" name="congregacao" value="0" class="new-control-input">
                   <span class="new-control-indicator"></span>Sem congregações
                 </label>
               </div>
