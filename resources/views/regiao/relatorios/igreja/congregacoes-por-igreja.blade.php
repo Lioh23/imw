@@ -53,17 +53,17 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('status') == '' ? 'checked' : 'checked' }} type="radio" name="status" value="" class="new-control-input">
-                  <span class="new-control-indicator"></span>Todas
+                  <input {{ request()->get('congregacao') == 1 ? 'checked' : 'checked' }} type="radio" name="congregacao" value="1" class="new-control-input">
+                  <span class="new-control-indicator"></span>Com congregações
+                </label>
+              </div>
+             <div class="n-chk">
+                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                  <input {{ request()->get('congregacao') == '' ? 'checked' : '' }} type="radio" name="congregacao" value="" class="new-control-input">
+                  <span class="new-control-indicator"></span>Sem congregações
                 </label>
               </div>
               <!-- <div class="n-chk">
-                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('status') == '1' ? 'checked' : '' }} type="radio" name="status" value="1" class="new-control-input">
-                  <span class="new-control-indicator"></span>Ativos
-                </label>
-              </div>
-              <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                   <input {{ request()->get('status') == '0' ? 'checked' : '' }} type="radio" name="status" value="0" class="new-control-input">
                   <span class="new-control-indicator"></span>Inativos
@@ -110,11 +110,7 @@
                                   </td>
                                 </tr>
                               @empty
-                                <tr>
-                                  <td>
-                                      <p class="text-center text-muted">Não possui cogregação.</p>
-                                  </td>
-                                </tr>
+                                <p> - </p>
                               @endforelse
                             </table>
                           </td>
@@ -167,22 +163,21 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-excel"></i> Excel',
                   titleAttr: 'Excel',
-                  title: "RELATÓRIO CONGREGAÇÕES POR IGREJAS"
+                  title: "IMW - RELATÓRIO CONGREGAÇÕES POR IGREJAS"
                 },
                 {
                   extend: 'pdf',
-                  orientation: 'landscape',
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-pdf"></i> PDF',
                   titleAttr: 'PDF',
-                  title: "RELATÓRIO CONGREGAÇÕES POR IGREJAS",
+                  title: "IMW - RELATÓRIO CONGREGAÇÕES POR IGREJAS",
                 },
                 {
                   extend: 'print',
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-print"></i> Imprimir',
                   titleAttr: 'Imprimir',
-                  title: "RELATÓRIO CONGREGAÇÕES POR IGREJAS",
+                  title: "IMW - RELATÓRIO CONGREGAÇÕES POR IGREJAS",
                   customize: function ( win ) {
                       $(win.document.body)
                       .css( 'font-size', '14pt' )

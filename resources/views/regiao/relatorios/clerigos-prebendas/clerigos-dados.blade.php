@@ -154,7 +154,7 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-excel"></i> Excel',
                   titleAttr: 'Excel',
-                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS"
+                  title: "IMW - RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS"
                 },
                 {
                   extend: 'pdf',
@@ -162,14 +162,14 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-pdf"></i> PDF',
                   titleAttr: 'PDF',
-                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS",
+                  title: "IMW - RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS",
                 },
                 {
                   extend: 'print',
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-print"></i> Imprimir',
                   titleAttr: 'Imprimir',
-                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS",
+                  title: "IMW - RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS",
                   customize: function ( win ) {
                       $(win.document.body)
                       .css( 'font-size', '14pt' )

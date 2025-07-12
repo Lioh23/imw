@@ -10,8 +10,6 @@ trait IgrejasDados
 {
     public static function fetchCongregacoesPorIgrejas($regiao, $params)
     {
-//select distrito.id, igreja.id as id_igreja, igreja.nome from instituicoes_instituicoes igreja, instituicoes_instituicoes distrito where distrito.id=igreja.instituicao_pai_id and distrito.instituicao_pai_id=23;
-
         $igrejas = DB::table('instituicoes_instituicoes as igreja')
             ->select(
                 'distrito.id',
@@ -27,14 +25,25 @@ trait IgrejasDados
             ->get();
         $congregacoesIgrejas = [];
         foreach($igrejas as $item){
-            $congregacoes = DB::table('congregacoes_congregacoes as cc')
-            ->select(
-                'cc.nome as congregacao',
-            )
-            ->where(['cc.instituicao_id' => $item->id_igreja, 'cc.ativo' => 1])
-            ->orderBy('cc.nome')
-            ->get();
-            $congregacoesIgrejas[] = (object)['igreja' => $item, 'congregacoes' => $congregacoes];
+            $congregacao = DB::table('congregacoes_congregacoes as cc')->where(['cc.instituicao_id' => $item->id_igreja, 'cc.ativo' => 1])->first();
+            if($params['congregacao'] == 1){
+                if($congregacao){
+                    $congregacoes = DB::table('congregacoes_congregacoes as cc')
+                    ->select(
+                        'cc.nome as congregacao',
+                    )
+                    ->where(['cc.instituicao_id' => $item->id_igreja, 'cc.ativo' => 1])
+                    ->orderBy('cc.nome')
+                    ->get();
+                    $congregacoesIgrejas[] = (object)['igreja' => $item, 'congregacoes' => $congregacoes];
+                }
+            }else{
+                if(!$congregacao){
+                    $congregacoes = [];
+                    $congregacoesIgrejas[] = (object)['igreja' => $item, 'congregacoes' => $congregacoes];
+                }
+            }
+            
         }
         return $congregacoesIgrejas;
     }
