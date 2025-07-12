@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ServiceIgrejas\Igrejas;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEscolaridadeService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEstadoCivilService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaGeneroPorcentagemService;
@@ -331,7 +332,7 @@ class RegiaoRelatorioController extends Controller
     }
 
     public function CongregacaoPorIgreja(Request $request){
-        $data = app(ClerigoDados::class)->execute($request->all());
+        $data = app(Igrejas::class)->execute($request->all());
         return view('regiao.relatorios.igreja.congregacoes-por-igreja', $data);
     }
 }

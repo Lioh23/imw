@@ -92,27 +92,27 @@
         <div class="table-responsive mt-0">
           <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="dados-clerigos">
             <thead>
-                <tr>
-                    <th>NOME</th>
-                    <th>E-MAIL</th>
-                    <th>IDENTIDADE</th>
-                    <th>ORGÃO</th>
-                    <th>DATA EMISSÃO</th>
-                    <th>CPF</th>
-                </tr>
+              <tr>
+                  <th>NOME</th>
+                  <th>E-MAIL</th>
+                  <th>IDENTIDADE</th>
+                  <th>ORGÃO</th>
+                  <th>DATA EMISSÃO</th>
+                  <th>CPF</th>
+              </tr>
             </thead>
             <tbody>
-                @forelse ($clerigos as $membro)
+                @forelse ($clerigos as $item)
                   <tr>
-                      <td>{{ $membro->nome }}</td>
-                      <td>{{ $membro->email }}</td>
-                      <td>{{ $membro->identidade }}</td>
-                      <td>{{ $membro->orgao_emissor }}</td>
-                      <td>{{ $membro->data_emissao }}</td>
-                      <td>{{ formatStr($membro->cpf, '###.###.###-##') }}</td>
+                      <td>{{ $item->nome }}</td>
+                      <td>{{ $item->email }}</td>
+                      <td>{{ $item->identidade }}</td>
+                      <td>{{ $item->orgao_emissor }}</td>
+                      <td>{{ $item->data_emissao }}</td>
+                      <td>{{ formatStr($item->cpf, '###.###.###-##') }}</td>
                   </tr>
                 @empty
-                <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
+                  <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
                 @endforelse
             </tbody>
           </table>              

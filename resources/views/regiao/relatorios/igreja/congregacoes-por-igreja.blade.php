@@ -85,34 +85,50 @@
   </div>
 </div>
 @if (request()->has('buscar'))
-      <div class="statbox widget box box-shadow">
-          <div class="widget-content widget-content-area">
-              <div class="table-responsive mt-0">
-                <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="dado0s-clerigos">
-                  <thead>
+    <div class="statbox widget box box-shadow">
+        <div class="widget-content widget-content-area">
+            <div class="table-responsive mt-0">
+              <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="dado0s-clerigos">
+                <thead>
+                    <tr>
+                        <th>DISTRITO</th>
+                        <th>IGREJA</th>
+                        <th>CONGREGAÇÕES</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @forelse ($igrejas as $item)
                       <tr>
-                          <th>DISTRITO</th>
-                          <th>IGREJA</th>
-                          <th>CONGREGAÇÕES</th>
+                          <td>{{ $item->igreja->distrito_nome }}</td>
+                          <td>{{ $item->igreja->igreja_nome }}</td>
+                          <td>
+                            <table>
+                              @forelse ($item->congregacoes as $item)
+                                <tr>
+                                  <td>
+                                      {{ $item->congregacao }}
+                                  </td>
+                                </tr>
+                              @empty
+                                <tr>
+                                  <td>
+                                      <p class="text-center text-muted">Não possui cogregação.</p>
+                                  </td>
+                                </tr>
+                              @endforelse
+                            </table>
+                          </td>
                       </tr>
-                  </thead>
-                  <tbody>
-                      @forelse ($clerigos as $membro)
-                          <tr>
-                              <td>{{ $membro->nome }}</td>
-                              <td>{{ $membro->email }}</td>
-                              <td>{{ $membro->identidade }}</td>
-                          </tr>
-                      @empty
+                    @empty
                       <p class="text-center text-muted">Nenhum resultado encontrado para o período selecionado.</p>
-                      @endforelse
-                  </tbody>
-                </table>
-                  
-          </div>
+                    @endforelse
+                </tbody>
+              </table>
+                
         </div>
       </div>
-      </div>
+    </div>
+  </div>
   @endif
 @endsection
 @section('extras-scripts')
@@ -151,7 +167,7 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-excel"></i> Excel',
                   titleAttr: 'Excel',
-                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS"
+                  title: "RELATÓRIO CONGREGAÇÕES POR IGREJAS"
                 },
                 {
                   extend: 'pdf',
@@ -159,14 +175,14 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-pdf"></i> PDF',
                   titleAttr: 'PDF',
-                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS",
+                  title: "RELATÓRIO CONGREGAÇÕES POR IGREJAS",
                 },
                 {
                   extend: 'print',
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-print"></i> Imprimir',
                   titleAttr: 'Imprimir',
-                  title: "RELATÓRIO DOCUMENTAÇÃO - CLÉRIGOS",
+                  title: "RELATÓRIO CONGREGAÇÕES POR IGREJAS",
                   customize: function ( win ) {
                       $(win.document.body)
                       .css( 'font-size', '14pt' )
