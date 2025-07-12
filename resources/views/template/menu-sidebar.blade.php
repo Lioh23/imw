@@ -398,6 +398,16 @@
                                      Gênero</a>
                              @endif
                          </li>
+                         <li class="submenu-fixo mt-3 mb-3">
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-igrejas'))
+                                 <span>Igrejas</span>
+                             @endif
+                         </li>
+                         <li {!! Request::is('distrito/congregacoes-por-igrejas') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-congregacoes-igrejas'))
+                                 <a href="{{ route('distrito.relatorio.congregacaoporigreja') }}">Congregações por Igrejas</a>
+                             @endif
+                         </li>
                      </ul>
                  </li>
              @endif

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ServiceDistritoRelatorios\EstatisticaGeneroService;
+use App\Services\ServiceDistritoRelatorios\IgrejasService;
 use App\Services\ServiceDistritoRelatorios\LancamentoIgrejasService;
 use App\Services\ServiceDistritoRelatorios\LivroRazaoGeralService;
 use App\Services\ServiceDistritoRelatorios\MembrosMinisterioService;
@@ -191,5 +192,10 @@ class DistritoRelatorioController extends Controller
             ->setPaper('a4', 'landscape');
 
         return $pdf->stream('relatorio_lancamentodasigrejas.pdf' . date('YmdHis'));
+    }
+
+    public function CongregacaoPorIgreja(Request $request){
+        $data = app(IgrejasService::class)->execute($request->all());
+        return view('distrito.relatorios.igreja.congregacoes-por-igreja', $data);
     }
 }

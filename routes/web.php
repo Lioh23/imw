@@ -226,6 +226,8 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/relatorio/estatisticagenero', [DistritoRelatorioController::class, 'estatisticagenero'])->name('relatorio.estatisticagenero')->middleware(['seguranca:distrito-menu-relatorio']);
             Route::post('/relatorio/estatisticagenero/pdf', [DistritoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
+
+            Route::get('/congregacoes-por-igrejas', [DistritoRelatorioController::class, 'CongregacaoPorIgreja'])->name('relatorio.congregacaoporigreja')->middleware('seguranca:distrito-relatorio-congregacoes-igrejas');
         });
 
         Route::prefix('regiao/relatorio')->name('regiao.')->group(function () {

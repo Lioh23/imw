@@ -6,10 +6,11 @@ use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNull;
 
-trait IgrejasDados
+trait IgrejasDadosDistrito
 {
-    public static function fetchCongregacoesPorIgrejas($regiao, $params)
+    public static function fetchCongregacoesPorIgrejas($params)
     {
+        $distritoId = $params['distritoId'];
         $igrejas = DB::table('instituicoes_instituicoes as igreja')
             ->select(
                 'distrito.id',
@@ -19,7 +20,7 @@ trait IgrejasDados
             )->join('instituicoes_instituicoes as distrito', function ($join) {
                 $join->on('distrito.id', '=', 'igreja.instituicao_pai_id');
             })
-            ->where(['distrito.instituicao_pai_id' => $regiao])
+            ->where(['distrito.id' => $distritoId])
             ->orderBy('distrito.nome')
             ->orderBy('igreja.id')
             ->get();
