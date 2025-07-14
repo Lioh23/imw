@@ -76,7 +76,7 @@
             if (prebendaId) {
                 $.ajax({
                     type: 'GET',
-                    url: '/clerigos/perfil/imposto-de-renda/load-html/' + prebendaId,
+                    url: '/usuario/clerigos/perfil/imposto-de-renda/load-html/' + prebendaId,
                     beforeSend: function() {
                         $('#body-calculate').html(`<div style="min-height: 200px; display:flex; justify-content: center; align-items:center;">
                             <div class="spinner-border text-primary align-self-center"></div>
