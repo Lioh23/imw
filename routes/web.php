@@ -6,6 +6,7 @@ use App\Http\Controllers\ClerigosRegiaoController;
 use App\Http\Controllers\CongregacoesController;
 use App\Http\Controllers\CongregadosController;
 use App\Http\Controllers\ClerigoPerfilController;
+use App\Http\Controllers\ContabilidadeController;
 use App\Http\Controllers\DistritoRelatorioController;
 use App\Http\Controllers\FinanceiroCaixasController;
 use App\Http\Controllers\FinanceiroController;
@@ -476,5 +477,11 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('informe-rendimentos')->name('informe_rendimentos.')->controller(InformeRendimentosController::class)->group(function () {
             Route::get('exibirPdf/{ano}', 'exibirPdf')->name('exibirPdf');
         });
+
+         // Contabilidade
+        Route::prefix('contabilidade')->name('contabilidade.')->controller(ContabilidadeController::class)->group(function () {
+            Route::get('/irrf', 'irrf')->name('irrf')->middleware('seguranca:contabilidade-irrf');
+        });
+
     });
 });

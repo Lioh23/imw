@@ -16,7 +16,6 @@ class CalculaImpostoDeRendaService
     public function execute(PessoasPrebenda $prebenda): ResponseIrDto
     {
 
-
         if (!$prebenda) {
             throw new \Exception('Prebenda não encontrada.');
         }

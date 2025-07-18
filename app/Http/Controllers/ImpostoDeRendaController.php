@@ -23,8 +23,8 @@ class ImpostoDeRendaController extends Controller
     {
         try {
             $irCalculator = new ImpostoDeRendaSimplificadoCalculator();
-            $data = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
 
+            $data = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
             return view('perfil.clerigos.imposto-de-renda.vizualizar',  ['data' => $data]);
         } catch (\Exception $e) {
             return response()->json(['message' => 'Erro ao visualizar dados desta prebenda. ' . $e->getMessage()], 500);
