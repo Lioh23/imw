@@ -28,7 +28,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>IRRF por ano</h4>
+                        <h4>IRRF por mês/ano</h4>
                     </div>
                 </div>
             </div>
@@ -36,11 +36,20 @@
                 <div>
                     <form class="form-vertical" id="filter_form"  method="GET">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <select class="form-control " name="ano" id="ano">
-                                    @foreach ($prebendas as $prebenda)
-                                        <option value="{{ $prebenda->id }}">
-                                            {{ $prebenda->ano }}
+                                    @foreach ($anos as $item)
+                                        <option value="{{ $item->ano }}">
+                                            {{ $item->ano }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-5">
+                                <select class="form-control " name="mes" id="mes">
+                                    @foreach ($meses as $item)
+                                        <option value="{{ $item->id }}">
+                                            {{ $item->descricao }}
                                         </option>
                                     @endforeach
                                 </select>
@@ -62,7 +71,6 @@
 
     @if (request()->has('ano'))
 
-
     <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
       <div class="widget-content widget-content-area">
@@ -76,84 +84,40 @@
                     <th>Nº DEPENDENTES</th>
                     <th>BASE DE CÁLCULOS</th>
                     <th>IRRF CALCULADO</th>
-                    <th>JUNHO RETIDO</th>
-                    <th>JUNHO RECOLHIDO</th>
+                    <th>RETIDO</th>
+                    <th>RECOLHIDO</th>
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <!-- <tr>
                     <td colspan="8">
                         Aguarde, pois estamos em desenvolvimento.
                     </td>
+                </tr> -->
+                @forelse($prebendas as $item)
+                <tr>
+                    <td>{{ $item['prebanda']->nome }}</td>
+                    <td>{{ formatStr($item['prebanda']->cpf, '###.###.###-##') }}</td>
+                    <td>R$ {{ number_format($item['prebanda']->valor_prebendas, 2, ',', '.') }}</td>
+                    <td>{{ $item['prebanda']->n_dependentes }}</td>
+                    <td>R$ {{ number_format($item['imposto']->valorBase) }}</td>
+                    <td>R$ {{ number_format($item['imposto']->valorImposto) }}</td>
+                    <td>-</td>
+                    <td>-</td>
                 </tr>
+                @empty
+                <tr>
+                    <td colspan="8">
+                        Não possui dados
+                    </td>
+                </tr>
+                @endforelse
             </tbody>
           </table>            
         </div>
       </div>
     </div>
   </div>
-
-        <!-- <style>
-            .bold {
-                font-weight: bold;
-            }
-        </style> -->
-
-        <!-- <div>
-            <div class="mt-5">
-                <h3 class="fs-6 my-3">Calculo do Imposto de Renda {{ $data->ano }}</h3>
-                <table class="table table-bordered table-striped table-hover mb-4" id="datatable">
-                    <tbody>
-                        <tr class="d-flex flex-column">
-                            <td class="d-flex justify-content-between bold">
-                                <p>Redimento Tributáveis:</p>
-                                R$ {{ number_format($data->rendimentosTributaveis, 2, ',', '.') ?? 'Não informado' }}
-                            </td>
-                            <td class="d-flex justify-content-between">
-                                <p>Número de dependentes:</p>
-                                {{ $data->qtdeDependentes }}
-                            </td>
-                            <td class="d-flex justify-content-between">
-                                <p>Valor dedutível:</p>
-                                R$ {{ number_format($data->valorDedutivel, 2, ',', '.') ?? 'Não informado' }}
-                            </td>
-                            <td class="d-flex justify-content-between">
-                                <p>Valor Base:</p>
-                                R$ {{ number_format($data->valorBase, 2, ',', '.') ?? 'Não informado' }}
-                            </td>
-                            <td class="d-flex justify-content-between bold">
-                                <p>Valor de Imposto:</p>
-                                R$ {{ number_format($data->valorImposto, 2, ',', '.') ?? 'Não informado' }}
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div>
-                <table class="table table-bordered table-striped table-hover mb-4" id="datatable">
-                    <thead>
-                        <tr>
-                            <th>Faixa</th>
-                            <th>Base Calculo</th>
-                            <th>Aliquota</th>
-                            <th>Valor do Imposto</th>
-
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data->progressao as $faixa)
-                            <tr>
-                                <td>{{ $faixa->faixa }}</td>
-                                <td>{{ $faixa->textBaseCalculo }}</td>
-                                <td>{{ number_format($faixa->aliquota, 1, ',') }}%</td>
-                                <td>R$ {{ number_format($faixa->valorImposto, 2, ',', '.') }}</td>
-
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
-            </div>
-        </div> -->
     @endif
 
     <!-- MODAL DE VISUALIZAÇÃO -->
