@@ -8,12 +8,11 @@
 @endsection
 
 @section('extras-css')
-    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/plugins/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
+    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
     <style>
         .swal2-popup .swal2-styled.swal2-cancel {
             color: white !important;
@@ -39,7 +38,7 @@
                             <div class="col-md-5">
                                 <select class="form-control " name="ano" id="ano">
                                     @foreach ($anos as $item)
-                                        <option value="{{ $item->ano }}">
+                                        <option value="{{ $item->ano }}" {{ $item->ano == request()->input('ano') ? 'selected' : '' }}>
                                             {{ $item->ano }}
                                         </option>
                                     @endforeach
@@ -48,7 +47,7 @@
                             <div class="col-md-5">
                                 <select class="form-control " name="mes" id="mes">
                                     @foreach ($meses as $item)
-                                        <option value="{{ $item->id }}">
+                                        <option value="{{ $item->id }}" {{ $item->id == request()->input('mes') ? 'selected' : '' }}>
                                             {{ $item->descricao }}
                                         </option>
                                     @endforeach
@@ -72,10 +71,11 @@
     @if (request()->has('ano'))
 
     <div class="col-lg-12 col-12 layout-spacing">
+        <h6>{{ $titulo }}</h6>
     <div class="statbox widget box box-shadow">
       <div class="widget-content widget-content-area">
         <div class="table-responsive mt-0">
-          <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes-clerigos">
+          <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="contabilidade-irrf">
             <thead>
                 <tr>
                     <th>NOME</th>
@@ -85,7 +85,7 @@
                     <th>BASE DE CÁLCULOS</th>
                     <th>IRRF CALCULADO</th>
                     <th>RETIDO</th>
-                    <th>RECOLHIDO</th>
+                    <th>REPASSADO</th>
                 </tr>
             </thead>
             <tbody>
@@ -102,8 +102,8 @@
                     <td>{{ $item['prebanda']->n_dependentes }}</td>
                     <td>R$ {{ number_format($item['imposto']->valorBase) }}</td>
                     <td>R$ {{ number_format($item['imposto']->valorImposto) }}</td>
-                    <td>-</td>
-                    <td>-</td>
+                    <td>{{ $item['prebanda']->retido }}</td>
+                    <td>{{ $item['prebanda']->repasse }}</td>
                 </tr>
                 @empty
                 <tr>
@@ -124,44 +124,76 @@
 @endsection
 
 @section('extras-scripts')
-    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('custom/js/imw_datatables.js') }}?time={{ time() }}"></script>
-    <script src="{{ asset('perfil/clerigos/dependentes/js/index.js') }}?time={{ time() }}"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
+    <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.dataTables.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
     <script>
-        $('#btn-calcular').click(function(event) {
-            event.preventDefault();
-            var prebendaId = $('#prebendas_valor_ano').val();
+    $('#btn_buscar').click(function () {
+        $('#filter_form').removeAttr('target');
+    })
+    
+    $('#btn_relatorio').click(function () {
+        $('#filter_form').attr('target', '_blank');
+    })
 
-            if (prebendaId) {
-                $.ajax({
-                    type: 'GET',
-                    url: '/usuario/clerigos/perfil/imposto-de-renda/load-html/' + prebendaId,
-                    beforeSend: function() {
-                        $('#body-calculate').html(`<div style="min-height: 200px; display:flex; justify-content: center; align-items:center;">
-                            <div class="spinner-border text-primary align-self-center"></div>
-                        </div>`);
+    new DataTable('#contabilidade-irrf', {
+        scrollX: true,
+        scrollY: 400,
+        scrollCollapse: true,
+        layout: {
+            //top1: 'searchBuilder',
+            topStart: {
+            buttons: [
+                'pageLength',
+                {
+                  extend: 'excel',
+                  className: 'btn btn-primary btn-rounded',
+                  text: '<i class="fas fa-file-excel"></i> Excel',
+                  titleAttr: 'Excel',
+                  title: "{{ $titulo }}"
+                },
+                {
+                  extend: 'pdf',
+                  className: 'btn btn-primary btn-rounded',
+                  text: '<i class="fas fa-file-pdf"></i> PDF',
+                  titleAttr: 'PDF',
+                  title: "{{ $titulo }}",
+                },
+                {
+                  extend: 'print',
+                  className: 'btn btn-primary btn-rounded',
+                  text: '<i class="fas fa-print"></i> Imprimir',
+                  titleAttr: 'Imprimir',
+                  title: "{{ $titulo }}",
+                  customize: function ( win ) {
+                      $(win.document.body)
+                      .css( 'font-size', '14pt' )
+                      .find( 'h1' )
+                              .css( 'text-align', 'center' ).css( 'font-size', '18pt' ).css( 'font-weight', 'bold');
 
-
-                    },
-                    success: function(html) {
-                        if (html) {
-                            $('#body-calculate').html(html);
-                        } else {
-                            toastr.error('Erro ao carregar dados da prebenda.');
-                        }
-                    },
-                    error: function(error) {
-                        $('#body-calculate').html('<div class="text-danger">' + error.responseJSON
-                            .message + '</div>');
-                        toastr.error('Erro ao visualizar dados desta prebenda.');
-                    },
-                    complete: function() {
-                        $('.loadable').unblock();
-                    }
-                });
-            }
-        });
+                      $(win.document.body).find('table')
+                      .addClass('compact')
+                      .css('font-size', 'inherit');
+                  }
+                }]
+            },
+            topEnd: 'search',
+            bottomStart: 'info',
+            bottomEnd: 'paging'
+        },
+        language: {
+        url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+        }
+    });
     </script>
+
 @endsection

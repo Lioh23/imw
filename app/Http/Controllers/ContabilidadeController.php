@@ -18,7 +18,6 @@ class ContabilidadeController extends Controller
     public function irrf(Request $request)
     {
         $data = app(IrrfServices::class)->execute($request->all());
-        
         return view('contabilidade.irrf.index', $data);
     }
 

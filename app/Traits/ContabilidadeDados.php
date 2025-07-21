@@ -18,15 +18,22 @@ trait ContabilidadeDados
         return Mes::get();
     }
 
+    public static function fetchMes($params)
+    {
+        $mes = Mes::find($params['mes']);
+        return strtoupper($mes->descricao);
+    }
+
     public static function fetchPrebandas($params)
     {
         $ano = $params['ano'];
+        $mes = $params['mes'];
         $prebendas = DB::select("SELECT pp2.id, pp.nome, pp.cpf, pp2.valor AS valor_prebendas, (SELECT count(*) FROM pessoas_dependentes pd WHERE pd.declarar_em_irpf = 1 AND pd.pessoa_id = pp.id) AS n_dependentes, 
-        SUM(CASE WHEN (fl.plano_conta_id=41) THEN fl.valor ELSE 0 END) AS Retido,
-        SUM(CASE WHEN (fl.plano_conta_id=220) THEN fl.valor ELSE 0 END) AS Repasse
+        SUM(CASE WHEN (fl.plano_conta_id=41) THEN fl.valor ELSE 0 END) AS retido,
+        SUM(CASE WHEN (fl.plano_conta_id=220) THEN fl.valor ELSE 0 END) AS repasse
         from pessoas_pessoas pp 
         left join pessoas_prebendas pp2 on pp.id=pp2.pessoa_id 
-        left join financeiro_lancamentos fl on pp.id=fl.clerigo_id and year(fl.data_movimento)={$ano} and month(fl.data_movimento)=6
+        left join financeiro_lancamentos fl on pp.id=fl.clerigo_id and year(fl.data_movimento)={$ano} and month(fl.data_movimento) = {$mes}
         where pp.id in 
             (select pessoa_id 
             from pessoas_nomeacoes pn ,

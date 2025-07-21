@@ -19,6 +19,7 @@ class IrrfServices
         $data['anos'] =  ContabilidadeDados::fetchAnos();
         $data['meses'] =  ContabilidadeDados::fetchMeses();
         if(isset($params['ano'])) {
+            $mes =  ContabilidadeDados::fetchMes($params);
             $prebendasAll = ContabilidadeDados::fetchPrebandas($params);
             $prebendas = [];
             foreach($prebendasAll as $item){
@@ -41,13 +42,12 @@ class IrrfServices
 
             }
             $data['prebendas'] = (object) $prebendas;
-            // $prebendaId = 4;
-            // $prebenda = PessoasPrebenda::where('id', $prebendaId)->first();
-            // $irCalculator = new ImpostoDeRendaSimplificadoCalculator();
-            // $data['data'] = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
 
+            $data['titulo'] = "IMW - RELATÓRIO CONTABILIDADE IRRF {$params['ano']}/$mes ";
+        }else{
+            $data['titulo'] = "";
         }
-
+        
         return $data;
     }
 }
