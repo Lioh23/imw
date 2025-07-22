@@ -47,4 +47,23 @@ trait IgrejasDados
         }
         return $congregacoesIgrejas;
     }
+
+    public static function fetchCnpjIgrejas($regiao, $params)
+    {
+        $igrejas = DB::table('instituicoes_instituicoes as igreja')
+            ->select(
+                'distrito.id',
+                'distrito.nome as distrito_nome',
+                'igreja.id as id_igreja',
+                'igreja.nome as igreja_nome',
+                'igreja.cnpj',
+            )->join('instituicoes_instituicoes as distrito', function ($join) {
+                $join->on('distrito.id', '=', 'igreja.instituicao_pai_id');
+            })
+            ->where(['distrito.instituicao_pai_id' => $regiao])
+            ->orderBy('distrito.nome')
+            ->orderBy('igreja.id')
+            ->get();
+        return $igrejas;
+    }
 }

@@ -481,6 +481,7 @@ Route::middleware(['auth'])->group(function () {
          // Contabilidade
         Route::prefix('contabilidade')->name('contabilidade.')->controller(ContabilidadeController::class)->group(function () {
             Route::get('/irrf', 'irrf')->name('irrf')->middleware('seguranca:contabilidade-irrf');
+            Route::get('/cnpj-igrejas', 'cnpjIgreja')->name('cnpj.igreja')->middleware('seguranca:contabilidade-cnpj-igreja');
         });
 
     });

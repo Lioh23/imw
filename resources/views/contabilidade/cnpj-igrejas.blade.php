@@ -27,7 +27,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>IRRF por mês/ano</h4>
+                        <h4>CNPJ por Igrejas</h4>
                     </div>
                 </div>
             </div>
@@ -36,21 +36,8 @@
                     <form class="form-vertical" id="filter_form"  method="GET">
                         <div class="row">
                             <div class="col-md-5">
-                                <select class="form-control " name="ano" id="ano">
-                                    @foreach ($anos as $item)
-                                        <option value="{{ $item->ano }}" {{ $item->ano == request()->input('ano') ? 'selected' : '' }}>
-                                            {{ $item->ano }}
-                                        </option>
-                                    @endforeach
-                                </select>
-                            </div>
-                            <div class="col-md-5">
-                                <select class="form-control " name="mes" id="mes">
-                                    @foreach ($meses as $item)
-                                        <option value="{{ $item->id }}" {{ $item->id == request()->input('mes') ? 'selected' : '' }}>
-                                            {{ $item->descricao }}
-                                        </option>
-                                    @endforeach
+                                <select class="form-control " name="igreja" id="igreja">
+                                    <option value="todas">Todas</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary" id="btn-alcular">Buscar</button>
@@ -61,7 +48,7 @@
         </div>
     </div>
 
-    @if (request()->has('ano'))
+    @if (request()->has('igreja'))
 
     <div class="col-lg-12 col-12 layout-spacing">
         <h6>{{ $titulo }}</h6>
@@ -71,27 +58,17 @@
           <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="contabilidade-irrf">
             <thead>
                 <tr>
-                    <th>NOME</th>
-                    <th>CPF</th>
-                    <th>PREBENDAS</th>
-                    <th>Nº DEPENDENTES</th>
-                    <th>BASE DE CÁLCULOS</th>
-                    <th>IRRF CALCULADO</th>
-                    <th>RETIDO</th>
-                    <th>REPASSADO</th>
+                    <th>DISTRITO</th>
+                    <th>IGREJA</th>
+                    <th>CNPJ</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse($prebendas as $item)
+                @forelse($igrejas as $item)
                 <tr>
-                    <td>{{ $item['prebanda']->nome }}</td>
-                    <td>{{ formatStr($item['prebanda']->cpf, '###.###.###-##') }}</td>
-                    <td>R$ {{ number_format($item['prebanda']->valor_prebendas, 2, ',', '.') }}</td>
-                    <td>{{ $item['prebanda']->n_dependentes }}</td>
-                    <td>R$ {{ number_format($item['imposto']->valorBase) }}</td>
-                    <td>R$ {{ number_format($item['imposto']->valorImposto) }}</td>
-                    <td>{{ $item['prebanda']->retido }}</td>
-                    <td>{{ $item['prebanda']->repasse }}</td>
+                    <td>{{ $item->distrito_nome }}</td>
+                    <td>{{ $item->igreja_nome }}</td>
+                    <td>{{ $item->cnpj }}</td>
                 </tr>
                 @empty
                 <tr>

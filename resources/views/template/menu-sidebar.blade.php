@@ -775,10 +775,15 @@
                          </svg>
                      </div>
                  </a>
-                 <ul class="collapse submenu list-unstyled {{ Request::is('contabilidade/irrf') ? 'collapse show' : '' }}" id="contabilidade" data-parent="#contabilidade">
+                 <ul class="collapse submenu list-unstyled {{ Request::is('contabilidade/*') ? 'collapse show' : '' }}" id="contabilidade" data-parent="#contabilidade">
                      <li {!! Request::is('contabilidade/irrf') ? 'class="active"' : '' !!}>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('contabilidade-irrf'))
                              <a href="{{ route('contabilidade.irrf') }}">IRRF</a>
+                         @endif
+                     </li>
+                     <li {!! Request::is('contabilidade/cnpj-igrejas') ? 'class="active"' : '' !!}>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('contabilidade-cnpj-igreja'))
+                             <a href="{{ route('contabilidade.cnpj.igreja') }}">CNPJ por Igreja</a>
                          @endif
                      </li>
                  </ul>
