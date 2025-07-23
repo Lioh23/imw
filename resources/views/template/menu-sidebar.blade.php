@@ -523,6 +523,11 @@
                                 <a href="{{ route('regiao.cnpj.igreja') }}">CNPJ por Igreja</a>
                             @endif
                         </li>
+                        <li {!! Request::is('regiao/relatorio/contato-igrejas') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-contato-igreja'))
+                                <a href="{{ route('regiao.contato.igreja') }}">Contatos por Igreja</a>
+                            @endif
+                        </li>
                      </ul>
                  </li>
              @endif

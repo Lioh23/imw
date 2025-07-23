@@ -3,7 +3,7 @@
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
         ['text' => 'Igreja', 'url' => '#', 'active' => false],
-        ['text' => 'CNPJ por Igrejas', 'url' => '#', 'active' => true],
+        ['text' => 'Contatos por Igrejas', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -27,7 +27,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>CNPJ por Igrejas</h4>
+                        <h4>Contatos por Igrejas</h4>
                     </div>
                 </div>
             </div>
@@ -60,7 +60,8 @@
                 <tr>
                     <th>DISTRITO</th>
                     <th>IGREJA</th>
-                    <th>CNPJ</th>
+                    <th>E-MAIL</th>
+                    <th>TELEFONE</th>
                 </tr>
             </thead>
             <tbody>
@@ -68,7 +69,8 @@
                 <tr>
                     <td>{{ $item->distrito_nome }}</td>
                     <td>{{ $item->igreja_nome }}</td>
-                    <td>{{ formatStr($item->cnpj, '##.###.###/####-##') }}</td>
+                    <td>{{ $item->email }}</td>
+                     <td>({{ $item->ddd }}) {{ formatStr($item->telefone, '#####-####') }}</td>
                 </tr>
                 @empty
                 <tr>

@@ -271,7 +271,7 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('regiao/relatorio')->name('regiao.')->controller(RegiaoRelatorioController::class)->group(function () {
             Route::get('/congregacoes-por-igrejas', 'CongregacaoPorIgreja')->name('relatorio.congregacaoporigreja')->middleware('seguranca:regiao-relatorio-congregacoes-igrejas');
             Route::get('/cnpj-igrejas', 'cnpjIgreja')->name('cnpj.igreja')->middleware('seguranca:regiao-relatorio-cnpj-igreja');
-             //Route::get('/contato-igrejas', 'ContatoIgreja')->name('contato.igreja')->middleware('seguranca:contabilidade-cnpj-igreja');
+            Route::get('/contato-igrejas', 'ContatoIgreja')->name('contato.igreja')->middleware('seguranca:regiao-relatorio-contato-igreja');
         });
 
         Route::prefix('regiao/estatistica')->name('regiao.')->group(function () {
