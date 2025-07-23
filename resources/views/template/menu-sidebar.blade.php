@@ -519,7 +519,7 @@
                             @endif
                         </li>
                         <li {!! Request::is('regiao/relatorio/cnpj-igrejas') ? 'class="active"' : '' !!}>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('contabilidade-cnpj-igreja'))
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-cnpj-igreja'))
                                 <a href="{{ route('regiao.cnpj.igreja') }}">CNPJ por Igreja</a>
                             @endif
                         </li>
