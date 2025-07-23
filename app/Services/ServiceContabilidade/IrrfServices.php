@@ -13,7 +13,6 @@ use Carbon\Carbon;
 
 class IrrfServices
 {
-
     public function execute(array $params = [])
     {
         $data['anos'] =  ContabilidadeDados::fetchAnos();

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ServiceRegiaoRelatorios\CnpjIgreja;
 use App\Services\ServiceIgrejas\Igrejas;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEscolaridadeService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEstadoCivilService;
@@ -334,5 +335,11 @@ class RegiaoRelatorioController extends Controller
     public function CongregacaoPorIgreja(Request $request){
         $data = app(Igrejas::class)->execute($request->all());
         return view('regiao.relatorios.igreja.congregacoes-por-igreja', $data);
+    }   
+    public function cnpjIgreja(Request $request)
+    {
+        $data = app(CnpjIgreja::class)->execute($request->all());
+ 
+        return view('regiao.relatorios.igreja.cnpj-igrejas', $data);
     }
 }

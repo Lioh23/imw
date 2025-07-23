@@ -68,7 +68,7 @@
                 <tr>
                     <td>{{ $item->distrito_nome }}</td>
                     <td>{{ $item->igreja_nome }}</td>
-                    <td>{{ $item->cnpj }}</td>
+                    <td>{{ formatStr($item->cnpj, '##.###.###/####-##') }}</td>
                 </tr>
                 @empty
                 <tr>

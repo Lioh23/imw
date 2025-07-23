@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\ServiceContabilidade;
+namespace App\Services\ServiceRegiaoRelatorios;
 use App\Traits\IgrejasDados;
 use App\Traits\Identifiable;
 class CnpjIgreja
