@@ -17,6 +17,7 @@ use App\Models\MembresiaMembro;
 use App\Models\MembresiaRolPermanente;
 use App\Models\MembresiaSituacao;
 use App\Models\PessoasPessoa;
+use App\Models\PessoaStatus;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -210,6 +211,11 @@ trait Identifiable
     public static function fetchFuncoesEclesiasticas()
     {
         return MembresiaFuncaoEclesiastica::orderBy('descricao')->get();
+    }
+
+    public static function fetchPessoaStatus()
+    {
+        return PessoaStatus::get();
     }
 
 }

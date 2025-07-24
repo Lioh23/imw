@@ -265,6 +265,8 @@ Route::middleware(['auth'])->group(function () {
         Route::prefix('regiao/relatorio')->name('regiao.')->controller(RegiaoRelatorioController::class)->group(function () {
             Route::get('/clerigos-aniversariantes', 'clerigoAniversariante')->name('relatorio.clerigosaniversariantes')->middleware('seguranca:relatorio-clerigos-aniversariantes');
             Route::get('/clerigos-dados', 'clerigoDados')->name('relatorio.clerigosdados')->middleware('seguranca:relatorio-clerigos-dados');
+            Route::get('/clerigos-categorias', 'clerigoCategoria')->name('relatorio.clerigoscategoria')->middleware('seguranca:relatorio-clerigos-categoria');
+            Route::get('/clerigos-status', 'clerigoStatus')->name('relatorio.clerigosstatus')->middleware('seguranca:relatorio-clerigos-status');
         });
 
         // Relatórios Região Igreja

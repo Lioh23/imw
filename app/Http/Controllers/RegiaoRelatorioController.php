@@ -18,7 +18,9 @@ use App\Services\ServiceRegiaoRelatorios\QuantidadeMembrosService;
 use App\Services\ServiceRegiaoRelatorios\SaldoIgrejasService;
 use App\Services\ServiceRegiaoRelatorios\VariacaoFinanceiraService;
 use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoAniversariantes;
+use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoCategorias;
 use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoDados;
+use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoStatus;
 use App\Traits\Identifiable;
 use Illuminate\Http\Request;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -322,7 +324,6 @@ class RegiaoRelatorioController extends Controller
 
     public function clerigoAniversariante(Request $request)
     {
-        $visao = $request->input('visao');
         $data = app(ClerigoAniversariantes::class)->execute($request->all());
         return view('regiao.relatorios.clerigos-prebendas.clerigos-aniversariantes', $data);
     }
@@ -331,6 +332,18 @@ class RegiaoRelatorioController extends Controller
     {
         $data = app(ClerigoDados::class)->execute($request->all());
         return view('regiao.relatorios.clerigos-prebendas.clerigos-dados', $data);
+    }
+
+    public function clerigoCategoria(Request $request)
+    {
+        $data = app(ClerigoCategorias::class)->execute($request->all());
+        return view('regiao.relatorios.clerigos-prebendas.clerigos-categorias', $data);
+    }
+
+    public function clerigoStatus(Request $request)
+    {
+        $data = app(ClerigoStatus::class)->execute($request->all());
+        return view('regiao.relatorios.clerigos-prebendas.clerigos-status', $data);
     }
 
     public function CongregacaoPorIgreja(Request $request){

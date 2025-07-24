@@ -508,6 +508,16 @@
                                 <a href="{{ route('regiao.relatorio.clerigosdados') }}">Clérigos Documentação</a>
                             @endif
                         </li>
+                        <li {!! Request::is('regiao/relatorio/clerigos-categorias') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-categoria'))
+                                <a href="{{ route('regiao.relatorio.clerigoscategoria') }}">Clérigos Categorias</a>
+                            @endif
+                        </li>
+                        <li {!! Request::is('regiao/relatorio/clerigos-status') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-status'))
+                                <a href="{{ route('regiao.relatorio.clerigosstatus') }}">Clérigos Status</a>
+                            @endif
+                        </li>
                          <li class="submenu-fixo mt-3 mb-3">
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-congregacoes-igrejas'))
                                 <span>Igrejas</span>
