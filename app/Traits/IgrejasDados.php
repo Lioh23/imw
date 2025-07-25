@@ -102,7 +102,7 @@ trait IgrejasDados
             })->join('financeiro_caixas as fc', function ($join) {
                 $join->on('igreja.id', '=', 'fc.instituicao_id');
             })
-            ->where(['distrito.instituicao_pai_id' => $regiao])
+            ->where(['distrito.instituicao_pai_id' => $regiao, 'fc.tipo' => 'B'])
             ->orderBy('distrito.nome')
             ->orderBy('igreja.id')
             ->get();

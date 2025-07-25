@@ -7,11 +7,12 @@ use Carbon\Carbon;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-class GetEstatisticaAnoEclesiasticoService
+class GetEstatisticaAnoEclesiasticoTodosService
 {
     public function execute(InstituicoesInstituicao $igreja, $ano = null)
     {
         $dataReferencia = $this->handleDataReferencia($ano ?? date('Y'));
+
         $membrosRecebidos = $this->handleEstatisticaRecepcao($igreja->id, $dataReferencia);
         $membrosExcluidos = $this->handleEstatisticaExclusao($igreja->id, $dataReferencia);
         $rolAtual         = $this->handleTotalRolAtual($igreja->id);

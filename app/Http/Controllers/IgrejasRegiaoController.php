@@ -6,6 +6,7 @@ use App\Models\InstituicoesInstituicao;
 use App\DataTables\IgrejasRegiaoDataTable;
 use App\Services\ServiceIgrejas\BalanceteService;
 use App\Services\ServiceIgrejas\GetEstatisticaAnoEclesiasticoService;
+use App\Services\ServiceIgrejas\GetEstatisticaAnoEclesiasticoTodosService;
 use App\Services\ServiceIgrejas\LivroRazaoService;
 use App\Services\ServiceIgrejas\MovimentoDiarioService;
 use App\Traits\LocationUtils;
@@ -33,6 +34,17 @@ class IgrejasRegiaoController extends Controller
     {
         try {
             $data = app(GetEstatisticaAnoEclesiasticoService::class)->execute($igreja, $request->input('ano'));
+            return view('igrejas-regiao.estatistica-ano-eclesiastico', $data);
+        } catch (\Exception $e) {
+
+            return redirect()->back()->with('error', 'Erro' . $e->getMessage());
+        }
+    }
+
+    public function estatisticaAnoEclesiasticoTodos(Request $request, InstituicoesInstituicao $igreja)
+    {
+        try {
+            $data = app(GetEstatisticaAnoEclesiasticoTodosService::class)->execute($igreja, $request->input('ano'));
             return view('igrejas-regiao.estatistica-ano-eclesiastico', $data);
         } catch (\Exception $e) {
 
