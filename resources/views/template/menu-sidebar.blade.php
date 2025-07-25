@@ -521,7 +521,7 @@
 
                          <li {!! Request::is('regiao/relatorio/historiconomeacoes') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-hitorico-nomeacoes'))
-                                 <a href="{{ route('regiao.estatistica.historiconomeacoes') }}">Histórico de
+                                 <a href="{{ route('regiao.estatistica.historiconomeacoes.regionais') }}">Histórico de
                                      Nomeacões</a>
                              @endif
                          </li>
@@ -615,6 +615,13 @@
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-quantidade-membros'))
                                  <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Quantidade de
                                      Membros</a>
+                             @endif
+                         </li>
+
+                         <li {!! Request::is('regiao/estatistica/relatorio/historiconomeacoes') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-hitorico-nomeacoes'))
+                                 <a href="{{ route('regiao.estatistica.historiconomeacoes') }}">Histórico de
+                                     Nomeacões</a>
                              @endif
                          </li>
 

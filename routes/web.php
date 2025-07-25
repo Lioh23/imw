@@ -267,7 +267,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/clerigos-dados', 'clerigoDados')->name('relatorio.clerigosdados')->middleware('seguranca:relatorio-clerigos-dados');
             Route::get('/clerigos-categorias', 'clerigoCategoria')->name('relatorio.clerigoscategoria')->middleware('seguranca:relatorio-clerigos-categoria');
             Route::get('/clerigos-status', 'clerigoStatus')->name('relatorio.clerigosstatus')->middleware('seguranca:relatorio-clerigos-status');
-            Route::get('/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes.regionais')->middleware(['seguranca:regiao-menu-estatistica']);
             Route::post('/historiconomeacoes/pdf', [RegiaoEstatisticasController::class, 'historiconomeacoesPdf'])->name('relatorio.historiconomeacoes-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
         });
 
@@ -301,8 +301,8 @@ Route::middleware(['auth'])->group(function () {
             //Estatitisca de Membros
             Route::get('/relatorio/estatistica-total-membresia', [RegiaoEstatisticasController::class, 'totalMembresia'])->name('estatistica.totalMembresia')->middleware(['seguranca:regiao-menu-estatistica']);
 
-            // Route::get('/relatorio/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-estatistica']);
-            // Route::post('/relatorio/historiconomeacoes/pdf', [RegiaoEstatisticasController::class, 'historiconomeacoesPdf'])->name('relatorio.historiconomeacoes-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/relatorio/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::post('/relatorio/historiconomeacoes/pdf', [RegiaoEstatisticasController::class, 'historiconomeacoesPdf'])->name('relatorio.historiconomeacoes-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
 
             Route::get('/relatorio/ticketmedio', [RegiaoEstatisticasController::class, 'ticketmedio'])->name('estatistica.ticketmedio')->middleware(['seguranca:regiao-menu-estatistica']);
             Route::post('/relatorio/ticketmedio/pdf', [RegiaoEstatisticasController::class, 'ticketmedioPdf'])->name('relatorio.ticketmedio-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
