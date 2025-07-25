@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Services\ServiceIgrejas\CnpjIgreja;
+use App\Services\ServiceIgrejas\ContaBancariaIgreja;
 use App\Services\ServiceIgrejas\ContatoIgreja;
 use App\Services\ServiceIgrejas\Igrejas;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEscolaridadeService;
@@ -362,5 +363,11 @@ class RegiaoRelatorioController extends Controller
     {
         $data = app(ContatoIgreja::class)->execute($request->all());
         return view('regiao.relatorios.igreja.contato-igrejas', $data);
+    }
+
+    public function ContaBancariaIgreja(Request $request)
+    {
+        $data = app(ContaBancariaIgreja::class)->execute($request->all());
+        return view('regiao.relatorios.igreja.conta-bancaria-igrejas', $data);
     }
 }

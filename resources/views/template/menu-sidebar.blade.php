@@ -518,6 +518,13 @@
                                 <a href="{{ route('regiao.relatorio.clerigosstatus') }}">Clérigos Status</a>
                             @endif
                         </li>
+
+                         <li {!! Request::is('regiao/relatorio/historiconomeacoes') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-hitorico-nomeacoes'))
+                                 <a href="{{ route('regiao.estatistica.historiconomeacoes') }}">Histórico de
+                                     Nomeacões</a>
+                             @endif
+                         </li>
                          <li class="submenu-fixo mt-3 mb-3">
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-congregacoes-igrejas'))
                                 <span>Igrejas</span>
@@ -536,6 +543,11 @@
                         <li {!! Request::is('regiao/relatorio/contato-igrejas') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-contato-igreja'))
                                 <a href="{{ route('regiao.contato.igreja') }}">Contatos por Igreja</a>
+                            @endif
+                        </li>
+                        <li {!! Request::is('regiao/relatorio/conta-bancaria-igrejas') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-conta-bancaria-igreja'))
+                                <a href="{{ route('regiao.conta.bancaria.igreja') }}">Conta Bancária por Igreja</a>
                             @endif
                         </li>
                      </ul>
@@ -603,12 +615,6 @@
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-quantidade-membros'))
                                  <a href="{{ route('regiao.relatorio.estatisticatotalmembros') }}">Quantidade de
                                      Membros</a>
-                             @endif
-                         </li>
-                         <li {!! Request::is('regiao/estatistica/relatorio/historiconomeacoes') ? 'class="active"' : '' !!}>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-hitorico-nomeacoes'))
-                                 <a href="{{ route('regiao.estatistica.historiconomeacoes') }}">Histórico de
-                                     Nomeacões</a>
                              @endif
                          </li>
 

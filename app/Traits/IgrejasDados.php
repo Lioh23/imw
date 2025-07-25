@@ -87,4 +87,25 @@ trait IgrejasDados
             ->get();
         return $igrejas;
     }
+
+    public static function fetchContaBancariaIgreja($regiao, $params)
+    {
+        $igrejas = DB::table('instituicoes_instituicoes as igreja')
+            ->select(
+                'distrito.id',
+                'distrito.nome as distrito_nome',
+                'igreja.id as id_igreja',
+                'igreja.nome as igreja_nome',
+                'fc.descricao as conta_bancaria',
+            )->join('instituicoes_instituicoes as distrito', function ($join) {
+                $join->on('distrito.id', '=', 'igreja.instituicao_pai_id');
+            })->join('financeiro_caixas as fc', function ($join) {
+                $join->on('igreja.id', '=', 'fc.instituicao_id');
+            })
+            ->where(['distrito.instituicao_pai_id' => $regiao])
+            ->orderBy('distrito.nome')
+            ->orderBy('igreja.id')
+            ->get();
+        return $igrejas;
+    }
 }
