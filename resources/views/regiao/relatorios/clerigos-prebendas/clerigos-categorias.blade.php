@@ -47,17 +47,26 @@
       
       <div class="form-group row mb-4">
         <div class="col-lg-2 text-right">
-          <label class="control-label">Clérigos:</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-control" id="buscar" name="buscar" required>
-              <option value="todos" {{ request()->input('buscar') == 'buscar' ? 'selected' : '' }}>
-                  Todos 
-              </option>
-          </select>
+          <input type="hidden" id="buscar" name="buscar">
         </div>
       </div>
 
+      <div class="form-group row mb-4">
+        <div class="col-lg-2 text-right">
+          <label class="control-label">categoria:</label>
+        </div>
+        <div class="col-lg-6">
+          <select id="categoria" name="categoria" class="form-control @error('mes') is-invalid @enderror" >
+            <option value="" {{ request()->get('categoria') == '' ? 'selected hidden' : '' }}>Todos</option>
+            <option value="missionária" {{ request()->get('categoria') == 'missionária' ? 'selected hidden' : '' }}> Missionária</option>
+            <option value="pastor" {{ request()->get('categoria') == 'pastor' ? 'selected hidden' : '' }}>Pastor</option>
+            <option value="ministro" {{ request()->get('categoria') == 'ministro' ? 'selected hidden' : '' }}>Ministro</option>
+            <option value="bispo" {{ request()->get('categoria') == 'bispo' ? 'selected hidden' : '' }}>Bispo</option>
+          </select>
+        </div>
+      </div>
       {{-- Meses --}}
       <div class="form-group row mb-4">
         <div class="col-lg-2"></div>

@@ -47,18 +47,12 @@
       
       <div class="form-group row mb-4">
         <div class="col-lg-2 text-right">
-          <label class="control-label">Clérigos:</label>
         </div>
         <div class="col-lg-6">
-          <select class="form-control" id="buscar" name="buscar" required>
-              <option value="todos" {{ request()->input('buscar') == 'buscar' ? 'selected' : '' }}>
-                  Todos 
-              </option>
-          </select>
+          <input type="hidden" id="buscar" name="buscar">
         </div>
       </div>
 
-      {{-- Meses --}}
       <div class="form-group row mb-4">
         <div class="col-lg-2 text-right">
           <label class="control-label">Status:</label>
