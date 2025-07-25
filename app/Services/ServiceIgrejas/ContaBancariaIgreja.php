@@ -11,7 +11,7 @@ class ContaBancariaIgreja
         $regiao = Identifiable::fetchtSessionRegiao();
         if(isset($params['igreja'])) {            
             $data['igrejas'] = IgrejasDados::fetchContaBancariaIgreja($regiao->id, $params);
-            $data['titulo'] = "IMW - RELATÓRIO CONTA BACÁRIA POR IGREJA ";
+            $data['titulo'] = "IMW - RELATÓRIO CONTA BANCÁRIA POR IGREJA ";
         }else{
             $data['titulo'] = "";
         }
