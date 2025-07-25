@@ -38,6 +38,7 @@
                         <label for="categoria">* Categoria</label>
                         <select class="form-control  @error('categoria') is-invalid @enderror" type="text"
                             id="categoria" name="categoria">
+                            <option value="">Selecione</option>
                             <option value="missionária" {{ $clerigo->categoria == 'missionária' ? 'selected' : '' }}>
                                 Missionária</option>
                             <option value="pastor" {{ $clerigo->categoria == 'pastor' ? 'selected' : '' }}>Pastor

@@ -36,9 +36,10 @@
 
                 <div class="row mb-4">
                     <div class="col-xl-3">
-                        <label for="categoria">* Categoaria</label>
+                        <label for="categoria">* Categoria</label>
                         <select class="form-control @error('categoria') is-invalid @enderror" type="text"
                             id="categoria" name="categoria">
+                            <option value="">Selecione</option>
                             <option value="missionária" {{ old('categoria') == 'missionária' ? 'selected' : '' }}>
                                 Missionária</option>
                             <option value="pastor" {{ old('categoria') == 'pastor' ? 'selected' : '' }}>Pastor</option>
