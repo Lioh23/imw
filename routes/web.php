@@ -267,8 +267,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/clerigos-dados', 'clerigoDados')->name('relatorio.clerigosdados')->middleware('seguranca:relatorio-clerigos-dados');
             Route::get('/clerigos-categorias', 'clerigoCategoria')->name('relatorio.clerigoscategoria')->middleware('seguranca:relatorio-clerigos-categoria');
             Route::get('/clerigos-status', 'clerigoStatus')->name('relatorio.clerigosstatus')->middleware('seguranca:relatorio-clerigos-status');
-            Route::get('/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes.regionais')->middleware(['seguranca:regiao-menu-estatistica']);
-            Route::post('/historiconomeacoes/pdf', [RegiaoEstatisticasController::class, 'historiconomeacoesPdf'])->name('relatorio.historiconomeacoes-pdf')->middleware(['seguranca:regiao-menu-estatistica']);
+            Route::get('/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes.regionais')->middleware(['seguranca:relatorio-clerigos-categoria']);
+            Route::post('/historiconomeacoes/pdf', [RegiaoEstatisticasController::class, 'historiconomeacoesPdf'])->name('relatorio.historiconomeacoes-pdf')->middleware(['seguranca:relatorio-clerigos-categoria']);
         });
 
         // Relatórios Região Igreja
