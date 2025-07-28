@@ -60,7 +60,6 @@
             </div>
         </div>
     </div>
-
     @if (request()->has('ano'))
 
     <div class="col-lg-12 col-12 layout-spacing">
@@ -77,8 +76,10 @@
                     <th>Nº DEPENDENTES</th>
                     <th>BASE DE CÁLCULOS</th>
                     <th>IRRF CALCULADO</th>
+                    @if(Request::is('regiao/relatorio/irrf'))
                     <th>RETIDO</th>
                     <th>REPASSADO</th>
+                    @endif
                 </tr>
             </thead>
             <tbody>
@@ -90,8 +91,10 @@
                     <td>{{ $item['prebanda']->n_dependentes }}</td>
                     <td>R$ {{ number_format($item['imposto']->valorBase) }}</td>
                     <td>R$ {{ number_format($item['imposto']->valorImposto) }}</td>
+                    @if(Request::is('regiao/relatorio/irrf'))
                     <td>{{ $item['prebanda']->retido }}</td>
                     <td>{{ $item['prebanda']->repasse }}</td>
+                    @endif
                 </tr>
                 @empty
                 <tr>

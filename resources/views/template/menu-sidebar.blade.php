@@ -441,6 +441,16 @@
                          data-parent="#financeiro-regiao">
                          <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <span>Contabilidade</span>
+                             @endif
+                         </li>
+                         <li {!! Request::is('regiao/relatorio/irrf') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-lancamento-das-igrejas'))
+                                 <a href="{{ route('regiao.relatorio.irrf') }}">IRRF</a>
+                             @endif
+                         </li>
+                         <li class="submenu-fixo mt-3 mb-3">
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                                  <span>Financeiro</span>
                              @endif
                          </li>
