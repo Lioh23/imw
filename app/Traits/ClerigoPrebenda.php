@@ -118,7 +118,7 @@ trait ClerigoPrebenda
             ->join('instituicoes_instituicoes as ii', function ($join) {
                 $join->on('pn.instituicao_id', '=', 'ii.id')->where('ii.ativo', '=', 1);
             })
-            ->where(['pp.status_id' => 1,  'ii.ativo' => 1, 'pp.regiao_id' => $regiao])
+            ->where(['pp.status_id' => 1, 'ii.ativo' => 1, 'pp.regiao_id' => $regiao, 'pn.data_termino' => null])
             ->when($params['categoria'], fn ($query) => $query->where('pp.categoria', $params['categoria']))
             ->orderBy('pp.nome')
             ->groupBy('id', 'pp.nome', 'pp.telefone_preferencial', 'pp.telefone_alternativo', 'pp.igreja_id', 'pp.categoria')
@@ -149,7 +149,7 @@ trait ClerigoPrebenda
                 $join->on('pn.instituicao_id', '=', 'ii.id')->where('ii.ativo', '=', 1);
             })
             ->when($params['status'], fn ($query) => $query->where('pp.status_id', $params['status']))
-            ->where(['pp.status_id' => 1, 'ii.ativo' => 1, 'pp.regiao_id' => $regiao])
+            ->where([/*'pp.status_id' => 1,*/ 'ii.ativo' => 1, 'pp.regiao_id' => $regiao, 'pn.data_termino' => null])
             ->orderBy('pp.nome')
             ->groupBy('id', 'pp.nome', 'pp.telefone_preferencial', 'pp.telefone_alternativo', 'pp.igreja_id', 'ps.descricao')
             ->get();        

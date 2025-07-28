@@ -503,6 +503,11 @@
                                      Gênero</a>
                              @endif
                          </li>
+                         <li {!! Request::is('regiao/relatorio/estatisticagenero') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-estatistica-genero'))
+                                 <a href="{{ route('regiao.relatorio.estatisticagenero') }}">Ano Eclesiástico</a>
+                             @endif
+                         </li>
                         <li class="submenu-fixo mt-3 mb-3">
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-instituicoes-igrejas'))
                                 <span>Clérigos</span>
