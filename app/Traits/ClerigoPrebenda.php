@@ -136,7 +136,7 @@ trait ClerigoPrebenda
                 DB::raw("CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE '' END contato"),
-                DB::raw("(SELECT CONCAT(iii.nome) FROM instituicoes_instituicoes iii WHERE iii.id = pp.igreja_id) igreja")
+                DB::raw("(SELECT CONCAT(iii.nome) FROM instituicoes_instituicoes iii WHERE iii.id = pp.igreja_id AND iii.ativo = 1) igreja")
             )
             ->leftJoin('pessoas_status as ps', function ($join) {
                 $join->on('ps.id', '=', 'pp.status_id');
@@ -149,7 +149,7 @@ trait ClerigoPrebenda
                 $join->on('pn.instituicao_id', '=', 'ii.id')->where('ii.ativo', '=', 1);
             })
             ->when($params['status'], fn ($query) => $query->where('pp.status_id', $params['status']))
-            ->where(['pp.status_id' => 1, 'pp.regiao_id' => $regiao])
+            ->where(['pp.status_id' => 1, 'ii.ativo' => 1, 'pp.regiao_id' => $regiao])
             ->orderBy('pp.nome')
             ->groupBy('id', 'pp.nome', 'pp.telefone_preferencial', 'pp.telefone_alternativo', 'pp.igreja_id', 'ps.descricao')
             ->get();        
