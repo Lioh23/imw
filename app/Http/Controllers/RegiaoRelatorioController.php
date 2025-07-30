@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\ServiceIgrejas\CnpjIgreja;
 use App\Services\ServiceIgrejas\ContaBancariaIgreja;
 use App\Services\ServiceIgrejas\ContatoIgreja;
+use App\Services\ServiceIgrejas\GetEstatisticaAnoEclesiasticoTodosService;
 use App\Services\ServiceIgrejas\Igrejas;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEscolaridadeService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaEstadoCivilService;
@@ -369,5 +370,12 @@ class RegiaoRelatorioController extends Controller
     {
         $data = app(ContaBancariaIgreja::class)->execute($request->all());
         return view('regiao.relatorios.igreja.conta-bancaria-igrejas', $data);
+    }
+
+    public function anoEclesiastico(Request $request)
+    {
+        $data['membresias'] = app(GetEstatisticaAnoEclesiasticoTodosService::class)->execute($request->all());
+        $data['titulo'] = "IMW - RELATÓRIO ANO ECLESIÁSTICO - ".$request->ano;
+        return view('regiao.relatorios.igreja.membresias', $data);
     }
 }

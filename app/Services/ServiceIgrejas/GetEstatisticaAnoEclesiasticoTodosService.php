@@ -5,27 +5,33 @@ namespace App\Services\ServiceIgrejas;
 use App\Models\InstituicoesInstituicao;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class GetEstatisticaAnoEclesiasticoTodosService
 {
-    public function execute(InstituicoesInstituicao $igreja, $ano = null)
+    public function execute(array $params = [])
     {
-        $dataReferencia = $this->handleDataReferencia($ano ?? date('Y'));
+        $getIgrejas = app(GetIgrejas::class)->execute($params);
+        $membresias = [];
+        foreach($getIgrejas as $igreja){
+            $ano = $params['ano'];
+            $dataReferencia = $this->handleDataReferencia($ano ?? date('Y'));
+            $membrosRecebidos =  $this->handleEstatisticaRecepcao($igreja->id, $dataReferencia);
+            $membrosExcluidos =  $this->handleEstatisticaExclusao($igreja->id, $dataReferencia);
+            $rolAtual         =  $this->handleTotalRolAtual($igreja->id);
+            $rolAnterior      =  $this->handleTotalRolAnterior($rolAtual, $membrosRecebidos, $membrosExcluidos);
 
-        $membrosRecebidos = $this->handleEstatisticaRecepcao($igreja->id, $dataReferencia);
-        $membrosExcluidos = $this->handleEstatisticaExclusao($igreja->id, $dataReferencia);
-        $rolAtual         = $this->handleTotalRolAtual($igreja->id);
-        $rolAnterior      = $this->handleTotalRolAnterior($rolAtual, $membrosRecebidos, $membrosExcluidos);
-
-        return [
-            'igreja'           => $igreja,
-            'ano'              => $ano,
-            'membrosRecebidos' => $membrosRecebidos,
-            'membrosExcluidos' => $membrosExcluidos,
-            'rolAtual'         => $rolAtual,
-            'rolAnterior'      => $rolAnterior,
-        ];
+            $membresias [] = [
+                'igreja'           =>  $igreja,
+                'ano'              =>  $ano,
+                'membrosRecebidos' =>  $membrosRecebidos,
+                'membrosExcluidos' =>  $membrosExcluidos,
+                'rolAtual'         =>  $rolAtual,
+                'rolAnterior'      =>  $rolAnterior,
+            ];
+        }
+        return $membresias;        
     }
 
     private function handleDataReferencia($ano): string
