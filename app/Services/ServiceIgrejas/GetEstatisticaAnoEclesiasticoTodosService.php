@@ -15,8 +15,8 @@ class GetEstatisticaAnoEclesiasticoTodosService
         $getIgrejas = app(GetIgrejas::class)->execute($params);
         $membresias = [];
         foreach($getIgrejas as $igreja){
-            $ano = $params['ano'];
-            $dataReferencia = $this->handleDataReferencia($ano ?? date('Y'));
+            $ano = isset($params['ano']) ? $params['ano'] : date('Y');
+            $dataReferencia = $this->handleDataReferencia($ano);
             $membrosRecebidos =  $this->handleEstatisticaRecepcao($igreja->id, $dataReferencia);
             $membrosExcluidos =  $this->handleEstatisticaExclusao($igreja->id, $dataReferencia);
             $rolAtual         =  $this->handleTotalRolAtual($igreja->id);
