@@ -12,19 +12,20 @@ class GetEstatisticaAnoEclesiasticoTodosService
 {
     public function execute(array $params = [])
     {
-        $getIgrejas = app(GetIgrejas::class)->execute($params);
+        $getIgrejas = app(GetIgrejas::class)->execute();
+    
         $membresias = [];
         foreach($getIgrejas as $igreja){
-            $ano = isset($params['ano']) ? $params['ano'] : date('Y');
-            $dataReferencia = $this->handleDataReferencia($ano);
-            $membrosRecebidos =  $this->handleEstatisticaRecepcao($igreja->id, $dataReferencia);
-            $membrosExcluidos =  $this->handleEstatisticaExclusao($igreja->id, $dataReferencia);
+            //$ano = isset($params['ano']) ? $params['ano'] : date('Y');
+            //$dataReferencia = $this->handleDataReferencia($ano);
+            $membrosRecebidos =  $this->handleEstatisticaRecepcao($igreja->id, $params);            
+            $membrosExcluidos =  $this->handleEstatisticaExclusao($igreja->id, $params);
             $rolAtual         =  $this->handleTotalRolAtual($igreja->id);
             $rolAnterior      =  $this->handleTotalRolAnterior($rolAtual, $membrosRecebidos, $membrosExcluidos);
 
             $membresias [] = [
                 'igreja'           =>  $igreja,
-                'ano'              =>  $ano,
+                //'ano'              =>  $ano,
                 'membrosRecebidos' =>  $membrosRecebidos,
                 'membrosExcluidos' =>  $membrosExcluidos,
                 'rolAtual'         =>  $rolAtual,
@@ -44,8 +45,10 @@ class GetEstatisticaAnoEclesiasticoTodosService
             : sprintf('%s-11-01', $ano);
     }
 
-    private function handleEstatisticaRecepcao($igrejaId, $dataReferencia)
+    private function handleEstatisticaRecepcao($igrejaId, $params)
     {
+        $dataInicial = isset($params['data_inicial']) ? $params['data_inicial'] : '';
+        $dataFinal = isset($params['data_final']) ? $params['data_final'] : '';
         $query = "SELECT 
             descricao,
             
@@ -53,7 +56,7 @@ class GetEstatisticaAnoEclesiasticoTodosService
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mr.membro_id = mm.id
                 AND mr.modo_recepcao_id = ms.id
-                AND dt_recepcao >= '$dataReferencia'
+                AND dt_recepcao BETWEEN '$dataInicial' AND '$dataFinal'
                 AND mr.igreja_id = $igrejaId
                 AND mm.sexo = 'M'	) sexo_masculino,
                 
@@ -61,14 +64,14 @@ class GetEstatisticaAnoEclesiasticoTodosService
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mr.membro_id = mm.id
                 AND mr.modo_recepcao_id = ms.id
-                AND dt_recepcao >= '$dataReferencia'
+                AND dt_recepcao BETWEEN '$dataInicial' AND '$dataFinal'
                 AND mr.igreja_id = $igrejaId
                 AND mm.sexo = 'F') sexo_feminino,
                 
             (	SELECT count(*) 
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mr.membro_id = mm.id
-                AND dt_recepcao >= '$dataReferencia'
+                AND dt_recepcao BETWEEN '$dataInicial' AND '$dataFinal'
                 AND mr.igreja_id = $igrejaId
                 AND mr.modo_recepcao_id = ms.id
             ) total
@@ -80,8 +83,10 @@ class GetEstatisticaAnoEclesiasticoTodosService
         return collect(DB::select($query));
     }
 
-    private function handleEstatisticaExclusao($igrejaId, $dataReferencia)
+    private function handleEstatisticaExclusao($igrejaId, $params)
     {
+        $dataInicial = isset($params['data_inicial']) ? $params['data_inicial'] : '';
+        $dataFinal = isset($params['data_final']) ? $params['data_final'] : '';
         $query = "SELECT 
             descricao,
             
@@ -89,7 +94,7 @@ class GetEstatisticaAnoEclesiasticoTodosService
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mr.membro_id = mm.id
                 AND mr.modo_exclusao_id = ms.id
-                AND mr.dt_exclusao >= '$dataReferencia'
+                AND mr.dt_exclusao BETWEEN '$dataInicial' AND '$dataFinal'
                 AND mr.igreja_id = $igrejaId
                 AND mm.sexo = 'M'	) sexo_masculino,
                 
@@ -97,14 +102,14 @@ class GetEstatisticaAnoEclesiasticoTodosService
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mr.membro_id = mm.id
                 AND mr.modo_exclusao_id = ms.id
-                AND mr.dt_exclusao >= '$dataReferencia'
+                AND mr.dt_exclusao BETWEEN '$dataInicial' AND '$dataFinal'
                 AND mr.igreja_id = $igrejaId
                 AND mm.sexo = 'F') sexo_feminino,
                 
             (	SELECT count(*) 
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mr.membro_id = mm.id
-                AND mr.dt_exclusao >= '$dataReferencia'
+                AND mr.dt_exclusao BETWEEN '$dataInicial' AND '$dataFinal'
                 AND mr.igreja_id = $igrejaId
                 AND mr.modo_exclusao_id = ms.id
             ) total

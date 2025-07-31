@@ -505,7 +505,7 @@
                          </li>
                          <li {!! Request::is('regiao/relatorio/ano-eclesiastico') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-ano-eclesiastico'))
-                                 <a href="{{ route('regiao.relatorio.ano.eclesiastico') }}">Ano Eclesiástico</a>
+                                 <a href="{{ route('regiao.relatorio.ano.eclesiastico') }}">Mapa Estatístico Membros</a>
                              @endif
                          </li>
                         <li class="submenu-fixo mt-3 mb-3">
@@ -515,7 +515,7 @@
                         </li>
                         <li {!! Request::is('regiao/relatorio/clerigos-aniversariantes') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-aniversariantes'))
-                                <a href="{{ route('regiao.relatorio.clerigosaniversariantes') }}">Clérigos aniversariantes</a>
+                                <a href="{{ route('regiao.relatorio.clerigosaniversariantes') }}">Clérigos Aniversariantes</a>
                             @endif
                         </li>
                         <li {!! Request::is('regiao/relatorio/clerigos-dados') ? 'class="active"' : '' !!}>

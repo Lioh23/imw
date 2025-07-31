@@ -9,7 +9,7 @@ use function PHPUnit\Framework\isNull;
 
 trait GetIgrejasAll
 {
-    public static function fetchIgrejas($regiao, $params)
+    public static function fetchIgrejas()
     {
         // $igrejas = DB::table('instituicoes_instituicoes as igreja')
         //     ->select(

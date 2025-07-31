@@ -374,8 +374,10 @@ class RegiaoRelatorioController extends Controller
 
     public function anoEclesiastico(Request $request)
     {
+        $dataInicial = isset($request->data_inicial) ? formatDate($request->data_inicial) : '';
+        $dataFinal = isset($request->data_final) ? formatDate($request->data_final) : '';
         $data['membresias'] = app(GetEstatisticaAnoEclesiasticoTodosService::class)->execute($request->all());
-        $data['titulo'] = isset($request->ano) ? "IMW - RELATÓRIO ANO ECLESIÁSTICO - ".$request->ano :  "IMW - RELATÓRIO ANO ECLESIÁSTICO - ".date('Y');
+        $data['titulo'] = "IMW - RELATÓRIO MAPA ESTATÍSTICO DE MEMBROS - DE $dataInicial ATÉ  $dataFinal";
         return view('regiao.relatorios.igreja.membresias', $data);
     }
 }

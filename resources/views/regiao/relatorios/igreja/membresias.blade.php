@@ -3,7 +3,7 @@
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
         ['text' => 'Membresia', 'url' => '#', 'active' => false],
-        ['text' => 'Ano Eclesiástico', 'url' => '#', 'active' => true],
+        ['text' => 'Mapa estatístico de membros', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -27,23 +27,39 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Ano Eclesiático</h4>
+                        <h4>Relatório Mapa Estatístico de Membros</h4>
                     </div>
                 </div>
             </div>
             <div class="widget-content widget-content-area">
                 <div>
                     <form class="form-vertical" id="filter_form"  method="GET">
-                        <div class="row">
-                            <div class="col-md-5">
-                                <select class="form-control " name="ano" id="ano">
-                                    <option value="2025" {{ request()->get('ano') == 2025 ? 'selected' : 'selected' }}>2025</option>
-                                    <option value="2024" {{ request()->get('ano') == 2024 ? 'selected' : '' }}>2024</option>
-                                    <option value="2023" {{ request()->get('ano') == 2023 ? 'selected' : '' }}>2023</option>
-                                    <option value="2022" {{ request()->get('ano') == 2022 ? 'selected' : '' }}>2022</option>
-                                </select>
+                        <div class="row col-md-12">
+                            <div class="form-group mb-4 col-md-4" id="filtros_data_inicial">
+                                <div class="col-md-12">
+                                    <label class="control-label">* Data Inicial:</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="date" class="form-control @error('data_inicial') is-invalid @enderror"
+                                        id="data_inicial" name="data_inicial" value="{{ request()->input('data_inicial') }}"
+                                        required>
+                                </div>
                             </div>
-                            <button class="btn btn-primary" id="btn-alcular">Buscar</button>
+                            <div class="form-group mb-4 col-md-4" id="filtros_data_final">
+                                <div class="col-lg-12">
+                                    <label class="control-label">* Data Final:</label>
+                                </div>
+                                <div class="col-md-12">
+                                    <input type="date" class="form-control @error('data_final') is-invalid @enderror"
+                                        id="data_final" name="data_final" value="{{ request()->input('data_final') }}" required>
+                                </div>
+                            </div>
+                            <div class="form-group col-md-4">
+                                <button class="btn btn-primary" title="Buscar dados" style="margin-top: 30px;">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg>
+                                    Buscar
+                                </button>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -51,7 +67,7 @@
         </div>
     </div>
 
-    @if (request()->has('ano'))
+    @if (request()->has('data_inicial'))
 
     <div class="col-lg-12 col-12 layout-spacing">
         <h6>{{ $titulo }}</h6>
@@ -62,22 +78,44 @@
             <thead>
                 <tr>
                     <th colspan="2"></th>
-                    <th colspan="4">RECEBIDOS</th>
-                    <th colspan="4">EXCLUÍDOS</th>
-                    <th>TOTAL GERAL</th>
+                    <th colspan="8" style="text-align: center;">RECEBIDOS</th>
+                    <th colspan="8" style="text-align: center;">EXCLUÍDOS</th>
+                    <th colspan="2" style="text-align: center;"></th>
                 </tr>
                 <tr>
                     <th>DISTRITO</th>
                     <th>IGREJA</th>
-                    <th>ADESÃO</th>
-                    <th>BATISMO</th>
-                    <th>TRANFERENCIA</th>
-                    <th>TOTAL</th>
-                    <th>ABANDONO</th>
-                    <th>A PEDIDO</th>
-                    <th>FALECIMENTO</th>
-                    <th>TOTAL</th>
-                    <th>TOTAL GERAL</th>
+                    <th colspan="2" style="text-align: center;">ADESÃO</th>
+                    <th colspan="2" style="text-align: center;">BATISMO</th>
+                    <th colspan="2" style="text-align: center;">TRANFERENCIA</th>
+                    <th colspan="2" style="text-align: center;">TOTAL</th>
+                    <th colspan="2" style="text-align: center;">ABANDONO</th>
+                    <th colspan="2" style="text-align: center;">PEDIDO</th>
+                    <th colspan="2" style="text-align: center;">FALECIMENTO</th>
+                    <th colspan="2" style="text-align: center;">TOTAL</th>
+                    <th colspan="2" style="text-align: center;">TOTAL GERAL</th>
+                </tr>
+                <tr>
+                    <th></th>
+                    <th></th>
+                    <th style="text-align: left">M</th>
+                    <th style="text-align: left;">F</th>
+                    <th style="text-align: left;">M</th>
+                    <th style="text-align: left;">F</th>
+                    <th style="text-align: left;">M</th>
+                    <th style="text-align: left;">F</th>
+                    <th style="text-align: left;">M</th>
+                    <th style="text-align: left;">F</th>
+                    <th style="text-align: left;">M</th>
+                    <th style="text-align: left;">F</th>
+                    <th style="text-align: left;">M</th>
+                    <th style="text-align: left;">F</th>
+                    <th style="text-align: left;">M</th>
+                    <th style="text-align: left;">F</th>
+                    <th style="text-align: left;">M</th>
+                    <th style="text-align: left;">F</th>
+                    <th style="text-align: left;">M</th>
+                    <th style="text-align: left;">F</th>
                 </tr>
             </thead>
             <tbody>
@@ -86,15 +124,24 @@
                     <tr>
                         <td>{{ $item['igreja']->distrito }}</td>
                         <td>{{ $item['igreja']->nome }}</td>
-                        <td>{{ $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][1]->sexo_feminino }}</td>
-                        <td>{{ $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][0]->sexo_feminino }}</td>
-                        <td>{{ $item['membrosRecebidos'][3]->sexo_masculino + $item['membrosRecebidos'][3]->sexo_feminino }}</td>
-                        <td>{{ $item['membrosRecebidos'][1]->total + $item['membrosRecebidos'][0]->total + $item['membrosRecebidos'][3]->total }}</td>
-                        <td>{{ $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_feminino }}</td>
-                        <td>{{ $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][0]->sexo_feminino }}</td>
-                        <td>{{ $item['membrosExcluidos'][3]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_feminino }}</td>
-                        <td>{{ $item['membrosExcluidos'][1]->total + $item['membrosExcluidos'][0]->total + $item['membrosExcluidos'][3]->total }}</td>
-                        <td>{{ $item['membrosRecebidos'][1]->total + $item['membrosRecebidos'][0]->total + $item['membrosRecebidos'][3]->total + $item['membrosExcluidos'][1]->total + $item['membrosExcluidos'][0]->total + $item['membrosExcluidos'][3]->total }}</td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][1]->sexo_masculino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][1]->sexo_feminino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][0]->sexo_masculino }}
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][0]->sexo_feminino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][3]->sexo_masculino }} </td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][3]->sexo_feminino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][3]->sexo_masculino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][1]->sexo_feminino + $item['membrosRecebidos'][0]->sexo_feminino + $item['membrosRecebidos'][3]->sexo_feminino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosExcluidos'][1]->sexo_masculino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosExcluidos'][3]->sexo_feminino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosExcluidos'][0]->sexo_masculino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosExcluidos'][0]->sexo_feminino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosExcluidos'][3]->sexo_masculino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosExcluidos'][3]->sexo_feminino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_masculino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino }}</td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][3]->sexo_masculino + $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_masculino}}</td>
+                        <td style="text-align: center;">{{ $item['membrosRecebidos'][1]->sexo_feminino + $item['membrosRecebidos'][0]->sexo_feminino + $item['membrosRecebidos'][3]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino }}</td>
                     </tr>
                 @empty
                 <tr>
@@ -154,6 +201,7 @@
                 },
                 {
                   extend: 'pdf',
+                  orientation: 'landscape',
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-pdf"></i> PDF',
                   titleAttr: 'PDF',

@@ -68,3 +68,15 @@ if (!function_exists('clearFormatNumber')) {
         return $number;
     }
 }
+
+//Formata as datas d/m/Y H:i:s
+function formatDateAndTime($value, $format = 'd/m/Y H:i:s')
+{
+    return Carbon\Carbon::parse($value)->format($format);
+}
+
+//Formata as datas d/m/Y
+function formatDate($value, $format = 'd/m/Y')
+{
+    return Carbon\Carbon::parse($value)->format($format);
+}
