@@ -195,29 +195,10 @@
                         <td></td>
                     </tr>
                     <tr>
-                        <td>Total de Líquido:</td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                    <tr>
-                        <td>Total de Rol Atual:</td>
+                        <td>
+                            <div>Total Líquido dos Recebidos:</div>
+                            <div>Total de Rol Atual:<div>
+                        </td>
                         <td>M: {{ $item['rolAtual']->sexo_masculino }} &nbsp;&nbsp; F: {{ $item['rolAtual']->sexo_feminino }} &nbsp;&nbsp; Total: {{ $item['rolAtual']->total }}</td>
                         <td></td>
                         <td></td>
