@@ -120,7 +120,6 @@
             </thead>
             <tbody>
                 @forelse($membresias as $item)
-                    
                     <tr>
                         <td>{{ $item['igreja']->distrito }}</td>
                         <td>{{ $item['igreja']->nome }}</td>
@@ -150,6 +149,96 @@
                     </td>
                 </tr>
                 @endforelse
+                @if($membresias)
+                    <tr>
+                        <td>RESUMO</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total de Rol Anterior:</td>
+                        <td>M: {{ $item['rolAnterior']->sexo_masculino }} &nbsp;&nbsp; F: {{ $item['rolAnterior']->sexo_feminino }} &nbsp;&nbsp; Total: {{ $item['rolAnterior']->total }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total de Líquido:</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td>Total de Rol Atual:</td>
+                        <td>M: {{ $item['rolAtual']->sexo_masculino }} &nbsp;&nbsp; F: {{ $item['rolAtual']->sexo_feminino }} &nbsp;&nbsp; Total: {{ $item['rolAtual']->total }}</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                @endif
             </tbody>
           </table>            
         </div>

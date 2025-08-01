@@ -22,7 +22,6 @@ class GetEstatisticaAnoEclesiasticoTodosService
             $membrosExcluidos =  $this->handleEstatisticaExclusao($igreja->id, $params);
             $rolAtual         =  $this->handleTotalRolAtual($igreja->id);
             $rolAnterior      =  $this->handleTotalRolAnterior($rolAtual, $membrosRecebidos, $membrosExcluidos);
-
             $membresias [] = [
                 'igreja'           =>  $igreja,
                 //'ano'              =>  $ano,
