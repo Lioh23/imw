@@ -204,7 +204,7 @@
                                 <td style="text-align: center;">{{ $item['rolAtual']->sexo_masculino }}</td>
                                 <td style="text-align: center;">{{ $item['rolAtual']->sexo_feminino }}</td>
                                 <td style="text-align: center;">{{ $item['rolAtual']->total }}</td>
-                                <td style="text-align: center;">{{ $item['rolAtual']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0 }}%</td>
+                                <td style="text-align: center;">{{ $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0 }}%</td>
                                 <td style="text-align: center;">{{ ($totalExcluidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF) }}</td>
                             </tr>
                         @empty
@@ -276,7 +276,7 @@
                                 <td style="text-align: center;">{{ $totalExcluidoM + $totalExcluidoF }}</td>
                                 <td style="text-align: center;">{{ $item['rolAnterior']->total }}</td>
                                 <td style="text-align: center;">{{ $item['rolAtual']->total}}</td>
-                                <td style="text-align: center;">{{ $item['rolAtual']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0 }}%</td>
+                                <td style="text-align: center;">{{ $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0 }}%</td>
                                 <td style="text-align: center;">{{ ($totalExcluidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF) }}</td>
                             </tr>
                         @empty
