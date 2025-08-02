@@ -80,3 +80,7 @@ function formatDate($value, $format = 'd/m/Y')
 {
     return Carbon\Carbon::parse($value)->format($format);
 }
+
+function decimal($value){
+    return number_format($value, 2, '.', '.');
+}
