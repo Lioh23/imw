@@ -257,27 +257,61 @@
                                 $totalExcluidoM = $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][2]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_masculino + $item['membrosExcluidos'][4]->sexo_masculino + $item['membrosExcluidos'][5]->sexo_masculino;
 
                                 $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino;
+                                $adesao = $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][1]->sexo_feminino;
+                                $totalAdesao[] = $adesao;
+                                $batismo = $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][0]->sexo_feminino;
+                                $totalBatismo[] = $batismo;
+                                $reconciliacao = $item['membrosRecebidos'][2]->sexo_masculino + $item['membrosRecebidos'][2]->sexo_feminino;
+                                $totalReconciliacao[] = $reconciliacao;
+                                $transferenciaRecebidos = $item['membrosRecebidos'][3]->sexo_masculino + $item['membrosRecebidos'][3]->sexo_feminino;
+                                $totalTransferenciaRecebidos[] = $transferenciaRecebidos;
+                                $cadastramento = $item['membrosRecebidos'][4]->sexo_masculino + $item['membrosRecebidos'][4]->sexo_feminino;
+                                $totalCadastramento[] = $cadastramento;
+                                $recebidos = $totalRecebidoM + $totalRecebidoF;
+                                $totalRecebidos[] = $recebidos;
+                                $pedido = $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][0]->sexo_feminino;
+                                $totalPedido[] = $pedido;
+                                $abandono = $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][1]->sexo_feminino;
+                                $totalAbandono[] = $abandono;
+                                $exclusao = $item['membrosExcluidos'][2]->sexo_masculino + $item['membrosExcluidos'][2]->sexo_feminino;
+                                $totalExclusao[] = $exclusao;
+                                $falecimento = $item['membrosExcluidos'][3]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_feminino;
+                                $totalFalecimento[] = $falecimento;
+                                $duplicidade = $item['membrosExcluidos'][4]->sexo_masculino + $item['membrosExcluidos'][4]->sexo_feminino;
+                                $totalDuplicidade[] = $duplicidade; 
+                                $transferenciaExcluidos = $item['membrosExcluidos'][5]->sexo_masculino + $item['membrosExcluidos'][5]->sexo_feminino;
+                                $totalTransferenciaExcluidos[] = $transferenciaExcluidos;
+                                $excluidos = $totalExcluidoM + $totalExcluidoF;
+                                $totalExcluidos[] = $excluidos;
+                                $rolAnterior = $item['rolAnterior']->total;
+                                $totalRolAnterior[] = $rolAnterior;
+                                $rolAtual = $item['rolAtual']->total;
+                                $totalRolAtual[] = $rolAtual;
+                                $rolPorcentagem = $item['rolAnterior']->total > 0 ? decimal(($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100) : decimal(0);
+                                $totalRolPorcentagem[] = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
+                                $geral = ($totalExcluidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
+                                $valorGeral[] = $geral;
                             @endphp
                             <tr>
                                 <td>{{ $item['igreja']->distrito }}</td>
                                 <td>{{ $item['igreja']->nome }}</td>
-                                <td style="text-align: center;">{{ $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][1]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][0]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosRecebidos'][2]->sexo_masculino + $item['membrosRecebidos'][2]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosRecebidos'][3]->sexo_masculino + $item['membrosRecebidos'][3]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosRecebidos'][4]->sexo_masculino + $item['membrosRecebidos'][4]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $totalRecebidoM + $totalRecebidoF }}</td>
-                                <td style="text-align: center;">{{ $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][0]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][1]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosExcluidos'][2]->sexo_masculino + $item['membrosExcluidos'][2]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosExcluidos'][3]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosExcluidos'][4]->sexo_masculino + $item['membrosExcluidos'][4]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $item['membrosExcluidos'][5]->sexo_masculino + $item['membrosExcluidos'][5]->sexo_feminino }}</td>
-                                <td style="text-align: center;">{{ $totalExcluidoM + $totalExcluidoF }}</td>
-                                <td style="text-align: center;">{{ $item['rolAnterior']->total }}</td>
-                                <td style="text-align: center;">{{ $item['rolAtual']->total}}</td>
-                                <td style="text-align: center;">{{ $item['rolAnterior']->total > 0 ? decimal(($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100) : decimal(0) }}%</td>
-                                <td style="text-align: center;">{{ ($totalExcluidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF) }}</td>
+                                <td style="text-align: center;">{{ $adesao }}</td>
+                                <td style="text-align: center;">{{ $batismo }}</td>
+                                <td style="text-align: center;">{{ $reconciliacao }}</td>
+                                <td style="text-align: center;">{{ $transferenciaRecebidos }}</td>
+                                <td style="text-align: center;">{{ $cadastramento }}</td>
+                                <td style="text-align: center;">{{ $recebidos }}</td>
+                                <td style="text-align: center;">{{ $pedido }}</td>
+                                <td style="text-align: center;">{{ $abandono }}</td>
+                                <td style="text-align: center;">{{ $exclusao }}</td>
+                                <td style="text-align: center;">{{ $falecimento }}</td>
+                                <td style="text-align: center;">{{ $duplicidade }}</td>
+                                <td style="text-align: center;">{{ $transferenciaExcluidos }}</td>
+                                <td style="text-align: center;">{{ $excluidos }}</td>
+                                <td style="text-align: center;">{{ $rolAnterior }}</td>
+                                <td style="text-align: center;">{{ $rolAtual }}</td>
+                                <td style="text-align: center;">{{ $rolPorcentagem }}%</td>
+                                <td style="text-align: center;">{{ $geral }}</td>
                             </tr>
                         @empty
                         <tr>
@@ -286,6 +320,29 @@
                             </td>
                         </tr>
                         @endforelse
+                        @if($membresias)
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: center;">{{ array_sum($totalAdesao) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalBatismo) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalReconciliacao) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalTransferenciaRecebidos) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalCadastramento) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalRecebidos) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalPedido) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalAbandono) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalExclusao) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalFalecimento) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalDuplicidade) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalTransferenciaExcluidos) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalExcluidos) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalRolAnterior) }}</td>
+                            <td style="text-align: center;">{{ array_sum($totalRolAtual) }}</td>
+                            <td style="text-align: center;">{{ decimal(array_sum($totalRolPorcentagem)) }}%</td>
+                            <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
+                        </tr>
+                       @endif                      
                     </tbody>
                 </table>   
                 @endif        
