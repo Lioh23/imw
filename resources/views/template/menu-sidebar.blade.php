@@ -311,6 +311,11 @@
                              <a href="{{ route('financeiro.relatorio-livrorazao') }}">Livro Razão</a>
                          @endif
                      </li>
+                     <li {!! Request::is('financeiro/relatorio/movimento-bancario') ? 'class="active"' : '' !!}>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-movimento-bancario'))
+                             <a href="{{ route('financeiro.movimento-bancario') }}">Movimento Bancário</a>
+                         @endif
+                     </li>
 
                  </ul>
              </li>

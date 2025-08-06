@@ -197,6 +197,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/balancete-pdf', [FinanceiroRelatorioController::class, 'balancetePdf'])->name('relatorio-balancete-pdf')->middleware(['seguranca:menu-relatorios']);
             Route::get('/relatorio/livrorazao', [FinanceiroRelatorioController::class, 'livroRazao'])->name('relatorio-livrorazao')->middleware(['seguranca:menu-relatorios']);
             Route::get('/relatorio/livrorazao/pdf', [FinanceiroRelatorioController::class, 'livrorazaoPdf'])->name('relatorio-livrorazao.pdf')->middleware(['seguranca:menu-relatorios']);
+            Route::get('/relatorio/movimento-bancario', [FinanceiroRelatorioController::class, 'movimentoBancario'])->name('movimento-bancario')->middleware(['seguranca:menu-relatorios']);
         });
 
 

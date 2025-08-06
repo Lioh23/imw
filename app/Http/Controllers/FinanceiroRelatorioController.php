@@ -8,6 +8,7 @@ use App\Services\ServiceFinanceiroRelatorios\LivroGradeService;
 use App\Services\ServiceFinanceiroRelatorios\SalvarLivroGradeService;
 use App\Services\ServiceFinanceiroRelatorios\MovimentoDiarioService;
 use App\Services\ServiceFinanceiroRelatorios\LivroRazaoService;
+use App\Services\ServiceFinanceiroRelatorios\MovimentoBancarioService;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
@@ -132,6 +133,16 @@ class FinanceiroRelatorioController extends Controller
 
         $pdf = FacadePdf::loadView('financeiro.relatorios.livrorazao_pdf', $data);
         return $pdf->stream('relatorio_livrorazao.pdf');
+    }
+
+    public function  movimentoBancario(Request $request)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $contaId = $request->input('conta_id');
+        $service = app(MovimentoBancarioService::class);
+        $data = $service->execute($dataInicial, $dataFinal, $contaId);
+        return view('financeiro.relatorios.movimento-bancario', $data);
     }
 
     public function  livrograde()
