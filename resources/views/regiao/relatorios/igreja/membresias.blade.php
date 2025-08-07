@@ -229,7 +229,7 @@
 
                                 $rolPorcentagem = $item['rolAnterior']->total > 0 ? decimal(($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100) : decimal(0);
                                 $totalRolPorcentagem[] = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
-                                $geral = ($totalExcluidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
+                                $geral = ($totalRecebidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
                                 $valorGeral[] = $geral;
                             @endphp
                             <tr>
@@ -390,7 +390,7 @@
                                 $totalRolAtual[] = $rolAtual;
                                 $rolPorcentagem = $item['rolAnterior']->total > 0 ? decimal(($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100) : decimal(0);
                                 $totalRolPorcentagem[] = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
-                                $geral = ($totalExcluidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
+                                $geral = ($totalRecebidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
                                 $valorGeral[] = $geral;
                             @endphp
                             <tr>

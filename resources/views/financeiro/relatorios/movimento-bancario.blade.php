@@ -31,28 +31,30 @@
             </div>
             <div class="widget-content widget-content-area">
                 <form class="form-vertical" id="filter_form" method="GET">
-                    <div class="form-group row mb-4" id="filtros_data">
-                        <div class="col-lg-2 text-right">
-                            <label class="control-label">* Data Inicial:</label>
+                    <div class="row col-md-12">
+                        <div class="form-group mb-4 col-md-3" id="filtros_data">
+                            <div class="col-md-12">
+                                <label class="control-label">* Data Inicial:</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required>
+                            </div>
                         </div>
-                        <div class="col-lg-3">
-                            <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required>
+                        <div class="for-group mb-4 col-md-3">
+                            <div class="col-md-12">
+                                <label class="control-label">* Data Final:</label>
+                            </div>
+                            <div class="col-md-12">
+                                <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="for-group row mb-4">
-                        <div class="col-lg-2 text-right">
-                            <label class="control-label">* Data Final:</label>
-                        </div>
-                        <div class="col-lg-3">
-                            <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" required>
-                        </div>
-                    </div>
-                    <div class="form-group row mb-4">
-                        <div class="col-lg-2"></div>
-                        <div class="col-lg-6">
-                            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
-                                <x-bx-search /> Buscar
-                            </button>
+                        <div class="form-group mb-4 col-md-3">
+                            <div class="col-lg-2"></div>
+                            <div class="col-lg-6">
+                                <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório"  style="margin-top: 30px;" class="btn btn-primary">
+                                    <x-bx-search /> Buscar
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </form>
