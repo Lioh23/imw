@@ -21,7 +21,7 @@ class FinanceiroPorCategoriaService
         if(isset($dataFinal)) {
             $data =  [
                 'dados' => FinanceiroPorCategoria::fetch($dataInicial, $dataFinal, $regiao, $categoriaId),
-                'titulo' => "Relatório financeiro da categoria $categoria->nome no período $dataInicialFormatada à $dataFinalFormatada"
+                'titulo' => "Relatório Financeiro da Categoria $categoria->nome no período $dataInicialFormatada à $dataFinalFormatada"
             ];
         }else{
             $data['titulo'] = "";
