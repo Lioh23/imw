@@ -14,6 +14,7 @@ use App\Services\ServiceRegiaoRelatorios\EstatisticaGeneroService;
 use App\Services\ServiceRegiaoRelatorios\EstatisticaTotalMembrosService;
 use App\Services\ServiceRegiaoRelatorios\LancamentoIgrejasService;
 use App\Services\ServiceRegiaoRelatorios\LivroRazaoGeralService;
+use App\Services\ServiceRegiaoRelatorios\FinanceiroPorCategoriaService;
 use App\Services\ServiceRegiaoRelatorios\MembrosMinisterioService;
 use App\Services\ServiceRegiaoRelatorios\OrcamentoService;
 use App\Services\ServiceRegiaoRelatorios\QuantidadeMembrosService;
@@ -379,5 +380,16 @@ class RegiaoRelatorioController extends Controller
         $data['membresias'] = app(GetEstatisticaAnoEclesiasticoTodosService::class)->execute($request->all());
         $data['titulo'] = "IMW - RELATÓRIO MAPA ESTATÍSTICO DE MEMBROS - DE $dataInicial ATÉ  $dataFinal";
         return view('regiao.relatorios.igreja.membresias', $data);
+    }
+
+    public function financeiroPorCategoria(Request $request)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        $categoriaId = $request->input('categoria');
+
+        $data = app(FinanceiroPorCategoriaService::class)->execute($dataInicial, $dataFinal, $categoriaId);
+
+        return view('regiao.relatorios.financeiro-por-categotia', $data);
     }
 }

@@ -279,8 +279,6 @@
                              <a href="{{ route('fornecedor.index') }}">Fornecedores</a>
                          @endif
                      </li>
-
-
                      <li class="submenu-fixo mt-3 mb-3">
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('menu-relatorios-financeiro'))
                              <span>Relatórios</span>
@@ -483,6 +481,12 @@
                          <li {!! Request::is('regiao/relatorio/variacaofinanceira') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-variacao-financeira'))
                                  <a href="{{ route('regiao.relatorio.variacaofinanceira') }}">Variação Financeira</a>
+                             @endif
+                         </li>
+
+                         <li {!! Request::is('regiao/relatorio/financeiro-por-categoria') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-por-categoria'))
+                                 <a href="{{ route('regiao.relatorio.financeiroPorCategoria') }}">Financeiro por Categoria</a>
                              @endif
                          </li>
 

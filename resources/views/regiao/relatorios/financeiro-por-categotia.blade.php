@@ -1,117 +1,121 @@
 @extends('template.layout')
 
 @section('breadcrumb')
-    <x-breadcrumb :breadcrumbs="[
-        ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Relatórios - Financeiro', 'url' => '#', 'active' => false],
-        ['text' => 'Movimento Bancário', 'url' => '#', 'active' => true],
-    ]"></x-breadcrumb>
+<x-breadcrumb :breadcrumbs="[
+    ['text' => 'Home', 'url' => '/', 'active' => false],
+    ['text' => 'Relatórios Regionais', 'url' => '#', 'active' => false],
+    ['text' => 'Financeiro por categoria', 'url' => '#', 'active' => true],
+]"></x-breadcrumb>
 @endsection
 
 @section('extras-css')
-    <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
-    <link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
+<link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @include('extras.alerts')
 
 @section('content')
-    <div class="col-lg-12 col-12 layout-spacing">
-        <div class="statbox widget box box-shadow">
-            <div class="widget-header">
-                <div class="row">
-                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Relatório Movimento Bancário</h4>
-                    </div>
+<div class="col-lg-12 col-12 layout-spacing">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+            <div class="row">
+                <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                    <h4>Relatório Financeiro por Categoria</h4>
                 </div>
-            </div>
-            <div class="widget-content widget-content-area">
-                <form class="form-vertical" id="filter_form" method="GET">
-                    <div class="row col-md-12">
-                        <div class="form-group mb-4 col-md-3" id="filtros_data">
-                            <div class="col-md-12">
-                                <label class="control-label">* Data Inicial:</label>
-                            </div>
-                            <div class="col-md-12">
-                                <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required>
-                            </div>
-                        </div>
-                        <div class="for-group mb-4 col-md-3">
-                            <div class="col-md-12">
-                                <label class="control-label">* Data Final:</label>
-                            </div>
-                            <div class="col-md-12">
-                                <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" required>
-                            </div>
-                        </div>
-                        <div class="form-group mb-1 col-md-4">
-                            <div class="col-lg-2"></div>
-                            <div class="col-lg-6">
-                                <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório"  style="margin-top: 30px;" class="btn btn-primary">
-                                    <x-bx-search /> Buscar
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
             </div>
         </div>
-    </div>
-
-    @if (!empty(request()->input('dt_inicial')))
-        <div class="col-lg-12 col-12 layout-spacing">
-            <div class="statbox widget box box-shadow">
-                <div class="widget-header">
-                    <div class="row">
-                        <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                            <h4 style="text-transform: uppercase">{{ $titulo }}</h4>
+        <div class="widget-content widget-content-area">
+            <form class="form-vertical" id="filter_form" method="GET">
+                <div class="row col-md-12">
+                    <div class="form-group mb-4 col-md-3">
+                        <div>
+                            <label class="control-label">* Categoria:</label>
+                        </div>
+                        <div>
+                            <select class="form-control" id="categoria" name="categoria" required>
+                                <option value="">Selecione</option>
+                                @foreach($categorias as $item)
+                                    <option value="{{ $item->id }}" {{ request()->input('categoria') == $item->id ? 'selected' : '' }}>{{ $item->nome }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group mb-4 col-md-3" id="filtros_data">
+                        <div>
+                            <label class="control-label">* Data Inicial:</label>
+                        </div>
+                        <div>
+                            <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required>
+                        </div>
+                    </div>
+                    <div class="for-group mb-4 col-md-3">
+                        <div>
+                            <label class="control-label">* Data Final:</label>
+                        </div>
+                        <div>
+                            <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" required>
+                        </div>
+                    </div>
+                    <div class="form-group mb-1 col-md-3">
+                        <div class="col-lg-2"></div>
+                        <div>
+                            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório"  style="margin-top: 30px;" class="btn btn-primary">
+                                <x-bx-search /> Buscar
+                            </button>
                         </div>
                     </div>
                 </div>
-                <div class="widget-content widget-content-area">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="movimento-bancario">
-                            <thead>
-                            <tr>
-                                <th>IGREJA</th>
-                                <th>CAIXA </th>
-                                <th>ENTRADAS</th>
-                                <th>SAÍDAS</th>
-                                <th>SALDO</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            @foreach ($movimentosBancarios as $item)
-                                <tr>
-                                    <td>
-                                        {{ session('session_perfil')->instituicao_nome }}
-                                    </td>
-                                    <td>
-                                        {{ $item->descricao }}
-                                    </td>
-                                    <td>
-                                        {{ $item->total_entradas }}
-                                    </td>
-                                    <td>
-                                        {{ $item->total_saidas }}
-                                    </td>
-                                    <td>
-                                        {{ $item->saldo_final }}
-                                    </td>
-                                </tr>
-                            @endforeach
-                            </tbody>
-                        </table>
+            </form>
+        </div>
+    </div>
+</div>
+
+@if(request()->input('dt_inicial'))
+<div class="col-lg-12 col-12 layout-spacing">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-content widget-content-area">
+            <!-- Conteúdo -->
+            <div class="card mb-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <h4 class="mt-3">{{ $titulo }}</h4>
+                             <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="financeiro-por-categoria">
+                                <thead>
+                                    <tr>
+                                        <th>DISTRITO</th>
+                                        <th>IGREJA</th>
+                                        <th>CATEGORIA</th>
+                                        <th >VALOR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($dados as $item)
+                                    <tr>
+                                        <td>{{ $item->distrito }}</td>
+                                        <td>{{ $item->igreja    }}</td>
+                                        <td>{{ $item->nome }}</td>
+                                        <td>{{ number_format($item->valor, 2, ',', '.') }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>
-            @endif
-
-    @section('extras-scripts')
+            <!-- Fim do Conteúdo -->
+        </div>
+    </div>
+</div>
+@endif
+@endsection
+@section('extras-scripts')
     <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
@@ -136,7 +140,7 @@
         $('#filter_form').attr('target', '_blank');
     })
 
-    new DataTable('#movimento-bancario', {        
+    new DataTable('#financeiro-por-categoria', {        
         scrollX: true,
         scrollY: 400,
         scrollCollapse: true,
@@ -162,10 +166,9 @@
                         doc.content.splice(0,1);
                         var now = new Date();
                         var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
-                        //doc.pageMargins = [20,50,20,30];
-                        doc.defaultStyle.fontSize = 9;
-                        doc.styles.tableHeader.fontSize = 9;
-                        
+                        doc.pageMargins = [20,50,20,30];
+                        doc.defaultStyle.fontSize = 8;
+                        doc.styles.tableHeader.fontSize = 8;
 
                         const hoje = new Date();
                         const dataFormatada = hoje.toLocaleDateString('pt-BR');
@@ -176,11 +179,11 @@
                                 columns: [
 
                                     {
-                                        alignment: 'left',
+                                        alignment: 'center',
                                         italics: false,
                                         text: `{{ $titulo }}`,
                                         fontSize: 14,
-                                        margin: [10,0]
+                                        //margin: [10,0]
                                     },
                                     // {
                                     //     alignment: 'right',
@@ -194,7 +197,6 @@
 
                         var numColumns = doc.content[0].table.body[0].length; 
                         doc.content[0].table.widths = Array(numColumns).fill('*');
-
 
                         doc['footer']=(function(page, pages) {
                             return {
@@ -221,8 +223,7 @@
                         objLayout['paddingRight'] = function(i) { return 4; };
                         doc.content[0].layout = objLayout;
                     },
-                    //orientation: 'landscape',
-                    pageSize: 'A4'
+                    pageSize: 'LEGAL'
                 }
                 ]
             },
@@ -236,5 +237,4 @@
     });
     </script>
 
-@endsection
 @endsection

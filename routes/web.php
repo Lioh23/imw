@@ -248,7 +248,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/variacaofinanceira', [RegiaoRelatorioController::class, 'variacaofinanceira'])->name('relatorio.variacaofinanceira')->middleware(['seguranca:regiao-menu-relatorio']);
             Route::post('/variacaofinanceira/pdf', [RegiaoRelatorioController::class, 'variacaofinanceiraPdf'])->name('relatorio.variacaofinanceira-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
 
-
+            Route::get('/financeiro-por-categoria', [RegiaoRelatorioController::class, 'financeiroPorCategoria'])->name('relatorio.financeiroPorCategoria')->middleware(['seguranca:regiao-menu-relatorio']);
+            
             //Membresia DEV
             Route::get('/membrosministerio', [RegiaoRelatorioController::class, 'membrosministerio'])->name('relatorio.membrosministerio')->middleware(['seguranca:regiao-menu-relatorio']);
             Route::post('/membrosministerio/pdf', [RegiaoRelatorioController::class, 'membrosministerioPdf'])->name('relatorio.membrosministerio-pdf')->middleware(['seguranca:regiao-menu-relatorio']);
