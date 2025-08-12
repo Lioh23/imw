@@ -30,7 +30,7 @@ trait FinanceiroPorCategoria
                 $join->on('iip.id', '=', 'ii.instituicao_pai_id');
             })
             ->where(['fpl.plano_contas_categoria_id' => $categoriaId, 'iip.instituicao_pai_id' => $regiao->id])
-            ->whereBetween('data_lancamento', [$dataInicial, $dataFinal])
+            ->whereBetween('fl.data_movimento', [$dataInicial, $dataFinal])
             ->orderBy('iip.nome')
             ->groupBy('iip.nome', 'ii.nome', 'fpcc.nome')
             ->get();
