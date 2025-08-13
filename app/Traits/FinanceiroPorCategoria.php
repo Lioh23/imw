@@ -42,6 +42,7 @@ trait FinanceiroPorCategoria
     {
         return FinanceiroPlanoContaCategoria::orderBy('nome', 'ASC')->get();
     }
+    
     public static function categoria($id)
     {
         return FinanceiroPlanoContaCategoria::where('id', $id)->first();

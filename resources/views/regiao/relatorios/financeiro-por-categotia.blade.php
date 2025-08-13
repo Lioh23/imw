@@ -83,7 +83,30 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 exibir-excel">
+                            <h4 class="mt-3">{{ $titulo }}</h4>
+                             <table class="table table-bordered table-striped table-hover mb-4 display nowrap">
+                                <thead> 
+                                    <tr>
+                                        <th>DISTRITO</th>
+                                        <th>IGREJA</th>
+                                        <th>CATEGORIA</th>
+                                        <th>VALOR</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach($dados as $item)
+                                    <tr>
+                                        <td>{{ $item->distrito }}</td>
+                                        <td>{{ $item->igreja    }}</td>
+                                        <td>{{ $item->nome }}</td>
+                                        <td>{{ number_format($item->valor, 2, ',', '.') }}</td>
+                                    </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-12 exibir-front">
                             <h4 class="mt-3">{{ $titulo }}</h4>
                              <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="financeiro-por-categoria">
                                 <thead>
@@ -128,7 +151,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
+    <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/xlsx.full.min.js') }}"></script>
+    <script src="{{ asset('theme/assets/js/planilha/planilha.js') }}"></script>
     <script>
+        $('.exibir-front').show();
+        $('.exibir-excel').hide()
     var titulo = $('#titulo').val();
     var data_inicial = $('#data_inicial').val();
     var data_final = $('#data_final').val();
@@ -140,7 +169,7 @@
         $('#filter_form').attr('target', '_blank');
     })
 
-    new DataTable('#financeiro-por-categoria', {        
+    new DataTable('#financeiro-por-categoria', {
         scrollX: true,
         scrollY: 400,
         scrollCollapse: true,
@@ -150,11 +179,14 @@
             buttons: [
                 'pageLength',
                 {
-                  extend: 'excel',
-                  className: 'btn btn-primary btn-rounded',
-                  text: '<i class="fas fa-file-excel"></i> Excel',
-                  titleAttr: 'Excel',
-                  title: `{{ $titulo }}`
+                    extend: 'excel',
+                    className: 'btn btn-primary btn-rounded',
+                    text: '<i class="fas fa-file-excel"></i> Excel',
+                    titleAttr: 'Excel',
+                    title: `{{ $titulo }}`,
+                    action: function (e, dt, button, config) {
+                        exportReportToExcel();
+                    }
                 },
                 {
                     extend: 'pdfHtml5',
