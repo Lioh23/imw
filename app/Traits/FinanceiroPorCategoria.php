@@ -82,6 +82,7 @@ trait FinanceiroPorCategoria
                     $igrejas[] = $igreja;
                 }
             $dados['dados'][] = (object)['distrito' => (object)$distrito, 'igrejas' => (object)$igrejas];
+            unset($igrejas);
             }
             $dados['TotalGeral'] = $dadosDistritosTotalGeral;
         }else{

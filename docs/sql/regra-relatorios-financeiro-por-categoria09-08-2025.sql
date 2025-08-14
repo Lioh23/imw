@@ -23,3 +23,14 @@ ALTER TABLE `financeiro_plano_contas_categoria`
 
 
 ALTER TABLE `financeiro_plano_contas` ADD `plano_contas_categoria_id` TINYINT NOT NULL DEFAULT '0' AFTER `essencial`;
+
+
+    private $fatorProvaCriar;
+    private $fatorSimulacao;
+    
+    
+    setFatorProvaCriar
+    getFatorProvaCriar
+    
+    
+    getLinkEspelho()
