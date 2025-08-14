@@ -95,14 +95,22 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach($dados as $item)
-                                    <tr>
-                                        <td>{{ $item->distrito }}</td>
-                                        <td>{{ $item->igreja    }}</td>
-                                        <td>{{ $item->nome }}</td>
-                                        <td>{{ number_format($item->valor, 2, ',', '.') }}</td>
-                                    </tr>
-                                    @endforeach
+                                    @foreach($dados as $dado)
+                                        @foreach($dado->igrejas as $igreja)
+                                        <tr>
+                                            <td>{{ $dado->distrito->distrito }}</td>
+                                            <td>{{ $igreja->igreja }}</td>
+                                            <td>{{ $igreja->nome }}</td>
+                                            <td>{{ number_format($igreja->valor, 2, ',', '.') }}</td>
+                                        </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td><b>{{ $dado->distrito->distrito }} Total</b></td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td><b>{{ number_format($dado->distrito->valor, 2, ',', '.') }}</b></td>
+                                        </tr>
+                                    @endforeach                                        
                                 </tbody>
                             </table>
                         </div>
@@ -117,15 +125,23 @@
                                         <th >VALOR</th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    @foreach($dados as $item)
-                                    <tr>
-                                        <td>{{ $item->distrito }}</td>
-                                        <td>{{ $item->igreja    }}</td>
-                                        <td>{{ $item->nome }}</td>
-                                        <td>{{ number_format($item->valor, 2, ',', '.') }}</td>
-                                    </tr>
-                                    @endforeach
+                                 <tbody>
+                                    @foreach($dados as $dado)
+                                        @foreach($dado->igrejas as $igreja)
+                                        <tr>
+                                            <td>{{ $dado->distrito->distrito }}</td>
+                                            <td>{{ $igreja->igreja }}</td>
+                                            <td>{{ $igreja->igreja }}</td>
+                                            <td>{{ number_format($igreja->valor, 2, ',', '.') }}</td>
+                                        </tr>
+                                        @endforeach
+                                        <tr>
+                                            <td><b>{{ $dado->distrito->distrito }} Total</b></td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td><b>{{ number_format($dado->distrito->valor, 2, ',', '.') }}</b></td>
+                                        </tr>
+                                    @endforeach                                        
                                 </tbody>
                             </table>
                         </div>
