@@ -28,7 +28,8 @@ class UpdateLancamentoEntradaService
         $lancamento->descricao = $data['descricao'];
         $lancamento->tipo_lancamento = FinanceiroLancamento::TP_LANCAMENTO_ENTRADA;
         $lancamento->plano_conta_id = $data['plano_conta_id'];
-        $lancamento->data_movimento = $data['data_movimento'];
+        //$lancamento->data_movimento = $data['data_movimento'];
+        $lancamento->data_movimento = formatMesAnoDizimo($data['ano_mes']);
         $lancamento->caixa_id = $data['caixa_id'];
         $lancamento->instituicao_id = session()->get('session_perfil')->instituicao_id;
 

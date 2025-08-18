@@ -137,7 +137,7 @@
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 ano_mes">
                         <label for="ano_mes">Mês/Ano</label>
                         <input type="text" class="form-control @error('ano_mes') is-invalid @enderror" id="ano_mes" name="ano_mes" value="{{ request()->input('ano_mes') }}" placeholder="mm/yyyy" required>
                     </div>
@@ -234,8 +234,9 @@
         // evento de exibição do descritivo do pagante/favorecido
         $('#tipo_pagante_favorecido_id').change(function() {
             var tipoPaganteFavorecido = this.value;
-
+            $('.ano_mes').hide();
             if (tipoPaganteFavorecido == 1) {
+                $('.ano_mes').show();
                 // Exibir o campo para membros
                 $('#show_pagante_favorecido').removeClass('d-none');
 

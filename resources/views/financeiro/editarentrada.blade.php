@@ -180,6 +180,47 @@
 
         $(document).ready(function() {
             $('#tipo_pagante_favorecido_id').trigger('change'); // disparar o evento change ao carregar a página
+
+            $.datepicker.regional['pt-BR'] = {
+                closeText: 'Aplicar',
+                prevText: '&#x3c;Anterior',
+                nextText: 'Pr&oacute;ximo&#x3e;',
+                currentText: 'Hoje',
+                monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho',
+                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+                ],
+                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
+                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
+                ],
+                dayNames: ['Domingo', 'Segunda-feira', 'Ter&ccedil;a-feira', 'Quarta-feira', 'Quinta-feira',
+                    'Sexta-feira', 'Sabado'
+                ],
+                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
+                weekHeader: 'Sm',
+                dateFormat: 'dd/mm/yy',
+                firstDay: 0,
+                isRTL: false,
+                showMonthAfterYear: false,
+                yearSuffix: ''
+            };
+            $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+
+            // Inicializar o Datepicker
+            $("#ano_mes").datepicker({
+                dateFormat: "mm/yy", // Formato do calendário (mês/ano)
+                changeMonth: true, // Permitir a seleção do mês
+                changeYear: true, // Permitir a seleção do ano
+                showButtonPanel: true,
+                language: 'pt-BR', // Definir o idioma como português
+                onClose: function(dateText, inst) {
+                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                    $(this).datepicker("setDate", new Date(year, month, 1));
+                }
+            }).focus(function() {
+                $(".ui-datepicker-calendar").hide();
+            });
         });
 
         $('#tipo_pagante_favorecido_id').change(function() {
@@ -195,7 +236,7 @@
                 var membros = {!! json_encode($membros) !!};
                 var membroId = '{{ $entrada->membro_id ?? 'null' }}';
                 var selectHtml =
-                    `<div class="col-12">
+                    `<div class="col-6">
                         <label for="pagante_favorecido">Beneficiário</label>
                         <select class="form-control" id="pagante_favorecido" name="pagante_favorecido">
                             <option value="" disabled${membroId === 'null' ? ' selected' : ''}>Selecione</option>
@@ -209,7 +250,13 @@
                                     <span class="help-block text-danger">{{ $message }}</span>
                                 @enderror
                              </select>
-                             </div>`;
+                             </div>
+                             
+                    <div class="col-6">
+                        <label for="ano_mes">Mês/Ano</label>
+                        <input type="text" class="form-control @error('ano_mes') is-invalid @enderror" id="ano_mes" name="ano_mes" value="{{ old('data_movimento', \Carbon\Carbon::parse($entrada->data_movimento)->format('m/Y')) }}" placeholder="mm/yyyy" required>
+                    </div>
+                             `;
 
                 $('#show_pagante_favorecido').html(selectHtml);
                 $('#pagante_favorecido').select2({

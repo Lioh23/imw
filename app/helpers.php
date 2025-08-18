@@ -84,3 +84,12 @@ function formatDate($value, $format = 'd/m/Y')
 function decimal($value){
     return number_format($value, 2, '.', '.');
 }
+
+function formatMesAnoDizimo($value){
+    $dados = explode('/',$value);
+    $mes = $dados[0];
+    $ano = $dados[1];
+    $dia = '01';
+    return $ano.'-'.$mes.'-'.$dia;
+
+}
