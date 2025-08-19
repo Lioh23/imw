@@ -254,7 +254,6 @@ class FinanceiroController extends Controller
     
     public function updateEntrada(FinanceiroUpdateEntradaRequest $request, $id)
     {
-        dd('kkk');
         try {
             DB::beginTransaction();
             app(UpdateLancamentoEntradaService::class)->execute($request->all(), $id);

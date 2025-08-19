@@ -1,0 +1,1 @@
+ALTER TABLE `financeiro_lancamentos` ADD `data_ano_mes` DATE NULL DEFAULT NULL AFTER `instituicao_id`;

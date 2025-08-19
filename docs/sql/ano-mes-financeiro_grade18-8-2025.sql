@@ -1,1 +1,0 @@
-ALTER TABLE `financeiro_grades` ADD `data_ano_mes` DATETIME NULL DEFAULT NULL AFTER `regiao_id`;

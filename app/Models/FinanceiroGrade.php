@@ -33,6 +33,5 @@ class FinanceiroGrade extends Model
         'igreja_id',
         'membro_id',
         'regiao_id',
-        'data_ano_mes'
     ];
 }

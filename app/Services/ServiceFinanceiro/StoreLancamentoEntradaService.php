@@ -30,7 +30,7 @@ class StoreLancamentoEntradaService
             'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_ENTRADA, 
             'plano_conta_id' => $data['plano_conta_id'],
             'data_movimento' => $data['data_movimento'],
-            'ano_mes' => formatMesAnoDizimo($data['ano_mes']),
+            'data_ano_mes' => formatMesAnoDizimo($data['ano_mes']),
             'caixa_id' => $data['caixa_id'],
             'instituicao_id' => session()->get('session_perfil')->instituicao_id
         ];
@@ -44,7 +44,7 @@ class StoreLancamentoEntradaService
                 if ($paganteFavorecidoModel) {
                     $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
                     if ($paganteFavorecidoModel && in_array($lancamentos['plano_conta_id'], $planoContaIds)) {
-                        $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento'], $lancamentos['ano_mes']);
+                        $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento'], $lancamentos['data_ano_mes']);
                     }
                 }
                 break;
@@ -65,7 +65,7 @@ class StoreLancamentoEntradaService
             $lancamentos['pagante_favorecido'] = $paganteFavorecidoModel->nome;
             $lancamentos[$campoId] = $paganteFavorecido;
         }
-        unset($lancamentos['ano_mes']);
+        //unset($lancamentos['ano_mes']);
         FinanceiroLancamento::create($lancamentos);
 
     }

@@ -254,7 +254,7 @@
                              
                     <div class="col-6">
                         <label for="ano_mes">Mês/Ano</label>
-                        <input type="text" class="form-control @error('ano_mes') is-invalid @enderror" id="ano_mes" name="ano_mes" value="{{ old('data_movimento', \Carbon\Carbon::parse($entrada->data_movimento)->format('m/Y')) }}" placeholder="mm/yyyy" required>
+                        <input type="text" class="form-control @error('ano_mes') is-invalid @enderror" id="ano_mes" name="ano_mes" value="{{ old('data_ano_mes', \Carbon\Carbon::parse($entrada->data_ano_mes)->format('m/Y')) }}" placeholder="mm/yyyy" required>
                     </div>
                              `;
 
