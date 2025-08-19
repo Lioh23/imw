@@ -128,7 +128,6 @@ class StoreLancamentoEntradaService
                 'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
                 'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
                 'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id,
-                'data_ano_mes' => $data['data_ano_mes'],
             ]);
         }
     }
