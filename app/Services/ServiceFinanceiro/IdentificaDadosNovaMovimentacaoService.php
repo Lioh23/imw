@@ -6,8 +6,10 @@ use App\Models\FinanceiroFornecedores;
 use App\Models\FinanceiroTipoPaganteFavorecido;
 use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaMembro;
+use App\Models\Mes;
 use App\Traits\FinanceiroUtils;
 use App\Traits\Identifiable;
+use PhpParser\Node\Expr\Cast\Object_;
 
 class IdentificaDadosNovaMovimentacaoService
 {
@@ -34,7 +36,8 @@ class IdentificaDadosNovaMovimentacaoService
             'membros'                  => $membros,
             'fornecedores'             => FinanceiroUtils::fornecedores(),
             'clerigos'                 => $clerigos,
-            'tipoInstituicao'          => $instituicao
+            'tipoInstituicao'          => $instituicao,
+            'meses'                    => (Object) Mes::get(),
         ];
     }
 }

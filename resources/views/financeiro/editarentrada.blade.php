@@ -138,6 +138,33 @@
                     </div>
                 </div>
                 
+                <div class="col-4 ano_mes">
+                    <label for="ano_mes">Mês/Ano</label>
+                    <div class="input-group">
+                        <select class="form-control " id="ano" name="ano" required="">
+                            @php
+                                $decimoTerceiro = $entrada->decimo_terceiro;
+                                if($decimoTerceiro){
+                                    $mesAtual = 13;
+                                    $anoAtual = getYear($entrada->data_ano_mes) -1;
+                                }else{
+                                    $mesAtual = getMonth($entrada->data_ano_mes);
+                                    $anoAtual = getYear($entrada->data_ano_mes);
+                                }
+                                $anos = range($anoAtual - 20, $anoAtual);
+                            @endphp
+                            @foreach($anos as $ano)
+                                <option value="{{ $ano }}" {{ $anoAtual == $ano ? 'selected' : '' }}>{{ $ano }}</option>
+                            @endforeach
+                        </select>
+                        <select class="form-control " id="mes" name="mes" required="">
+                            @foreach($meses as $mes)
+                                <option value="{{ $mes->id }}" {{ $mesAtual == zeroEsqueda($mes->id) ? 'selected' : '' }}>{{ $mes->descricao }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                 <div class="row mb-4">
                     <div class="col-12">
                         <label for="descricao">Descrição</label>
@@ -181,46 +208,30 @@
         $(document).ready(function() {
             $('#tipo_pagante_favorecido_id').trigger('change'); // disparar o evento change ao carregar a página
 
-            $.datepicker.regional['pt-BR'] = {
-                closeText: 'Aplicar',
-                prevText: '&#x3c;Anterior',
-                nextText: 'Pr&oacute;ximo&#x3e;',
-                currentText: 'Hoje',
-                monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho',
-                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-                ],
-                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-                ],
-                dayNames: ['Domingo', 'Segunda-feira', 'Ter&ccedil;a-feira', 'Quarta-feira', 'Quinta-feira',
-                    'Sexta-feira', 'Sabado'
-                ],
-                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                weekHeader: 'Sm',
-                dateFormat: 'dd/mm/yy',
-                firstDay: 0,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: ''
-            };
-            $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
+            let planoContaId = $('#plano_conta_id').val();
+            if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                $('.ano_mes').show();
+                $('#mes').prop('disabled', false);
+                $('#ano').prop('disabled', false);
+            }else{
+                $('.ano_mes').hide();
+                $('#mes').prop('disabled', true);
+                $('#ano').prop('disabled', true);
+            }
 
-            // Inicializar o Datepicker
-            $("#ano_mes").datepicker({
-                dateFormat: "mm/yy", // Formato do calendário (mês/ano)
-                changeMonth: true, // Permitir a seleção do mês
-                changeYear: true, // Permitir a seleção do ano
-                showButtonPanel: true,
-                language: 'pt-BR', // Definir o idioma como português
-                onClose: function(dateText, inst) {
-                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    $(this).datepicker("setDate", new Date(year, month, 1));
-                }
-            }).focus(function() {
-                $(".ui-datepicker-calendar").hide();
-            });
+        });
+
+        $('#plano_conta_id').change(function() {
+            let planoContaId = $('#plano_conta_id').val();
+            if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                $('.ano_mes').show();
+                    $('#mes').prop('disabled', false);
+                    $('#ano').prop('disabled', false);
+            }else{
+                $('.ano_mes').hide();
+                    $('#mes').prop('disabled', true);
+                    $('#ano').prop('disabled', true);
+            }
         });
 
         $('#tipo_pagante_favorecido_id').change(function() {
@@ -231,8 +242,20 @@
             if ($('#pagante_favorecido').data('select2')) {
                 $('#pagante_favorecido').select2('destroy').empty();
             }
-
+            $('.ano_mes').hide();
             if (tipoPaganteFavorecido == 1) {
+
+                let planoContaId = $('#plano_conta_id').val();
+                if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                    $('.ano_mes').show();
+                    $('#mes').prop('disabled', false);
+                    $('#ano').prop('disabled', false);
+                }else{
+                    $('.ano_mes').hide();
+                    $('#mes').prop('disabled', true);
+                    $('#ano').prop('disabled', true);
+                }
+
                 var membros = {!! json_encode($membros) !!};
                 var membroId = '{{ $entrada->membro_id ?? 'null' }}';
                 var selectHtml =
@@ -251,11 +274,6 @@
                                 @enderror
                              </select>
                              </div>
-                             
-                    <div class="col-6">
-                        <label for="ano_mes">Mês/Ano</label>
-                        <input type="text" class="form-control @error('ano_mes') is-invalid @enderror" id="ano_mes" name="ano_mes" value="{{ old('data_ano_mes', \Carbon\Carbon::parse($entrada->data_ano_mes)->format('m/Y')) }}" placeholder="mm/yyyy" required>
-                    </div>
                              `;
 
                 $('#show_pagante_favorecido').html(selectHtml);
@@ -266,7 +284,7 @@
             }   else if (tipoPaganteFavorecido == 3) {
                         var clerigos = {!! json_encode($clerigos) !!};
                         var selectHtml =
-                            `<div class="col-12">
+                            `<div class="col-6">
                                 <label for="pagante_favorecido">Beneficiário</label>
                                 <select class="form-control" id="pagante_favorecido" name="pagante_favorecido" required><option value="" disabled>Selecione</option>
                                     @error('pagante_favorecido')

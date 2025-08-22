@@ -21,6 +21,13 @@ class UpdateLancamentoEntradaService
             2 = FORNECEDOR
             3 = CLERIGO
         */
+        $ano = isset($data['ano']) ? $data['ano'] : '';
+        $mes = isset($data['mes']) ? $data['mes'] : '';
+        if($ano){
+            $anoMes = $mes.'/'.$ano;
+        }else{
+            $anoMes = '';
+        }
         $tipoPaganteFavorecidoId = $data['tipo_pagante_favorecido_id'];
         $paganteFavorecido = $data['pagante_favorecido'] ?? null;
         $lancamento->data_lancamento = Carbon::now()->format('Y-m-d');
@@ -29,10 +36,11 @@ class UpdateLancamentoEntradaService
         $lancamento->tipo_lancamento = FinanceiroLancamento::TP_LANCAMENTO_ENTRADA;
         $lancamento->plano_conta_id = $data['plano_conta_id'];
         $lancamento->data_movimento = $data['data_movimento'];
-        //$lancamento->data_movimento = formatMesAnoDizimo($data['ano_mes']);
+        $lancamento->data_ano_mes = $ano ? formatMesAnoDizimo($anoMes) : '';
         $lancamento->caixa_id = $data['caixa_id'];
         $lancamento->instituicao_id = session()->get('session_perfil')->instituicao_id;
-        $dataAnoMes = formatMesAnoDizimo($data['ano_mes']);
+        $lancamento->decimo_terceiro = $mes == 13 ? 1 : 0;
+        $dataAnoMes = formatMesAnoDizimo($anoMes);
         switch ($tipoPaganteFavorecidoId) {
             case 1:
                 $paganteFavorecidoModel = MembresiaMembro::find($paganteFavorecido);

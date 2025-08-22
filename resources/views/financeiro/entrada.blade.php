@@ -137,9 +137,25 @@
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
-                    <div class="col-6 ano_mes">
+                    <div class="col-4 ano_mes">
                         <label for="ano_mes">Mês/Ano</label>
-                        <input type="text" class="form-control @error('ano_mes') is-invalid @enderror" id="ano_mes" name="ano_mes" value="{{ request()->input('ano_mes') }}" placeholder="mm/yyyy" required>
+                        <div class="input-group">
+                            <select class="form-control " id="ano" name="ano" required="">
+                                @php
+                                    $mesAtual = date('m');
+                                    $anoAtual = date('Y');
+                                    $anos = range($anoAtual - 20, $anoAtual);
+                                @endphp
+                                @foreach($anos as $ano)
+                                    <option value="{{ $ano }}" {{ $anoAtual == $ano ? 'selected' : '' }}>{{ $ano }}</option>
+                                @endforeach
+                            </select>
+                            <select class="form-control " id="mes" name="mes" required="">
+                                @foreach($meses as $mes)
+                                    <option value="{{ $mes->id }}" {{ $mesAtual == zeroEsqueda($mes->id) ? 'selected' : '' }}>{{ $mes->descricao }}</option>
+                                @endforeach
+                            </select>
+                        </div>
                     </div>
                 </div>
 
@@ -168,48 +184,16 @@
         $(document).ready(function() {
             // limpar o campo Pagante
             $('#pagante_favorecido').val('').trigger('change');
-
-            $.datepicker.regional['pt-BR'] = {
-                closeText: 'Aplicar',
-                prevText: '&#x3c;Anterior',
-                nextText: 'Pr&oacute;ximo&#x3e;',
-                currentText: 'Hoje',
-                monthNames: ['Janeiro', 'Fevereiro', 'Mar&ccedil;o', 'Abril', 'Maio', 'Junho',
-                    'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
-                ],
-                monthNamesShort: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun',
-                    'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'
-                ],
-                dayNames: ['Domingo', 'Segunda-feira', 'Ter&ccedil;a-feira', 'Quarta-feira', 'Quinta-feira',
-                    'Sexta-feira', 'Sabado'
-                ],
-                dayNamesShort: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                dayNamesMin: ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sab'],
-                weekHeader: 'Sm',
-                dateFormat: 'dd/mm/yy',
-                firstDay: 0,
-                isRTL: false,
-                showMonthAfterYear: false,
-                yearSuffix: ''
-            };
-            $.datepicker.setDefaults($.datepicker.regional['pt-BR']);
-
-            // Inicializar o Datepicker
-            $("#ano_mes").datepicker({
-                dateFormat: "mm/yy", // Formato do calendário (mês/ano)
-                changeMonth: true, // Permitir a seleção do mês
-                changeYear: true, // Permitir a seleção do ano
-                showButtonPanel: true,
-                language: 'pt-BR', // Definir o idioma como português
-                onClose: function(dateText, inst) {
-                    var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
-                    var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
-                    $(this).datepicker("setDate", new Date(year, month, 1));
-                }
-            }).focus(function() {
-                $(".ui-datepicker-calendar").hide();
-            });
-
+            let planoContaId = $('#plano_conta_id').val();
+            if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                $('.ano_mes').show();
+                $('#mes').prop('disabled', false);
+                $('#ano').prop('disabled', false);
+            }else{
+                $('.ano_mes').hide();
+                $('#mes').prop('disabled', true);
+                $('#ano').prop('disabled', true);
+            }
         });
 
         // máscara de valor
@@ -230,13 +214,34 @@
             allowClear: true
         }); 
 
+        $('#plano_conta_id').change(function() {
+            let planoContaId = $('#plano_conta_id').val();
+            if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                $('.ano_mes').show();
+                    $('#mes').prop('disabled', false);
+                    $('#ano').prop('disabled', false);
+            }else{
+                $('.ano_mes').hide();
+                    $('#mes').prop('disabled', true);
+                    $('#ano').prop('disabled', true);
+            }
+        });
 
         // evento de exibição do descritivo do pagante/favorecido
         $('#tipo_pagante_favorecido_id').change(function() {
             var tipoPaganteFavorecido = this.value;
             $('.ano_mes').hide();
             if (tipoPaganteFavorecido == 1) {
-                $('.ano_mes').show();
+                let planoContaId = $('#plano_conta_id').val();
+                if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                    $('.ano_mes').show();
+                    $('#mes').prop('disabled', false);
+                    $('#ano').prop('disabled', false);
+                }else{
+                    $('.ano_mes').hide();
+                    $('#mes').prop('disabled', true);
+                    $('#ano').prop('disabled', true);
+                }
                 // Exibir o campo para membros
                 $('#show_pagante_favorecido').removeClass('d-none');
 

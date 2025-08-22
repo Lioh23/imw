@@ -22,6 +22,13 @@ class StoreLancamentoEntradaService
        
         $tipoPaganteFavorecidoId = $data['tipo_pagante_favorecido_id'];
         $paganteFavorecido = $data['pagante_favorecido'];
+        $ano = isset($data['ano']) ? $data['ano'] : '';
+        $mes = isset($data['mes']) ? $data['mes'] : '';
+        if($ano){
+            $anoMes = $mes.'/'.$ano;
+        }else{
+            $anoMes = '';
+        }
         $lancamentos = [
             'data_lancamento' => Carbon::now()->format('Y-m-d'),
             'valor' => str_replace(',', '.', str_replace('.', '', $data['valor'])),
@@ -30,10 +37,14 @@ class StoreLancamentoEntradaService
             'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_ENTRADA, 
             'plano_conta_id' => $data['plano_conta_id'],
             'data_movimento' => $data['data_movimento'],
-            'data_ano_mes' => formatMesAnoDizimo($data['ano_mes']),
+            'data_ano_mes' => $ano ? formatMesAnoDizimo($anoMes) : '',
             'caixa_id' => $data['caixa_id'],
-            'instituicao_id' => session()->get('session_perfil')->instituicao_id
+            'instituicao_id' => session()->get('session_perfil')->instituicao_id,
+            'decimo_terceiro' => $mes == 13 ? 1 : 0,
         ];
+        if(!$ano){
+            unset($lancamentos['data_ano_mes']);
+        }
         $paganteFavorecidoModel = null;
         $campoId = null;
         switch ($tipoPaganteFavorecidoId) {
@@ -75,7 +86,6 @@ class StoreLancamentoEntradaService
         $date = Carbon::parse($dataAnoMes);
         $ano = $date->year;
         $mes = $date->format('M');
-        
         $monthsMap = [
             'Jan' => 'JAN',
             'Feb' => 'FEV',

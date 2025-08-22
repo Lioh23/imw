@@ -81,15 +81,38 @@ function formatDate($value, $format = 'd/m/Y')
     return Carbon\Carbon::parse($value)->format($format);
 }
 
+//ano
+function getYear($value, $format = 'Y')
+{
+    return Carbon\Carbon::parse($value)->format($format);
+}
+
+//ano
+function getMonth($value, $format = 'm')
+{
+    return Carbon\Carbon::parse($value)->format($format);
+}
+
+
 function decimal($value){
     return number_format($value, 2, '.', '.');
 }
 
 function formatMesAnoDizimo($value){
     $dados = explode('/',$value);
-    $mes = $dados[0];
+    $mes = str_pad($dados[0],  2, "0", STR_PAD_LEFT);
     $ano = $dados[1];
     $dia = '01';
-    return $ano.'-'.$mes.'-'.$dia;
+    if($mes == 13){
+        $mes = '01';
+        $anoAlterado = $ano+1;
+        $data =  $anoAlterado.'-'.$mes.'-'.$dia;
+    }else{
+        $data =  $ano.'-'.$mes.'-'.$dia;
+    }
+    return $data;
+}
 
+function zeroEsqueda($value){
+    return  str_pad($value,  2, "0", STR_PAD_LEFT);
 }
