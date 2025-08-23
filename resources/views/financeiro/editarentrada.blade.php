@@ -151,7 +151,7 @@
                                     $mesAtual = getMonth($entrada->data_ano_mes);
                                     $anoAtual = getYear($entrada->data_ano_mes);
                                 }
-                                $anos = range($anoAtual - 20, $anoAtual);
+                                $anos = range($anoAtual - 1, $anoAtual);
                             @endphp
                             @foreach($anos as $ano)
                                 <option value="{{ $ano }}" {{ $anoAtual == $ano ? 'selected' : '' }}>{{ $ano }}</option>

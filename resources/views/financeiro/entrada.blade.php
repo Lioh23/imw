@@ -144,7 +144,7 @@
                                 @php
                                     $mesAtual = date('m');
                                     $anoAtual = date('Y');
-                                    $anos = range($anoAtual - 20, $anoAtual);
+                                    $anos = range($anoAtual - 1, $anoAtual);
                                 @endphp
                                 @foreach($anos as $ano)
                                     <option value="{{ $ano }}" {{ $anoAtual == $ano ? 'selected' : '' }}>{{ $ano }}</option>
