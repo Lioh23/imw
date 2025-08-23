@@ -105,7 +105,7 @@
                                     d="M0 14.42l.719-1.24L7.998 1.58l7.283 11.58.719 1.24H0zm8-1a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-.002-3a1 1 0 1 0-.001-2 1 1 0 0 0 0 2z" />
                             </svg> Ocorreu um erro ao carregar os dados. Por favor, tente novamente mais tarde.
                         </div>
-
+                        <input type="hidden" id="get-ano">
                         <table id="livrograde" class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                             <thead class="thead-dark">
                                 <tr>
@@ -135,26 +135,36 @@
             </div>
             <div class="row">
                 <div class="col-12 text-center">
-                    <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i
-                            class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
+                    <button class="btn btn-success " onclick="exportReportToExcel();"><i
+                            class="fa fa-file-excel" aria-hidden="true"></i> Excel</button>
+                             <button class="btn btn-secondary " onclick="gerarPdf()"> <i class="fa fa-file-pdf"></i> PDF</button>
                 </div>
             </div>
         </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
     <script src="{{ asset('theme/assets/js/planilha/papaparse.min.js') }}"></script>
     <script src="{{ asset('theme/assets/js/planilha/FileSaver.min.js') }}"></script>
     <script src="{{ asset('theme/assets/js/planilha/xlsx.full.min.js') }}"></script>
     <script src="{{ asset('theme/assets/js/planilha/planilha.js') }}"></script>
     <script src="{{ asset('theme/assets/js/pages/movimentocaixa.js') }}"></script>
+    <script src="{{ asset('theme/plugins/jsPDF/assets/jspdf.js') }}"></script>
+    <script src="{{ asset('theme/plugins/jsPDF/assets/mitubachi-normal.js') }}"></script>
+    <script src="{{ asset('theme/plugins/jsPDF/assets/faker.min.js') }}"></script>
+    <script src="{{ asset('theme/plugins/jsPDF/dist/jspdf.plugin.autotable.js') }}"></script>
+    <script src="{{ asset('theme/plugins/jsPDF/examples.js') }}"></script>
 @endsection
 @section('extras-scripts')
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.6/jquery.inputmask.min.js"></script>
     <script>
         $(document).ready(function() {
+            let year = $('.year-btn.btn-success').data('year');
+            $('#get-ano').val(year);
             $('.year-btn').click(function() {
                 $('.year-btn').removeClass('btn-success').find('i').remove();
                 $(this).addClass('btn-success').append('<i class="fas fa-check"></i>');
                 var year = $(this).data('year');
+                $('#get-ano').val(year);
                 fetchData(year);
             });
 
@@ -223,6 +233,59 @@
                 updateRowTotal($this.closest('tr'));
             });
         });
+
+
+        
+
+        function gerarPdf() {
+            
+            const doc = new jspdf.jsPDF({
+                orientation: 'l', // 'l' for landscape, 'p' for portrait
+                unit: 'mm',
+                format: 'a4',
+                headStyles: {
+                fillColor: [241, 196, 15],
+                fontSize: 15,
+                },
+            })
+            const totalPagesExp = doc.internal.getNumberOfPages();
+            doc.autoTable({ 
+                
+                head: headRows(),
+                body: bodyRows(40),
+                willDrawPage: function (data) {
+                    // Header
+                    doc.setFontSize(20)
+                    doc.setTextColor(40)
+                    doc.text(`Relatório Livro Grade - {{ session('session_perfil')->instituicao_nome }} - Ano: ${$('#get-ano').val()}`, 15, 22)
+                },
+                didDrawPage: function (data) {
+                    // Footer
+                    let str = 'Página ' + doc.internal.getNumberOfPages()
+                    // Total page number plugin only available in jspdf v1.0+
+                    if (typeof doc.putTotalPages === 'function') {
+                        str = str + ' de ' + totalPagesExp
+                    }
+                    doc.setFontSize(10)
+
+                    // jsPDF 1.4+ uses getHeight, <1.4 uses .height
+                    const pageSize = doc.internal.pageSize
+                    const pageHeight = pageSize.height
+                        ? pageSize.height
+                        : pageSize.getHeight()
+                    doc.text(str, data.settings.margin.left, pageHeight - 10)
+                },
+                headStyles: { fillColor: [52, 58, 64] },
+                margin: { top: 30 },
+
+                head: headRows(),
+                body: bodyRows(5),
+                theme: 'grid',
+                html: '#livrograde' 
+            })
+
+            doc.save('table.pdf')
+        }
 
 
         function sendToAPI(value, title, memberId) {
