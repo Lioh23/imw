@@ -79,9 +79,10 @@
                             <tr>
                                 <th>IGREJA</th>
                                 <th>CAIXA </th>
+                                <th>SALDO ANTERIOR</th>
                                 <th>ENTRADAS</th>
                                 <th>SAÍDAS</th>
-                                <th>SALDO</th>
+                                <th>SALDO FINAL</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -92,6 +93,9 @@
                                     </td>
                                     <td>
                                         {{ $item->descricao }}
+                                    </td>
+                                    <td>
+                                        {{ $item->saldo_anterior }}
                                     </td>
                                     <td>
                                         {{ $item->total_entradas }}
