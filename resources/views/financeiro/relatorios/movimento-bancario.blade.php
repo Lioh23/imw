@@ -81,7 +81,8 @@
                                 <th>CAIXA </th>
                                 <th>ENTRADAS</th>
                                 <th>SAÍDAS</th>
-                                <th>SALDO</th>
+                                <th>SALDO ANTERIOR</th>
+                                <th>SALDO FINAL</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -98,6 +99,9 @@
                                     </td>
                                     <td>
                                         {{ $item->total_saidas }}
+                                    </td>
+                                    <td>
+                                        {{ $item->saldo_anterior }}
                                     </td>
                                     <td>
                                         {{ $item->saldo_final }}
