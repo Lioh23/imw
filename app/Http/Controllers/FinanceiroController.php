@@ -72,6 +72,7 @@ class FinanceiroController extends Controller
 
     public function storeTransferencia(FinanceiroTransferenciaRequest $request)
     {
+
         try {
             DB::begintransaction();
             app(StoreTransferenciaService::class)->execute($request->all());
@@ -79,6 +80,7 @@ class FinanceiroController extends Controller
             return redirect()->route('financeiro.transferencia')->with('success', 'Transferência realizada.')->withInput();
         } catch (\Exception $e) {
             DB::rollback();
+            dd($e);
             return redirect()->back()->with('error', 'Não foi possível criar um registro de transferência');
         }
     }

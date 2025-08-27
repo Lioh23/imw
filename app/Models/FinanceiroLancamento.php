@@ -42,8 +42,9 @@ class FinanceiroLancamento extends Model
         'hist_regiao_id',
         'hist_secretaria_id',
         'instituicao_id',
+        'decimo_terceiro',
         'data_ano_mes',
-        'decimo_terceiro'
+        'guid'
     ];
 
 
