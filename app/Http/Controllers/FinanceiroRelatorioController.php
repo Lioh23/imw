@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ServiceFinanceiroRelatorios\BalanceteRegiaoService;
 use App\Services\ServiceFinanceiroRelatorios\BalanceteService;
 use App\Services\ServiceFinanceiroRelatorios\LivroCaixaService;
 use App\Services\ServiceFinanceiroRelatorios\LivroGradeService;
@@ -9,6 +10,7 @@ use App\Services\ServiceFinanceiroRelatorios\SalvarLivroGradeService;
 use App\Services\ServiceFinanceiroRelatorios\MovimentoDiarioService;
 use App\Services\ServiceFinanceiroRelatorios\LivroRazaoService;
 use App\Services\ServiceFinanceiroRelatorios\MovimentoBancarioService;
+use App\Traits\Identifiable;
 use Carbon\Carbon;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use Illuminate\Http\Request;
@@ -97,8 +99,23 @@ class FinanceiroRelatorioController extends Controller
         $caixaId = $request->input('caixa_id');
 
         $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId);
-
         return view('financeiro.relatorios.balancete', $data);
+    }
+
+    public function balanceteRegiao(Request $request)
+    {
+        $dataInicial = $request->input('dt_inicial');
+        $dataFinal = $request->input('dt_final');
+        //$caixaId = $request->input('caixa_id');
+        if($dataFinal){
+            $caixaId = 'all';
+        }else{
+            $caixaId = null;
+        }
+        $instituicaoId = $request->input('instituicao_id');
+        $regiao = Identifiable::fetchtSessionRegiao();
+        $data = app(BalanceteRegiaoService::class)->execute($dataInicial, $dataFinal, $caixaId, $regiao, $instituicaoId);
+        return view('financeiro.relatorios.balancete-regiao', $data);
     }
 
     public function livrogradestore(Request $request)

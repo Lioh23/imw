@@ -3,6 +3,8 @@
 namespace App\Traits;
 
 use App\Models\FinanceiroCaixa;
+use App\Models\InstituicoesInstituicao;
+use App\Models\InstituicoesTipoInstituicao;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -35,7 +37,6 @@ trait BalanceteUtils
                     financeiro_caixas fc ON fc.id = fl.caixa_id
                 WHERE 
                     fl.instituicao_id = '$instituicaoId' ";
-
         if ($caixaID !== 'all') {
             $sql .= "AND fc.id = '$caixaID' ";
         }
@@ -131,5 +132,24 @@ trait BalanceteUtils
         }
 
         return $caixas;
+    }
+
+    public static function handleListaIgrejasByRegiao($regiaoId)
+    {
+        $distritos = InstituicoesInstituicao::where('instituicao_pai_id', $regiaoId)
+            ->get()
+            ->unique('id')
+            ->pluck('id')
+            ->toArray();
+
+        return DB::table('instituicoes_instituicoes as ii')
+            ->join('instituicoes_tiposinstituicao as it', 'it.id', '=', 'ii.tipo_instituicao_id')
+            ->select('ii.id', 'ii.nome as descricao')
+            ->whereIn('ii.instituicao_pai_id', $distritos)
+            ->where('ii.tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
+            ->where('ii.ativo', 1)
+            ->whereNull('ii.deleted_at')
+            ->orderBy('ii.nome')
+            ->get();
     }
 }

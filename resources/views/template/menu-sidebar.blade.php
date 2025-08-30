@@ -463,6 +463,11 @@
                                      Igrejas</a>
                              @endif
                          </li>
+                         <li {!! Request::is('regiao/relatorio/financeiro/balancete') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
+                                <a href="{{ route('regiao.relatorio-balancete-regiao') }}">Balancete</a>
+                            @endif
+                        </li>
                          <li {!! Request::is('regiao/relatorio/saldodasigrejas') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-saldo-das-igrejas'))
                                  <a href="{{ route('regiao.relatorio.saldodasigrejas') }}">Saldo das Igrejas</a>

@@ -43,15 +43,15 @@
                 {{-- Congregação --}}
                 <div class="form-group row mb-4">
                     <div class="col-lg-2 text-right">
-                        <label class="control-label">Caixa:</label>
+                        <label class="control-label">Igrejas:</label>
                     </div>
                     <div class="col-lg-6">
-                        <select id="caixa_id" name="caixa_id" class="form-control @error('caixa_id') is-invalid @enderror">
-                            <option value="all" {{ request()->input('caixa_id') == '99' ? 'selected' : '' }}>Todos
+                        <select id="instituicao_id" name="instituicao_id" class="form-control @error('instituicao_id') is-invalid @enderror">
+                            <option value="all" {{ request()->input('instituicao_id') == 'all' ? 'selected' : '' }}>Todas
                             </option>
-                            @foreach ($caixasSelect as $cx)
-                            <option value="{{ $cx->id }}" {{ request()->input('caixa_id') == $cx->id ? 'selected' : '' }}>
-                                {{ $cx->descricao }}
+                            @foreach ($igrejas as $igreja)
+                            <option value="{{ $igreja->id }}" {{ request()->input('instituicao_id') == $igreja->id ? 'selected' : '' }}>
+                                {{ $igreja->descricao }}
                             </option>
                             @endforeach
                         </select>
@@ -63,9 +63,9 @@
                         <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
                             <x-bx-search /> Buscar
                         </button>
-                        <button id="btn_relatorio" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn">
+                        <!-- <button id="btn_relatorio" type="button" name="action" value="relatorio" title="Gerar Relatório" class="btn btn-secondary btn">
                             Relatório
-                        </button>
+                        </button> -->
                     </div>
                 </div>
             </form>

@@ -19,10 +19,8 @@ class LancamentoIgrejasService
         if (empty($dtano)) {
             $dtano = Carbon::now()->format('Y');
         } 
-
         $igrejaSelect  = $this->handleListaIgrejasByRegiao($regiao->id);
         $lancamentos = $this->handleLancamentos($dtano, $igrejaId);
-
 
         return [
             'igrejaSelect' => $igrejaSelect,
