@@ -44,6 +44,7 @@
                     </div>
                     <div class="col-lg-6">
                         <select class="form-control" id="igreja_id" name="igreja_id" data-width="100%">
+                             <option value="all" {{ 'all' == request()->input('igreja_id') ? 'selected' : '' }}> Todas </option>
                             @foreach ($igrejas as $igreja)
                             <option value="{{ $igreja->id }}" {{ $igreja->id == request()->input('igreja_id') ? 'selected' : '' }}>
                                 {{ $igreja->descricao }}
@@ -83,7 +84,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">LANÇAMENTOS DAS IGREJAS - {{ $instituicao->nome }}</h6>
+                            <h6 class="mt-3">LANÇAMENTO(S) DA(S) IGREJA(S) - {{ isset($instituicao->nome) ? $instituicao->nome : 'Todas' }}</h6>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>

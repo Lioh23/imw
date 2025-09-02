@@ -20,7 +20,7 @@ class LancamentoIgrejasService
             $dtano = Carbon::now()->format('Y');
         } 
         $igrejaSelect  = $this->handleListaIgrejasByRegiao($regiao->id);
-        $lancamentos = $this->handleLancamentos($dtano, $igrejaId);
+        $lancamentos = $this->handleLancamentos($dtano, $igrejaId, $igrejaSelect);
 
         return [
             'igrejaSelect' => $igrejaSelect,
@@ -30,9 +30,24 @@ class LancamentoIgrejasService
         ];
     }
 
-    private function handleLancamentos($dtano, $igrejaId)
+    private function handleLancamentos($dtano, $igrejaId, $igrejaSelect)
     {
-        $result = DB::table('instituicoes_instituicoes as ii')
+        if($igrejaId == 'all'){
+            $igrejas = $igrejaSelect->pluck('id')->toArray();
+            //$igrejas = implode(',',$igrejasAll);
+           return $this->queryLancamento($dtano, $igrejaId, $igrejas);
+        }else{
+            $igrejas = $igrejaSelect->where('id',$igrejaId)->pluck('id')->toArray();
+            //$igrejas = implode(',',$igrejasAll);
+            return $this->queryLancamento($dtano, $igrejaId, $igrejas);
+        }
+        
+
+        //return $result;
+    }
+
+    private function queryLancamento($dtano, $igrejaId, $igrejas){
+        return  DB::table('instituicoes_instituicoes as ii')
             ->leftJoin('financeiro_lancamentos as fl', function($join) use ($dtano) {
                 $join->on('ii.id', '=', 'fl.instituicao_id')
                      ->whereYear('fl.data_movimento', '=', $dtano);
@@ -55,7 +70,7 @@ class LancamentoIgrejasService
                 DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 11 THEN 1 END) AS novembro'),
                 DB::raw('COUNT(CASE WHEN MONTH(fl.data_movimento) = 12 THEN 1 END) AS dezembro')
             )
-            ->where('ii.id', $igrejaId)
+            ->whereIn('ii.id', $igrejas)
             ->where('fl.conciliado', 1)
             ->whereNull('ii.deleted_at')
             ->where('ii.ativo', 1)
@@ -64,9 +79,8 @@ class LancamentoIgrejasService
             ->orderBy('ii.id')
             ->get();
 
-        return $result;
+        //dd($result);
     }
-
 
     private function handleListaIgrejasByRegiao($regiaoId)
     {
