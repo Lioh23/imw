@@ -12,23 +12,53 @@ class BalanceteRegiaoService
 
     public function execute($dataInicial, $dataFinal, $caixaId, $regiao, $instituicaoId)
     {
+        if($instituicaoId != 'all'){
         //$instituicaoId = session()->get('session_perfil')->instituicao_id;
-        $instituicaoId = $instituicaoId;
-       // dd($instituicaoId);
-        if (empty($dataInicial)) {
-            $dataInicial = Carbon::now()->format('m/Y');
-        }
+            $instituicaoId = $instituicaoId;
+            if (empty($dataInicial)) {
+                $dataInicial = Carbon::now()->format('m/Y');
+            }
 
-        if (empty($dataFinal)) {
-            $dataFinal = Carbon::now()->format('m/Y');
+            if (empty($dataFinal)) {
+                $dataFinal = Carbon::now()->format('m/Y');
+            }
+            $igreja = Identifiable::fetchIgreja($instituicaoId);
+            return [
+                'instituicao'   => $instituicaoId,
+                'caixas'        => BalanceteUtils::handleCaixas($dataInicial, $dataFinal, $caixaId, $instituicaoId),
+                'caixasSelect'  => BalanceteUtils::handleListaCaixas($instituicaoId),
+                'lancamentos'   => BalanceteUtils::handleLancamentos($dataInicial, $dataFinal, $caixaId, $instituicaoId),
+                'igrejas'       => BalanceteUtils::handleListaIgrejasByRegiao($regiao->id),
+                'igrejaNome'    => isset($igreja->nome) ? $igreja->nome : '',
+            ];
+        }else{
+            $totasIgrejas = BalanceteUtils::handleListaIgrejasByRegiao($regiao->id);
+            foreach($totasIgrejas as $igreja){
+                $instituicaoId = $igreja->id;
+                if (empty($dataInicial)) {
+                    $dataInicial = Carbon::now()->format('m/Y');
+                }
+
+                if (empty($dataFinal)) {
+                    $dataFinal = Carbon::now()->format('m/Y');
+                }
+                $caixas = BalanceteUtils::handleCaixas($dataInicial, $dataFinal, $caixaId, $instituicaoId);
+                if(count($caixas) > 0){
+                    $conteudoIgrejas [] = [
+                        'instituicao'   => $instituicaoId,
+                        'caixas'        => $caixas,
+                        'caixasSelect'  => BalanceteUtils::handleListaCaixas($instituicaoId),
+                        'lancamentos'   => BalanceteUtils::handleLancamentos($dataInicial, $dataFinal, $caixaId, $instituicaoId),
+                        'igrejas'       => BalanceteUtils::handleListaIgrejasByRegiao($regiao->id),
+                        'igrejaNome'    => $igreja->descricao,
+                    ];
+                }
+            }
+            return [
+                'igrejas'   => BalanceteUtils::handleListaIgrejasByRegiao($regiao->id),
+                'conteudos' => $conteudoIgrejas,
+                'igrejaNome'    => 'Todas Igrejas', 
+            ];
         }
-//2262
-        return [
-            'instituicao'  => $instituicaoId,
-            'caixas'       => BalanceteUtils::handleCaixas($dataInicial, $dataFinal, $caixaId, $instituicaoId),
-            'caixasSelect' => BalanceteUtils::handleListaCaixas($instituicaoId),
-            'lancamentos'  => BalanceteUtils::handleLancamentos($dataInicial, $dataFinal, $caixaId, $instituicaoId),
-            'igrejas' => BalanceteUtils::handleListaIgrejasByRegiao($regiao->id),
-        ];
     }
 }
