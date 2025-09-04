@@ -229,11 +229,6 @@
         </div>
     </div>
     @else
-        <div class="row">
-        <div class="col-12 text-center">
-            <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
-        </div>
-        </div>
         @foreach($conteudos as $conteudo)
         
         <div class="col-lg-12 col-12 layout-spacing">
@@ -244,7 +239,10 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-12">
-                                    <h5 class="mt-3">Discriminação de saldos por caixa: {{ $conteudo['igrejaNome'] }}</h5>
+                                    <h5 class="mt-3">
+                                        Discriminação de saldos por caixa: {{ $conteudo['igrejaNome'] }}
+                                        <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();" style="float: right;"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button> 
+                                    </h5>
                                     <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                         <thead class="thead-dark">
                                             <tr>
@@ -380,7 +378,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Fim do Conteúdo -->
+                    <!-- Fim do Conteúdo -->                    
                 </div>
             </div>
         </div>
