@@ -12,7 +12,7 @@ class BalanceteRegiaoService
 
     public function execute($dataInicial, $dataFinal, $caixaId, $regiao, $instituicaoId)
     {
-        if($instituicaoId != 'all'){
+        //if($instituicaoId != 'all'){
         //$instituicaoId = session()->get('session_perfil')->instituicao_id;
             $instituicaoId = $instituicaoId;
             if (empty($dataInicial)) {
@@ -25,13 +25,13 @@ class BalanceteRegiaoService
             $igreja = Identifiable::fetchIgreja($instituicaoId);
             return [
                 'instituicao'   => $instituicaoId,
-                'caixas'        => BalanceteUtils::handleCaixas($dataInicial, $dataFinal, $caixaId, $instituicaoId),
+                'caixas'        => BalanceteUtils::handleCaixasRegiao($dataInicial, $dataFinal, $caixaId, $instituicaoId),
                 'caixasSelect'  => BalanceteUtils::handleListaCaixas($instituicaoId),
-                'lancamentos'   => BalanceteUtils::handleLancamentos($dataInicial, $dataFinal, $caixaId, $instituicaoId),
+                'lancamentos'   => BalanceteUtils::handleLancamentosRegiao($dataInicial, $dataFinal, $caixaId, $instituicaoId),
                 'igrejas'       => BalanceteUtils::handleListaIgrejasByRegiao($regiao->id),
                 'igrejaNome'    => isset($igreja->nome) ? $igreja->nome : '',
             ];
-        }else{
+        /*}else{
             $totasIgrejas = BalanceteUtils::handleListaIgrejasByRegiao($regiao->id);
             foreach($totasIgrejas as $igreja){
                 $instituicaoId = $igreja->id;
@@ -59,6 +59,6 @@ class BalanceteRegiaoService
                 'conteudos' => $conteudoIgrejas,
                 'igrejaNome'    => 'Todas Igrejas', 
             ];
-        }
+        }*/
     }
 }
