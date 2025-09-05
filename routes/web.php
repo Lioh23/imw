@@ -494,6 +494,7 @@ Route::middleware(['auth'])->group(function () {
          // Contabilidade
         Route::prefix('contabilidade')->name('contabilidade.')->controller(ContabilidadeController::class)->group(function () {
             Route::get('/irrf', 'irrf')->name('irrf')->middleware('seguranca:contabilidade-irrf');
+            Route::get('/financeiro/balancete', [FinanceiroRelatorioController::class, 'balanceteRegiao'])->name('relatorio-balancete')->middleware(['seguranca:contabilidade-irrf']);
         });
 
     });

@@ -843,6 +843,11 @@
                              <a href="{{ route('contabilidade.irrf') }}">IRRF</a>
                          @endif
                      </li>
+                    <li {!! Request::is('contabilidade/financeiro/balancete') ? 'class="active"' : '' !!}>
+                        @if (auth()->check() && auth()->user()->hasPerfilRegra('contabilidade-irrf'))
+                            <a href="{{ route('contabilidade.relatorio-balancete') }}">Balancete</a>
+                        @endif
+                    </li>
                  </ul>
                  @endif
 
