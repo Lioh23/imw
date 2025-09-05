@@ -32,6 +32,6 @@ class FinanceiroGrade extends Model
         'distrito_id',
         'igreja_id',
         'membro_id',
-        'regiao_id' 
+        'regiao_id',
     ];
 }

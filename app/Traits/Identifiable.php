@@ -218,4 +218,11 @@ trait Identifiable
         return PessoaStatus::get();
     }
 
+     public static function fetchIgreja(int|null $instituicaoId)
+    {
+        return InstituicoesInstituicao::where('id', $instituicaoId)
+            ->where('tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
+            ->first();
+    }
+
 }

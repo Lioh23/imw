@@ -138,6 +138,33 @@
                     </div>
                 </div>
                 
+                <div class="col-4 ano_mes">
+                    <label for="ano_mes">Mês/Ano</label>
+                    <div class="input-group">
+                        <select class="form-control " id="ano" name="ano" required="">
+                            @php
+                                $decimoTerceiro = $entrada->decimo_terceiro;
+                                if($decimoTerceiro){
+                                    $mesAtual = 13;
+                                    $anoAtual = getYear($entrada->data_ano_mes) -1;
+                                }else{
+                                    $mesAtual = getMonth($entrada->data_ano_mes);
+                                    $anoAtual = getYear($entrada->data_ano_mes);
+                                }
+                                $anos = range($anoAtual - 1, $anoAtual);
+                            @endphp
+                            @foreach($anos as $ano)
+                                <option value="{{ $ano }}" {{ $anoAtual == $ano ? 'selected' : '' }}>{{ $ano }}</option>
+                            @endforeach
+                        </select>
+                        <select class="form-control " id="mes" name="mes" required="">
+                            @foreach($meses as $mes)
+                                <option value="{{ $mes->id }}" {{ $mesAtual == zeroEsqueda($mes->id) ? 'selected' : '' }}>{{ $mes->descricao }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                 <div class="row mb-4">
                     <div class="col-12">
                         <label for="descricao">Descrição</label>
@@ -180,6 +207,31 @@
 
         $(document).ready(function() {
             $('#tipo_pagante_favorecido_id').trigger('change'); // disparar o evento change ao carregar a página
+
+            let planoContaId = $('#plano_conta_id').val();
+            if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                $('.ano_mes').show();
+                $('#mes').prop('disabled', false);
+                $('#ano').prop('disabled', false);
+            }else{
+                $('.ano_mes').hide();
+                $('#mes').prop('disabled', true);
+                $('#ano').prop('disabled', true);
+            }
+
+        });
+
+        $('#plano_conta_id').change(function() {
+            let planoContaId = $('#plano_conta_id').val();
+            if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                $('.ano_mes').show();
+                    $('#mes').prop('disabled', false);
+                    $('#ano').prop('disabled', false);
+            }else{
+                $('.ano_mes').hide();
+                    $('#mes').prop('disabled', true);
+                    $('#ano').prop('disabled', true);
+            }
         });
 
         $('#tipo_pagante_favorecido_id').change(function() {
@@ -190,12 +242,24 @@
             if ($('#pagante_favorecido').data('select2')) {
                 $('#pagante_favorecido').select2('destroy').empty();
             }
-
+            $('.ano_mes').hide();
             if (tipoPaganteFavorecido == 1) {
+
+                let planoContaId = $('#plano_conta_id').val();
+                if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                    $('.ano_mes').show();
+                    $('#mes').prop('disabled', false);
+                    $('#ano').prop('disabled', false);
+                }else{
+                    $('.ano_mes').hide();
+                    $('#mes').prop('disabled', true);
+                    $('#ano').prop('disabled', true);
+                }
+
                 var membros = {!! json_encode($membros) !!};
                 var membroId = '{{ $entrada->membro_id ?? 'null' }}';
                 var selectHtml =
-                    `<div class="col-12">
+                    `<div class="col-6">
                         <label for="pagante_favorecido">Beneficiário</label>
                         <select class="form-control" id="pagante_favorecido" name="pagante_favorecido">
                             <option value="" disabled${membroId === 'null' ? ' selected' : ''}>Selecione</option>
@@ -209,7 +273,8 @@
                                     <span class="help-block text-danger">{{ $message }}</span>
                                 @enderror
                              </select>
-                             </div>`;
+                             </div>
+                             `;
 
                 $('#show_pagante_favorecido').html(selectHtml);
                 $('#pagante_favorecido').select2({
@@ -219,7 +284,7 @@
             }   else if (tipoPaganteFavorecido == 3) {
                         var clerigos = {!! json_encode($clerigos) !!};
                         var selectHtml =
-                            `<div class="col-12">
+                            `<div class="col-6">
                                 <label for="pagante_favorecido">Beneficiário</label>
                                 <select class="form-control" id="pagante_favorecido" name="pagante_favorecido" required><option value="" disabled>Selecione</option>
                                     @error('pagante_favorecido')

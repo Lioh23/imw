@@ -22,7 +22,13 @@ class StoreLancamentoEntradaService
        
         $tipoPaganteFavorecidoId = $data['tipo_pagante_favorecido_id'];
         $paganteFavorecido = $data['pagante_favorecido'];
-
+        $ano = isset($data['ano']) ? $data['ano'] : '';
+        $mes = isset($data['mes']) ? $data['mes'] : '';
+        if($ano){
+            $anoMes = $mes.'/'.$ano;
+        }else{
+            $anoMes = '';
+        }
         $lancamentos = [
             'data_lancamento' => Carbon::now()->format('Y-m-d'),
             'valor' => str_replace(',', '.', str_replace('.', '', $data['valor'])),
@@ -31,21 +37,25 @@ class StoreLancamentoEntradaService
             'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_ENTRADA, 
             'plano_conta_id' => $data['plano_conta_id'],
             'data_movimento' => $data['data_movimento'],
+            'data_ano_mes' => $ano ? formatMesAnoDizimo($anoMes) : '',
             'caixa_id' => $data['caixa_id'],
-            'instituicao_id' => session()->get('session_perfil')->instituicao_id
+            'instituicao_id' => session()->get('session_perfil')->instituicao_id,
+            'decimo_terceiro' => $mes == 13 ? 1 : 0,
         ];
-
+        if(!$ano){
+            unset($lancamentos['data_ano_mes']);
+        }
         $paganteFavorecidoModel = null;
         $campoId = null;
-
         switch ($tipoPaganteFavorecidoId) {
+            
             case 1:
                 $paganteFavorecidoModel = MembresiaMembro::find($paganteFavorecido);
                 $campoId = 'membro_id';
                 if ($paganteFavorecidoModel) {
                     $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
                     if ($paganteFavorecidoModel && in_array($lancamentos['plano_conta_id'], $planoContaIds)) {
-                        $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento']);
+                        $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento'], $lancamentos['data_ano_mes']);
                     }
                 }
                 break;
@@ -66,16 +76,16 @@ class StoreLancamentoEntradaService
             $lancamentos['pagante_favorecido'] = $paganteFavorecidoModel->nome;
             $lancamentos[$campoId] = $paganteFavorecido;
         }
-
+        //unset($lancamentos['ano_mes']);
         FinanceiroLancamento::create($lancamentos);
 
     }
 
-    private function handleLivroGrade($membroId, $valor, $dataMovimento){
-        $date = Carbon::parse($dataMovimento);
+    private function handleLivroGrade($membroId, $valor, $dataMovimento, $dataAnoMes){
+        //$date = Carbon::parse($dataMovimento);
+        $date = Carbon::parse($dataAnoMes);
         $ano = $date->year;
         $mes = $date->format('M');
-        
         $monthsMap = [
             'Jan' => 'JAN',
             'Feb' => 'FEV',
@@ -95,7 +105,8 @@ class StoreLancamentoEntradaService
             'ano' => $ano,
             'membro_id' => $membroId,
             'mes' => strtolower($monthsMap[$mes]),
-            'valor' => $valor
+            'valor' => $valor,
+            'data_ano_mes' => $dataAnoMes
         ];
 
         $this->handleLancamento($data);
@@ -126,7 +137,7 @@ class StoreLancamentoEntradaService
                 $data['mes'] => $data['valor'],
                 'distrito_id' => session()->get('session_perfil')->instituicoes->distrito->id,
                 'igreja_id' => session()->get('session_perfil')->instituicoes->igrejaLocal->id,
-                'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id
+                'regiao_id' => session()->get('session_perfil')->instituicoes->regiao->id,
             ]);
         }
     }

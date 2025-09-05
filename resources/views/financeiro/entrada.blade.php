@@ -28,6 +28,13 @@
             height: 50px !important;
             font-family: 'Nunito', sans-serif;
         }
+        /* #ui-datepicker-div{
+            position: absolute;
+            top: 51% !important;
+            left: 886.1px;
+            z-index: 1;
+            display: block;
+        } */
     </style>
 @endsection
 
@@ -130,6 +137,26 @@
                             <span class="help-block text-danger">{{ $message }}</span>
                         @enderror
                     </div>
+                    <div class="col-4 ano_mes">
+                        <label for="ano_mes">Mês/Ano</label>
+                        <div class="input-group">
+                            <select class="form-control " id="ano" name="ano" required="">
+                                @php
+                                    $mesAtual = date('m');
+                                    $anoAtual = date('Y');
+                                    $anos = range($anoAtual - 1, $anoAtual);
+                                @endphp
+                                @foreach($anos as $ano)
+                                    <option value="{{ $ano }}" {{ $anoAtual == $ano ? 'selected' : '' }}>{{ $ano }}</option>
+                                @endforeach
+                            </select>
+                            <select class="form-control " id="mes" name="mes" required="">
+                                @foreach($meses as $mes)
+                                    <option value="{{ $mes->id }}" {{ $mesAtual == zeroEsqueda($mes->id) ? 'selected' : '' }}>{{ $mes->descricao }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="row mb-4">
@@ -157,6 +184,16 @@
         $(document).ready(function() {
             // limpar o campo Pagante
             $('#pagante_favorecido').val('').trigger('change');
+            let planoContaId = $('#plano_conta_id').val();
+            if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                $('.ano_mes').show();
+                $('#mes').prop('disabled', false);
+                $('#ano').prop('disabled', false);
+            }else{
+                $('.ano_mes').hide();
+                $('#mes').prop('disabled', true);
+                $('#ano').prop('disabled', true);
+            }
         });
 
         // máscara de valor
@@ -177,12 +214,34 @@
             allowClear: true
         }); 
 
+        $('#plano_conta_id').change(function() {
+            let planoContaId = $('#plano_conta_id').val();
+            if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                $('.ano_mes').show();
+                    $('#mes').prop('disabled', false);
+                    $('#ano').prop('disabled', false);
+            }else{
+                $('.ano_mes').hide();
+                    $('#mes').prop('disabled', true);
+                    $('#ano').prop('disabled', true);
+            }
+        });
 
         // evento de exibição do descritivo do pagante/favorecido
         $('#tipo_pagante_favorecido_id').change(function() {
             var tipoPaganteFavorecido = this.value;
-
+            $('.ano_mes').hide();
             if (tipoPaganteFavorecido == 1) {
+                let planoContaId = $('#plano_conta_id').val();
+                if(planoContaId == 4 || planoContaId == 5 || planoContaId == 110186){
+                    $('.ano_mes').show();
+                    $('#mes').prop('disabled', false);
+                    $('#ano').prop('disabled', false);
+                }else{
+                    $('.ano_mes').hide();
+                    $('#mes').prop('disabled', true);
+                    $('#ano').prop('disabled', true);
+                }
                 // Exibir o campo para membros
                 $('#show_pagante_favorecido').removeClass('d-none');
 

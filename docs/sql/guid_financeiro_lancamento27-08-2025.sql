@@ -1,0 +1,1 @@
+ALTER TABLE `financeiro_lancamentos` ADD `guid` VARCHAR(150) NULL DEFAULT NULL AFTER `data_ano_mes`;

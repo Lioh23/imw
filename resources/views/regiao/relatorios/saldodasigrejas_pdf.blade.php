@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Relatório de Saldo das Igrejas - IMW PGA</title>
+    <title>Relatório de Saldo de Caixas - IMW PGA</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -88,7 +88,7 @@
     <div class="header">
         <img src="{{ public_path('auth/images/login.png') }}" alt="Logotipo">
         <div class="info">
-            <div class="title">SALDO DAS IGREJAS - {{ $instituicao->nome }}</div>
+            <div class="title">SALDO DE CAIXAS - {{ $instituicao->nome }}</div>
             <div class="period" style="margin-top:4px">
                 Data: {{ request()->input('dt') }}
             </div>

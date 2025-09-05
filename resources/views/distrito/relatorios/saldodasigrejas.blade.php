@@ -4,7 +4,7 @@
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Home', 'url' => '/', 'active' => false],
     ['text' => 'Relatórios Distritais', 'url' => '#', 'active' => false],
-    ['text' => 'Saldo das Igrejas', 'url' => '#', 'active' => true],
+    ['text' => 'Saldo de Caixas', 'url' => '#', 'active' => true],
 ]"></x-breadcrumb>
 @endsection
 
@@ -21,7 +21,7 @@
         <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4>Relatório Saldo das Igrejas</h4>
+                    <h4>Relatório Saldo de Caixas</h4>
                 </div>
             </div>
         </div>
@@ -65,7 +65,7 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
-                            <h6 class="mt-3">SALDO DAS IGREJAS - {{ session('session_perfil')->instituicao_nome }}</h6>
+                            <h6 class="mt-3">SALDO DE CAIXAS - {{ session('session_perfil')->instituicao_nome }}</h6>
                             <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
                                     <tr>
@@ -80,6 +80,14 @@
                                 </thead>
                                 <tbody>
                                     @foreach($lancamentos as $lancamento)
+                                    @php
+                                        $saldoCxPrincipal[] = $lancamento->saldocxprincipal;
+                                        $saldoCxCongregacoes[] = $lancamento->saldocxcongregacoes;
+                                        $saldoCxSecundado[] = $lancamento->saldocxsecundado;
+                                        $saldoCxBancos[] = $lancamento->saldocxbancos;
+                                        $saldoCxOutros[] = $lancamento->saldocxoutros;
+                                        $total[] = $lancamento->total;
+                                    @endphp
                                     <tr>
                                         <td>{{ $lancamento->instituicao_nome }}</td>
                                         <td style="text-align: right">{{ number_format($lancamento->saldocxprincipal, 2, ',', '.') }}</td>
@@ -90,6 +98,15 @@
                                         <td style="text-align: right">{{ number_format($lancamento->total, 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
+                                    <tr>
+                                        <td>TOTAL</td>
+                                        <td style="text-align: right">{{ number_format(array_sum($saldoCxPrincipal), 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format(array_sum($saldoCxCongregacoes), 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format(array_sum($saldoCxSecundado), 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format(array_sum($saldoCxBancos), 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format(array_sum($saldoCxOutros), 2, ',', '.') }}</td>
+                                        <td style="text-align: right">{{ number_format(array_sum($total), 2, ',', '.') }}</td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </div>

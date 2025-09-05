@@ -264,6 +264,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/irrf', [ContabilidadeController::class,'irrf'])->name('relatorio.irrf')->middleware('seguranca:regiao-menu-relatorio');
 
             Route::get('/ano-eclesiastico', [RegiaoRelatorioController::class,'anoEclesiastico'])->name('relatorio.ano.eclesiastico')->middleware('seguranca:regiao-menu-relatorio');
+             Route::get('/financeiro/balancete', [FinanceiroRelatorioController::class, 'balanceteRegiao'])->name('relatorio-balancete-regiao')->middleware(['seguranca:regiao-menu-relatorio']);
         });
 
         // Relatórios Região Clérigos

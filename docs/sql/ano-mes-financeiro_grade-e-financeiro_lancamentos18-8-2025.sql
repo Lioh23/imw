@@ -1,0 +1,2 @@
+ALTER TABLE `financeiro_lancamentos` ADD `data_ano_mes` DATE NULL DEFAULT NULL AFTER `instituicao_id`;
+ALTER TABLE `financeiro_lancamentos` ADD `decimo_terceiro` TINYINT NOT NULL DEFAULT '0' AFTER `instituicao_id`;

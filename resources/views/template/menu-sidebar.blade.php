@@ -359,7 +359,7 @@
                          </li>
                          <li {!! Request::is('distrito/relatorio/saldodasigrejas') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-saldo-das-igrejas'))
-                                 <a href="{{ route('distrito.relatorio.saldodasigrejas') }}">Saldo das Igrejas</a>
+                                 <a href="{{ route('distrito.relatorio.saldodasigrejas') }}">Saldo de Caixas</a>
                              @endif
                          </li>
                          <li {!! Request::is('distrito/relatorio/livrorazaogeral') ? 'class="active"' : '' !!}>
@@ -463,9 +463,14 @@
                                      Igrejas</a>
                              @endif
                          </li>
+                         <li {!! Request::is('regiao/relatorio/financeiro/balancete') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
+                                <a href="{{ route('regiao.relatorio-balancete-regiao') }}">Balancete</a>
+                            @endif
+                        </li>
                          <li {!! Request::is('regiao/relatorio/saldodasigrejas') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-saldo-das-igrejas'))
-                                 <a href="{{ route('regiao.relatorio.saldodasigrejas') }}">Saldo das Igrejas</a>
+                                 <a href="{{ route('regiao.relatorio.saldodasigrejas') }}">Saldo de Caixas</a>
                              @endif
                          </li>
                          <li {!! Request::is('regiao/relatorio/livrorazaogeral') ? 'class="active"' : '' !!}>

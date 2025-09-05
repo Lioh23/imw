@@ -9,11 +9,12 @@ class StoreTransferenciaService
 {
     public function execute(array $data)
     {
-        $this->lancamentoSaida($data);
-        $this->lancamentoEntrada($data);
+        $guid = generateGUID();
+        $this->lancamentoSaida($data, $guid);
+        $this->lancamentoEntrada($data, $guid);
     }
 
-    public function lancamentoSaida($data) {
+    public function lancamentoSaida($data, $guid) {
       
         $lancamento = [
             'caixa_id' => $data['caixa_origem_id'],
@@ -25,12 +26,12 @@ class StoreTransferenciaService
             'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_SAIDA,
             'pagante_favorecido' => $data['descricao'],
             'data_lancamento' => Carbon::now()->format('Y-m-d'),
+            'guid' => $guid,
         ];
-
         FinanceiroLancamento::create($lancamento);
     }
 
-    public function lancamentoEntrada($data) {
+    public function lancamentoEntrada($data, $guid) {
         $lancamento = [
             'caixa_id' => $data['caixa_destino_id'],
             'plano_conta_id' => $data['plano_conta_id'],
@@ -41,8 +42,8 @@ class StoreTransferenciaService
             'tipo_lancamento' => FinanceiroLancamento::TP_LANCAMENTO_ENTRADA,
             'pagante_favorecido' => $data['descricao'],
             'data_lancamento' => Carbon::now()->format('Y-m-d'),
+            'guid' => $guid,
         ];
-
         FinanceiroLancamento::create($lancamento);
     }
 } 

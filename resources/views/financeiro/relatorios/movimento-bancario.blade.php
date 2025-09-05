@@ -87,6 +87,12 @@
                             </thead>
                             <tbody>
                             @foreach ($movimentosBancarios as $item)
+                                @php
+                                    $saldoAnteriorTotal[] = $item->saldo_anterior;
+                                    $totalEntradas[] = $item->total_entradas;
+                                    $totalSaidas[] = $item->total_saidas;
+                                    $saldoFinalTotal[] = $item->saldo_final;
+                                @endphp
                                 <tr>
                                     <td>
                                         {{ session('session_perfil')->instituicao_nome }}
@@ -98,16 +104,39 @@
                                         {{ $item->saldo_anterior }}
                                     </td>
                                     <td>
-                                        {{ $item->total_entradas }}
+                                        {{ number_format($item->saldo_anterior, 2, ',', '.') }}
                                     </td>
                                     <td>
-                                        {{ $item->total_saidas }}
+                                        {{ number_format($item->total_entradas, 2, ',', '.') }}
                                     </td>
                                     <td>
-                                        {{ $item->saldo_final }}
+                                        {{ number_format($item->total_saidas, 2, ',', '.') }}
+                                    </td>
+                                    <td>
+                                        {{ number_format($item->saldo_final, 2, ',', '.') }}
                                     </td>
                                 </tr>
                             @endforeach
+                                <tr>
+                                    <td>
+                                        TOTAL
+                                    </td>
+                                    <td>
+                                        
+                                    </td>
+                                    <td>
+                                        {{ number_format(array_sum($saldoAnteriorTotal), 2, ',', '.') }}
+                                    </td>
+                                    <td>
+                                        {{ number_format(array_sum($totalEntradas), 2, ',', '.') }}
+                                    </td>
+                                    <td>
+                                        {{ number_format(array_sum($totalSaidas), 2, ',', '.') }}
+                                    </td>
+                                    <td>
+                                        {{ number_format(array_sum($saldoFinalTotal), 2, ',', '.') }}
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
