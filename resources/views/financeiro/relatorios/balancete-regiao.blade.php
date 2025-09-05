@@ -11,6 +11,10 @@
 @section('extras-css')
 <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
 <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @include('extras.alerts')
@@ -81,10 +85,10 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="col-12 mt-3">
-                            <h5>Discriminação dos Lançamentos por Conta: {{ $igrejaNome ? $igrejaNome : 'Todas' }}</h5>
+                            <h5>{{ $titulo }}</h5>
                         </div>
                         <div class="col-12">
-                            <table class="table" style="font-size: 90%; margin-top: 15px;">
+                            <table class="table"  id="contabilidade-irrf">
                                 <thead class="thead-dark">
                                     <tr>
                                         <th>CONTA</th>
@@ -139,42 +143,42 @@
                                         </tr>
                                         @foreach ($caixas as $caixa)
                                         <tr>
-                                            <td></td>
+                                            <td>-</td>
                                             <td style="font-weight: bold;">Saldo Anterior</td>
                                             <td style="text-align: right; font-weight: bold;">
                                                 {{ 'R$ ' . number_format($caixa->saldo_final, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td></td>
+                                            <td>-</td>
                                             <td style="font-weight: bold;">Total de entradas</td>
                                             <td style="text-align: right; font-weight: bold;">
                                                 {{ 'R$ ' . number_format($caixa->total_entradas, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td></td>
+                                            <td>-</td>
                                             <td style="font-weight: bold;">Total de saídas</td>
                                             <td style="text-align: right; font-weight: bold;">
                                                 {{ 'R$ ' . ($caixa->total_saidas > 0 ? '-' : '') . number_format(abs($caixa->total_saidas), 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td></td>
+                                            <td>-</td>
                                             <td style="font-weight: bold;">Total de transferências entradas</td>
                                             <td style="text-align: right; font-weight: bold;">
                                                 {{ 'R$ ' . number_format($caixa->total_transferencias_entrada, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td></td>
+                                            <td>-</td>
                                             <td style="font-weight: bold;">Total de transferências saídas</td>
                                             <td style="text-align: right; font-weight: bold;">
                                                 {{ 'R$ ' . ($caixa->total_transferencias_saida > 0 ? '-' : '') . number_format(abs($caixa->total_transferencias_saida), 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td></td>
+                                            <td>-</td>
                                             <td style="font-weight: bold;">Saldo final</td>
                                             <td style="text-align: right; font-weight: bold;">
                                                 {{ 'R$ ' . number_format($caixa->saldo_atual, 2, ',', '.') }}
@@ -188,11 +192,11 @@
                         </div>
                     </div>
                 </div>
-                <div class="row">
+                <!-- <div class="row">
                     <div class="col-12 text-center">
                         <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
                     </div>
-                </div>
+                </div> -->
                 <!-- Fim do Conteúdo -->
             </div>
         </div>
@@ -200,7 +204,113 @@
 @endif
 
 @section('extras-scripts')
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
+<script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
 <script>
+    new DataTable('#contabilidade-irrf', {
+        scrollX: true,
+        scrollY: 400,
+        scrollCollapse: true,
+        layout: {
+            //top1: 'searchBuilder',
+            topStart: {
+            buttons: [
+                'pageLength',
+                {
+                  extend: 'excel',
+                  className: 'btn btn-primary btn-rounded',
+                  text: '<i class="fas fa-file-excel"></i> Excel',
+                  titleAttr: 'Excel',
+                  title: "{{ $titulo }}"
+                },
+                {
+                    extend: 'pdfHtml5',
+                    className: 'btn btn-primary btn-rounded',
+                    text: '<i class="fas fa-file-pdf"></i> PDF',
+                    titleAttr: 'PDF',
+                    title: `{{ $titulo }}`,
+                    customize: function (doc) {
+                        doc.content.splice(0,1);
+                        var now = new Date();
+                        var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
+                        doc.pageMargins = [20,50,20,30];
+                        doc.defaultStyle.fontSize = 8;
+                        doc.styles.tableHeader.fontSize = 8;
+
+                        const hoje = new Date();
+                        const dataFormatada = hoje.toLocaleDateString('pt-BR');
+                        const horaFormatada = hoje.toLocaleTimeString('pt-BR');
+                        const dataHoraFormatada = `${dataFormatada} ${horaFormatada}`;
+                        doc['header']=(function() {
+                            return {
+                                columns: [
+
+                                    {
+                                        alignment: 'center',
+                                        italics: false,
+                                        text: `{{ $titulo }}`,
+                                        fontSize: 14,
+                                        //margin: [10,0]
+                                    },
+                                    // {
+                                    //     alignment: 'right',
+                                    //     fontSize: 14,
+                                    //     text: ``
+                                    // }
+                                ],
+                                margin: [20,20,0,0]
+                            }
+                        });
+
+                        var numColumns = doc.content[0].table.body[0].length; 
+                        doc.content[0].table.widths = Array(numColumns).fill('*');
+
+                        doc['footer']=(function(page, pages) {
+                            return {
+                                columns: [
+                                    {
+                                        alignment: 'left',
+                                        text: ['Criado em: ', { text: dataHoraFormatada }]
+                                    },
+                                    {
+                                        alignment: 'right',
+                                        text: ['Página ', { text: page.toString() },  ' de ', { text: pages.toString() }]
+                                    }
+                                ],
+                                margin: 20
+                            }
+                        });
+
+                        var objLayout = {};
+                        objLayout['hLineWidth'] = function(i) { return .5; };
+                        objLayout['vLineWidth'] = function(i) { return .5; };
+                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
+                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
+                        objLayout['paddingLeft'] = function(i) { return 4; };
+                        objLayout['paddingRight'] = function(i) { return 4; };
+                        doc.content[0].layout = objLayout;
+                    },
+                    pageSize: 'LEGAL'
+                }
+                ]
+            },
+            topEnd: 'search',
+            bottomStart: 'info',
+            bottomEnd: 'paging'
+        },
+        language: {
+        url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+        }
+    });
     jQuery(function($) {
         $.datepicker.regional['pt-BR'] = {
             closeText: 'Aplicar',
