@@ -101,9 +101,6 @@
                                         {{ $item->descricao }}
                                     </td>
                                     <td>
-                                        {{ $item->saldo_anterior }}
-                                    </td>
-                                    <td>
                                         {{ number_format($item->saldo_anterior, 2, ',', '.') }}
                                     </td>
                                     <td>
