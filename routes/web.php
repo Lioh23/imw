@@ -113,6 +113,10 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/perfil/{id}', [PerfilController::class, 'update'])->name('update');
         });
 
+        Route::prefix('usuario/perfil')->name('perfil.')->group(function () {
+            Route::get('/carteira-digital', [PerfilController::class, 'carteiraDigital'])->name('carteira-digital')->middleware(['seguranca:carteira-digital']);
+        });
+
         Route::prefix('instituicoes')->name('instituicoes.')->group(function () {
             Route::get('/', [InstituicaoController::class, 'index']);
         });
@@ -494,6 +498,7 @@ Route::middleware(['auth'])->group(function () {
          // Contabilidade
         Route::prefix('contabilidade')->name('contabilidade.')->controller(ContabilidadeController::class)->group(function () {
             Route::get('/irrf', 'irrf')->name('irrf')->middleware('seguranca:contabilidade-irrf');
+            Route::get('/financeiro/balancete', [FinanceiroRelatorioController::class, 'balanceteRegiao'])->name('relatorio-balancete')->middleware(['seguranca:contabilidade-irrf']);
         });
 
     });
