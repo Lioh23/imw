@@ -16,7 +16,6 @@
 @include('extras.alerts')
 
 @section('content')
-
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
@@ -82,12 +81,10 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12">                            
-                            <table class="table table-striped" id="tblExport" style="font-size: 90%; margin-top: 15px;">
+                        <div class="col-12">
+                            <h5 class="mt-3">Discriminação de saldos por caixa</h5>
+                            <table class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 <thead class="thead-dark">
-                                    <tr>
-                                        <th colspan="7"  style="background-color: #fff;"><h5 class="mt-3">Discriminação de saldos por caixa</h5></th>
-                                    </tr>
                                     <tr>
                                         <th>CAIXA</th>
                                         <th width="300" style="text-align: right">SALDO ANTERIOR</th>
@@ -163,58 +160,11 @@
                                         </td>
                                     </tr>
                                 </tbody>
-                                <thead class="thead-dark">
-                                    <tr>
-                                        <th colspan="7"  style="background-color: #fff;"><h5 class="mt-3">Discriminação dos Lançamentos por Conta</h5></th>
-                                    </tr>
-                                    <tr>
-                                        <th>CONTA</th>
-                                        <th colspan="5">CAIXA</th>
-                                        <th width="100" style="text-align: right;">TOTAL</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @php
-                                    $numerosJaExibidos = [];
-                                    $somasPorNumeracao = [];
-                                    @endphp
-
-                                    {{-- Calcular a soma total para cada numeracao --}}
-                                    @foreach ($lancamentos as $lancamento)
-                                    @php
-                                    if (!isset($somasPorNumeracao[$lancamento->numeracao])) {
-                                    $somasPorNumeracao[$lancamento->numeracao] = 0;
-                                    }
-                                    $somasPorNumeracao[$lancamento->numeracao] += $lancamento->total;
-                                    @endphp
-                                    @endforeach
-
-                                    {{-- Renderizar a tabela --}}
-                                    @foreach ($lancamentos as $index => $lancamento)
-                                    @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
-                                    <tr>
-                                        <td style="width: 100px;">{{ $lancamento->numeracao }}</td>
-                                        <td  colspan="5" style="font-weight: bold;">
-                                            {{ $lancamento->nome }}
-                                        </td>
-                                        <td style="text-align: right; font-weight: bold;">
-                                            R$ {{ number_format($somasPorNumeracao[$lancamento->numeracao], 2, ',', '.') }}
-                                        </td>
-                                    </tr>
-                                    @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
-                                    @endif
-                                    <tr>
-                                        <td></td>
-                                        <td  colspan="5" style="text-align: left;">{{ $lancamento->caixa }}</td>
-                                        <td style="text-align: right;">R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
                             </table>
                         </div>
                     </div>
 
-                    <!-- <div class="col-12 mt-3">
+                    <div class="col-12 mt-3">
                         <h5>Discriminação dos Lançamentos por Conta</h5>
                     </div>
                     <div class="col-12">
@@ -265,12 +215,12 @@
                             </tbody>
                         </table>
 
-                    </div> -->
+                    </div>
                 </div>
             </div>
             <div class="row">
                 <div class="col-12 text-center">
-                    <button class="btn btn-success btn-rounded" id="btnExport"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
+                    <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
                 </div>
             </div>
             <!-- Fim do Conteúdo -->
@@ -280,19 +230,6 @@
 @endif
 
 @section('extras-scripts')
-<script src="{{ asset('theme/plugins/excel-export/jquery.btechco.excelexport.js') }}"></script>
-<script src="{{ asset('theme/plugins/excel-export/jquery.base64.js') }}"></script>
-<script>
-    $(document).ready(function () {
-        $("#btnExport").click(function () {
-            $("#tblExport").btechco_excelexport({
-                containerid: "tblExport"
-               , datatype: $datatype.Table
-               , filename: 'Relatorio-discriminacao-de-saldos-por-caixa-e-lancamentos-por-conta'
-            });
-        });
-    });
-</script>
 <script>
     jQuery(function($) {
         $.datepicker.regional['pt-BR'] = {
