@@ -168,8 +168,8 @@
                                         <th colspan="7"  style="background-color: #fff;"><h5 class="mt-3">Discriminação dos Lançamentos por Conta</h5></th>
                                     </tr>
                                     <tr>
-                                        <th>CONTA</th>
-                                        <th colspan="5">CAIXA</th>
+                                        <th colspan="2">CONTA</th>
+                                        <th colspan="4">CAIXA</th>
                                         <th width="100" style="text-align: right;">TOTAL</th>
                                     </tr>
                                 </thead>
@@ -193,8 +193,8 @@
                                     @foreach ($lancamentos as $index => $lancamento)
                                     @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
                                     <tr>
-                                        <td style="width: 100px;">{{ $lancamento->numeracao }}</td>
-                                        <td  colspan="5" style="font-weight: bold;">
+                                        <td  colspan="2" style="width: 100px;">{{ $lancamento->numeracao }}</td>
+                                        <td  colspan="4" style="font-weight: bold;">
                                             {{ $lancamento->nome }}
                                         </td>
                                         <td style="text-align: right; font-weight: bold;">
@@ -204,8 +204,8 @@
                                     @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
                                     @endif
                                     <tr>
-                                        <td></td>
-                                        <td  colspan="5" style="text-align: left;">{{ $lancamento->caixa }}</td>
+                                        <td  colspan="2"></td>
+                                        <td  colspan="4" style="text-align: left;">{{ $lancamento->caixa }}</td>
                                         <td style="text-align: right;">R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
                                     </tr>
                                     @endforeach
