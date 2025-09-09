@@ -10,7 +10,11 @@ class ContabilidadeController extends Controller
     public function irrf(Request $request)
     {
         $data = app(IrrfServices::class)->execute($request->all());
-        return view('contabilidade.irrf.index', $data);
+        if($request->route()->uri() == 'contabilidade/irrf'){
+            return view('contabilidade.irrf.index-contabilidade', $data);
+        }else{
+            return view('contabilidade.irrf.index', $data);
+        }
     }
 
 }

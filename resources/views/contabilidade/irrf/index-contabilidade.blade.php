@@ -76,8 +76,6 @@
                     <th>Nº DEPENDENTES</th>
                     <th>BASE DE CÁLCULOS</th>
                     <th>IRRF CALCULADO</th>
-                    <th>RETIDO</th>
-                    <th>REPASSADO</th>
                 </tr>
             </thead>
             <tbody>
@@ -89,8 +87,6 @@
                     <td>{{ $item['prebanda']->n_dependentes }}</td>
                     <td>R$ {{ number_format($item['imposto']->valorBase) }}</td>
                     <td>R$ {{ number_format($item['imposto']->valorImposto) }}</td>
-                    <td>{{ $item['prebanda']->retido }}</td>
-                    <td>{{ $item['prebanda']->repasse }}</td>
                 </tr>
                 @empty
                 <tr>
