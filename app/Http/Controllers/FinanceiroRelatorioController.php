@@ -99,6 +99,7 @@ class FinanceiroRelatorioController extends Controller
         $caixaId = $request->input('caixa_id');
 
         $data = app(BalanceteService::class)->execute($dataInicial, $dataFinal, $caixaId);
+       
         return view('financeiro.relatorios.balancete', $data);
     }
 

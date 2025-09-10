@@ -280,4 +280,17 @@ class FinanceiroController extends Controller
         }
     }
 
+    public function FormularioOrcamento(Request $request)
+    {
+        try {
+            $filters = $request->only(['caixa_id', 'plano_conta_id', 'd1', 'd2']);
+            $data = app(IdentificaDadosMovimentacoesCaixaService::class)->execute($filters);
+    
+            return view('financeiro.movimentocaixa', $data);
+        } catch(\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Não foi possível abrir a página de Movimento de Caixa');
+        }
+    }
+
 }

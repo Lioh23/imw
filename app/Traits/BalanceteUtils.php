@@ -176,6 +176,12 @@ trait BalanceteUtils
 
     public static function handleCaixasRegiao($dt_inicial, $dt_final, $caixaId, $instituicaoId)
     {
+        //dd($instituicaoId);
+        $dataIni = explode('/',$dt_inicial);
+        $tdInicial = $dataIni[1].$dataIni[0];
+       
+        $dataFin = explode('/',$dt_final); 
+        $tdFinal  = $dataFin[1].$dataFin[0];
         // Usando Carbon para manipulação de datas
         $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
         $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
@@ -186,25 +192,72 @@ trait BalanceteUtils
         $anoAnterior = $dataMesAnterior->format('Y');
 
         // Construção da query com as variáveis diretamente
-        $sql = "SELECT 
-            COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137)  THEN fscm.saldo_final ELSE 0 END), 0) AS saldo_final,
-            COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_entradas,
-            COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total_saidas,
-            COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_transferencias_entrada,
-            COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total_transferencias_saida,
-            COALESCE(( (COALESCE(MAX(fscm.saldo_final), 0.00) + COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) + COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) ) - ( COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) + COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) ) ), 0) AS saldo_atual 
-            FROM financeiro_saldo_consolidado_mensal fscm
-            JOIN financeiro_lancamentos fl ON fl.caixa_id = fscm.caixa_id AND fl.deleted_at IS NULL AND fl.data_movimento BETWEEN '$dataInicial' AND '$dataFinal'"; 
 
-            if ($instituicaoId) {
-                $sql .= " WHERE fscm.instituicao_id = '$instituicaoId' ";
-            }
+        $sql = "SELECT 'saldo_inicial', sum(fscm.saldo_anterior ) AS saldo
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE fscm.ano=$dataIni[1] AND fscm.mes=$dataIni[0]";
+                    if ($instituicaoId) {
+                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
+                    }
+        $sql .= " UNION 
+                SELECT 'total_entradas', sum(fscm.total_entradas )
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal ";
+                    if ($instituicaoId) {
+                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
+                    }
+        $sql .= " UNION 
+                SELECT 'total_saidas', sum(fscm.total_saidas )
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+                    if ($instituicaoId) {
+                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
+                    }
+        $sql .= " UNION 
+                SELECT 'total_tranf_entradas', sum(fscm.total_transf_entradas  )
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+                    if ($instituicaoId) {
+                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
+                    }
+        $sql .= " UNION 
+                SELECT 'total_transf_saidas', sum(fscm.total_transf_saidas  )
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+                    if ($instituicaoId) {
+                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
+                    }
+        $sql .= " UNION 
+                SELECT 'saldo_atual', sum(fscm.saldo_final )
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE fscm.ano=$dataFin[1] AND fscm.mes=$dataFin[0]";
+                    if ($instituicaoId) {
+                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
+                    }
+
+                   //var_dump($sql);die();
+//dd($sql);
+
+
+        // $sql = "SELECT (SELECT saldo_anterior FROM financeiro_saldo_consolidado_mensal ORDER BY id ASC LIMIT 1) as 'saldo_atual', sum(fscm.total_entradas) as 'total_entradas', sum(fscm.total_saidas) as 'total_saidas', sum(fscm.total_transf_entradas ) as 'total_transferencias_entrada', sum(fscm.total_transf_saidas ) as 'total_transferencias_saida', (SELECT saldo_final FROM financeiro_saldo_consolidado_mensal ORDER BY id ASC LIMIT 1) as 'saldo_final' from financeiro_saldo_consolidado_mensal fscm WHERE (fscm.ano * 100 + fscm.mes) BETWEEN $tdInicial AND $tdFinal  and fscm.deleted_at is null
+        // ";
+        //var_dump($sql);die();
+        // $sql = "SELECT 
+        //     COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137)  THEN fscm.saldo_final ELSE 0 END), 0) AS saldo_final,
+        //     COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_entradas,
+        //     COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total_saidas,
+        //     COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) AS total_transferencias_entrada,
+        //     COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) AS total_transferencias_saida,
+        //     COALESCE(( (COALESCE(MAX(fscm.saldo_final), 0.00) + COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) + COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'E' THEN fl.valor ELSE 0 END), 0) ) - ( COALESCE(SUM(CASE WHEN fl.plano_conta_id NOT IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) + COALESCE(SUM(CASE WHEN fl.plano_conta_id IN (100002, 100003, 110095, 110096, 110097, 110098, 110120, 110121, 110128, 110137) AND fl.tipo_lancamento = 'S' THEN fl.valor ELSE 0 END), 0) ) ), 0) AS saldo_atual 
+        //     FROM financeiro_saldo_consolidado_mensal fscm
+        //     JOIN financeiro_lancamentos fl ON fl.caixa_id = fscm.caixa_id AND fl.deleted_at IS NULL AND fl.data_movimento BETWEEN '$dataInicial' AND '$dataFinal'"; 
+            
         try {
-            $caixas = DB::select($sql);
+            $caixas = (array) DB::select($sql);
         } catch (\Exception $e) {
             throw $e;
         }
-
+        //dd((array) $caixas['2']);
         return $caixas;
     }
 
