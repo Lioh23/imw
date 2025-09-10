@@ -23,14 +23,15 @@ class BalanceteRegiaoService
                 $dataFinal = Carbon::now()->format('m/Y');
             }
             $igreja = Identifiable::fetchIgreja($instituicaoId);
-            $tituloNome = 'Discriminação dos Lançamentos por Conta: ';
+            $tituloNome = 'Relatório Balancete: ';
+            $periodo = ' - no Período de '. $dataInicial.' - '.$dataFinal;
             return [
                 'instituicao'   => $instituicaoId,
                 'caixas'        => BalanceteUtils::handleCaixasRegiao($dataInicial, $dataFinal, $caixaId, $instituicaoId),
                 'caixasSelect'  => BalanceteUtils::handleListaCaixas($instituicaoId),
                 'lancamentos'   => BalanceteUtils::handleLancamentosRegiao($dataInicial, $dataFinal, $caixaId, $instituicaoId),
                 'igrejas'       => BalanceteUtils::handleListaIgrejasByRegiao($regiao->id),
-                'titulo'        => isset($igreja->nome) ? $tituloNome.$igreja->nome : $tituloNome.'Todas',
+                'titulo'        => isset($igreja->nome) ? $tituloNome.$igreja->nome.$periodo : $tituloNome.'Todas Igrejas'.$periodo,
             ];
         /*}else{
             $totasIgrejas = BalanceteUtils::handleListaIgrejasByRegiao($regiao->id);

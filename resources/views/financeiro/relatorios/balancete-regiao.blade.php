@@ -88,103 +88,52 @@
                             <h5>{{ $titulo }}</h5>
                         </div>
                         <div class="col-12">
-                            <table class="table"  id="contabilidade-irrf">
-                                <thead class="thead-dark">
+                            <table class="table" id="balacente-regiao">
+                                <thead>
                                     <tr>
-                                        <th>CONTA</th>
-                                        <th>CAIXA</th>
-                                        <th width="200" style="text-align: right;">TOTAL</th>
+                                        <th>
+                                            Tipo
+                                        </th>
+                                        <th>Valor</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @php
-                                    $numerosJaExibidos = [];
-                                    $somasPorNumeracao = [];
-                                    @endphp
-
-                                    {{-- Calcular a soma total para cada numeracao --}}
-                                    @foreach ($lancamentos as $lancamento)
-                                    @php
-                                    if (!isset($somasPorNumeracao[$lancamento->numeracao])) {
-                                    $somasPorNumeracao[$lancamento->numeracao] = 0;
-                                    }
-                                    $somasPorNumeracao[$lancamento->numeracao] += $lancamento->total;
-                                    @endphp
-                                    @endforeach
-
-                                    {{-- Renderizar a tabela --}}
-                                    @foreach ($lancamentos as $index => $lancamento)
-                                    @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
                                         <tr>
-                                            <td style="width: 100px;">{{ $lancamento->numeracao }}</td>
-                                            <td style="font-weight: bold;">
-                                                {{ $lancamento->nome }}
-                                            </td>
+                                            <td style="font-weight: bold;">Saldo Inicial</td>
                                             <td style="text-align: right; font-weight: bold;">
-                                                R$ {{ number_format($somasPorNumeracao[$lancamento->numeracao], 2, ',', '.') }}
-                                            </td>
-                                        </tr>
-                                        @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
-                                    @endif
-                                    @endforeach
-
-                                    @php
-                                        $totalSaldoFinal = 0;
-                                        $totalEntradas = 0;
-                                        $totalSaidas = 0;
-                                        $totalTransferenciasEntrada = 0;
-                                        $totalTransferenciasSaida = 0;
-                                        $totalSaldoAtual = 0;
-                                        @endphp
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                        @foreach ($caixas as $caixa)
-                                        <tr>
-                                            <td>-</td>
-                                            <td style="font-weight: bold;">Saldo Anterior</td>
-                                            <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixa->saldo_final, 2, ',', '.') }}
+                                                {{ 'R$ ' . number_format($caixas[0]->saldo, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>-</td>
                                             <td style="font-weight: bold;">Total de entradas</td>
                                             <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixa->total_entradas, 2, ',', '.') }}
+                                                {{ 'R$ ' . number_format($caixas[1]->saldo, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>-</td>
                                             <td style="font-weight: bold;">Total de saídas</td>
                                             <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . ($caixa->total_saidas > 0 ? '-' : '') . number_format(abs($caixa->total_saidas), 2, ',', '.') }}
+                                                {{ 'R$ ' . number_format($caixas[2]->saldo, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>-</td>
                                             <td style="font-weight: bold;">Total de transferências entradas</td>
                                             <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixa->total_transferencias_entrada, 2, ',', '.') }}
+                                                {{ 'R$ ' . number_format($caixas[3]->saldo, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>-</td>
                                             <td style="font-weight: bold;">Total de transferências saídas</td>
                                             <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . ($caixa->total_transferencias_saida > 0 ? '-' : '') . number_format(abs($caixa->total_transferencias_saida), 2, ',', '.') }}
+                                                {{ 'R$ ' . number_format($caixas[4]->saldo, 2, ',', '.') }}
                                             </td>
                                         </tr>
                                         <tr>
-                                            <td>-</td>
-                                            <td style="font-weight: bold;">Saldo final</td>
+                                            <td style="font-weight: bold;">Saldo atual</td>
                                             <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixa->saldo_atual, 2, ',', '.') }}
+                                                {{ 'R$ ' . number_format($caixas[5]->saldo, 2, ',', '.') }}
                                             </td>
                                         </tr>
-                                        @endforeach
 
                                 </tbody>
                             </table>
@@ -216,7 +165,7 @@
 <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
 <script>
-    new DataTable('#contabilidade-irrf', {
+    new DataTable('#balacente-regiao', {
         scrollX: true,
         scrollY: 400,
         scrollCollapse: true,

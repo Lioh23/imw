@@ -299,11 +299,11 @@
                              <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
                          @endif
                      </li>
-                     <!-- <li {!! Request::is('financeiro/relatorio/balancete') ? 'class="active"' : '' !!}>
+                     <li {!! Request::is('financeiro/relatorio/balancete') ? 'class="active"' : '' !!}>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
                              <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
                          @endif
-                     </li> -->
+                     </li>
                      <li {!! Request::is('financeiro/relatorio/livrograde') ? 'class="active"' : '' !!}>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrograde'))
                              <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>
@@ -468,11 +468,11 @@
                                      Igrejas</a>
                              @endif
                          </li>
-                         <!-- <li {!! Request::is('regiao/relatorio/financeiro/balancete') ? 'class="active"' : '' !!}>
+                         <li {!! Request::is('regiao/relatorio/financeiro/balancete') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
                                 <a href="{{ route('regiao.relatorio-balancete-regiao') }}">Balancete</a>
                             @endif
-                        </li> -->
+                        </li>
                          <li {!! Request::is('regiao/relatorio/saldodasigrejas') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-saldo-das-igrejas'))
                                  <a href="{{ route('regiao.relatorio.saldodasigrejas') }}">Saldo de Caixas</a>
