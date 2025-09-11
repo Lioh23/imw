@@ -176,11 +176,73 @@
                   title: "IMW - RELATÓRIO ANIVERSARIANTES - CLÉRIGOS"
                 },
                 {
-                  extend: 'pdf',
-                  className: 'btn btn-primary btn-rounded',
-                  text: '<i class="fas fa-file-pdf"></i> PDF',
-                  titleAttr: 'PDF',
-                  title: "IMW - RELATÓRIO ANIVERSARIANTES - CLÉRIGOS",
+                    extend: 'pdfHtml5',
+                    className: 'btn btn-primary btn-rounded',
+                    text: '<i class="fas fa-file-pdf"></i> PDF',
+                    titleAttr: 'PDF',
+                    title: `IMW - RELATÓRIO ANIVERSARIANTES - CLÉRIGOS`,
+                    customize: function (doc) {
+                        doc.content.splice(0,1);
+                        var now = new Date();
+                        var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
+                        doc.pageMargins = [20,50,20,30];
+                        doc.defaultStyle.fontSize = 8;
+                        doc.styles.tableHeader.fontSize = 8;
+
+                        const hoje = new Date();
+                        const dataFormatada = hoje.toLocaleDateString('pt-BR');
+                        const horaFormatada = hoje.toLocaleTimeString('pt-BR');
+                        const dataHoraFormatada = `${dataFormatada} ${horaFormatada}`;
+                        doc['header']=(function() {
+                            return {
+                                columns: [
+
+                                    {
+                                        alignment: 'center',
+                                        italics: false,
+                                        text: `IMW - RELATÓRIO ANIVERSARIANTES - CLÉRIGOS`,
+                                        fontSize: 14,
+                                        //margin: [10,0]
+                                    },
+                                    // {
+                                    //     alignment: 'right',
+                                    //     fontSize: 14,
+                                    //     text: ``
+                                    // }
+                                ],
+                                margin: [20,20,0,0]
+                            }
+                        });
+
+                        var numColumns = doc.content[0].table.body[0].length; 
+                        doc.content[0].table.widths = Array(numColumns).fill('*');
+
+                        doc['footer']=(function(page, pages) {
+                            return {
+                                columns: [
+                                    {
+                                        alignment: 'left',
+                                        text: ['Criado em: ', { text: dataHoraFormatada }]
+                                    },
+                                    {
+                                        alignment: 'right',
+                                        text: ['Página ', { text: page.toString() },  ' de ', { text: pages.toString() }]
+                                    }
+                                ],
+                                margin: 20
+                            }
+                        });
+
+                        var objLayout = {};
+                        objLayout['hLineWidth'] = function(i) { return .5; };
+                        objLayout['vLineWidth'] = function(i) { return .5; };
+                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
+                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
+                        objLayout['paddingLeft'] = function(i) { return 4; };
+                        objLayout['paddingRight'] = function(i) { return 4; };
+                        doc.content[0].layout = objLayout;
+                    },
+                    pageSize: 'LEGAL'
                 },
                 {
                   extend: 'print',
