@@ -4,13 +4,18 @@ namespace App\Traits;
 
 use App\Models\Mes;
 use App\Models\PessoasPrebenda;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 trait ContabilidadeDados
 {
     public static function fetchAnos()
     {
-        return PessoasPrebenda::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)->orderBy('ano', 'desc')->get();
+        if(!Auth::user()->pessoa){
+            return PessoasPrebenda::select('ano')->orderBy('ano', 'desc')->groupBy('ano')->get();
+        }else{
+            return PessoasPrebenda::where('pessoa_id', Identifiable::fetchSessionPessoa()->id)->orderBy('ano', 'desc')->get();
+        }
     }
 
     public static function fetchMeses()
