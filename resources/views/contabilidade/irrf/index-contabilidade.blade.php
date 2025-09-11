@@ -85,8 +85,8 @@
                     <td>{{ formatStr($item['prebanda']->cpf, '###.###.###-##') }}</td>
                     <td>R$ {{ number_format($item['prebanda']->valor_prebendas, 2, ',', '.') }}</td>
                     <td>{{ $item['prebanda']->n_dependentes }}</td>
-                    <td>R$ {{ number_format($item['imposto']->valorBase) }}</td>
-                    <td>R$ {{ number_format($item['imposto']->valorImposto) }}</td>
+                    <td>R$ {{ number_format($item['imposto']->valorBase, 2, ',', '.') }}</td>
+                    <td>R$ {{ number_format($item['imposto']->valorImposto, 2, ',', '.') }}</td>
                 </tr>
                 @empty
                 <tr>
