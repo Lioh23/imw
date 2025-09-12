@@ -201,6 +201,7 @@
                                             @endforeach
 
                                             {{-- Renderizar a tabela --}}
+                                            
                                             @foreach ($lancamentos as $index => $lancamento)
                                             @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
                                                 @php
@@ -229,6 +230,9 @@
                                             <tr>
                                                 <th></th>
                                                 <th  colspan="3" style="text-align: left;">Total Conta</th>
+                                                @php
+                                                    $total = isset($total) ? $total : [];
+                                                @endphp
                                                 <th style="text-align: right;">R$ {{ number_format(array_sum($total), 2, ',', '.') }}</th>
                                             </tr>
                                         </tbody>

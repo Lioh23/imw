@@ -84,56 +84,106 @@
                 <!-- Conteúdo -->
                 <div class="card mb-3">
                     <div class="card-body">
-                        <div class="col-12 mt-3">
-                            <h5>{{ $titulo }}</h5>
-                        </div>
                         <div class="col-12">
-                            <table class="table" id="balacente-regiao">
-                                <thead>
+                            <table class="table" id="tblExport" >
+                                <thead class="thead-dark">
+                                    <tr><td colspan="3"><b style="font-size: 17px;">{{ $titulo }}</b></td></tr>
                                     <tr>
-                                        <th>
-                                            Tipo
-                                        </th>
-                                        <th>Valor</th>
+                                        <th>CONTA</th>
+                                        <th>CAIXA</th>
+                                        <th width="200" style="text-align: right;">TOTAL</th>
                                     </tr>
                                 </thead>
                                 <tbody>
+                                    @php
+                                    $numerosJaExibidos = [];
+                                    $somasPorNumeracao = [];
+                                    @endphp
+
+                                    {{-- Calcular a soma total para cada numeracao --}}
+                                    @foreach ($lancamentos as $lancamento)
+                                    @php
+                                    if (!isset($somasPorNumeracao[$lancamento->numeracao])) {
+                                    $somasPorNumeracao[$lancamento->numeracao] = 0;
+                                    }
+                                    $somasPorNumeracao[$lancamento->numeracao] += $lancamento->total;
+                                    @endphp
+                                    @endforeach
+
+                                    {{-- Renderizar a tabela --}}
+                                    @foreach ($lancamentos as $index => $lancamento)
+                                    {{-- @php $lancamento = (array) $lancamento; @endphp --}}
+                                   
+
+                                    @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
                                         <tr>
-                                            <td style="font-weight: bold;">Saldo Inicial</td>
+                                            <td style="width: 100px;">{{ $lancamento->numeracao }}</td>
+                                            <td style="font-weight: bold;">
+                                                {{ $lancamento->nome }}
+                                            </td>
                                             <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixas[0]->saldo, 2, ',', '.') }}
+                                                R$ {{ number_format($somasPorNumeracao[$lancamento->numeracao], 2, ',', '.') }}
                                             </td>
                                         </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Total de entradas</td>
-                                            <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixas[1]->saldo, 2, ',', '.') }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Total de saídas</td>
-                                            <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixas[2]->saldo, 2, ',', '.') }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Total de transferências entradas</td>
-                                            <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixas[3]->saldo, 2, ',', '.') }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Total de transferências saídas</td>
-                                            <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixas[4]->saldo, 2, ',', '.') }}
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td style="font-weight: bold;">Saldo atual</td>
-                                            <td style="text-align: right; font-weight: bold;">
-                                                {{ 'R$ ' . number_format($caixas[5]->saldo, 2, ',', '.') }}
-                                            </td>
-                                        </tr>
+                                        @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
+                                    @endif
+                                    @endforeach
+                                     <tr>
+                                        <td>
+                                            
+                                        </td>
+                                        <td colspan="2">
+                                            <table style="width: 100%;">
+                                                <thead class="thead-dark">
+                                                    <tr>
+                                                        <td colspan="2"></td>
+                                                    </tr>  
+                                                    <tr>
+                                                        <th>TIPO</th>
+                                                        <th style="text-align: right; font-weight: bold;">VALOR</th>
+                                                    </tr>         
+                                                </thead>
+                                                <tbody>                    
+                                                    <tr>
+                                                        <td style="font-weight: bold;">Saldo Inicial</td>
+                                                        <td style="text-align: right; font-weight: bold;">
+                                                            {{ 'R$ ' . number_format($caixas[0]->saldo, 2, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-weight: bold;">Total de entradas</td>
+                                                        <td style="text-align: right; font-weight: bold;">
+                                                            {{ 'R$ ' . number_format($caixas[1]->saldo, 2, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-weight: bold;">Total de saídas</td>
+                                                        <td style="text-align: right; font-weight: bold;">
+                                                            {{ 'R$ ' . number_format($caixas[2]->saldo, 2, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-weight: bold;">Total de transferências entradas</td>
+                                                        <td style="text-align: right; font-weight: bold;">
+                                                            {{ 'R$ ' . number_format($caixas[3]->saldo, 2, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-weight: bold;">Total de transferências saídas</td>
+                                                        <td style="text-align: right; font-weight: bold;">
+                                                            {{ 'R$ ' . number_format($caixas[4]->saldo, 2, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td style="font-weight: bold;">Saldo atual</td>
+                                                        <td style="text-align: right; font-weight: bold;">
+                                                            {{ 'R$ ' . number_format($caixas[5]->saldo, 2, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
 
                                 </tbody>
                             </table>
@@ -141,11 +191,11 @@
                         </div>
                     </div>
                 </div>
-                <!-- <div class="row">
+                <div class="row">
                     <div class="col-12 text-center">
-                        <button class="btn btn-success btn-rounded" onclick="exportReportToExcel();"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
+                        <button class="btn btn-success btn-rounded" id="btnExport"><i class="fa fa-file-excel" aria-hidden="true"></i> Exportar</button>
                     </div>
-                </div> -->
+                </div>
                 <!-- Fim do Conteúdo -->
             </div>
         </div>
@@ -153,7 +203,7 @@
 @endif
 
 @section('extras-scripts')
-<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+<!-- <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
 <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
 <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
 <script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
@@ -163,9 +213,22 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
 <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script> -->
+<script src="{{ asset('theme/plugins/excel-export/jquery.btechco.excelexport.js') }}"></script>
+<script src="{{ asset('theme/plugins/excel-export/jquery.base64.js') }}"></script>
 <script>
-    new DataTable('#balacente-regiao', {
+    $(document).ready(function () {
+        $("#btnExport").click(function () {
+            $("#tblExport").btechco_excelexport({
+                containerid: "tblExport"
+               , datatype: $datatype.Table
+               , filename: 'Relatorio-discriminacao-de-saldos-por-caixa-e-lancamentos-por-conta'
+            });
+        });
+    });
+</script>
+<script>
+    new DataTable('#contabilidade-irrf', {
         scrollX: true,
         scrollY: 400,
         scrollCollapse: true,
