@@ -77,63 +77,39 @@
                         <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="movimento-bancario">
                             <thead>
                             <tr>
-                                <th>IGREJA</th>
-                                <th>CAIXA </th>
-                                <th>SALDO ANTERIOR</th>
-                                <th>ENTRADAS</th>
-                                <th>SAÍDAS</th>
-                                <th>SALDO FINAL</th>
+                                <th>Data</th>
+                                <th>Caixa </th>
+                                <th>Nome</th>
+                                <th>Descricao</th>
+                                <th>Entrada</th>
+                                <th>Saída</th>
                             </tr>
                             </thead>
                             <tbody>
                             @foreach ($movimentosBancarios as $item)
-                                @php
-                                    $saldoAnteriorTotal[] = $item->saldo_anterior;
-                                    $totalEntradas[] = $item->total_entradas;
-                                    $totalSaidas[] = $item->total_saidas;
-                                    $saldoFinalTotal[] = $item->saldo_final;
-                                @endphp
+                            
+                                @php $item = (array)$item @endphp
                                 <tr>
                                     <td>
-                                        {{ session('session_perfil')->instituicao_nome }}
+                                        {{ formatDate($item['data']) }}
                                     </td>
                                     <td>
-                                        {{ $item->descricao }}
+                                        {{ $item['caixa'] }}
                                     </td>
                                     <td>
-                                        {{ number_format($item->saldo_anterior, 2, ',', '.') }}
+                                        {{ $item['nome'] }}
                                     </td>
                                     <td>
-                                        {{ number_format($item->total_entradas, 2, ',', '.') }}
+                                        {{ $item['descricao'] }}
                                     </td>
                                     <td>
-                                        {{ number_format($item->total_saidas, 2, ',', '.') }}
+                                        {{ number_format($item['entrada'], 2, ',', '.') }}
                                     </td>
                                     <td>
-                                        {{ number_format($item->saldo_final, 2, ',', '.') }}
+                                        {{ number_format($item['saida'], 2, ',', '.') }}
                                     </td>
                                 </tr>
                             @endforeach
-                                <tr>
-                                    <td>
-                                        TOTAL
-                                    </td>
-                                    <td>
-                                        
-                                    </td>
-                                    <td>
-                                        {{ number_format(array_sum($saldoAnteriorTotal), 2, ',', '.') }}
-                                    </td>
-                                    <td>
-                                        {{ number_format(array_sum($totalEntradas), 2, ',', '.') }}
-                                    </td>
-                                    <td>
-                                        {{ number_format(array_sum($totalSaidas), 2, ',', '.') }}
-                                    </td>
-                                    <td>
-                                        {{ number_format(array_sum($saldoFinalTotal), 2, ',', '.') }}
-                                    </td>
-                                </tr>
                             </tbody>
                         </table>
                     </div>
