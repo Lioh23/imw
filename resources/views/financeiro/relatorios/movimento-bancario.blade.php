@@ -80,7 +80,7 @@
                                 <th>Data</th>
                                 <th>Caixa </th>
                                 <th>Nome</th>
-                                <th>Descricao</th>
+                                <th>Descrição</th>
                                 <th>Entrada</th>
                                 <th>Saída</th>
                             </tr>
