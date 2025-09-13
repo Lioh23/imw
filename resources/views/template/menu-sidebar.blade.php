@@ -447,19 +447,20 @@
                      </a>
                      <ul class="collapse submenu list-unstyled {{ Request::is('regiao/relatorio/*') ? 'collapse show' : '' }}" id="financeiro-regiao"
                          data-parent="#financeiro-regiao">
-                         <li class="submenu-fixo mt-3 mb-3">
+                         <!-- <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                                  <span>Contabilidade</span>
+                             @endif
+                         </li> -->
+                         
+                         <li class="submenu-fixo mt-3 mb-3">
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                 <span>Financeiro</span>
                              @endif
                          </li>
                          <li {!! Request::is('regiao/relatorio/irrf') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-lancamento-das-igrejas'))
-                                 <a href="{{ route('regiao.relatorio.irrf') }}">IRRF</a>
-                             @endif
-                         </li>
-                         <li class="submenu-fixo mt-3 mb-3">
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
-                                 <span>Financeiro</span>
+                                 <a href="{{ route('regiao.relatorio.irrf') }}">IRRF Repasse</a>
                              @endif
                          </li>
                          <li {!! Request::is('regiao/relatorio/lancamentodasigrejas') ? 'class="active"' : '' !!}>
@@ -832,7 +833,7 @@
                             <line x1="16" y1="17" x2="8" y2="17"></line>
                             <polyline points="10 9 9 9 8 9"></polyline>
                         </svg>
-                        <span>Contabilidade</span>
+                        <span>SRA</span>
                      </div>
                      <div>
                          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
