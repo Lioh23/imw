@@ -164,80 +164,75 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td colspan="7"></td>
+                                    <td colspan="7">dgsdgs</td>
                                 </tr>
                                 <tr>
-                                    <td colspan="2">
+                                    <td  colspan="7">
+                                        <table  width="100%">
 
-                                    </td>
-                                    <td colspan="5">
-
-                                        <table>
-
-                                        <thead class="thead-dark" width="100%">
-                                            <tr>
-                                                <th colspan="5"  style="background-color: #fff;"><h5 class="mt-3">Discriminação dos Lançamentos por Conta</h5></th>
-                                            </tr>
-                                            <tr>
-                                                <th>CONTA</th>
-                                                <th colspan="3">CAIXA</th>
-                                                <th width="120" style="text-align: right;">TOTAL</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            @php
-                                            $numerosJaExibidos = [];
-                                            $somasPorNumeracao = [];
-                                            @endphp
-
-                                            {{-- Calcular a soma total para cada numeracao --}}
-                                            @foreach ($lancamentos as $lancamento)
-                                            @php
-                                            if (!isset($somasPorNumeracao[$lancamento->numeracao])) {
-                                            $somasPorNumeracao[$lancamento->numeracao] = 0;
-                                            }
-                                            $somasPorNumeracao[$lancamento->numeracao] += $lancamento->total;
-                                            @endphp
-                                            @endforeach
-
-                                            {{-- Renderizar a tabela --}}
-                                            
-                                            @foreach ($lancamentos as $index => $lancamento)
-                                            @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
+                                            <thead class="thead-dark">
+                                                <tr>
+                                                    <th colspan="7"  style="background-color: #fff;"><h5 class="mt-3">Discriminação dos Lançamentos por Conta</h5></th>
+                                                </tr>
+                                                <tr>
+                                                    <th>CONTA</th>
+                                                    <th colspan="5">CAIXA</th>
+                                                    <th width="120" style="text-align: right;">TOTAL</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                                 @php
-                                                    $total[] = $somasPorNumeracao[$lancamento->numeracao];
+                                                $numerosJaExibidos = [];
+                                                $somasPorNumeracao = [];
+                                                @endphp
+
+                                                {{-- Calcular a soma total para cada numeracao --}}
+                                                @foreach ($lancamentos as $lancamento)
+                                                @php
+                                                if (!isset($somasPorNumeracao[$lancamento->numeracao])) {
+                                                $somasPorNumeracao[$lancamento->numeracao] = 0;
+                                                }
+                                                $somasPorNumeracao[$lancamento->numeracao] += $lancamento->total;
+                                                @endphp
+                                                @endforeach
+
+                                                {{-- Renderizar a tabela --}}
+                                                
+                                                @foreach ($lancamentos as $index => $lancamento)
+                                                @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
+                                                    @php
+                                                        $total[] = $somasPorNumeracao[$lancamento->numeracao];
+                                                    @endphp
+                                                    <tr>
+                                                        <td style="width: 100px;">{{ $lancamento->numeracao }}</td>
+                                                        <td  colspan="5" style="font-weight: bold;">
+                                                            {{ $lancamento->nome }}
+                                                        </td>
+                                                        <td style="text-align: right; font-weight: bold;">
+                                                            R$ {{ number_format($lancamento->total, 2, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
+                                                @endif
+                                                @php
+                                                    $total[] = $lancamento->total;
                                                 @endphp
                                                 <tr>
-                                                    <td style="width: 100px;">{{ $lancamento->numeracao }}</td>
-                                                    <td  colspan="3" style="font-weight: bold;">
-                                                        {{ $lancamento->nome }}
-                                                    </td>
-                                                    <td style="text-align: right; font-weight: bold;">
-                                                        R$ {{ number_format($lancamento->total, 2, ',', '.') }}
-                                                    </td>
+                                                    <td></td>
+                                                    <td  colspan="5" style="text-align: left;">{{ $lancamento->caixa }}</td>
+                                                    <td style="text-align: right;">R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
                                                 </tr>
-                                                @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
-                                            @endif
-                                            @php
-                                                $total[] = $lancamento->total;
-                                            @endphp
-                                            <tr>
-                                                <td></td>
-                                                <td  colspan="3" style="text-align: left;">{{ $lancamento->caixa }}</td>
-                                                <td style="text-align: right;">R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
-                                            </tr>
-                                            @endforeach
-                                            <tr>
-                                                <th></th>
-                                                <th  colspan="3" style="text-align: left;">Total Conta</th>
-                                                @php
-                                                    $total = isset($total) ? $total : [];
-                                                @endphp
-                                                <th style="text-align: right;">R$ {{ number_format(array_sum($total), 2, ',', '.') }}</th>
-                                            </tr>
-                                        </tbody>
-                                        </table>
-                                        
+                                                @endforeach
+                                                <tr>
+                                                    <th></th>   
+                                                    <th  colspan="5" style="text-align: left;">Total Conta</th>
+                                                    @php
+                                                        $total = isset($total) ? $total : [];
+                                                    @endphp
+                                                    <th style="text-align: right;">R$ {{ number_format(array_sum($total), 2, ',', '.') }}</th>
+                                                </tr>
+                                            </tbody>
+                                        </table>                                        
                                     </td>
                                 </tr>
                                 
@@ -245,59 +240,6 @@
                             </table>
                         </div>
                     </div>
-
-                    <!-- <div class="col-12 mt-3">
-                        <h5>Discriminação dos Lançamentos por Conta</h5>
-                    </div>
-                    <div class="col-12">
-                        <table class="table" style="font-size: 90%; margin-top: 15px;">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th>CONTA</th>
-                                    <th>CAIXA</th>
-                                    <th width="100" style="text-align: right;">TOTAL</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                $numerosJaExibidos = [];
-                                $somasPorNumeracao = [];
-                                @endphp
-
-                                {{-- Calcular a soma total para cada numeracao --}}
-                                @foreach ($lancamentos as $lancamento)
-                                @php
-                                if (!isset($somasPorNumeracao[$lancamento->numeracao])) {
-                                $somasPorNumeracao[$lancamento->numeracao] = 0;
-                                }
-                                $somasPorNumeracao[$lancamento->numeracao] += $lancamento->total;
-                                @endphp
-                                @endforeach
-
-                                {{-- Renderizar a tabela --}}
-                                @foreach ($lancamentos as $index => $lancamento)
-                                @if (!in_array($lancamento->numeracao, $numerosJaExibidos))
-                                <tr>
-                                    <td style="width: 100px;">{{ $lancamento->numeracao }}</td>
-                                    <td style="font-weight: bold;">
-                                        {{ $lancamento->nome }}
-                                    </td>
-                                    <td style="text-align: right; font-weight: bold;">
-                                        R$ {{ number_format($somasPorNumeracao[$lancamento->numeracao], 2, ',', '.') }}
-                                    </td>
-                                </tr>
-                                @php $numerosJaExibidos[] = $lancamento->numeracao; @endphp
-                                @endif
-                                <tr>
-                                    <td></td>
-                                    <td style="text-align: left;">{{ $lancamento->caixa }}</td>
-                                    <td style="text-align: right;">R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
-                                </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-
-                    </div> -->
                 </div>
             </div>
             <div class="row">
