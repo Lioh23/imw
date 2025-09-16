@@ -36,16 +36,16 @@ class UpdateLancamentoEntradaService
         $lancamento->tipo_lancamento = FinanceiroLancamento::TP_LANCAMENTO_ENTRADA;
         $lancamento->plano_conta_id = $data['plano_conta_id'];
         $lancamento->data_movimento = $data['data_movimento'];
-        $lancamento->data_ano_mes = $ano ? formatMesAnoDizimo($anoMes) : '';
+        $lancamento->data_ano_mes = $ano ? formatMesAnoDizimo($anoMes) : null;
         $lancamento->caixa_id = $data['caixa_id'];
         $lancamento->instituicao_id = session()->get('session_perfil')->instituicao_id;
         $lancamento->decimo_terceiro = $mes == 13 ? 1 : 0;
         $dataAnoMes = formatMesAnoDizimo($anoMes);
+
         switch ($tipoPaganteFavorecidoId) {
             case 1:
                 $paganteFavorecidoModel = MembresiaMembro::find($paganteFavorecido);
                 $campoId = 'membro_id';
-
                 $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
                 if ($paganteFavorecidoModel && in_array($data['plano_conta_id'], $planoContaIds)) {
                     $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id, $dataAnoMes);
@@ -71,7 +71,6 @@ class UpdateLancamentoEntradaService
                 $lancamento->$campoId = $paganteFavorecido;
             }
         }
-
         $lancamento->save();
     }
 
@@ -106,7 +105,6 @@ class UpdateLancamentoEntradaService
             'dt' => $date,
             'data_ano_mes' => $dataAnoMes
         ];
-
 
         $this->handleLancamento($data);
     }

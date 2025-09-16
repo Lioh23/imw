@@ -99,17 +99,22 @@ function decimal($value){
 }
 
 function formatMesAnoDizimo($value){
-    $dados = explode('/',$value);
-    $mes = str_pad($dados[0],  2, "0", STR_PAD_LEFT);
-    $ano = $dados[1];
-    $dia = '01';
-    if($mes == 13){
-        $mes = '01';
-        $anoAlterado = $ano+1;
-        $data =  $anoAlterado.'-'.$mes.'-'.$dia;
+    if($value){
+        $dados = explode('/',$value);
+        $mes = str_pad($dados[0],  2, "0", STR_PAD_LEFT);
+        $ano = $dados[1];
+        $dia = '01';
+        if($mes == 13){
+            $mes = '01';
+            $anoAlterado = $ano+1;
+            $data =  $anoAlterado.'-'.$mes.'-'.$dia;
+        }else{
+            $data =  $ano.'-'.$mes.'-'.$dia;
+        }
     }else{
-        $data =  $ano.'-'.$mes.'-'.$dia;
+        $data = null;
     }
+    
     return $data;
 }
 
