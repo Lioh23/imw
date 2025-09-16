@@ -17,11 +17,31 @@ class SaldoIgrejasService
         $dt ??= Carbon::now()->format('Y/m');
 
         $regiao = Identifiable::fetchtSessionRegiao();
-     
-        return [
-            'lancamentos' => SaldoIgrejasUtils::fetch($dt, $distritoId),
-            'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
-            'instituicao' => InstituicoesInstituicao::find($distritoId)
-        ];
+        if($distritoId == 'all'){
+            $distritos = Identifiable::fetchDistritosByRegiao($regiao->id);
+            foreach($distritos as $distrito){
+                $distritoId = $distrito->id;
+                $saldosDistritos[] = [
+                    'lancamentos' => SaldoIgrejasUtils::fetch($dt, $distritoId),
+                    'instituicao' => InstituicoesInstituicao::find($distritoId)
+                ];
+            }
+            $dados = [
+                'saldosDistritos' =>  $saldosDistritos,
+                'distritos'   => $distritos,
+                'titulo' => "SALDO DE CAIXAS - Todos Distritos $dt"
+            ];
+        }else{
+            $istituicao = InstituicoesInstituicao::find($distritoId);
+            $dados = [
+                'lancamentos' => SaldoIgrejasUtils::fetch($dt, $distritoId),
+                'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
+                'instituicao' => $istituicao,
+                'titulo' => "SALDO DE CAIXAS - $istituicao->nome $dt"
+            ];
+        }       
+
+        return $dados;
+
     }
 }

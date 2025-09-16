@@ -292,7 +292,6 @@ class RegiaoRelatorioController extends Controller
     {
         $dt = $request->input('dt');
         $distrtoId = $request->input('distrito');
-
         $data = app(SaldoIgrejasService::class)->execute($dt, $distrtoId);
         return view('regiao.relatorios.saldodasigrejas', $data);
     }
