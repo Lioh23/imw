@@ -365,7 +365,8 @@
                         objLayout['paddingRight'] = function(i) { return 4; };
                         doc.content[0].layout = objLayout;
                     },
-                    pageSize: 'LEGAL'
+                    pageSize: 'LEGAL',
+                    orientation: 'landscape',
                 },
                 // {
                 //   extend: 'print',
