@@ -48,7 +48,7 @@ class UpdateLancamentoEntradaService
                 $campoId = 'membro_id';
                 $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
                 if ($paganteFavorecidoModel && in_array($data['plano_conta_id'], $planoContaIds)) {
-                    $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id, $dataAnoMes);
+                    $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamento->valor, $lancamento->data_movimento, $lancamento->id, $dataAnoMes, $mes);
                 }
 
                 break;
@@ -74,13 +74,17 @@ class UpdateLancamentoEntradaService
         $lancamento->save();
     }
 
-    private function handleLivroGrade($membroId, $valor, $dataMovimento, $lancamentoID, $dataAnoMes)
+    private function handleLivroGrade($membroId, $valor, $dataMovimento, $lancamentoID, $dataAnoMes, $mes)
     {
+        if($mes == 13){
+            $decimoTerceiro = 13;
+        }else{
+            $decimoTerceiro = 0;
+        }
         //$date = Carbon::parse($dataMovimento);
         $date = Carbon::parse($dataAnoMes);
         $ano = $date->year;
         $mes = $date->format('M');
-
         $monthsMap = [
             'Jan' => 'JAN',
             'Feb' => 'FEV',
@@ -94,52 +98,56 @@ class UpdateLancamentoEntradaService
             'Oct' => 'OUT',
             'Nov' => 'NOV',
             'Dec' => 'DEZ'
-        ];
+        ];        
+        $mesBase = strtolower($monthsMap[$mes]);
 
         $data = [
             'lancamento_id' => $lancamentoID,
             'ano' => $ano,
             'membro_id' => $membroId,
-            'mes' => strtolower($monthsMap[$mes]),
+            'mes' => $mesBase,
             'valor' => $valor,
             'dt' => $date,
             'data_ano_mes' => $dataAnoMes
         ];
-
-        $this->handleLancamento($data);
+        $mes = $decimoTerceiro ? $decimoTerceiro : $mesBase;
+        $this->handleLancamento($data, $mes);
     }
 
-    private function handleLancamento($data)
+    private function handleLancamento($data, $mes)
     {
         // Encontrar o lançamento antigo
         $lancamento = FinanceiroLancamento::findOrFail($data['lancamento_id']);
         FinanceiroLancamento::findOrFail($data['lancamento_id'])->update(['data_ano_mes' => $data['data_ano_mes']]);
         // Extrair o ano e o mês da data de lançamento antigo
         $ano = Carbon::parse($lancamento->data_ano_mes)->year;
- 
-        $mes = strtolower(Carbon::parse($lancamento->data_ano_mes)->format('M'));
-
         $dtold = Carbon::parse($lancamento->data_ano_mes);
         $dtnow = Carbon::parse($data['data_ano_mes']);
-        // Mapeamento dos meses para abreviações em português
-        $monthsMap = [
-            'jan' => 'jan',
-            'feb' => 'fev',
-            'mar' => 'mar',
-            'apr' => 'abr',
-            'may' => 'mai',
-            'jun' => 'jun',
-            'jul' => 'jul',
-            'aug' => 'ago',
-            'sep' => 'set',
-            'oct' => 'out',
-            'nov' => 'nov',
-            'dec' => 'dez'
-        ];
+        if($mes == 13){
+            $mes = 'o13';
+        }else{
+            $mes = strtolower(Carbon::parse($lancamento->data_ano_mes)->format('M'));
 
-        // Converter o mês para a abreviação em português
-        $mes = $monthsMap[$mes] ?? $mes;
+            // Mapeamento dos meses para abreviações em português
+            $monthsMap = [
+                'jan' => 'jan',
+                'feb' => 'fev',
+                'mar' => 'mar',
+                'apr' => 'abr',
+                'may' => 'mai',
+                'jun' => 'jun',
+                'jul' => 'jul',
+                'aug' => 'ago',
+                'sep' => 'set',
+                'oct' => 'out',
+                'nov' => 'nov',
+                'dec' => 'dez'
+            ];
 
+            // Converter o mês para a abreviação em português
+            $mes = $monthsMap[$mes] ?? $mes;
+        }
+        
         // Verificar se já existe um registro para o membro_id, ano e mês específico
         $existingLancamentoOld = FinanceiroGrade::where('membro_id', $data['membro_id'])
             ->where('ano', $ano)
@@ -149,7 +157,6 @@ class UpdateLancamentoEntradaService
                     ->orWhere($mes, '!=', '0');
             })
             ->first();
-
         if (!$existingLancamentoOld) {
             FinanceiroGrade::create([
                 'membro_id' => $data['membro_id'],
@@ -186,7 +193,6 @@ class UpdateLancamentoEntradaService
                             ->orWhere($data['mes'], '!=', '0.00');
                     })
                     ->first();
-
                 // Se o registro já existe, atualize.
                 if ($existingLancamento) {
                     $mes = $data['mes'];

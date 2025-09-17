@@ -55,7 +55,7 @@ class StoreLancamentoEntradaService
                 if ($paganteFavorecidoModel) {
                     $planoContaIds = [3, 4, 5, 6, 110172, 110173, 110174, 110186];
                     if ($paganteFavorecidoModel && in_array($lancamentos['plano_conta_id'], $planoContaIds)) {
-                        $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento'], $lancamentos['data_ano_mes']);
+                        $this->handleLivroGrade($paganteFavorecidoModel->id, $lancamentos['valor'], $lancamentos['data_movimento'], $lancamentos['data_ano_mes'], $mes);
                     }
                 }
                 break;
@@ -81,39 +81,44 @@ class StoreLancamentoEntradaService
 
     }
 
-    private function handleLivroGrade($membroId, $valor, $dataMovimento, $dataAnoMes){
+    private function handleLivroGrade($membroId, $valor, $dataMovimento, $dataAnoMes, $mes){
         //$date = Carbon::parse($dataMovimento);
         $date = Carbon::parse($dataAnoMes);
         $ano = $date->year;
-        $mes = $date->format('M');
-        $monthsMap = [
-            'Jan' => 'JAN',
-            'Feb' => 'FEV',
-            'Mar' => 'MAR',
-            'Apr' => 'ABR',
-            'May' => 'MAI',
-            'Jun' => 'JUN',
-            'Jul' => 'JUL',
-            'Aug' => 'AGO',
-            'Sep' => 'SET',
-            'Oct' => 'OUT',
-            'Nov' => 'NOV',
-            'Dec' => 'DEZ'
-        ];
+        if($mes == 13){
+            $mesBase = 'o13';
+        }else{
+            $mes = $date->format('M');
+            $monthsMap = [
+                'Jan' => 'JAN',
+                'Feb' => 'FEV',
+                'Mar' => 'MAR',
+                'Apr' => 'ABR',
+                'May' => 'MAI',
+                'Jun' => 'JUN',
+                'Jul' => 'JUL',
+                'Aug' => 'AGO',
+                'Sep' => 'SET',
+                'Oct' => 'OUT',
+                'Nov' => 'NOV',
+                'Dec' => 'DEZ'
+            ];        
+            $mesBase = strtolower($monthsMap[$mes]);
+        }
 
         $data = [
             'ano' => $ano,
             'membro_id' => $membroId,
-            'mes' => strtolower($monthsMap[$mes]),
+            'mes' =>  $mesBase,
             'valor' => $valor,
             'data_ano_mes' => $dataAnoMes
         ];
-
         $this->handleLancamento($data);
 
     }
 
     private function handleLancamento($data) {
+        //dd($data);
         // Verificar se já existe um registro para o membro_id, ano e mês específico
         $existingLancamento = FinanceiroGrade::where('membro_id', $data['membro_id'])
             ->where('ano', $data['ano'])
@@ -122,7 +127,6 @@ class StoreLancamentoEntradaService
                     ->orWhere($data['mes'], '!=', '0.00');
             })
             ->first();
-            
         if ($existingLancamento) {
             // Se o registro já existe, atualize-o
             $mes = $data['mes'];

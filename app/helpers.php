@@ -105,8 +105,10 @@ function formatMesAnoDizimo($value){
         $ano = $dados[1];
         $dia = '01';
         if($mes == 13){
-            $mes = '01';
-            $anoAlterado = $ano+1;
+            // $mes = '01';
+            // $anoAlterado = $ano+1;
+            $mes = '12';
+            $anoAlterado = $ano;
             $data =  $anoAlterado.'-'.$mes.'-'.$dia;
         }else{
             $data =  $ano.'-'.$mes.'-'.$dia;
