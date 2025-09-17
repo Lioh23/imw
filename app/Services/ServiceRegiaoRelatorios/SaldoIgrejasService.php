@@ -32,12 +32,13 @@ class SaldoIgrejasService
                 'titulo' => "SALDO DE CAIXAS - Todos Distritos $dt"
             ];
         }else{
-            $istituicao = InstituicoesInstituicao::find($distritoId);
+            $instituicao = InstituicoesInstituicao::find($distritoId);
+            $nomeInstituicao = isset($instituicao->nome) ? $instituicao->nome : '';
             $dados = [
                 'lancamentos' => SaldoIgrejasUtils::fetch($dt, $distritoId),
                 'distritos'   => Identifiable::fetchDistritosByRegiao($regiao->id),
-                'instituicao' => $istituicao,
-                'titulo' => "SALDO DE CAIXAS - $istituicao->nome $dt"
+                'instituicao' => $instituicao,
+                'titulo' => "SALDO DE CAIXAS - $nomeInstituicao $dt"
             ];
         }       
 
