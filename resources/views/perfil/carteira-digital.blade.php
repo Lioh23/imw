@@ -24,10 +24,34 @@
             font-size: 20px;
         }
         .rol{
-            position: absolute; top:630px; margin-left: 90px;
+            position: absolute; top:555px; margin-left: 90px;
+        }
+        .categoria{
+            position: absolute; top:555px; margin-left: 480px;
         }
         .nome{
             position: absolute; top:630px; margin-left: 90px;
+        }
+        .cpf{
+            position: absolute; top:690px; margin-left: 90px;
+        }
+        .rg{
+            position: absolute; top:690px; margin-left: 480px;
+        }
+        .dt-ordenacao{
+            position: absolute; top:760px; margin-left: 90px;
+        }
+        .dt-nascimento{
+            position: absolute; top:760px; margin-left: 480px;
+        }
+        .validade{
+            position: absolute; top:830px; margin-left: 90px;
+        }
+        .sexo{
+            position: absolute; top:830px; margin-left: 400px;
+        }
+        .estado-civil{
+            position: absolute; top:830px; margin-left: 640px;
         }
     </style>
 @endsection
@@ -36,7 +60,7 @@
     @include('extras.alerts')
 
     <!-- TABELA -->
-    <div class="col-lg-6 col-6 layout-spacing">
+    <div class="col-lg-12 col-12 layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-header">
                 <div class="row">
@@ -46,8 +70,16 @@
                 </div>
             </div>
             <div class="widget-content widget-content-area">
-                <div class="nome"></div>
-                <div class="nome">{{ $usuario->name }}</div>
+                <div class="rol">45</div>
+                <div class="categoria">{{ $usuario->categoria ? $usuario->categoria : 'Clérigo' }}</div>
+                <div class="nome">{{ $usuario->nome }}</div>
+                <div class="cpf">{{ $usuario->cpf }}</div>
+                <div class="rg">{{ $usuario->identidade }}</div>
+                <div class="dt-ordenacao">{{ $usuario->data_nascimento }}</div>
+                <div class="dt-nascimento">{{ $usuario->data_nascimento }}</div>
+                <div class="validade">{{ $usuario->data_nascimento }}</div>
+                <div class="sexo">{{ $usuario->sexo }}</div>
+                <div class="estado-civil">{{ $usuario->data_nascimento }}</div>
                 <img src="{{ asset('theme/images/carteira-digital.png') }}" alt="">
             </div>
         </div>

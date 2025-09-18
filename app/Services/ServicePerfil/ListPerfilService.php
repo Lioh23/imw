@@ -19,13 +19,14 @@ class ListPerfilService
     public function carteiraDigital()
     {
         $usuario = Auth::user();
-        $membro = PessoasPessoa::where('cpf', $usuario->cpf)->first();
-
-       // dd($membro);
         if (!$usuario) {
             return redirect()->route('login')->with('error', 'Você precisa estar logado para acessar essa página.');
         }
-        return $usuario;
+        $membro = PessoasPessoa::where('id', $usuario->pessoa_id)->first();
+        if (!$membro) {
+            return redirect()->route('login')->with('error', 'Você precisa ser membro para acessar a carteira digital.');
+        }
+        return $membro;
     }
 }
 
