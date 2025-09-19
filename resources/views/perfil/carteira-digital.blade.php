@@ -23,6 +23,11 @@
             font-family: Arial, Helvetica, sans-serif;
             font-size: 20px;
         }
+        .foto{
+            position: absolute; top:171px; margin-left: 635px;
+            width: 210px;
+            height: 268px;
+        }
         .rol{
             position: absolute; top:555px; margin-left: 90px;
         }
@@ -70,6 +75,7 @@
                 </div>
             </div>
             <div class="widget-content widget-content-area">
+                <img src="https://img.freepik.com/fotos-premium/homem-de-terno-e-gravata-posando-para-uma-foto-ia-geradora_97167-19598.jpg" class="foto" alt="">
                 <div class="rol">45</div>
                 <div class="categoria">{{ $usuario->categoria ? $usuario->categoria : 'Clérigo' }}</div>
                 <div class="nome">{{ $usuario->nome }}</div>
