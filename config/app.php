@@ -199,7 +199,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
-        Intervention\Image\ImageServiceProvider::class
+        //Intervention\Image\ImageServiceProvider::class
 
     ],
 
@@ -218,7 +218,7 @@ return [
         // 'ExampleClass' => App\Example\ExampleClass::class,
         'PDF' => Barryvdh\Snappy\Facades\SnappyPdf::class,
         'SnappyImage' => Barryvdh\Snappy\Facades\SnappyImage::class,
-        'Image' => Intervention\Image\Facades\Image::class,
+        //'Image' => Intervention\Image\Facades\Image::class,
     ])->toArray(),
 
 ];

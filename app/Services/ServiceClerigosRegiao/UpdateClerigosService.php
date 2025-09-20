@@ -3,7 +3,7 @@
 namespace App\Services\ServiceClerigosRegiao;
 
 use App\Models\PessoasPessoa;
-use Intervention\Image\Facades\Image;
+//use Intervention\Image\Facades\Image;
 
 class UpdateClerigosService
 {
