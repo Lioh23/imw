@@ -41,7 +41,7 @@ input[type=file]::file-selector-button:hover {
                         <img id="showImage" src="{{ url('theme/images/sem-foto.jpg')}}" alt="Admin" width="150" height="150"> 
                     </div>
                     <div class="form-group col-md-12" style="margin-top: 10px;">
-                        <label for="image" class="form-label"><b>Upload de foto</b> (png|jpg|jpeg|webp)</label>
+                        <label for="image" class="form-label"><b>Upload de foto</b> (.png|.jpg|.jpeg|.webp)</label>
                         <div class="input_container">
                             <input class="f" name="image" type="file" id="image">
                         </div>
