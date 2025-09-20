@@ -1,3 +1,29 @@
+<style>
+.input_container {
+  border: 1px solid #4361ee;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+input[type=file]::file-selector-button {
+  background-color: #fff;
+  color: #000;
+  border: 0px;
+  border-right: 1px solid #e5e5e5;
+  padding: 10px 15px;
+  margin-right: 20px;
+  transition: .5s;
+  cursor: pointer;
+}
+
+input[type=file]::file-selector-button:hover {
+  background-color: #eee;
+  border: 0px;
+  border-right: 1px solid #e5e5e5;
+  cursor: pointer;
+}
+</style>
 <div class="tab-pane fade show active" id="border-top-dados-pessoal" role="tabpanel"
     aria-labelledby="border-top-dados-pessoais">
     <blockquote class="blockquote">
@@ -6,11 +32,21 @@
             <div class="col-xl-3 text-center">
                 <input type="hidden" name="membro_id" value="{{ $clerigo->id }}">
                 <!-- <img src="{{ $clerigo->foto ? asset($clerigo->foto) : 'https://palmtecnologia.com.br/wp-content/uploads/2023/07/sem-foto.jpg' }}" id="user-picture" class="rounded-circle img-fluid mb-3" alt="Foto do usuário" width="150px" height="150px;"> -->
-                <img src="{{ asset('theme/images/sem-foto.jpg') }}" id="user-picture" class="rounded-circle img-fluid mb-3" alt="Foto do usuário" width="150px" height="150px;">
                 <div>
-                    <button class="btn btn-primary btn-sm" id="upload-picture">Trocar Foto</button>
+                    <!-- <button class="btn btn-primary btn-sm" id="upload-picture">Trocar Foto</button>
                     <input type="file" name="foto" class="d-none" id="upload-picture-input">
-                    <button class="btn btn-danger btn-sm" id="delete-picture">Apagar Foto</button>
+                    <button class="btn btn-danger btn-sm" id="delete-picture">Apagar Foto</button> -->
+
+                    <div class="col-md-12"> 
+                        <img id="showImage" src="{{ url('theme/images/sem-foto.jpg')}}" alt="Admin" width="150" height="150"> 
+                    </div>
+                    <div class="form-group col-md-12" style="margin-top: 10px;">
+                        <label for="image" class="form-label"><b>Upload de foto</b> (png|jpg|jpeg|webp)</label>
+                        <div class="input_container">
+                            <input name="image" type="file" id="image">
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <!-- Conteúdo do formulário -->
@@ -141,36 +177,36 @@
 
                     <div class="row mb-4">
                         <div class="col-12 mt-3 col-md-3">
-                            <label for="data_nascimento">* Data de Consagração</label>
-                            <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror"
-                                id="data_nascimento" name="data_nascimento"
-                                value="{{ old('data_nascimento', $clerigo->data_nascimento) }}">
-                            @error('data_nascimento')
+                            <label for="data_consagracao">* Data de Consagração</label>
+                            <input type="date" class="form-control @error('data_consagracao') is-invalid @enderror"
+                                id="data_consagracao" name="data_consagracao"
+                                value="{{ old('data_consagracao', $clerigo->data_consagracao) }}">
+                            @error('data_consagracao')
                                 <span class="help-block text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-12 mt-3 col-md-3">
-                            <label for="data_nascimento">Data de Ordenação</label>
-                            <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror"
-                                id="data_nascimento" name="data_nascimento"
-                                value="{{ old('data_nascimento', $clerigo->data_nascimento) }}">
-                            @error('data_nascimento')
+                            <label for="data_ordenacao">Data de Ordenação</label>
+                            <input type="date" class="form-control @error('data_ordenacao') is-invalid @enderror"
+                                id="data_ordenacao" name="data_ordenacao"
+                                value="{{ old('data_ordenacao', $clerigo->data_ordenacao) }}">
+                            @error('data_ordenacao')
                                 <span class="help-block text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-12 mt-3 col-md-3">
-                            <label for="data_nascimento">Data de Integralização</label>
-                            <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror"
-                                id="data_nascimento" name="data_nascimento"
-                                value="{{ old('data_nascimento', $clerigo->data_nascimento) }}">
-                            @error('data_nascimento')
+                            <label for="data_integralização">Data de Integralização</label>
+                            <input type="date" class="form-control @error('data_integralização') is-invalid @enderror"
+                                id="data_integralização" name="data_integralização"
+                                value="{{ old('data_integralização', $clerigo->data_integralização) }}">
+                            @error('data_integralização')
                                 <span class="help-block text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="col-12 mt-3 col-md-3">
-                            <label for="nome_pai">* Rol</label>
-                            <input type="text" class="form-control" id="nome_pai" name="nome_pai"
-                                value="{{ old('nome_pai', $clerigo->nome_pai) }}" maxlength="50">
+                            <label for="rol">* Rol</label>
+                            <input type="text" class="form-control" id="rol" name="rol"
+                                value="{{ old('rol', $clerigo->rol) }}" maxlength="50">
                         </div>
                     </div>
                 </div>

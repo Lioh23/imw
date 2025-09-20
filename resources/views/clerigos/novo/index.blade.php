@@ -170,6 +170,23 @@
     <script src="{{ asset('theme/plugins/fullcalendar/moment.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
     <script>
+        $(document).ready(function(){
+            $('#image').change(function(e){
+                const file = e.target.files[0];
+                const fileName = file.name;
+                const extension = fileName.substring(fileName.lastIndexOf('.') + 1)
+                if(extension == 'png' || extension == 'jpg' || extension == 'jpeg' || extension == 'webp'){
+                    var reader = new FileReader();
+                    reader.onload = function(e){
+                        $('#showImage').attr('src',e.target.result);
+                    }
+                    reader.readAsDataURL(e.target.files['0']);
+                }else{
+                    toastr.warning('Formato de arquivo inválido.');
+                    return false;
+                }   
+            });
+        });
         document.addEventListener('DOMContentLoaded', function() {
             Inputmask("99999.999").mask(document.getElementById("cep"));
             Inputmask("999.999.999-99").mask(document.getElementById("cpf"));

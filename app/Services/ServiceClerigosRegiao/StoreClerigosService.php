@@ -48,6 +48,10 @@ class StoreClerigosService
             'titulo_eleitor_zona' => $request['titulo_eleitor_zona'],
             'formacao_id' => $request['formacao_id'],
             'categoria' => $request['categoria'],
+            'data_consagracao' => $request['data_consagracao'],
+            'data_ordenacao' => $request['data_ordenacao'],
+            'data_integralização' => $request['data_integralização'],
+            'rol' => $request['rol'],
         ]);
     }
 }

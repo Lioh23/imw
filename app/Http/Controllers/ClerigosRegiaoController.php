@@ -55,7 +55,6 @@ class ClerigosRegiaoController extends Controller
      */
     public function store(StoreReceberNovoClerigoRequest $request)
     {
-
         app(StoreClerigosService::class)->execute($request);
 
         return redirect()->route('clerigos.index')->with('success', 'Clerigo criado com sucesso!');
@@ -84,7 +83,6 @@ class ClerigosRegiaoController extends Controller
      */
     public function update(StoreReceberNovoClerigoRequest $request, $id)
     {
-
         app(UpdateClerigosService::class)->execute($request, $id);
 
         return redirect()->route('clerigos.index')->with('success', 'Clerigo editado com sucesso!');

@@ -62,7 +62,10 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'habilitacao_uf' => 'nullable',
             'data_nascimento' => ['required', new RangeDateRule],
             'pispasep' => 'nullable',
-            'pispasep_emissao' => ['nullable', new RangeDateRule],
+            'data_consagracao' => ['required', new RangeDateRule],
+            'data_ordenacao' => ['nullable', new RangeDateRule],
+            'data_integralização' => ['nullable', new RangeDateRule],
+            'rol' => 'required',
 
         ];
     }
@@ -96,6 +99,8 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'titulo_eleitor_secao.required' => 'O campo seção do título de eleitor é obrigatório.',
             'titulo_eleitor_zona.required' => 'O campo zona do título de eleitor é obrigatório.',
             'formacao_id.required' => 'O campo formação é obrigatório.',
+            'data_consagracao.required' => 'O campo data de consagração é obrigatório.',
+            'rol.required' => 'O campo rol é obrigatório.',
         ];
     }
     public function attributes()

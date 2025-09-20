@@ -315,7 +315,11 @@
                         <p><strong>Email:</strong> ${data.email || '-'}</p>
                         <p><strong>Estado Cívil:</strong> ${estado_civil} </p>
                         <p><strong>CPF:</strong> ${data.cpf || '-'}</p>
-                        <p><strong>Nascimento:</strong> ${data.data_nascimento || '-'}</p>
+                        <p><strong>Nascimento:</strong> ${dataAtualFormatada(data.data_nascimento) || '-'}</p>
+                        <p><strong>Consagração:</strong> ${dataAtualFormatada(data.data_consagracao) || '-'}</p>
+                        <p><strong>Ordenação:</strong> ${dataAtualFormatada(data.data_ordenacao) || '-'}</p>
+                        <p><strong>Integralização:</strong> ${dataAtualFormatada(data.data_integralização) || '-'}</p>
+                        <p><strong>Rol:</strong> ${data.rol || '-'}</p>
 
 
                     </div>
@@ -333,6 +337,6 @@
                     button.html(originalButtonText);
                 }
             });
-        });
+        });        
     </script>
 @endsection
