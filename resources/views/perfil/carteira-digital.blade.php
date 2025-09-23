@@ -50,10 +50,11 @@
             position: absolute; top:760px; margin-left: 480px;
         }
         .validade{
-            position: absolute; top:830px; margin-left: 90px;
+            position: absolute; top:830px; margin-left: 90px; font-size: 12px;
+            width: 380px;
         }
         .sexo{
-            position: absolute; top:830px; margin-left: 400px;
+            position: absolute; top:830px; margin-left: 490px;
         }
         .estado-civil{
             position: absolute; top:830px; margin-left: 640px;
@@ -81,9 +82,9 @@
                 <div class="nome">{{ $usuario->nome }}</div>
                 <div class="cpf">{{ $usuario->cpf }}</div>
                 <div class="rg">{{ $usuario->identidade }}</div>
-                <div class="dt-ordenacao">{{ formatDate($usuario->data_ordenacao) }}</div>
+                <div class="dt-ordenacao">{{ formatDate($usuario->data_consagracao) }} | {{ formatDate($usuario->data_ordenacao) }}</div>
                 <div class="dt-nascimento">{{ formatDate($usuario->data_nascimento) }}</div>
-                <div class="validade">{{ formatDate($usuario->data_integralização) }}</div>
+                <div class="validade">Essa credencial terá validade, enquanto seu portador estiver inscrito como clérigo ativo de sua Região Eclesiástica</div>
                 <div class="sexo">{{ $usuario->sexo }}</div>
                 <div class="estado-civil">
                     @if($usuario->estado_civil == 'S')
