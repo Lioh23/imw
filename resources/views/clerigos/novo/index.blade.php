@@ -170,9 +170,13 @@
     <script src="{{ asset('theme/plugins/fullcalendar/moment.min.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/inputmask@5.0.8/dist/inputmask.min.js"></script>
     <script>
-        $(document).ready(function(){
-            $('#image').change(function(e){
-                const file = e.target.files[0];
+         $('#upload-picture').click(function (event) {
+            event.preventDefault();
+            $('#upload-picture-input').click();
+        });
+
+        $('#upload-picture-input').change(function (e) {
+             const file = e.target.files[0];
                 const fileName = file.name;
                 const extension = fileName.substring(fileName.lastIndexOf('.') + 1)
                 if(extension == 'png' || extension == 'jpg' || extension == 'jpeg' || extension == 'webp'){
@@ -185,7 +189,13 @@
                     toastr.warning('Formato de arquivo inválido.');
                     return false;
                 }   
-            });
+
+        });
+        
+        $('#delete-picture').click(function (event) {
+            event.preventDefault();
+            $('#showImage').attr('src', "{{ asset('theme/images/sem-foto.jpg') }}");
+            $('#upload-picture-input').val('');
         });
         document.addEventListener('DOMContentLoaded', function() {
             Inputmask("99999.999").mask(document.getElementById("cep"));

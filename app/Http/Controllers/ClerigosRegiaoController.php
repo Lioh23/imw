@@ -15,6 +15,7 @@ use App\Services\ServiceClerigosRegiao\StoreClerigosService;
 use App\Services\ServiceClerigosRegiao\DeletarClerigoService;
 use App\Services\ServiceClerigosRegiao\UpdateClerigosService;
 use App\Services\ServiceClerigosRegiao\DetalhesClerigoService;
+use App\Services\ServiceClerigosRegiao\EditarClerigoService;
 
 class ClerigosRegiaoController extends Controller
 {
@@ -70,7 +71,8 @@ class ClerigosRegiaoController extends Controller
     {
         $formacoes =  Formacao::all();
         $ufs = $this->fetchUFs();
-        $clerigo = PessoasPessoa::findOrfail($id);
+        $clerigo = app(EditarClerigoService::class)->findOne($id);
+        //$clerigo = PessoasPessoa::findOrfail($id);
         return view('clerigos.editar.index', compact('clerigo', 'ufs', 'formacoes'));
     }
 

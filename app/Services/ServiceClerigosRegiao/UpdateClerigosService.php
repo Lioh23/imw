@@ -4,6 +4,7 @@ namespace App\Services\ServiceClerigosRegiao;
 
 use App\Models\PessoasPessoa;
 //use Intervention\Image\Facades\Image;
+use Ramsey\Uuid\Uuid;
 
 class UpdateClerigosService
 {
@@ -11,23 +12,20 @@ class UpdateClerigosService
     {
         $clerigo = PessoasPessoa::findOrFail($id);
 
-        // if ($request->file('image')) {
-        //     $image = $request->file('image');  
-        //     $name_gen = hexdec(uniqid()).'.'.$image->getClientOriginalExtension();
-        //     $save_url = 'upload/clerigos/'.$name_gen;
-        //     $path = public_path('uploads/clerigos');
-        //     // if (!is_dir($path)) {
-        //     //     mkdir($path, 0777, true); 
-        //     // }
-
-        //     if (!file_exists($path)) {
-        //         mkdir($path, 0777, true); // Create directory with permissions, recursively
-        //     }
-
-
-        //     //$paths = public_path('upload/clerigos/' . $name_gen);
-        //     Image::make($image)->resize(370,246)->save(public_path('upload/clerigos/' . $name_gen));
-        // }
+        if ($request->file('image')) {
+            $photo = $request->file('image');  
+                try {
+                    // Gerar um UUID para o nome do arquivo
+                    $filename = Uuid::uuid4()->toString() . '.' . $photo->getClientOriginalExtension();                        
+                    // Fazer upload do arquivo para o S3 usando o método storeAs
+                    $filePath = $photo->storeAs('fotos', $filename, 's3');
+                } catch (\Exception $e) {
+                    // Tratamento de erro, caso o upload falhe
+                    return response()->json(['error' => $e->getMessage()], 500);
+                }
+        }else{
+            $filePath = '';
+        }
         
 
         $clerigo->update([
@@ -35,7 +33,7 @@ class UpdateClerigosService
             'identidade' => $request->input('identidade'),
             'orgao_emissor' => $request->input('orgao_emissor'),
             'data_emissao' => $request->input('data_emissao'),
-            //'foto' => $save_url,
+            'foto' => $filePath,
             'cpf' => $request->input('cpf'),
             'endereco' => $request->input('endereco'),
             'numero' => $request->input('numero'),

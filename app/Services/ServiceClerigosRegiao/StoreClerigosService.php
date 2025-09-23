@@ -6,17 +6,33 @@ use App\Models\PessoaNomeacao;
 use App\Models\PessoasPessoa;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
-
+use Ramsey\Uuid\Uuid;
 class StoreClerigosService
 {
     public function execute($request)
     {
+        if ($request->file('image')) {
+            $photo = $request->file('image');  
+                try {
+                    // Gerar um UUID para o nome do arquivo
+                    $filename = Uuid::uuid4()->toString() . '.' . $photo->getClientOriginalExtension();                        
+                    // Fazer upload do arquivo para o S3 usando o método storeAs
+                    $filePath = $photo->storeAs('fotos', $filename, 's3');
+                } catch (\Exception $e) {
+                    // Tratamento de erro, caso o upload falhe
+                    return response()->json(['error' => $e->getMessage()], 500);
+                }
+        }else{
+            $filePath = '';
+        }
+
         PessoasPessoa::create([
             'nome' => $request['nome'],
             'identidade' => $request['identidade'],
             'identidade_uf' => $request['identidade_uf'],
             'orgao_emissor' => $request['orgao_emissor'],
             'data_emissao' => $request['data_emissao'],
+            'foto' => $filePath,
             'cpf' => $request['cpf'],
             'endereco' => $request['endereco'],
             'numero' => $request['numero'],

@@ -75,15 +75,15 @@
                 </div>
             </div>
             <div class="widget-content widget-content-area">
-                <img src="https://img.freepik.com/fotos-premium/homem-de-terno-e-gravata-posando-para-uma-foto-ia-geradora_97167-19598.jpg" class="foto" alt="">
-                <div class="rol">45</div>
-                <div class="categoria">{{ $usuario->categoria ? $usuario->categoria : 'Clérigo' }}</div>
+                <img src="{{ $usuario->foto }}" class="foto" alt="">
+                <div class="rol">{{ $usuario->rol }}</div>
+                <div class="categoria">{{ isset($usuario->categoria) ? $usuario->categoria : 'Clérigo' }}</div>
                 <div class="nome">{{ $usuario->nome }}</div>
                 <div class="cpf">{{ $usuario->cpf }}</div>
                 <div class="rg">{{ $usuario->identidade }}</div>
-                <div class="dt-ordenacao">{{ $usuario->data_nascimento }}</div>
+                <div class="dt-ordenacao">{{ $usuario->data_ordenacao }}</div>
                 <div class="dt-nascimento">{{ $usuario->data_nascimento }}</div>
-                <div class="validade">{{ $usuario->data_nascimento }}</div>
+                <div class="validade">{{ $usuario->data_integralização }}</div>
                 <div class="sexo">{{ $usuario->sexo }}</div>
                 <div class="estado-civil">{{ $usuario->data_nascimento }}</div>
                 <img src="{{ asset('theme/images/carteira-digital.png') }}" alt="">
