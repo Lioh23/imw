@@ -27,10 +27,6 @@ class PerfilController extends Controller
 
     public function carteiraDigital(Request $request) {
         $usuario = app(ListPerfilService::class)->carteiraDigital();
-        // $perfisUsuarios = PerfilUser::with(['perfil', 'instituicao'])
-        // ->where('user_id', $usuario->id)
-        // ->get();
-       // dd($perfisUsuarios);
         return view('perfil.carteira-digital', ['usuario' => $usuario]);
     }
     

@@ -81,9 +81,9 @@
                 <div class="nome">{{ $usuario->nome }}</div>
                 <div class="cpf">{{ $usuario->cpf }}</div>
                 <div class="rg">{{ $usuario->identidade }}</div>
-                <div class="dt-ordenacao">{{ $usuario->data_ordenacao }}</div>
-                <div class="dt-nascimento">{{ $usuario->data_nascimento }}</div>
-                <div class="validade">{{ $usuario->data_integralização }}</div>
+                <div class="dt-ordenacao">{{ formatDate($usuario->data_ordenacao) }}</div>
+                <div class="dt-nascimento">{{ formatDate($usuario->data_nascimento) }}</div>
+                <div class="validade">{{ formatDate($usuario->data_integralização) }}</div>
                 <div class="sexo">{{ $usuario->sexo }}</div>
                 <div class="estado-civil">
                     @if($usuario->estado_civil == 'S')
