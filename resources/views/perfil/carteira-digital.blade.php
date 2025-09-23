@@ -85,7 +85,17 @@
                 <div class="dt-nascimento">{{ $usuario->data_nascimento }}</div>
                 <div class="validade">{{ $usuario->data_integralização }}</div>
                 <div class="sexo">{{ $usuario->sexo }}</div>
-                <div class="estado-civil">{{ $usuario->data_nascimento }}</div>
+                <div class="estado-civil">
+                    @if($usuario->estado_civil == 'S')
+                        Solteiro
+                    @elseif($usuario->estado_civil == 'C')
+                        Casado
+                    @elseif($usuario->estado_civil == 'D')
+                        Divorciado
+                    @elseif($usuario->estado_civil == 'V')
+                        Viúvo
+                    @endif
+                </div>
                 <img src="{{ asset('theme/images/carteira-digital.png') }}" alt="">
             </div>
         </div>
