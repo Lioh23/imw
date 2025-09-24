@@ -85,7 +85,7 @@
                 <div class="dt-consagracao">{{ formatDate($usuario->data_consagracao) }}</div>
                 <div class="dt-ordenacao">{{ formatDate($usuario->data_ordenacao) }}</div>
                 <div class="contato-sede">Sede Administrativa: 21-98456-0937</div>
-                <div class="validade">Essa credencial terá validade, enquanto seu portador estiver inscrito como clérigo ativo de sua Região Eclesiástica</div>
+                <div class="validade">Essa credencial terá validade enquanto seu portador estiver inscrito como clérigo ativo de sua Região Eclesiástica</div>
                 <img src="{{ asset('theme/images/carteira-digital.png') }}" alt="">
             </div>
         </div>
