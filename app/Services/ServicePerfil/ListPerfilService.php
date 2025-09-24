@@ -1,6 +1,8 @@
 <?php
 
 namespace App\Services\ServicePerfil;
+
+use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaSetor;
 use App\Models\PessoasPessoa;
 use Carbon\Carbon;
@@ -24,8 +26,11 @@ class ListPerfilService
         if (!$usuario) {
             return redirect()->route('login')->with('error', 'Você precisa estar logado para acessar essa página.');
         }
-        $pessoa = PessoasPessoa::where('id', $usuario->pessoa_id)->first();
 
+        $regiao_id = (int) session()->get('session_perfil')->instituicao_id;
+        $instituicao = InstituicoesInstituicao::where('id', $regiao_id)->first();
+        $pessoa = PessoasPessoa::where('id', $usuario->pessoa_id)->first();
+        $pessoa['nome_regiao'] = $instituicao->nome;
         if ($pessoa->foto) {
             $disk = Storage::disk('s3');
             $pessoa->foto = $disk->temporaryUrl($pessoa->foto, Carbon::now()->addMinutes(15));
