@@ -165,9 +165,6 @@
             $(document).ready(function() {
                 App.init();
             });
-            function dataAtualFormatada(valor){
-                return valor.split('-').reverse().join('/');
-            }
         </script>
         <script src="{{ asset('theme/assets/js/custom.js') }}"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>

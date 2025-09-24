@@ -70,7 +70,7 @@ class UpdateClerigosService
             'categoria' => $request->input('categoria', ''),
             'data_consagracao' => $request->input('data_consagracao'),
             'data_ordenacao' => $request->input('data_ordenacao', ''),
-            'data_integralização' => $request->input('data_integralização', ''),
+            'data_integralizacao' => $request->input('data_integralizacao', ''),
             'rol' => $request->input('rol', ''),
         ]);
         

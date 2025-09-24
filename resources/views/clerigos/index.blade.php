@@ -296,6 +296,11 @@
                             estado_civil = 'Viúvo';
                             break;
                     }
+                    if(data.foto){
+                        var foto = data.foto;
+                    }else{
+                        var foto = `{{ asset('theme/images/sem-foto.jpg') }}`;
+                    }
                     // Preenche o modal com as informações do clerigo e as nomeações, ambos em formato de card
                     $(modalId).find('.modal-body').html(`
                 <div class="card mb-3">
@@ -304,6 +309,9 @@
                     </div>
 
                     <div class="card-body">
+                        <p>
+                        <img id="showImage" src="${data.foto}" alt="Admin" width="210" height="280">
+                        </p>
                         <p><strong>Nome:</strong> ${data.nome}</p>
                         <p><strong>CEP:</strong> ${data.cep || '-'}</p>
                         <p><strong>Endereço:</strong> ${data.endereco || '-'}, ${data.numero || '-'}</p>
@@ -315,10 +323,10 @@
                         <p><strong>Email:</strong> ${data.email || '-'}</p>
                         <p><strong>Estado Cívil:</strong> ${estado_civil} </p>
                         <p><strong>CPF:</strong> ${data.cpf || '-'}</p>
-                        <p><strong>Nascimento:</strong> ${dataAtualFormatada(data.data_nascimento) || '-'}</p>
-                        <p><strong>Consagração:</strong> ${dataAtualFormatada(data.data_consagracao) || '-'}</p>
-                        <p><strong>Ordenação:</strong> ${dataAtualFormatada(data.data_ordenacao) || '-'}</p>
-                        <p><strong>Integralização:</strong> ${dataAtualFormatada(data.data_integralização) || '-'}</p>
+                        <p><strong>Nascimento:</strong> ${data.data_nascimento || '-'}</p>
+                        <p><strong>Consagração:</strong> ${data.data_consagracao || '-'}</p>
+                        <p><strong>Ordenação:</strong> ${data.data_ordenacao || '-'}</p>
+                        <p><strong>Integralização:</strong> ${data.data_integralizacao || '-'}</p>
                         <p><strong>Rol:</strong> ${data.rol || '-'}</p>
 
 

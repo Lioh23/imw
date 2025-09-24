@@ -66,7 +66,7 @@ class StoreClerigosService
             'categoria' => $request['categoria'],
             'data_consagracao' => $request['data_consagracao'],
             'data_ordenacao' => $request['data_ordenacao'],
-            'data_integralização' => $request['data_integralização'],
+            'data_integralizacao' => $request['data_integralizacao'],
             'rol' => $request['rol'],
         ]);
     }

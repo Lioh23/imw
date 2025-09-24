@@ -64,7 +64,7 @@ class StoreReceberNovoClerigoRequest extends FormRequest
             'pispasep' => 'nullable',
             'data_consagracao' => ['required', new RangeDateRule],
             'data_ordenacao' => ['nullable', new RangeDateRule],
-            'data_integralização' => ['nullable', new RangeDateRule],
+            'data_integralizacao' => ['nullable', new RangeDateRule],
             'rol' => 'required',
 
         ];

@@ -1,2 +1,2 @@
-ALTER TABLE `pessoas_pessoas` ADD `data_consagracao` DATE NOT NULL AFTER `status_id`, ADD `data_ordenacao` DATE NULL DEFAULT NULL AFTER `data_consagracao`, ADD `data_integralização` DATE NULL DEFAULT NULL AFTER `data_ordenacao`, ADD `rol` TINYINT NOT NULL AFTER `data_integralização`;
+ALTER TABLE `pessoas_pessoas` ADD `data_consagracao` DATE NOT NULL AFTER `status_id`, ADD `data_ordenacao` DATE NULL DEFAULT NULL AFTER `data_consagracao`, ADD `data_integralizacao` DATE NULL DEFAULT NULL AFTER `data_ordenacao`, ADD `rol` TINYINT NOT NULL AFTER `data_integralizacao`;
 ALTER TABLE `pessoas_pessoas` CHANGE `rol` `rol` INT(4) NOT NULL;

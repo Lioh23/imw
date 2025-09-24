@@ -164,11 +164,11 @@
                             @enderror
                         </div>
                         <div class="col-12 mt-3 col-md-3">
-                            <label for="data_integralização">Data de Integralização</label>
-                            <input type="date" class="form-control @error('data_integralização') is-invalid @enderror"
-                                id="data_integralização" name="data_integralização"
-                                value="{{ old('data_integralização') }}">
-                            @error('data_integralização')
+                            <label for="data_integralizacao">Data de Integralização</label>
+                            <input type="date" class="form-control @error('data_integralizacao') is-invalid @enderror"
+                                id="data_integralizacao" name="data_integralizacao"
+                                value="{{ old('data_integralizacao') }}">
+                            @error('data_integralizacao')
                                 <span class="help-block text-danger">{{ $message }}</span>
                             @enderror
                         </div>
