@@ -24,40 +24,39 @@
             font-size: 20px;
         }
         .foto{
-            position: absolute; top:171px; margin-left: 635px;
+            position: absolute; top:169px; margin-left: 633px;
             width: 210px;
             height: 268px;
         }
-        .rol{
-            position: absolute; top:555px; margin-left: 90px;
-        }
-        .categoria{
-            position: absolute; top:555px; margin-left: 480px;
-        }
         .nome{
-            position: absolute; top:630px; margin-left: 90px;
+            position: absolute; top:565px; margin-left:70px;
+        }
+        .rol{
+            position: absolute; top:565px; margin-left: 615px;
         }
         .cpf{
-            position: absolute; top:690px; margin-left: 90px;
+            position: absolute; top:660px; margin-left: 70px;
         }
         .rg{
-            position: absolute; top:690px; margin-left: 480px;
-        }
-        .dt-ordenacao{
-            position: absolute; top:760px; margin-left: 90px;
+            position: absolute; top:660px; margin-left: 340px;
         }
         .dt-nascimento{
-            position: absolute; top:760px; margin-left: 480px;
+            position: absolute; top:660px; margin-left: 620px;
+        }
+        .categoria{
+            position: absolute; top:757px; margin-left: 70px;
+        }
+        .dt-ordenacao{
+            position: absolute; top:757px; margin-left:620px;
+        }        
+        .dt-consagracao{
+            position: absolute; top:757px; margin-left: 346px;
+        }
+        .contato-sede{
+            position: absolute; top:860px; margin-left: 280px; font-size: 20px;
         }
         .validade{
-            position: absolute; top:830px; margin-left: 90px; font-size: 12px;
-            width: 380px;
-        }
-        .sexo{
-            position: absolute; top:830px; margin-left: 490px;
-        }
-        .estado-civil{
-            position: absolute; top:830px; margin-left: 640px;
+            position: absolute; top:1070px; margin-left: 90px; font-size: 14px;
         }
     </style>
 @endsection
@@ -78,25 +77,15 @@
             <div class="widget-content widget-content-area">
                 <img src="{{ $usuario->foto }}" class="foto" alt="">
                 <div class="rol">{{ $usuario->rol }}</div>
-                <div class="categoria">{{ isset($usuario->categoria) ? $usuario->categoria : 'Clérigo' }}</div>
                 <div class="nome">{{ $usuario->nome }}</div>
                 <div class="cpf">{{ $usuario->cpf }}</div>
                 <div class="rg">{{ $usuario->identidade }}</div>
-                <div class="dt-ordenacao">{{ formatDate($usuario->data_consagracao) }} | {{ formatDate($usuario->data_ordenacao) }}</div>
                 <div class="dt-nascimento">{{ formatDate($usuario->data_nascimento) }}</div>
+                <div class="categoria">{{ isset($usuario->categoria) ? $usuario->categoria : '' }}</div>
+                <div class="dt-consagracao">{{ formatDate($usuario->data_consagracao) }}</div>
+                <div class="dt-ordenacao">{{ formatDate($usuario->data_ordenacao) }}</div>
+                <div class="contato-sede">Sede Administrativa: 21-98456-0937</div>
                 <div class="validade">Essa credencial terá validade, enquanto seu portador estiver inscrito como clérigo ativo de sua Região Eclesiástica</div>
-                <div class="sexo">{{ $usuario->sexo }}</div>
-                <div class="estado-civil">
-                    @if($usuario->estado_civil == 'S')
-                        Solteiro
-                    @elseif($usuario->estado_civil == 'C')
-                        Casado
-                    @elseif($usuario->estado_civil == 'D')
-                        Divorciado
-                    @elseif($usuario->estado_civil == 'V')
-                        Viúvo
-                    @endif
-                </div>
                 <img src="{{ asset('theme/images/carteira-digital.png') }}" alt="">
             </div>
         </div>
