@@ -83,6 +83,7 @@
                     </div>
                 </div>
             </div>
+            @if($usuario['pessoa_id'])
             <div class="widget-content widget-content-area">
                 <div class="regiao_top">{{ mb_convert_case($usuario->nome_regiao, MB_CASE_TITLE, "UTF-8") }} Eclesiástica</div>
                 <img src="{{ $usuario->foto }}" class="foto" alt="">
@@ -99,6 +100,11 @@
                 <div class="regiao_bottom">{{ mb_convert_case($usuario->nome_regiao, MB_CASE_TITLE, "UTF-8") }} Eclesiástica</div>
                 <img src="{{ asset('theme/images/carteira-digital.png') }}" alt="">
             </div>
+            @else
+                <div class="widget-content widget-content-area">
+                    Não possui acesso a credencial
+                </div>
+            @endif
         </div>
     </div>
 

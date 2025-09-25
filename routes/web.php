@@ -114,7 +114,7 @@ Route::middleware(['auth'])->group(function () {
         });
 
         Route::prefix('usuario/perfil')->name('perfil.')->group(function () {
-            Route::get('/carteira-digital', [PerfilController::class, 'carteiraDigital'])->name('carteira-digital')->middleware(['seguranca:carteira-digital']);
+            Route::get('/carteira-digital', [PerfilController::class, 'carteiraDigital'])->name('carteira-digital');/*->middleware(['seguranca:carteira-digital']);*/
         });
 
         Route::prefix('instituicoes')->name('instituicoes.')->group(function () {
