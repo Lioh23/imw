@@ -27,9 +27,10 @@ class ListPerfilService
             return redirect()->route('login')->with('error', 'Você precisa estar logado para acessar essa página.');
         }
 
-        $regiao_id = (int) session()->get('session_perfil')->instituicao_id;
-        $instituicao = InstituicoesInstituicao::where('id', $regiao_id)->first();
         $pessoa = PessoasPessoa::where('id', $usuario->pessoa_id)->first();
+        $regiao_id = $pessoa->regiao_id;
+        $instituicao = InstituicoesInstituicao::where('id', $regiao_id)->first();
+
         $pessoa['nome_regiao'] = $instituicao->nome;
         if (!$usuario->pessoa_id) {
             $pessoa['pessoa_id'] = $usuario->pessoa_id;            
