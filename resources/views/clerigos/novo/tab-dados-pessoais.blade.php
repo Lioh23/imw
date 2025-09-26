@@ -278,14 +278,13 @@
         }
 	})
 
-
     $("#data_nascimento").change(function(e){
         let dataNascimento = new Date($('#data_nascimento').val());
         let dataConsagracao = new Date($('#data_consagracao').val());
 		if (dataNascimento > dataConsagracao) {
-			toastr.error("A data do nascimento tem que ser menor que a data da consagração.")
+			toastr.error("A data de nascimento tem que ser menor que a data da consagração.")
             $("#data_nascimento").val('')
-            $('.text-danger-nascimento').html('A data do nascimento tem que ser menor que a data da consagração.')
+            $('.text-danger-nascimento').html('A data de nascimento tem que ser menor que a data da consagração.')
 			$('#data_nascimento').addClass('is-invalid')
             $('.text-danger-nascimento').show();
 			return false

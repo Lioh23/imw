@@ -149,6 +149,8 @@
                                 value="{{ old('data_nascimento', $clerigo->data_nascimento) }}">
                             @error('data_nascimento')
                                 <span class="help-block text-danger">{{ $message }}</span>
+                            @else
+                                <span class="help-block text-danger text-danger-nascimento"></span>
                             @enderror
                         </div>
                     </div>
@@ -161,6 +163,8 @@
                                 value="{{ old('data_consagracao', $clerigo->data_consagracao) }}">
                             @error('data_consagracao')
                                 <span class="help-block text-danger">{{ $message }}</span>
+                            @else
+                                <span class="help-block text-danger text-danger-consagracao"></span>
                             @enderror
                         </div>
                         <div class="col-12 mt-3 col-md-3">
@@ -170,6 +174,8 @@
                                 value="{{ old('data_ordenacao', $clerigo->data_ordenacao) }}">
                             @error('data_ordenacao')
                                 <span class="help-block text-danger">{{ $message }}</span>
+                            @else
+                                <span class="help-block text-danger text-danger-ordenacao"></span>
                             @enderror
                         </div>
                         <div class="col-12 mt-3 col-md-3">
@@ -179,6 +185,8 @@
                                 value="{{ old('data_integralizacao', $clerigo->data_integralizacao) }}">
                             @error('data_integralizacao')
                                 <span class="help-block text-danger">{{ $message }}</span>
+                            @else
+                                <span class="help-block text-danger text-danger-integralizacao"></span>
                             @enderror
                         </div>
                         <div class="col-12 mt-3 col-md-3">
@@ -192,5 +200,106 @@
 
     </blockquote>
 </div>
+<script>
+    
+    $("#data_consagracao").change(function(e){
+        let data_nascimento = $('#data_nascimento').val();
+        if(!data_nascimento){
+            toastr.error("Primeiro informe a data de nascimento.")
+            $('.text-danger-nascimento').html('Informe a data de nascimento')
+			$('#data_nascimento').addClass('is-invalid')
+            $('.text-danger').show();
+            $("#data_consagracao").val('')
+			return false
+		}
+
+        let dataNascimento = new Date($('#data_nascimento').val());
+		let dataConsagracao = new Date($("#data_consagracao").val());
+		if (dataConsagracao < dataNascimento) {
+			toastr.error("A data da consagração tem que ser maior que a data de nascimento.")
+            $("#data_consagracao").val('')
+            $('.text-danger-consagracao').html('A data da consagração tem que ser maior que a data de nascimento.')
+			$('#data_consagracao').addClass('is-invalid')
+            $('.text-danger-consagracao').show();
+            $('.text-danger-nascimento').hide()
+			return false
+		}else{
+            $('#data_consagracao').removeClass('is-invalid')
+            $('.text-danger-consagracao').hide();
+        }
+	})
+
+    $("#data_ordenacao").change(function(e){
+        let data_consagracao = $('#data_consagracao').val();
+        if(!data_consagracao){
+            toastr.error("Primeiro informe a data de consagração.")
+            $('.text-danger-consagracao').html('Informe a data da consagração')
+			$('#data_consagracao').addClass('is-invalid')
+            $('.text-danger-consagracao').show();
+            $("#data_ordenacao").val('')
+			return false
+		}
+
+        let dataConsagracao = new Date($('#data_consagracao').val());
+		let dataOrdenacao = new Date($("#data_ordenacao").val());
+		if (dataOrdenacao < dataConsagracao) {
+			toastr.error("A data da ordenação tem que ser maior que a data da consagração.")
+            $("#data_ordenacao").val('')
+            $('.text-danger-ordenacao').html('A data da ordenação tem que ser maior que a data da consagração.')
+			$('#data_ordenacao').addClass('is-invalid')
+            $('.text-danger-ordenacao').show();
+            $('.text-danger-nascimento').hide()
+			return false
+		}else{
+            $('#data_ordenacao').removeClass('is-invalid')
+            $('.text-danger-ordenacao').hide();
+        }
+	})
+
+    $("#data_integralizacao").change(function(e){
+        let data_consagracao = $('#data_consagracao').val();
+        if(!data_consagracao){
+            toastr.error("Primeiro informe a data de consagração.")
+            $('.text-danger-consagracao').html('Informe a data da consagração')
+			$('#data_consagracao').addClass('is-invalid')
+            $('.text-danger-consagracao').show();
+            $("#data_integralizacao").val('')
+			return false
+		}
+
+        let dataConsagracao = new Date($('#data_consagracao').val());
+		let dataIntegralizacao = new Date($("#data_integralizacao").val());
+		if (dataIntegralizacao < dataConsagracao) {
+			toastr.error("A data da integralizacao tem que ser maior que a data da consagração.")
+            $("#data_integralizacao").val('')
+            $('.text-danger-integralizacao').html('A data da integralizacao tem que ser maior que a data da consagração.')
+			$('#data_integralizacao').addClass('is-invalid')
+            $('.text-danger-integralizacao').show();
+            $('.text-danger-nascimento').hide()
+			return false
+		}else{
+            $('#data_integralizacao').removeClass('is-invalid')
+            $('.text-danger-integralizacao').hide();
+        }
+	})
+
+    $("#data_nascimento").change(function(e){
+        let dataNascimento = new Date($('#data_nascimento').val());
+        let dataConsagracao = new Date($('#data_consagracao').val());
+		if (dataNascimento > dataConsagracao) {
+			toastr.error("A data de nascimento tem que ser menor que a data da consagração.")
+            $("#data_nascimento").val('')
+            $('.text-danger-nascimento').html('A data de nascimento tem que ser menor que a data da consagração.')
+			$('#data_nascimento').addClass('is-invalid')
+            $('.text-danger-nascimento').show();
+			return false
+		}else{
+            $('#data_nascimento').removeClass('is-invalid')
+            $('.text-danger-nascimento').hide();
+        }
+
+    })
+    
+</script>
 @push('tab-scripts')
 @endpush
