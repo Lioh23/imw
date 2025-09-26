@@ -58,14 +58,14 @@
         .dt-consagracao{
             position: absolute; top:757px; margin-left: 346px;
         }
+        .validade{
+            position: absolute; top:850px; margin-left: 130px; font-size: 20px;
+        }
         .contato-sede{
-            position: absolute; top:860px; margin-left: 280px; font-size: 20px;
+            position: absolute; top:850px; margin-left: 450px; font-size: 20px;
         }
         .regiao_bottom{
             position: absolute; top:1030px; margin-left: 240px; font-size: 14px; color: #4361ee;
-        }
-        .validade{
-            position: absolute; top:1070px; margin-left: 90px; font-size: 14px;
         }
     </style>
 @endsection
@@ -95,8 +95,8 @@
                 <div class="categoria">{{ isset($usuario->categoria) ? mb_convert_case($usuario->categoria, MB_CASE_TITLE, "UTF-8") : '' }}</div>
                 <div class="dt-consagracao">{{ formatDate($usuario->data_consagracao) }}</div>
                 <div class="dt-ordenacao">{{ formatDate($usuario->data_ordenacao) }}</div>
+                <div class="validade">Validade: 31/10/2027</div>
                 <div class="contato-sede">Sede Administrativa: (21) 98456-0937</div>
-                <div class="validade">Essa credencial terá validade enquanto seu portador estiver inscrito como clérigo ativo de sua Região Eclesiástica</div>
                 <div class="regiao_bottom">{{ mb_convert_case($usuario->nome_regiao, MB_CASE_TITLE, "UTF-8") }} Eclesiástica</div>
                 <img src="{{ asset('theme/images/carteira-digital.png') }}" alt="">
             </div>
