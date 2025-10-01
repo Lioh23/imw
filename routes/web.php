@@ -188,7 +188,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/update/{id}', [FinanceiroCaixasController::class, 'update'])->name('caixas.update')->middleware(['seguranca:financeiro-caixas']);
 
             //Orcamentos
-            Route::get('/formulario-orcamento', [FinanceiroController::class, 'FormularioOrcamento'])->name('formulario.orcamento')->middleware(['seguranca:cadastrar-orcamento']);
+            Route::get('/cota-orcamentaria', [FinanceiroController::class, 'CotaOrcamentaria'])->name('cota.orcamentaria')->middleware(['seguranca:cota-orcamentaria']);
 
             //Relatorios
             Route::get('/relatorio/movimento-diario', [FinanceiroRelatorioController::class, 'movimentodiario'])->name('relatorio-movimento-diario')->middleware(['seguranca:menu-relatorios']);

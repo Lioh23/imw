@@ -264,9 +264,9 @@
                              <a href="{{ route('financeiro.consolidar.caixa') }}">Consolidação de Caixa</a>
                          @endif
                      </li>
-                      <li {!! Request::is('financeiro/formulario-orcamento') ? 'class="active"' : '' !!}>
-                         @if (auth()->check() && auth()->user()->hasPerfilRegra('cadastrar-orcamento'))
-                             <a href="{{ route('financeiro.formulario.orcamento') }}">Cota Orçamentária</a>
+                      <li {!! Request::is('financeiro/cota-orcamentaria') ? 'class="active"' : '' !!}>
+                         @if (auth()->check() && auth()->user()->hasPerfilRegra('cota-orcamentaria'))
+                             <a href="{{ route('financeiro.cota.orcamentaria') }}">Cota Orçamentária</a>
                          @endif
                      </li>
                      <li {!! Request::is('financeiro/plano-conta') ? 'class="active"' : '' !!}>

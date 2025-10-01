@@ -19,6 +19,7 @@ use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
 use App\Services\ServiceFinanceiro\ConsolidacaoStoreService;
 use App\Services\ServiceFinanceiro\DeletarLancamentoService;
+use App\Services\ServiceFinanceiro\IdentificaDadosCotaOrcamentariaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
 use App\Services\ServiceFinanceiro\SaldoService;
@@ -280,16 +281,20 @@ class FinanceiroController extends Controller
         }
     }
 
-    public function FormularioOrcamento(Request $request)
+    public function CotaOrcamentaria(Request $request)
     {
+        $instituicao_id = session('session_perfil')->instituicao_id;
+        $instituicao_nome = session('session_perfil')->instituicao_nome;
+        $dados = $request->all();
         try {
-            $filters = $request->only(['caixa_id', 'plano_conta_id', 'd1', 'd2']);
-            $data = app(IdentificaDadosMovimentacoesCaixaService::class)->execute($filters);
-    
-            return view('financeiro.movimentocaixa', $data);
+            $data = app(IdentificaDadosCotaOrcamentariaService::class)->execute($instituicao_id, $dados);
+            $data['instituicao'] = $instituicao_nome;
+            $data['dtInicial'] = formatDate($request->dt_inicial);
+            $data['dtFinal'] = formatDate($request->dt_final);
+            return view('financeiro.cota-orcamentaria.index', $data);
         } catch(\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Não foi possível abrir a página de Movimento de Caixa');
+            //dd($e);
+            return redirect()->back()->with('error', 'Não foi possível abrir a página cota de orçamento');
         }
     }
 

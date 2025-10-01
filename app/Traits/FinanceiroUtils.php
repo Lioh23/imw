@@ -121,4 +121,33 @@ trait FinanceiroUtils
 
         return null;
     }
+
+    public static function cotasOrcamentarias($instituicao_id, $dados)
+    {
+        $tdInicial = $dados['dt_inicial'];
+        $tdFinal = $dados['dt_final'];
+        if($tdInicial){
+            $sqlDataLancamento = " AND fl.data_lancamento BETWEEN '$tdInicial' AND '$tdFinal' ";
+        }else{
+            $sqlDataLancamento = "";
+        }
+        $cotas = FinanceiroLancamento::
+            select(
+                DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
+                    JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+                    WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento) AS dizimos_ofertas"),
+                DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
+                    JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+                    WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id)  AS dizimos_pastoral_fiw"),
+                DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
+                    JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+                    WHERE fpc.numeracao in ('2.18.11') AND fl.instituicao_id = $instituicao_id)  AS irrf_repasse"),
+                DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
+                    JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+                    WHERE fpc.numeracao in ('2.18.01') AND fl.instituicao_id = $instituicao_id)  AS cota_orcamentaria")
+            )
+            ->first();
+        return $cotas;
+    }
+    
 }
