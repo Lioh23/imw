@@ -124,8 +124,8 @@ trait FinanceiroUtils
 
     public static function cotasOrcamentarias($instituicao_id, $dados)
     {
-        $tdInicial = $dados['dt_inicial'];
-        $tdFinal = $dados['dt_final'];
+        $tdInicial = isset($dados['dt_inicial']) ? $dados['dt_inicial'] : '';
+        $tdFinal = isset($dados['dt_final']) ? $dados['dt_final'] : '';
         if($tdInicial){
             $sqlDataLancamento = " AND fl.data_lancamento BETWEEN '$tdInicial' AND '$tdFinal' ";
         }else{
