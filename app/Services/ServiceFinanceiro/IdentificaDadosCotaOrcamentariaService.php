@@ -12,10 +12,10 @@ class IdentificaDadosCotaOrcamentariaService
 {
     use FinanceiroUtils;
 
-    public function execute($instituicao_id, $dados)
+    public function execute($dados)
     { 
         return [
-            'cotaOrcamentaria' => FinanceiroUtils::cotasOrcamentarias($instituicao_id, $dados),
+            'cotaOrcamentaria' => FinanceiroUtils::cotasOrcamentarias($dados),
             'meses' => (Object) Mes::get(),
         ];
     }

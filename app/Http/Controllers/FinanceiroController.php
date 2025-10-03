@@ -299,9 +299,10 @@ class FinanceiroController extends Controller
         }
         $dados['ano'] = $ano;
         $dados['mes'] = $mes;
+        $dados['instituicao_id'] = $instituicao_id;
         try {
             $mes = Mes::where('id',$mes)->first();
-            $data = app(IdentificaDadosCotaOrcamentariaService::class)->execute($instituicao_id, $dados);
+            $data = app(IdentificaDadosCotaOrcamentariaService::class)->execute($dados);
             $data['instituicao'] = $instituicao_nome;
             if(isset($mes->descricao)){
                 $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome do mês de $mes->descricao de $ano";

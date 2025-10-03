@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Calculators\ImpostoDeRenda\ImpostoDeRendaSimplificadoCalculator;
 use App\Models\FinanceiroCaixa;
 use App\Models\FinanceiroFornecedores;
 use App\Models\FinanceiroLancamento;
@@ -9,6 +10,8 @@ use App\Models\FinanceiroPlanoConta;
 use App\Models\FinanceiroSaldoConsolidadoMensal;
 use App\Models\InstituicoesInstituicao;
 use App\Models\MembresiaMembro;
+use App\Models\PessoasPrebenda;
+use App\Services\ServiceClerigosImpostoDeRenda\CalculaImpostoDeRendaService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
@@ -122,10 +125,11 @@ trait FinanceiroUtils
         return null;
     }
 
-    public static function cotasOrcamentarias($instituicao_id, $dados)
+    public static function cotasOrcamentarias($dados)
     {
         $ano = $dados['ano'] ? $dados['ano'] : '';
         $mes = $dados['mes'] ? $dados['mes'] : '';
+        $instituicao_id = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
         if($ano){
             $sqlDataLancamento = " AND YEAR(fl.data_lancamento) = $ano AND MONTH(fl.data_lancamento) = $mes ";
         }else{
@@ -144,6 +148,17 @@ trait FinanceiroUtils
                     WHERE fpc.numeracao in ('2.18.11') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento)  AS irrf_repasse")
             )
             ->first();
+            $somaImposto = 0;
+            if($ano){
+                $prebendasAll = ContabilidadeDados::fetchPrebandasCotaOrcamentaria($dados);                
+                foreach($prebendasAll as $item){
+                    $prebenda = PessoasPrebenda::where('id', $item->id)->first();
+                    $irCalculator =  new ImpostoDeRendaSimplificadoCalculator();
+                    $impostoCalculado = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
+                    $somaImposto += $impostoCalculado->valorImposto;
+                }
+            }
+            $cotas['irrf_titular'] = $somaImposto;
         return $cotas;
     }
     

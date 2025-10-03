@@ -110,7 +110,7 @@
                                     $dizimosOfertas = $cotaOrcamentaria->dizimos_ofertas ? $cotaOrcamentaria->dizimos_ofertas : 0;
                                     $cotaOrcamentariaTotal = calculoPorcentagem($dizimosOfertas,19);
                                     $dizimosPastoralFiw = $cotaOrcamentaria->dizimos_pastoral_fiw ? $cotaOrcamentaria->dizimos_pastoral_fiw : 0;
-                                    $irrfRepasse = $cotaOrcamentaria->irrf_repasse ? $cotaOrcamentaria->irrf_repasse : 0;
+                                    $irrfRepasse = $cotaOrcamentaria->irrf_titular ? $cotaOrcamentaria->irrf_titular : 0;
                                     $total = $dizimosOfertas + $cotaOrcamentariaTotal + $dizimosPastoralFiw + $irrfRepasse;
                                 @endphp
                                 <thead class="thead-light">
