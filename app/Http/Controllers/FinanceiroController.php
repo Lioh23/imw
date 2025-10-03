@@ -14,6 +14,7 @@ use App\Http\Requests\StoreNewAnexoRequest;
 use App\Models\Anexo;
 use App\Models\FinanceiroLancamento;
 use App\Models\FinanceiroPlanoConta;
+use App\Models\Mes;
 use App\Services\ServiceFinanceiro\GetAnexosByLancamentoService;
 use App\Services\ServiceFinanceiro\BuscarAnexosServices;
 use App\Services\ServiceFinanceiro\ConsolidacaoService;
@@ -285,12 +286,20 @@ class FinanceiroController extends Controller
     {
         $instituicao_id = session('session_perfil')->instituicao_id;
         $instituicao_nome = session('session_perfil')->instituicao_nome;
-        $dados = $request->all();
+        if($request->mes == 1){
+            $ano = $request->ano - 1;
+            $mes = 12;
+        }else{
+            $ano = $request->ano;
+            $mes = $request->mes - 1;
+        }
+        $dados['ano'] = $ano;
+        $dados['mes'] = $mes;
         try {
+            $mes = Mes::where('id',$mes)->first();
             $data = app(IdentificaDadosCotaOrcamentariaService::class)->execute($instituicao_id, $dados);
             $data['instituicao'] = $instituicao_nome;
-            $data['dtInicial'] = formatDate($request->dt_inicial);
-            $data['dtFinal'] = formatDate($request->dt_final);
+            $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome do mês de $mes->descricao de $ano";
             return view('financeiro.cota-orcamentaria.index', $data);
         } catch(\Exception $e) {
             //dd($e);

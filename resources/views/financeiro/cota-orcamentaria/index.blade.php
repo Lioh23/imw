@@ -48,29 +48,67 @@
                 <form class="form-vertical" id="filter_form" method="GET">
                     <div class="form-group row mb-4" id="filtros_data">
                         <div class="col-lg-2 text-right">
-                            <label class="control-label">* Período (Inicial e Final):</label>
+                            <label class="control-label">* Ano/Mês:</label>
                         </div>
-                        <div class="col-lg-3">
-                            <input type="date" class="form-control " id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required="" placeholder="ex: 31/12/2000">
-                        </div>
-                        <div class="col-lg-3">
-                            <input type="date" class="form-control " id="dt_final" name="dt_final" value="{{ request()->input('dt_final') }}" placeholder="ex: 31/12/2000" required="">
-                        </div>
-                        <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg> Buscar
-                        </button>
+                            <div class="col-lg-5 ano_mes">
+                                <div class="input-group">
+                                    @if(request()->input('ano'))
+                                        <select class="form-control " id="ano" name="ano" required="">
+                                            @php
+                                                $mesAtual = date('m');
+                                                $anoAtual = date('Y');
+                                                $anos = range($anoAtual - 2, $anoAtual);
+                                            @endphp
+                                            @foreach($anos as $ano)
+                                                <option value="{{ $ano }}" {{ request()->input('ano') == $ano ? 'selected' : '' }}>{{ $ano }}</option>
+                                            @endforeach
+                                        </select>
+                                        <select class="form-control " id="mes" name="mes" required="">
+                                            @foreach($meses as $mes)
+                                                <option value="{{ $mes->id }}" {{ request()->input('mes') == zeroEsqueda($mes->id) ? 'selected' : '' }}>{{ $mes->descricao }}</option>
+                                            @endforeach
+                                        </select>
+                                    @else
+                                        <select class="form-control " id="ano" name="ano" required="">
+                                            @php
+                                                $mesAtual = date('m');
+                                                $anoAtual = date('Y');
+                                                $anos = range($anoAtual - 10, $anoAtual);
+                                            @endphp
+                                            @foreach($anos as $ano)
+                                                <option value="{{ $ano }}" {{ $anoAtual == $ano ? 'selected' : '' }}>{{ $ano }}</option>
+                                            @endforeach
+                                        </select>
+                                        <select class="form-control " id="mes" name="mes" required="">
+                                            @foreach($meses as $mes)
+                                                @if($mes->id != 13)
+                                                    <option value="{{ $mes->id }}" {{ $mesAtual == zeroEsqueda($mes->id) ? 'selected' : '' }}>{{ $mes->descricao }}</option>
+                                                @endif
+                                            @endforeach
+                                        </select>
+                                    @endif
+                                </div>
+                            </div>
+                        
+
+                            
+                            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg> Buscar
+                                </button>
+
+
                     </div>
                 </form>
             </div>
-            @if(request()->input('dt_inicial'))
+            @if(request()->input('ano'))
                 <div class="card mb-3">
                     <div class="card-body">
-                        <h4>COTA ORÇAMENTÁRIA - {{ $instituicao }} - no período {{ $dtInicial }} / {{ $dtFinal }}</h4>
+                        <h4>{{ $titulo }}</h4>
                         <div class="table-responsive mt-4">
                             <table id="cota-orcamentaria" class="table table-striped" style="font-size: 90%; margin-top: 15px;">
                                 @php
                                     $dizimosOfertas = $cotaOrcamentaria->dizimos_ofertas ? $cotaOrcamentaria->dizimos_ofertas : 0;
-                                    $cotaOrcamentariaTotal = $cotaOrcamentaria->cota_orcamentaria ? $cotaOrcamentaria->cota_orcamentaria : 0;
+                                    $cotaOrcamentariaTotal = calculoPorcentagem($dizimosOfertas,19);
                                     $dizimosPastoralFiw = $cotaOrcamentaria->dizimos_pastoral_fiw ? $cotaOrcamentaria->dizimos_pastoral_fiw : 0;
                                     $irrfRepasse = $cotaOrcamentaria->irrf_repasse ? $cotaOrcamentaria->irrf_repasse : 0;
                                     $total = $dizimosOfertas + $cotaOrcamentariaTotal + $dizimosPastoralFiw + $irrfRepasse;
@@ -151,14 +189,14 @@
                         className: 'btn btn-primary btn-rounded',
                         text: '<i class="fas fa-file-excel"></i> Excel',
                         titleAttr: 'Excel',
-                        title: "COTA ORÇAMENTÁRIA - {{ $instituicao }} - no período {{ $dtInicial }} / {{ $dtFinal }}"
+                        title: "{{ $titulo }}"
                         },
                         {
                         extend: 'pdf',
                         className: 'btn btn-primary btn-rounded',
                         text: '<i class="fas fa-file-pdf"></i> PDF',
                         titleAttr: 'PDF',
-                        title: "COTA ORÇAMENTÁRIA - {{ $instituicao }} - no período {{ $dtInicial }} / {{ $dtFinal }}",
+                        title: "{{ $titulo }}",
 
                         customize: function (doc) {
                                     doc.content.splice(0,1);
@@ -179,7 +217,7 @@
                                                 {
                                                     alignment: 'left',
                                                     italics: false,
-                                                    text: `COTA ORÇAMENTÁRIA - {{ $instituicao }} - no período {{ $dtInicial }} / {{ $dtFinal }}`,
+                                                    text: `{{ $titulo }}`,
                                                     fontSize: 14,
                                                     margin: [10,0]
                                                 },

@@ -137,3 +137,7 @@ function generateGUID()
     . substr($charid, 20, 12);
     return $uuid;
 }
+
+function calculoPorcentagem($valorTotal, $percentual){
+    return ($valorTotal / 100) * $percentual;
+}
