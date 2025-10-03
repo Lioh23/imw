@@ -129,37 +129,68 @@ trait FinanceiroUtils
     {
         $ano = $dados['ano'] ? $dados['ano'] : '';
         $mes = $dados['mes'] ? $dados['mes'] : '';
-        $instituicao_id = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
+        $tipo = $dados['tipo'];
         if($ano){
             $sqlDataLancamento = " AND YEAR(fl.data_lancamento) = $ano AND MONTH(fl.data_lancamento) = $mes ";
         }else{
             $sqlDataLancamento = "";
         }
-        $cotas = FinanceiroLancamento::
-            select(
-                DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
-                    JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                    WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento) AS dizimos_ofertas"),
-                DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
-                    JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                    WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento)  AS dizimos_pastoral_fiw"),
-                DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
-                    JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                    WHERE fpc.numeracao in ('2.18.11') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento)  AS irrf_repasse")
-            )
-            ->first();
-            $somaImposto = 0;
-            if($ano){
-                $prebendasAll = ContabilidadeDados::fetchPrebandasCotaOrcamentaria($dados);                
-                foreach($prebendasAll as $item){
-                    $prebenda = PessoasPrebenda::where('id', $item->id)->first();
-                    $irCalculator =  new ImpostoDeRendaSimplificadoCalculator();
-                    $impostoCalculado = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
-                    $somaImposto += $impostoCalculado->valorImposto;
+        if($tipo == 'igreja'){
+            $instituicao_id = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
+            $cotas = FinanceiroLancamento::
+                select(
+                    DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
+                        JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+                        WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento) AS dizimos_ofertas"),
+                    DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
+                        JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+                        WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento)  AS dizimos_pastoral_fiw")
+                )
+                ->first();
+                $somaImposto = 0;
+                if($ano){
+                    $prebendasAll = ContabilidadeDados::fetchPrebandasCotaOrcamentaria($dados);                
+                    foreach($prebendasAll as $item){
+                        $prebenda = PessoasPrebenda::where('id', $item->id)->first();
+                        $irCalculator =  new ImpostoDeRendaSimplificadoCalculator();
+                        $impostoCalculado = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
+                        $somaImposto += $impostoCalculado->valorImposto;
+                    }
                 }
-            }
             $cotas['irrf_titular'] = $somaImposto;
-        return $cotas;
+            return $cotas;
+        }else if($tipo == 'distrito'){
+            $distritoId = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
+            $instituicoes = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')->where('instituicao_pai_id', $distritoId)->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')->get();
+            foreach($instituicoes as $instituicao){
+                $instituicao_id = $instituicao->id;
+                $cotas = FinanceiroLancamento::
+                        select(
+                            DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
+                                JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+                                WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento) AS dizimos_ofertas"),
+                            DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
+                                JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+                                WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento)  AS dizimos_pastoral_fiw")
+                        )
+                        ->first();
+                        $somaImposto = 0;
+                        if($ano){
+                            $prebendasAll = ContabilidadeDados::fetchPrebandasCotaOrcamentaria($dados);                
+                            foreach($prebendasAll as $item){
+                                $prebenda = PessoasPrebenda::where('id', $item->id)->first();
+                                $irCalculator =  new ImpostoDeRendaSimplificadoCalculator();
+                                $impostoCalculado = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
+                                $somaImposto += $impostoCalculado->valorImposto;
+                            }
+                        }
+                $cotas['instituicao_nome'] = $instituicao->nome;
+                $cotas['tipo_instituicao'] = $instituicao->tipo_instituicao;
+                $cotas['irrf_titular'] = $somaImposto;
+                $cotasTotal['cotas'][] = $cotas;
+            }
+            return $cotasTotal;
+        }        
     }
     
 }

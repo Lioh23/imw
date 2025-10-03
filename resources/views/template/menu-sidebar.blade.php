@@ -379,10 +379,14 @@
                          </li>
                          <li {!! Request::is('distrito/relatorio/variacaofinanceira') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-variacao-financeira'))
-                                 <a href="{{ route('distrito.relatorio.variacaofinanceira') }}">Variação
-                                     Financeira</a>
+                                 <a href="{{ route('distrito.relatorio.variacaofinanceira') }}">Variação Financeira</a>
                              @endif
                          </li>
+                         <li {!! Request::is('distrito/cota-orcamentaria') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-cota-orcamentaria'))
+                                <a href="{{ route('distrito.cota.orcamentaria') }}">Cota Orçamentária</a>
+                            @endif
+                        </li>
                          <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-relatorio'))
                                  <span>Membresia</span>

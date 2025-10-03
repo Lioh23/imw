@@ -237,6 +237,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/relatorio/estatisticagenero/pdf', [DistritoRelatorioController::class, 'estatisticageneroPdf'])->name('relatorio.estatisticagenero-pdf')->middleware(['seguranca:distrito-menu-relatorio']);
 
             Route::get('/congregacoes-por-igrejas', [DistritoRelatorioController::class, 'CongregacaoPorIgreja'])->name('relatorio.congregacaoporigreja')->middleware('seguranca:distrito-relatorio-congregacoes-igrejas');
+
+            //Orcamentos
+            Route::get('/cota-orcamentaria', [FinanceiroController::class, 'CotaOrcamentariaDistrito'])->name('cota.orcamentaria')->middleware(['seguranca:distrito-cota-orcamentaria']);
         });
 
         Route::prefix('regiao/relatorio')->name('regiao.')->group(function () {

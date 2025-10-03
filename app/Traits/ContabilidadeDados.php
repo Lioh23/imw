@@ -69,7 +69,7 @@ trait ContabilidadeDados
             from pessoas_nomeacoes pn ,
             instituicoes_instituicoes ii ,
             instituicoes_instituicoes ii2 
-            where pn.instituicao_id= $instituicao_id
+            where pn.instituicao_id = $instituicao_id
             /*where pn.instituicao_id in(2225,2587)*/
             and ii.instituicao_pai_id=ii2.id
             and ii2.instituicao_pai_id=23
