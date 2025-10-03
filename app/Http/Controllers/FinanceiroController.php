@@ -291,7 +291,11 @@ class FinanceiroController extends Controller
             $mes = 12;
         }else{
             $ano = $request->ano;
-            $mes = $request->mes - 1;
+            if($request->mes == null){
+                $mes = $request->mes;
+            }else{
+                $mes = $request->mes - 1;
+            }
         }
         $dados['ano'] = $ano;
         $dados['mes'] = $mes;
@@ -299,7 +303,11 @@ class FinanceiroController extends Controller
             $mes = Mes::where('id',$mes)->first();
             $data = app(IdentificaDadosCotaOrcamentariaService::class)->execute($instituicao_id, $dados);
             $data['instituicao'] = $instituicao_nome;
-            $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome do mês de $mes->descricao de $ano";
+            if(isset($mes->descricao)){
+                $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome do mês de $mes->descricao de $ano";
+            }else{
+                $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome";
+            }
             return view('financeiro.cota-orcamentaria.index', $data);
         } catch(\Exception $e) {
             //dd($e);
