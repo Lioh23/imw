@@ -113,7 +113,7 @@
                                         <th>COTA 19%</th>
                                         <th>DÍZIMO PASTORAL</th>
                                         <th>IRRF</th>
-                                        <th>TOTAL A PAGAR</th>
+                                        <th>TOTAL DO MAPA</th>
                                     </tr>
                                 </thead>
                                 <tbody>
