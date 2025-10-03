@@ -318,7 +318,7 @@ class FinanceiroController extends Controller
         }
     }
 
-     public function CotaOrcamentariaDistrito(Request $request)
+    public function CotaOrcamentariaDistrito(Request $request)
     {
         $instituicao_id = session('session_perfil')->instituicao_id;
         $instituicao_nome = session('session_perfil')->instituicao_nome;
@@ -339,7 +339,7 @@ class FinanceiroController extends Controller
         $dados['tipo'] = 'distrito';
         try {
             $mes = Mes::where('id',$mes)->first();
-            $data = app(IdentificaDadosCotaOrcamentariaDistritoService::class)->execute($dados);
+            $data = app(IdentificaDadosCotaOrcamentariaService::class)->execute($dados);
             $data['instituicao'] = $instituicao_nome;
             if(isset($mes->descricao)){
                 $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome do mês de $mes->descricao de $ano";
@@ -347,6 +347,41 @@ class FinanceiroController extends Controller
                 $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome";
             }
             return view('financeiro.cota-orcamentaria.distrito.index', $data);
+        } catch(\Exception $e) {
+            //dd($e);
+            return redirect()->back()->with('error', 'Não foi possível abrir a página cota de orçamento');
+        }
+    }
+
+    public function CotaOrcamentariaRegiao(Request $request)
+    {
+        $instituicao_id = session('session_perfil')->instituicao_id;
+        $instituicao_nome = session('session_perfil')->instituicao_nome;
+        if($request->mes == 1){
+            $ano = $request->ano - 1;
+            $mes = 12;
+        }else{
+            $ano = $request->ano;
+            if($request->mes == null){
+                $mes = $request->mes;
+            }else{
+                $mes = $request->mes - 1;
+            }
+        }
+        $dados['ano'] = $ano;
+        $dados['mes'] = $mes;
+        $dados['instituicao_id'] = $instituicao_id;
+        $dados['tipo'] = 'regiao';
+        try {
+            $mes = Mes::where('id',$mes)->first();
+            $data = app(IdentificaDadosCotaOrcamentariaService::class)->execute($dados);
+            $data['instituicao'] = $instituicao_nome;
+            if(isset($mes->descricao)){
+                $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome do mês de $mes->descricao de $ano";
+            }else{
+                $data['titulo'] = "COTA ORÇAMENTÁRIA - $instituicao_nome";
+            }
+            return view('financeiro.cota-orcamentaria.regiao.index', $data);
         } catch(\Exception $e) {
             //dd($e);
             return redirect()->back()->with('error', 'Não foi possível abrir a página cota de orçamento');

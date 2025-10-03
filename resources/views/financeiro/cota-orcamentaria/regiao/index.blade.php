@@ -108,6 +108,7 @@
                             <table id="cota-orcamentaria" class="table table-striped" style="font-size: 90%; margin-top: 15px;">                                
                                 <thead class="thead-light">
                                     <tr>
+                                        <th>DISTRITO</th>
                                         <th>IGREJA</th>
                                         <th>TOTAL ARRECADADO</th>
                                         <th>COTA 19%</th>
@@ -140,6 +141,7 @@
 
                                         @endphp
                                         <tr>
+                                            <td>{{ $cotaOrcamentaria->distrito_nome }}</td>
                                             <td>{{ $cotaOrcamentaria->instituicao_nome }}</td>
                                             <td>R$ {{ number_format($dizimosOfertas, 2,",",".") }}</td>
                                             <td>R$ {{ number_format($cotaOrcamentariaTotal, 2,",",".") }}</td>

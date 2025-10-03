@@ -505,6 +505,12 @@
                              @endif
                          </li>
 
+                         <li {!! Request::is('regiao/relatorio/cota-orcamentaria') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
+                                <a href="{{ route('regiao.cota.orcamentaria') }}">Cota Orçamentária</a>
+                            @endif
+                        </li>
+
                          <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-menu-relatorio'))
                                  <span>Membresia</span>

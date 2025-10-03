@@ -275,6 +275,9 @@ Route::middleware(['auth'])->group(function () {
 
             Route::get('/ano-eclesiastico', [RegiaoRelatorioController::class,'anoEclesiastico'])->name('relatorio.ano.eclesiastico')->middleware('seguranca:regiao-menu-relatorio');
              Route::get('/financeiro/balancete', [FinanceiroRelatorioController::class, 'balanceteRegiao'])->name('relatorio-balancete-regiao')->middleware(['seguranca:regiao-menu-relatorio']);
+
+             //Orcamentos
+            Route::get('/cota-orcamentaria', [FinanceiroController::class, 'CotaOrcamentariaRegiao'])->name('cota.orcamentaria')->middleware(['seguranca:regiao-cota-orcamentaria']);
         });
 
         // Relatórios Região Clérigos
