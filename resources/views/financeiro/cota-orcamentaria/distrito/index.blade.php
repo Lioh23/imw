@@ -109,7 +109,6 @@
                                 <thead class="thead-light">
                                     <tr>
                                         <th>IGREJA</th>
-                                        <th>TIPO</th>
                                         <th>TOTAL ARRECADADO</th>
                                         <th>COTA 19%</th>
                                         <th>DÍZIMO PASTORAL</th>
@@ -142,7 +141,6 @@
                                         @endphp
                                         <tr>
                                             <td>{{ $cotaOrcamentaria->instituicao_nome }}</td>
-                                            <td>{{ $cotaOrcamentaria->tipo_instituicao }}</td>
                                             <td>R$ {{ number_format($dizimosOfertas, 2,",",".") }}</td>
                                             <td>R$ {{ number_format($cotaOrcamentariaTotal, 2,",",".") }}</td>
                                             <td>R$ {{ number_format($dizimosPastoralFiw, 2,",",".") }}</td>
