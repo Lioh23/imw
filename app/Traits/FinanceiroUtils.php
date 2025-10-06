@@ -131,9 +131,9 @@ trait FinanceiroUtils
         $mes = $dados['mes'] ? $dados['mes'] : '';
         $tipo = $dados['tipo'];
         if($ano){
-            $sqlDataLancamento = " AND YEAR(fl.data_lancamento) = $ano AND MONTH(fl.data_lancamento) = $mes ";
+            $sqlDataMovimento = " AND YEAR(fl.data_movimento) = $ano AND MONTH(fl.data_movimento) = $mes ";
         }else{
-            $sqlDataLancamento = "";
+            $sqlDataMovimento = "";
         }
         if($tipo == 'igreja'){
             $instituicao_id = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
@@ -141,10 +141,10 @@ trait FinanceiroUtils
                 select(
                     DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
                         JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                        WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento) AS dizimos_ofertas"),
+                        WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1) AS dizimos_ofertas"),
                     DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
                         JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                        WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento)  AS dizimos_pastoral_fiw")
+                        WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1)  AS dizimos_pastoral_fiw")
                 )
                 ->first();
                 $somaImposto = 0;
@@ -168,10 +168,10 @@ trait FinanceiroUtils
                         select(
                             DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
                                 JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                                WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento) AS dizimos_ofertas"),
+                                WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1) AS dizimos_ofertas"),
                             DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
                                 JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                                WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento)  AS dizimos_pastoral_fiw")
+                                WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1)  AS dizimos_pastoral_fiw")
                         )
                         ->first();
                         $somaImposto = 0;
@@ -201,10 +201,10 @@ trait FinanceiroUtils
                             select(
                                 DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
                                     JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                                    WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento) AS dizimos_ofertas"),
+                                    WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1) AS dizimos_ofertas"),
                                 DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
                                     JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                                    WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataLancamento)  AS dizimos_pastoral_fiw")
+                                    WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1)  AS dizimos_pastoral_fiw")
                             )
                             ->first();
                             $somaImposto = 0;
