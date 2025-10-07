@@ -121,7 +121,7 @@
                                         @foreach($recursosHumanos as $recurso)
                                         @php $item = (array)$recurso @endphp
                                         <tr>
-                                            <td colspan="2"><b>{{$item['nome']}}</b></td>
+                                            <td colspan="2" style="font-size: 18px;"><b>{{$item['nome']}}</b></td>
                                         </tr>
                                         <tr>
                                             <td>Contribuições Sindicais</td> <td>R$ {{ number_format($item['2.12.07'], 2,",",".") }}</td>
