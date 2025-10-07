@@ -240,6 +240,9 @@ Route::middleware(['auth'])->group(function () {
 
             //Orcamentos
             Route::get('/cota-orcamentaria', [FinanceiroController::class, 'CotaOrcamentariaDistrito'])->name('cota.orcamentaria')->middleware(['seguranca:distrito-cota-orcamentaria']);
+
+            //Orcamentos
+            Route::get('/recursos-humanos', [FinanceiroController::class, 'RecursoHumanoDistrito'])->name('recurso.humano')->middleware(['seguranca:distrito-recurso-humano']);
         });
 
         Route::prefix('regiao/relatorio')->name('regiao.')->group(function () {

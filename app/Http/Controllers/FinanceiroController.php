@@ -24,6 +24,7 @@ use App\Services\ServiceFinanceiro\IdentificaDadosCotaOrcamentariaDistritoServic
 use App\Services\ServiceFinanceiro\IdentificaDadosCotaOrcamentariaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosMovimentacoesCaixaService;
 use App\Services\ServiceFinanceiro\IdentificaDadosNovaMovimentacaoService;
+use App\Services\ServiceFinanceiro\IdentificaDadosRecursoHumanoService;
 use App\Services\ServiceFinanceiro\SaldoService;
 use App\Services\ServiceFinanceiro\StoreLancamentoEntradaService;
 use App\Services\ServiceFinanceiro\StoreLancamentoSaidaService;
@@ -349,6 +350,40 @@ class FinanceiroController extends Controller
             return view('financeiro.cota-orcamentaria.distrito.index', $data);
         } catch(\Exception $e) {
             //dd($e);
+            return redirect()->back()->with('error', 'Não foi possível abrir a página cota de orçamento');
+        }
+    }
+
+    public function RecursoHumanoDistrito(Request $request)
+    {
+        $instituicao_id = session('session_perfil')->instituicao_id;
+        $instituicao_nome = session('session_perfil')->instituicao_nome;
+        if($request->mes == 1){
+            $ano = $request->ano - 1;
+            $mes = 12;
+        }else{
+            $ano = $request->ano;
+            if($request->mes == null){
+                $mes = $request->mes;
+            }else{
+                $mes = $request->mes - 1;
+            }
+        }
+        $dados['ano'] = $ano;
+        $dados['mes'] = $mes;
+        $dados['instituicao_id'] = $instituicao_id;
+        $dados['tipo'] = 'distrito';
+        try {
+            $mes = Mes::where('id',$mes)->first();
+            $data = app(IdentificaDadosRecursoHumanoService::class)->execute($dados);
+            $data['instituicao'] = $instituicao_nome;
+            if(isset($mes->descricao)){
+                $data['titulo'] = "RECURSOS HUMANOS - $instituicao_nome do mês de $mes->descricao de $ano";
+            }else{
+                $data['titulo'] = "RECURSOS HUMANOS - $instituicao_nome";
+            }
+            return view('distrito.relatorios.recurso-humano', $data);
+        } catch(\Exception $e) {
             return redirect()->back()->with('error', 'Não foi possível abrir a página cota de orçamento');
         }
     }
