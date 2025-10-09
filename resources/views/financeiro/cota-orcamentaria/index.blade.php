@@ -111,7 +111,7 @@
                                     $cotaOrcamentariaTotal = calculoPorcentagem($dizimosOfertas,19);
                                     $dizimosPastoralFiw = $cotaOrcamentaria->dizimos_pastoral_fiw ? $cotaOrcamentaria->dizimos_pastoral_fiw : 0;
                                     $irrfRepasse = $cotaOrcamentaria->irrf_titular ? $cotaOrcamentaria->irrf_titular : 0;
-                                    $total = $dizimosOfertas + $cotaOrcamentariaTotal + $dizimosPastoralFiw + $irrfRepasse;
+                                    $total = $cotaOrcamentariaTotal + $dizimosPastoralFiw + $irrfRepasse;
                                 @endphp
                                 <thead class="thead-light">
                                     <tr>
@@ -179,6 +179,7 @@
         <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
         <script>
             new DataTable('#cota-orcamentaria', {
+                ordering: false,
                 layout: {
                     //top1: 'searchBuilder',
                     topStart: {

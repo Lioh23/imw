@@ -150,7 +150,6 @@
                                     @endforeach
                                     <tr>
                                         <td><b>TOTAL</b></td>
-                                        <td></td>
                                         <td><b>R$ {{ number_format($totalDizimosOfertas, 2,",",".") }}</b></td>
                                         <td><b>R$ {{ number_format($totalCotaOrcamentariaTotal, 2,",",".") }}</b></td>
                                         <td><b>R$ {{ number_format($totalDizimosPastoralFiw, 2,",",".") }}</b></td>
@@ -180,6 +179,7 @@
         <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
         <script>
             new DataTable('#cota-orcamentaria', {
+                
                 layout: {
                     //top1: 'searchBuilder',
                     topStart: {

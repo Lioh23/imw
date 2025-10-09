@@ -105,41 +105,29 @@
                     <div class="card-body">
                         <h4>{{ $titulo }}</h4>
                         <div class="table-responsive mt-4">
-                            <table id="cota-orcamenaria" class="table table-striped" style="font-size: 90%; margin-top: 15px;">                                
-                                <!-- <thead class="thead-light">
-                                    <tr>
-                                        <th>IGREJA</th>
-                                        <th>Contribuições Sindicais</th>
-                                        <th>Mensalidades Sindicais</th>
-                                        <th>IRRF</th>
-                                        <th>INSS/GPS</th>
-                                        <th>Seguro de Vida dos Empregados/th>
-                                        <th>PIS sobre folha</th>
-                                    </tr>
-                                </thead> -->
+                            <table id="rh" class="table table-striped" style="font-size: 90%; margin-top: 15px;">        
+                                <thead>
+                                    <tr><th></th><th></th></tr>
+                                </thead>                        
                                 <tbody>
                                         @foreach($recursosHumanos as $recurso)
-                                        @php $item = (array)$recurso @endphp
-                                        <tr>
-                                            <td colspan="2" style="font-size: 18px;"><b>{{$item['nome']}}</b></td>
-                                        </tr>
-                                        <tr>
-                                            <td>Contribuições Sindicais</td> <td>R$ {{ number_format($item['2.12.07'], 2,",",".") }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Mensalidades Sindicais</td> <td>R$ {{ number_format($item['2.12.08'], 2,",",".") }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>IRRF</td> <td>R$ {{ number_format($item['2.12.10'], 2,",",".") }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>INSS/GPS</td><td>R$ {{ number_format($item['2.12.11'], 2,",",".") }}</td>
-                                        </tr>
-                                        <tr>
-                                            <td>Seguro de Vida dos Empregados</td><td>R$ {{ number_format($item['2.12.15'], 2,",",".") }}</td>
-                                        </tr>
-                                            <td>PIS sobre folha</td><td>R$ {{ number_format($item['2.12.16'], 2,",",".") }}</td>
-                                        </tr>
+                                            <tr>
+                                                <td colspan="2" style="font-size: 18px;"><b>{{ $recurso['igreja'] }}</b></td>
+                                            </tr>
+                                                @php
+                                                    $total = 0;
+                                                @endphp
+                                                @foreach($recurso['dados'] as $dado)
+                                                @php
+                                                    $total += $dado->valor;
+                                                @endphp
+                                                <tr>
+                                                    <td>{{ $dado->nome }}</td> <td>R$ {{ number_format($dado->valor, 2,",",".") }}</td>
+                                                </tr>
+                                            @endforeach
+                                                <tr>
+                                                    <td><b>Total</b></td> <td><b>R$ {{ number_format($total, 2,",",".") }}</b></td>
+                                                </tr>
                                         @endforeach
                                 </tbody>
                             </table>
@@ -163,7 +151,9 @@
         <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
         <script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
         <script>
-            new DataTable('#cota-orcamentaria', {
+            $.fn.dataTable.ext.errMode = 'none';
+            new DataTable('#rh', {
+                ordering: false,
                 layout: {
                     //top1: 'searchBuilder',
                     topStart: {

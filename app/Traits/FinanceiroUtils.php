@@ -234,103 +234,40 @@ trait FinanceiroUtils
         $ano = $dados['ano'] ? $dados['ano'] : '';
         $mes = $dados['mes'] ? $dados['mes'] : '';
         $tipo = $dados['tipo'];
-        if($ano){
-            $sqlDataMovimento = " AND YEAR(fl.data_movimento) = $ano AND MONTH(fl.data_movimento) = $mes ";
-        }else{
-            $sqlDataMovimento = "";
-        }
-        // if($tipo == 'igreja'){
-        //     $instituicao_id = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
-        //     $cotas = FinanceiroLancamento::
-        //         select(
-        //             DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
-        //                 JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-        //                 WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1 AND fl.deleted_at is null) AS dizimos_ofertas"),
-        //             DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
-        //                 JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-        //                 WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1 AND fl.deleted_at is null)  AS dizimos_pastoral_fiw")
-        //         )
-        //         ->first();
-
-        //         $somaImposto = 0;
-        //         if($ano){
-        //             $prebendasAll = ContabilidadeDados::fetchPrebandasCotaOrcamentaria($dados);                
-        //             foreach($prebendasAll as $item){
-        //                 $prebenda = PessoasPrebenda::where('id', $item->id)->first();
-        //                 $irCalculator =  new ImpostoDeRendaSimplificadoCalculator();
-        //                 $impostoCalculado = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
-        //                 $somaImposto += $impostoCalculado->valorImposto;
-        //             }
-        //         }
-        //     $cotas['irrf_titular'] = $somaImposto;
-        //     return $cotas;
-        // }else if($tipo == 'distrito'){
             $distritoId = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
-            
-            $sql = "SELECT ii_igreja.nome, 
-                (SELECT SUM(valor) FROM financeiro_lancamentos fl
-                        JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                        WHERE fpc.numeracao in ('2.12.07') AND fl.instituicao_id = ii_igreja.id AND conciliado = 1 $sqlDataMovimento AND fl.deleted_at is null AND fl.tipo_lancamento = 'S') AS '2.12.07', 
-                (SELECT SUM(valor) FROM financeiro_lancamentos fl
-                        JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                        WHERE fpc.numeracao in ('2.12.08') AND fl.instituicao_id = ii_igreja.id AND conciliado = 1 $sqlDataMovimento AND fl.deleted_at is null AND fl.tipo_lancamento = 'S') AS '2.12.08', 
-                (SELECT SUM(valor) FROM financeiro_lancamentos fl
-                        JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                        WHERE fpc.numeracao in ('2.12.10') AND fl.instituicao_id = ii_igreja.id AND conciliado = 1 $sqlDataMovimento AND fl.deleted_at is null AND fl.tipo_lancamento = 'S') AS '2.12.10', 
-                (SELECT SUM(valor) FROM financeiro_lancamentos fl
-                        JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                        WHERE fpc.numeracao in ('2.12.11') AND fl.instituicao_id = ii_igreja.id AND conciliado = 1 $sqlDataMovimento AND fl.deleted_at is null AND fl.tipo_lancamento = 'S') AS '2.12.11', 
-                (SELECT SUM(valor) FROM financeiro_lancamentos fl
-                        JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                        WHERE fpc.numeracao in ('2.12.15') AND fl.instituicao_id = ii_igreja.id AND conciliado = 1 $sqlDataMovimento AND fl.deleted_at is null AND fl.tipo_lancamento = 'S') AS '2.12.15', 
-                (SELECT SUM(valor) FROM financeiro_lancamentos fl
-                        JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-                        WHERE fpc.numeracao in ('2.12.16') AND fl.instituicao_id = ii_igreja.id AND conciliado = 1 $sqlDataMovimento AND fl.deleted_at is null AND fl.tipo_lancamento = 'S') AS '2.12.16'
-                        FROM instituicoes_instituicoes ii_distrito
-                JOIN instituicoes_instituicoes ii_igreja ON ii_igreja.instituicao_pai_id = ii_distrito.id
-                WHERE ii_distrito.id = $distritoId  
-                ORDER BY `ii_igreja`.`nome` DESC";
-            try {
-                return collect(DB::select($sql));
-            } catch (\Exception $e) {
-                throw $e;
+            $instituicoes = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')->where('instituicao_pai_id', $distritoId)->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')->get();
+            $igrejas = [];
+            foreach($instituicoes as $instituicao){
+                $instituicao_id = $instituicao->id;
+                $dadosIgrejas = DB::table('financeiro_lancamentos as fl')
+                    ->select(
+                        'fpl.nome',
+                        DB::raw("IFNULL(SUM(fl.valor), 0.0) AS valor")
+                    )
+                    ->join('financeiro_plano_contas as fpl', function ($join) {
+                        $join->on('fpl.id', '=', 'fl.plano_conta_id');
+                    })
+                    ->join('financeiro_plano_contas_categoria as fpcc', function ($join) {
+                        $join->on('fpcc.id', '=', 'fpl.plano_contas_categoria_id');
+                    })
+                    ->join('instituicoes_instituicoes as ii', function ($join) {
+                        $join->on('ii.id', '=', 'fl.instituicao_id');
+                    })
+                    ->join('instituicoes_instituicoes as iip', function ($join) {
+                        $join->on('iip.id', '=', 'ii.instituicao_pai_id');
+                    })
+                    ->where(['fpl.plano_contas_categoria_id' => 4, 'ii.id' => $instituicao_id])
+                    ->whereYear('fl.data_movimento', $ano)
+                    ->whereMonth('fl.data_movimento', $mes)
+                    ->groupBy('iip.nome', 'ii.nome', 'fpl.nome')
+                    ->orderBy('iip.nome')
+                    ->get();
+                    if($dadosIgrejas->count()){
+                        $igrejas[] = ['igreja' => $instituicao->nome, 'dados' => $dadosIgrejas];    
+                    }
             }
-        // }else if($tipo == 'regiao'){
-        //     $regiaoId = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
-        //     $instituicoesDistritos = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')->where(['instituicao_pai_id' => $regiaoId, 'tipo_instituicao_id' => 2])->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')->get();
-        //     foreach($instituicoesDistritos as $distrito){
-        //         $instituicoes = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')->where('instituicao_pai_id', $distrito->id)->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')->get();
-        //         foreach($instituicoes as $instituicao){
-        //             $instituicao_id = $instituicao->id;
-        //             $cotas = FinanceiroLancamento::
-        //                     select(
-        //                         DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
-        //                             JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-        //                             WHERE fpc.numeracao in ('1.01.01', '1.02.01') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1 AND fl.deleted_at is null) AS dizimos_ofertas"),
-        //                         DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
-        //                             JOIN financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
-        //                             WHERE fpc.numeracao in ('2.18.23') AND fl.instituicao_id = $instituicao_id $sqlDataMovimento AND conciliado = 1 AND fl.deleted_at is null)  AS dizimos_pastoral_fiw")
-        //                     )
-        //                     ->first();
-        //                     $somaImposto = 0;
-        //                     if($ano){
-        //                         $prebendasAll = ContabilidadeDados::fetchPrebandasCotaOrcamentaria($dados);                
-        //                         foreach($prebendasAll as $item){
-        //                             $prebenda = PessoasPrebenda::where('id', $item->id)->first();
-        //                             $irCalculator =  new ImpostoDeRendaSimplificadoCalculator();
-        //                             $impostoCalculado = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
-        //                             $somaImposto += $impostoCalculado->valorImposto;
-        //                         }
-        //                     }
-        //             $cotas['distrito_nome'] = $distrito->nome;
-        //             $cotas['instituicao_nome'] = $instituicao->nome;
-        //             $cotas['tipo_instituicao'] = $instituicao->tipo_instituicao;
-        //             $cotas['irrf_titular'] = $somaImposto;
-        //             $cotasTotal['cotas'][] = $cotas;
-        //         }
-        //     }
-        //     return $cotasTotal;
-        // }
+            return $igrejas;
+        
     }
     
 }
