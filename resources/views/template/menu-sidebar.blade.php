@@ -553,6 +553,11 @@
                                 <a href="{{ route('regiao.relatorio.clerigosaniversariantes') }}">Clérigos Aniversariantes</a>
                             @endif
                         </li>
+                        <li {!! Request::is('regiao/relatorio/clerigos-esposas') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-esposas'))
+                                <a href="{{ route('regiao.relatorio.clerigosesposas') }}">Clérigos Esposas</a>
+                            @endif
+                        </li>
                         <li {!! Request::is('regiao/relatorio/clerigos-dados') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('relatorio-clerigos-dados'))
                                 <a href="{{ route('regiao.relatorio.clerigosdados') }}">Clérigos Documentação</a>

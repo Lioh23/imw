@@ -23,6 +23,7 @@ use App\Services\ServiceRegiaoRelatorios\VariacaoFinanceiraService;
 use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoAniversariantes;
 use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoCategorias;
 use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoDados;
+use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoEsposas;
 use App\Services\ServiceRelatorioClerigoPrebendas\ClerigoStatus;
 use App\Traits\Identifiable;
 use Illuminate\Http\Request;
@@ -328,6 +329,12 @@ class RegiaoRelatorioController extends Controller
     {
         $data = app(ClerigoAniversariantes::class)->execute($request->all());
         return view('regiao.relatorios.clerigos-prebendas.clerigos-aniversariantes', $data);
+    }
+
+    public function clerigoEsposa(Request $request)
+    {
+        $data = app(ClerigoEsposas::class)->execute($request->all());
+        return view('regiao.relatorios.clerigos-prebendas.clerigos-esposas', $data);
     }
 
     public function clerigoDados(Request $request)
