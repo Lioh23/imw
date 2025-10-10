@@ -415,6 +415,12 @@
                                      Gênero</a>
                              @endif
                          </li>
+
+                         <li {!! Request::is('distrito/apirantes-por-igrejas') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-relatorio-aspirantes-igrejas'))
+                                 <a href="{{ route('distrito.relatorio.apirateporigreja') }}">Aspirantes por Igreja</a>
+                             @endif
+                         </li>
                          <li class="submenu-fixo mt-3 mb-3">
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-menu-igrejas'))
                                  <span>Igrejas</span>

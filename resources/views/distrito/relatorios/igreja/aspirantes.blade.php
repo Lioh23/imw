@@ -3,8 +3,8 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'Home', 'url' => '/', 'active' => false],
-        ['text' => 'Clérigos', 'url' => '#', 'active' => false],
-        ['text' => 'Esposas', 'url' => '#', 'active' => true],
+        ['text' => 'Igrejas', 'url' => '#', 'active' => false],
+        ['text' => 'Aspirantes', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -38,7 +38,7 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório Esposas Clérigos</h4>
+              <h4>Relatório Aspirantes por Igrejas</h4>
           </div>
       </div>
   </div>
@@ -52,18 +52,26 @@
             <thead>
                 <tr>
                     <th>NOME</th>
-                    <th>ESPOSA</th>
-                    <th>TELEFONE</th>
+                    <th>SEXO</th>
+                    <th>ESTADO CIVIL</th>
+                    <th>CPF</th>
+                    <th>NASCIMENTO</th>
+                    <th>CONTATO</th>
+                    <th>E-MAIL</th>
                     <th>INSTITUIÇÃO</th>
                 </tr>
             </thead>
             <tbody>
-                @forelse ($esposas as $membro)
+                @forelse ($aspirantes as $membro)
                   <tr>
-                      <td>{{ $membro->nome }}</td>
-                      <td>{{ $membro->nome_esposa }}</td>
+                      <td>{{ $membro->membro_nome }}</td>
+                      <td>{{ $membro->sexo }}</td>
+                      <td>{{ $membro->estado_civil }}</td>
+                      <td>{{ formatStr($membro->cpf, '###.###.###-##') }}</td>
+                      <td>{{ $membro->data_nascimento }}</td>
                       <td>{{ formatStr($membro->contato, '## (##) #####-####') }}</td>
-                      <td>{{ $membro->igreja }}</td>
+                      <td>{{ $membro->email }}</td>
+                      <td>{{ $membro->igreja_nome }}</td>
                       
                   </tr>
                 @empty
@@ -108,14 +116,14 @@
                   className: 'btn btn-primary btn-rounded',
                   text: '<i class="fas fa-file-excel"></i> Excel',
                   titleAttr: 'Excel',
-                  title: "IMW - RELATÓRIO ESPOSAS - CLÉRIGOS"
+                  title: "IMW - RELATÓRIO ASPIRANTES POR IGREJAS"
                 },
                 {
                     extend: 'pdfHtml5',
                     className: 'btn btn-primary btn-rounded',
                     text: '<i class="fas fa-file-pdf"></i> PDF',
                     titleAttr: 'PDF',
-                    title: `IMW - RELATÓRIO ESPOSAS - CLÉRIGOS`,
+                    title: `IMW - RELATÓRIO ASPIRANTES POR IGREJAS`,
                     customize: function (doc) {
                         doc.content.splice(0,1);
                         var now = new Date();
@@ -135,7 +143,7 @@
                                     {
                                         alignment: 'center',
                                         italics: false,
-                                        text: `IMW - RELATÓRIO ESPOSAS - CLÉRIGOS`,
+                                        text: `IMW - RELATÓRIO ASPIRANTES POR IGREJAS`,
                                         fontSize: 14,
                                         //margin: [10,0]
                                     },

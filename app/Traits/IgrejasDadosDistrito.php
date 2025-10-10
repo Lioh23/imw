@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use App\Services\ServiceIgrejas\Igrejas;
 use Illuminate\Support\Facades\DB;
 
 use function PHPUnit\Framework\isNull;

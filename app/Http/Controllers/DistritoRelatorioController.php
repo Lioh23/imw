@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\ServiceDistritoRelatorios\AspirantesIgrejasService;
 use App\Services\ServiceDistritoRelatorios\EstatisticaGeneroService;
 use App\Services\ServiceDistritoRelatorios\IgrejasService;
 use App\Services\ServiceDistritoRelatorios\LancamentoIgrejasService;
@@ -197,5 +198,10 @@ class DistritoRelatorioController extends Controller
     public function CongregacaoPorIgreja(Request $request){
         $data = app(IgrejasService::class)->execute($request->all());
         return view('distrito.relatorios.igreja.congregacoes-por-igreja', $data);
+    }
+
+    public function AspirantePorIgreja(Request $request){
+        $data = app(AspirantesIgrejasService::class)->execute($request->all());
+        return view('distrito.relatorios.igreja.aspirantes', $data);
     }
 }

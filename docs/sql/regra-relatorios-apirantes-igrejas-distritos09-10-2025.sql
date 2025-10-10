@@ -1,0 +1,2 @@
+INSERT INTO `regras` (`id`, `nome`, `created_at`, `updated_at`, `deleted_at`) VALUES (NULL, 'distrito-relatorio-aspirantes-igrejas', '2025-10-09 21:17:04', '2025-10-09 21:17:04', NULL);
+INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '2', '153', '2025-10-09 21:18:04', '2025-10-09 21:18:04');
