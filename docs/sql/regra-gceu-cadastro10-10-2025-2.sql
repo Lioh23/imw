@@ -1,0 +1,5 @@
+INSERT INTO `regras` (`id`, `nome`, `created_at`, `updated_at`, `deleted_at`) VALUES (NULL, 'gceu-cadastro', '2025-10-10 20:26:04', '2025-10-10 20:26:04', NULL);
+INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '1', '155', '2025-10-10 20:27:04', '2025-10-10 20:27:04');
+INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '6', '155', '2025-10-10 20:27:04', '2025-10-10 20:27:04');
+INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '7', '155', '2025-10-10 20:27:04', '2025-10-10 20:27:04');
+INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '4', '155', '2025-10-10 20:27:04', '2025-10-10 20:27:04');

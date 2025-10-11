@@ -13,6 +13,7 @@ use App\Http\Controllers\FinanceiroController;
 use App\Http\Controllers\FinanceiroPlanoContaController;
 use App\Http\Controllers\FinanceiroRelatorioController;
 use App\Http\Controllers\FornecedorController;
+use App\Http\Controllers\GceuController;
 use App\Http\Controllers\HandleInstituicoesController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\IgrejasController;
@@ -378,6 +379,17 @@ Route::middleware(['auth'])->group(function () {
             Route::get('movimento-diario-pdf/{igreja}', 'movimentoDiarioPdf')->name('movimento-diario-pdf');
             Route::get('livrorazao/{igreja}', 'livrorazao')->name('livrorazao');
             Route::get('livrorazao-pdf/{igreja}', 'livroRazaoPdf')->name('livrorazao-pdf');
+        });
+
+        // Crud GCEU
+        Route::prefix('gceu')->name('gceu.')->group(function () {
+            Route::get('/cadastro', [GceuController::class, 'index'])->name('index')->middleware(['seguranca:gceu-index']);
+            // Route::get('list', [VisitantesController::class, 'list'])->name('list')->middleware(['seguranca:visitantes-index']);
+            Route::get('/novo', [GceuController::class, 'novo'])->name('novo')->middleware(['seguranca:gceu-cadastro']);
+            // Route::post('/salvar', [VisitantesController::class, 'store'])->name('store')->middleware(['seguranca:visitantes-cadastrar']);
+            // Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar')->middleware(['seguranca:visitantes-atualizar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
+            // Route::post('/visitante/{id}', [VisitantesController::class, 'update'])->name('update')->middleware(['seguranca:visitantes-atualizar']);
+            // Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar')->middleware(['seguranca:visitantes-excluir']);
         });
 
         /* Por enquanto somente visualiações */

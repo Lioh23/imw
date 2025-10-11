@@ -894,6 +894,43 @@
                  </li>
              @endif
 
+              @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu'))
+                 <li class="menu">
+                     <a href="#gceu" data-toggle="collapse" aria-expanded="{{Request::is('gceu/*') ? 'true' : 'false' }}" class="dropdown-toggle">
+                         <div class="">
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-grid">
+                                 <rect x="3" y="3" width="7" height="7"></rect>
+                                 <rect x="14" y="3" width="7" height="7"></rect>
+                                 <rect x="14" y="14" width="7" height="7"></rect>
+                                 <rect x="3" y="14" width="7" height="7"></rect>
+                             </svg>
+                             <span>GCEU</span>
+                         </div>
+                         <div>
+                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
+                                 stroke-linejoin="round" class="feather feather-chevron-right">
+                                 <polyline points="9 18 15 12 9 6"></polyline>
+                             </svg>
+                         </div>
+                     </a>
+                     <ul class="collapse submenu list-unstyled {{ Request::is('gceu/*') ? 'collapse show' : '' }}" id="gceu" data-parent="#gceu">
+                         <li {!! Request::is('gceu/cadastro') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-index'))
+                                 <a href="{{ route('gceu.index') }}">Cadastro</a>
+                             @endif
+                         </li>
+                         <li {!! Request::is('gceu/novo') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-cadastro'))
+                                 <a href="{{ route('gceu.novo') }}">Novo</a>
+                             @endif
+                         </li>
+                     </ul>
+                 </li>
+             @endif
+
              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-gestao-igrejas'))
                  <li class="menu {{ Request::is('igreja', 'igreja/*') ? 'active' : '' }}">
                      <a href="/igreja" aria-expanded="false" class="dropdown-toggle">
