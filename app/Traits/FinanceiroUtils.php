@@ -159,6 +159,7 @@ trait FinanceiroUtils
                     }
                 }
             $cotas['irrf_titular'] = $somaImposto;
+            unset($somaImposto);
             return $cotas;
         }else if($tipo == 'distrito'){
             $distritoId = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
@@ -189,6 +190,8 @@ trait FinanceiroUtils
                 $cotas['tipo_instituicao'] = $instituicao->tipo_instituicao;
                 $cotas['irrf_titular'] = $somaImposto;
                 $cotasTotal['cotas'][] = $cotas;
+                unset($somaImposto);
+                unset($cotas);
             }
             return $cotasTotal;
         }else if($tipo == 'regiao'){
@@ -223,6 +226,9 @@ trait FinanceiroUtils
                     $cotas['tipo_instituicao'] = $instituicao->tipo_instituicao;
                     $cotas['irrf_titular'] = $somaImposto;
                     $cotasTotal['cotas'][] = $cotas;
+
+                    unset($somaImposto);
+                    unset($cotas);
                 }
             }
             return $cotasTotal;
