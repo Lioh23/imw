@@ -1,8 +1,7 @@
 @extends('template.layout')
 @section('breadcrumb')
 <x-breadcrumb :breadcrumbs="[
-    ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Visitantes', 'url' => '/secretaria/visitante/', 'active' => false],
+    ['text' => 'GCEU', 'url' => '/gceu', 'active' => false],
     ['text' => 'Novo', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
@@ -21,8 +20,15 @@
             <form class="form-vertical" action="{{ route('visitante.store') }}" id="form_create_visitantes" method="post">
                 @csrf
                 <div class="row">
-                    <div class="form-group mb-4 col-12">
+                    <div class="form-group mb-4 col-6">
                         <label class="control-label">* Nome</label>
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror"  minlength="4" value="{{ old('nome') }}" maxlength="100">
+                        @error('nome')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-4 col-6">
+                        <label class="control-label">* Anfitrião</label>
                         <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror"  minlength="4" value="{{ old('nome') }}" maxlength="100">
                         @error('nome')
                             <div class="invalid-feedback">{{ $message }}</div>
