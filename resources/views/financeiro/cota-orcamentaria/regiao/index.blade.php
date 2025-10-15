@@ -65,7 +65,9 @@
                                         </select>
                                         <select class="form-control " id="mes" name="mes" required="">
                                             @foreach($meses as $mes)
-                                                <option value="{{ $mes->id }}" {{ request()->input('mes') == zeroEsqueda($mes->id) ? 'selected' : '' }}>{{ $mes->descricao }}</option>
+                                                @if($mes->id != 13)
+                                                    <option value="{{ $mes->id }}" {{ request()->input('mes') == zeroEsqueda($mes->id) ? 'selected' : '' }}>{{ $mes->descricao }}</option>
+                                                @endif
                                             @endforeach
                                         </select>
                                     @else

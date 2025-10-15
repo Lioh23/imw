@@ -166,6 +166,7 @@ trait FinanceiroUtils
             $instituicoes = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')->where('instituicao_pai_id', $distritoId)->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')->get();
             foreach($instituicoes as $instituicao){
                 $instituicao_id = $instituicao->id;
+                $dados['instituicao_id'] = $instituicao_id;
                 $cotas = FinanceiroLancamento::
                         select(
                             DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
@@ -178,7 +179,7 @@ trait FinanceiroUtils
                         ->first();
                         $somaImposto = 0;
                         if($ano){
-                            $prebendasAll = ContabilidadeDados::fetchPrebandasCotaOrcamentaria($dados);                
+                            $prebendasAll = ContabilidadeDados::fetchPrebandasCotaOrcamentaria($dados);     
                             foreach($prebendasAll as $item){
                                 $prebenda = PessoasPrebenda::where('id', $item->id)->first();
                                 $irCalculator =  new ImpostoDeRendaSimplificadoCalculator();
@@ -201,6 +202,7 @@ trait FinanceiroUtils
                 $instituicoes = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')->where('instituicao_pai_id', $distrito->id)->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')->get();
                 foreach($instituicoes as $instituicao){
                     $instituicao_id = $instituicao->id;
+                    $dados['instituicao_id'] = $instituicao_id;
                     $cotas = FinanceiroLancamento::
                             select(
                                 DB::raw("(SELECT SUM(valor) FROM financeiro_lancamentos fl
