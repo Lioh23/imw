@@ -2,14 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreVisitanteRequest;
+use App\DataTables\GCeuDatatable;
 use App\Http\Requests\UpdateVisitanteRequest;
 use App\Rules\ValidDateOfBirth;
-use App\DataTables\VisitantesDatatable;
+use App\Http\Requests\StoreGCeuRequest;
+use App\Models\GCeu;
+use App\Services\ServiceGCeu\StoreGCeuService;
 use App\Services\ServiceVisitantes\DeletarVisitanteService;
 use App\Services\ServiceVisitantes\EditarVisitanteService;
 use App\Services\ServiceVisitantes\IdentificaDadosIndexService;
-use App\Services\ServiceVisitantes\StoreVisitanteService;
 use App\Traits\Identifiable;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -21,13 +22,14 @@ class GceuController extends Controller
     public function index(Request $request)
     {
         $data = app(IdentificaDadosIndexService::class)->execute($request->all());
+
         return view('gceu.index', $data);
     }
 
     public function list(Request $request)
     {
         try {
-            return app(VisitantesDatatable::class)->execute($request->all());
+            return app(GCeuDatatable::class)->execute($request->all());
         } catch (\Exception $e) {
             return response()->json(['error' => 'erro ao carregar os dados dos visitantes'], 500);
         }
@@ -58,6 +60,7 @@ class GceuController extends Controller
 
     public function deletar($id)
     {
+        $congregacoes = Identifiable::fetchCongregacoes();
         try {
             app(DeletarVisitanteService::class)->execute($id);
             return redirect()->route('visitante.index')->with('success', 'Visitante deletado com sucesso.');
@@ -75,16 +78,16 @@ class GceuController extends Controller
         }
     }
 
-    public function store(StoreVisitanteRequest $request)
+    public function store(StoreGCeuRequest $request)
     {
         try {
             DB::beginTransaction();
-            app(StoreVisitanteService::class)->execute($request->all());
+            app(StoreGCeuService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('visitante.index')->with('success', 'Visitante cadastrado com sucesso.');
+            return redirect()->route('gceu.index')->with('success', 'GCEU cadastrado com sucesso.');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->route('visitante.index')->with('error', $e->getMessage());
+            return redirect()->route('gceu.index')->with('error', $e->getMessage());
         }
     }
 }

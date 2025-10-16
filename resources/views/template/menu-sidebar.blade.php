@@ -895,7 +895,7 @@
              @endif
 
               @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu'))
-                 <!-- <li class="menu">
+                 <li class="menu">
                      <a href="#gceu" data-toggle="collapse" aria-expanded="{{Request::is('gceu/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                          <div class="">
                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -928,7 +928,7 @@
                              @endif
                          </li>
                      </ul>
-                 </li> -->
+                 </li>
              @endif
 
              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-gestao-igrejas'))

@@ -1,5 +1,29 @@
-INSERT INTO `regras` (`id`, `nome`, `created_at`, `updated_at`, `deleted_at`) VALUES (NULL, 'gceu', '2025-10-10 19:35:04', '2025-10-10 19:35:04', NULL);
-INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '1', '154', '2025-10-10 19:49:04', '2025-10-10 19:49:04');
-INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '7', '154', '2025-10-10 19:49:04', '2025-10-10 19:49:04');
-INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '4', '154', '2025-10-10 19:49:04', '2025-10-10 19:49:04');
-INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '6', '154', '2025-10-10 19:49:04', '2025-10-10 19:49:04');
+INSERT INTO `regras` (`id`, `nome`, `created_at`, `updated_at`, `deleted_at`) VALUES (NULL, 'gceu', current_timestamp(), current_timestamp(), NULL);
+
+INSERT INTO perfil_regra (id, perfil_id, regra_id, created_at, updated_at)
+SELECT NULL, '1', r.id, current_timestamp(), current_timestamp()
+FROM regras r
+WHERE r.nome = 'gceu'
+ORDER BY r.id DESC
+LIMIT 1;
+
+INSERT INTO perfil_regra (id, perfil_id, regra_id, created_at, updated_at)
+SELECT NULL, '7', r.id, current_timestamp(), current_timestamp()
+FROM regras r
+WHERE r.nome = 'gceu'
+ORDER BY r.id DESC
+LIMIT 1;
+
+INSERT INTO perfil_regra (id, perfil_id, regra_id, created_at, updated_at)
+SELECT NULL, '4', r.id, current_timestamp(), current_timestamp()
+FROM regras r
+WHERE r.nome = 'gceu'
+ORDER BY r.id DESC
+LIMIT 1;
+
+INSERT INTO perfil_regra (id, perfil_id, regra_id, created_at, updated_at)
+SELECT NULL, '6', r.id, current_timestamp(), current_timestamp()
+FROM regras r
+WHERE r.nome = 'gceu'
+ORDER BY r.id DESC
+LIMIT 1;

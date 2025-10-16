@@ -384,12 +384,12 @@ Route::middleware(['auth'])->group(function () {
         // Crud GCEU
         Route::prefix('gceu')->name('gceu.')->group(function () {
             Route::get('/cadastro', [GceuController::class, 'index'])->name('index')->middleware(['seguranca:gceu-index']);
-            // Route::get('list', [VisitantesController::class, 'list'])->name('list')->middleware(['seguranca:visitantes-index']);
+            Route::get('list', [GceuController::class, 'list'])->name('list')->middleware(['seguranca:gceu-index']);
             Route::get('/novo', [GceuController::class, 'novo'])->name('novo')->middleware(['seguranca:gceu-cadastro']);
-            // Route::post('/salvar', [VisitantesController::class, 'store'])->name('store')->middleware(['seguranca:visitantes-cadastrar']);
-            // Route::get('/editar/{id}', [VisitantesController::class, 'editar'])->name('editar')->middleware(['seguranca:visitantes-atualizar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
+            Route::post('/salvar', [GceuController::class, 'store'])->name('store')->middleware(['seguranca:gceu-cadastrar']);
+            Route::get('/editar/{id}', [GceuController::class, 'editar'])->name('editar')->middleware(['seguranca:gceu-atualizar'])->can('checkSameChurch', [\App\Models\MembresiaMembro::class, 'id']);
             // Route::post('/visitante/{id}', [VisitantesController::class, 'update'])->name('update')->middleware(['seguranca:visitantes-atualizar']);
-            // Route::post('/deletar/{id}', [VisitantesController::class, 'deletar'])->name('deletar')->middleware(['seguranca:visitantes-excluir']);
+            Route::post('/deletar/{id}', [GceuController::class, 'deletar'])->name('deletar')->middleware(['seguranca:gceu-excluir']);
         });
 
         /* Por enquanto somente visualiações */

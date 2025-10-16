@@ -90,13 +90,14 @@
 
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover mb-4" id="datatable"
-                        data-url="{{ route('visitante.list') }}">
+                        data-url="{{ route('gceu.list') }}">
                         <thead>
                             <tr>
-                                <th>NOME</th>
-                                <th>TELEFONE</th>
-                                <th>E-MAIL</th>
-                                <th>ATUALIZADO EM</th>
+                                <th>NOME GCEU</th>
+                                <th>ANFITRIÃO</th>
+                                <th>CONTATO</th>
+                                <th>IGREJA</th>
+                                <th>CRIADO EM</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -119,5 +120,5 @@
     <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
     <script src="{{ asset('custom/js/imw_datatables.js') }}?time={{ time() }}"></script>
-    <script src="{{ asset('visitantes/js/index.js') }}?time={{ time() }}"></script>
+    <script src="{{ asset('gceu/js/index.js') }}?time={{ time() }}"></script>
 @endsection

@@ -17,88 +17,43 @@
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            <form class="form-vertical" action="{{ route('visitante.store') }}" id="form_create_visitantes" method="post">
+            <form class="form-vertical" action="{{ route('gceu.store') }}" id="form_create_gceu" method="post">
                 @csrf
                 <div class="row">
                     <div class="form-group mb-4 col-6">
-                        <label class="control-label">* Nome</label>
-                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror"  minlength="4" value="{{ old('nome') }}" maxlength="100">
+                        <label class="control-label" for="nome">* Nome do GCEU</label>
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror" id="nome" required placeholder="Nome do GCEU" minlength="4" value="{{ old('nome') }}" maxlength="150">
                         @error('nome')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-6">
-                        <label class="control-label">* Anfitrião</label>
-                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror"  minlength="4" value="{{ old('nome') }}" maxlength="100">
-                        @error('nome')
+                        <label class="control-label" for="anfitriao">* Anfitrião</label>
+                        <input type="text" name="anfitriao" id="anfitriao" class="form-control @error('anfitriao') is-invalid @enderror" placeholder="Nome do Anfitrião" minlength="4" value="{{ old('anfitriao') }}" required maxlength="100">
+                        @error('anfitriao')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
                 <div class="row">
-                    <!-- <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">* Sexo</label>
-                        <select name="sexo" class="form-control @error('sexo') is-invalid @enderror" >
-                            <option value="" {{ old('sexo') == '' ? 'selected' : '' }}>Selecione</option>
-                            <option value="M" {{ old('sexo') == 'M' ? 'selected' : '' }}>Masculino</option>
-                            <option value="F" {{ old('sexo') == 'F' ? 'selected' : '' }}>Feminino</option>
-                        </select>
-                        @error('sexo')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div> -->
-                    <!-- <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Data de Nascimento</label>
-                        <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento') }}" placeholder="ex: 31/12/2000">
-                        @error('data_nascimento')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div> -->
-                    <!-- <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Data de Conversão</label>
-                        <input type="date" class="form-control @error('data_conversao') is-invalid @enderror" id="data_conversao" name="data_conversao" value="{{ old('data_conversao') }}" placeholder="ex: 31/12/2000">
-                        @error('data_conversao')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div> -->
-                </div>
-                <div class="row">
-                    <!-- <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Telefone Alternativo</label>
-                        <input id="telefone_alternativo" name="telefone_alternativo" type="text" class="form-control @error('telefone_alternativo') is-invalid @enderror" placeholder="ex: (00) 0000-0000" value="{{ old('telefone_alternativo') }}">
-                        @error('telefone_alternativo')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div> -->
-                    <!-- div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Whatsapp</label>
-                        <input id="telefone_whatsapp" name="telefone_whatsapp" type="text" class="form-control @error('telefone_whatsapp') is-invalid @enderror" placeholder="ex: (00) 00000-0000" value="{{ old('telefone_whatsapp') }}">
-                        @error('telefone_whatsapp')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div> -->
-                </div>
-                <div class="row">
-                    <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">E-mail</label>
-                        <input id="email_preferencial" name="email_preferencial" type="email" class="form-control @error('email_preferencial') is-invalid @enderror" value="{{ old('email_preferencial') }}" maxlength="100">
-                        @error('email_preferencial')
+                    <div class="form-group mb-4 col-md-5">
+                        <label class="control-label" for="email">E-mail</label>
+                        <input id="email" name="email" type="email" placeholder="E-mail" class="form-control @error('email') is-invalid @enderror" value="{{ old('email') }}" maxlength="100">
+                        @error('email')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
 
-                    <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">Telefone</label>
-                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="ex: +55 (00) 0000-0000" value="{{ old('telefone_preferencial') }}">
-                        @error('telefone_preferencial')
+                    <div class="form-group mb-4 col-md-3">
+                        <label class="control-label" for="contato">* Contato</label>
+                        <input id="contato" name="contato" type="text" class="form-control @error('contato') is-invalid @enderror" required placeholder="(00) 0000-0000" value="{{ old('contato') }}">
+                        @error('contato')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
-                <div class="row">
-                    <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">Congregação</label>
-                        <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" >
+                    <div class="form-group mb-4 col-md-4">
+                        <label class="control-label">* Congregação</label>
+                        <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" required>
                             <option value="" {{ old('congregacao_id') == '' ? 'selected' : '' }}>Selecione</option>
                             @foreach ($congregacoes as $congregacao)
                                 <option value="{{ $congregacao->id }}" {{ old('congregacao_id') == $congregacao->id ? 'selected' : '' }}>{{ $congregacao->nome }}</option>
@@ -108,48 +63,50 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                         <h4>Endereço GCEU</h4>
                     </div>
                     <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">CEP</label>
-                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="00.000-000" value="{{ old('telefone_preferencial') }}">
-                        @error('telefone_preferencial')
+                        <label class="control-label">* CEP</label>
+                        <input id="cep" name="cep" type="text" class="form-control @error('cep') is-invalid @enderror" placeholder="00000-000" value="{{ old('cep') }}" required>
+                        @error('cep')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-6 col-md-6">
-                        <label class="control-label">Rua</label>
-                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="Rua" value="{{ old('telefone_preferencial') }}">
-                        @error('telefone_preferencial')
+                        <label class="control-label">Endereco</label>
+                        <input id="endereco" name="endereco" type="text" class="form-control @error('rua') is-invalid @enderror" placeholder="Endereco" value="{{ old('endereco') }}">
+                        @error('endereco')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-2 col-md-2">
                         <label class="control-label">Número</label>
-                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="Nº" value="{{ old('telefone_preferencial') }}">
-                        @error('telefone_preferencial')
+                        <input id="numero" name="numero" type="text" class="form-control @error('numero') is-invalid @enderror" placeholder="Nº" value="{{ old('numero') }}">
+                        @error('numero')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Bairro</label>
-                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="Bairro" value="{{ old('telefone_preferencial') }}">
-                        @error('telefone_preferencial')
+                        <input id="bairro" name="bairro" type="text" class="form-control @error('bairro') is-invalid @enderror" placeholder="Bairro" value="{{ old('bairro') }}">
+                        @error('bairro')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Cidade</label>
-                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="Cidade" value="{{ old('telefone_preferencial') }}">
-                        @error('telefone_preferencial')
+                        <input id="cidade" name="cidade" type="text" class="form-control @error('cidade') is-invalid @enderror" placeholder="Cidade" value="{{ old('cidade') }}">
+                        @error('cidade')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Estado</label>
-                        <input id="telefone_preferencial" name="telefone_preferencial" type="text" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="Estado" value="{{ old('telefone_preferencial') }}">
-                        @error('telefone_preferencial')
+                        <input id="estado" name="estado" type="text" class="form-control @error('estado') is-invalid @enderror" placeholder="Estado" value="{{ old('estado') }}">
+                        @error('estado')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
@@ -163,5 +120,35 @@
 @endsection
 
 @section('extras-scripts')
-<script src="{{ asset('visitantes/js/create.js') }}?t={{ time() }}"></script>
+<script>
+    $(document).ready(function() {
+        $('#contato').mask('(00) 00000-0000');
+        $('#cep').mask('000000-00');
+    });
+    $('#cep').blur(function() {
+        var cep = $(this).val().replace(/\D/g, '');
+        if (cep.length != 8) {
+            return;
+        }
+        $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data) {
+            if (!("erro" in data)) {
+                $('#endereco').val(data.logradouro);
+                $('#bairro').val(data.bairro);
+                $('#cidade').val(data.localidade);
+                $('#estado').val(data.uf);
+            } else {
+                toastr.warning('CEP não encontrado.');
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        Inputmask("999.999.999-99").mask(document.getElementById("cpf"));
+        Inputmask("99999-999").mask(document.getElementById("cep"));
+        Inputmask("(99) 99999-9999").mask(document.getElementById("contato"));
+        Inputmask("(99) 99999-9999").mask(document.getElementById("telefone_alternativo"));
+        Inputmask("9999 9999 9999").mask(document.getElementById("titulo_eleitor"));
+        Inputmask("99.999.999-9").mask(document.getElementById("identidade"));
+    });
+</script>
 @endsection

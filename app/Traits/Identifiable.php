@@ -106,7 +106,6 @@ trait Identifiable
     public static function fetchCongregacoes($unlessCongregacaoId = null)
     {
         $igrejaId = optional(session()->get('session_perfil')->instituicoes->igrejaLocal)->id;
-
         return CongregacoesCongregacao::when((bool) $igrejaId, function ($query) use ($igrejaId) {
             $query->where('instituicao_id', $igrejaId);
         })
