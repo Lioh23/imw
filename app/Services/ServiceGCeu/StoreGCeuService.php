@@ -24,7 +24,8 @@ class StoreGCeuService
             'numero' => $data['numero'],
             'bairro' => $data['bairro'],
             'cidade' => $data['cidade'],
-            'estado' => $data['estado'],
+            'uf' => $data['estado'],
+            'data_de_criacao' => date('Y-m-d')
         ];
 
         $membroId = $this->handleStoreGCeu($dataMembro);
