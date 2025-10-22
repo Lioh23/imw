@@ -10,6 +10,10 @@ class GCeu extends Model
 {
     use HasFactory, SoftDeletes;
 
+     // status
+    const STATUS_ATIVO = 'A';
+    const STATUS_INATIVO = 'I';
+
     protected $table = 'gceu_cadastros';
     protected $guarded = [];
 }

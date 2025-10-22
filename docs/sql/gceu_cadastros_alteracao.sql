@@ -1,0 +1,1 @@
+ALTER TABLE `gceu_cadastros` ADD `status` VARCHAR(1) NOT NULL DEFAULT 'A' AFTER `uf`;

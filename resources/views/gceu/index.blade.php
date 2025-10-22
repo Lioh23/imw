@@ -106,7 +106,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" tabindex="-1" id="visualizarVisitantesModal" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="visualizarGCEUModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content loadable">
                 <div class="modal-body" style="min-height: 200px"></div>

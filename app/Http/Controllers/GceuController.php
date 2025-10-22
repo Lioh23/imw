@@ -6,8 +6,13 @@ use App\DataTables\GCeuDatatable;
 use App\Http\Requests\UpdateVisitanteRequest;
 use App\Rules\ValidDateOfBirth;
 use App\Http\Requests\StoreGCeuRequest;
+use App\Http\Requests\UpdateGCeuRequest;
 use App\Models\GCeu;
+use App\Models\MembresiaMembro;
+use App\Services\ServiceGCeu\DeletarGCeuService;
+use App\Services\ServiceGCeu\EditarGCeuService;
 use App\Services\ServiceGCeu\StoreGCeuService;
+use App\Services\ServiceGCeu\VisualizarGCeuService;
 use App\Services\ServiceVisitantes\DeletarVisitanteService;
 use App\Services\ServiceVisitantes\EditarVisitanteService;
 use App\Services\ServiceVisitantes\IdentificaDadosIndexService;
@@ -31,41 +36,42 @@ class GceuController extends Controller
         try {
             return app(GCeuDatatable::class)->execute($request->all());
         } catch (\Exception $e) {
-            return response()->json(['error' => 'erro ao carregar os dados dos visitantes'], 500);
-        }
-    }
-
-    public function update(UpdateVisitanteRequest $request, $id)
-    {
-        try {
-            DB::beginTransaction();
-            app(EditarVisitanteService::class)->execute($id, $request->all());
-            DB::commit();
-            return redirect()->route('visitante.editar', ['id' => $id])->with('success', 'Visitante atualizado com sucesso.');
-        } catch (\Exception $e) {
-            DB::rollback();
-            return redirect()->route('visitante.editar', ['id' => $id])->with('error', 'Falha ao atualizar o visitante.');
+            return response()->json(['error' => 'erro ao carregar os dados GCEU'], 500);
         }
     }
 
     public function editar($id)
     {
-        $visitante = app(EditarVisitanteService::class)->findOne($id);
+        $gceu = app(EditarGCeuService::class)->findOne($id);
         $congregacoes = Identifiable::fetchCongregacoes();
-        if (!$visitante) {
-            return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
+        if (!$gceu) {
+            return redirect()->route('gceu.index')->with('error', 'GCEU não encontrado.');
         }
-        return view('visitantes.editar', compact('visitante', 'congregacoes'));
+        return view('gceu.editar', compact('gceu', 'congregacoes'));
+    }
+
+    public function update(UpdateGCeuRequest $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            app(EditarGCeuService::class)->execute($id, $request->all());
+            DB::commit();
+            return redirect()->route('gceu.editar', ['id' => $id])->with('success', 'GCEU atualizado com sucesso.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return redirect()->route('gceu.editar', ['id' => $id])->with('error', 'Falha ao atualizar o GCEU.');
+        }
     }
 
     public function deletar($id)
     {
         $congregacoes = Identifiable::fetchCongregacoes();
         try {
-            app(DeletarVisitanteService::class)->execute($id);
-            return redirect()->route('visitante.index')->with('success', 'Visitante deletado com sucesso.');
+            app(DeletarGCeuService::class)->execute($id);
+            return redirect()->route('gceu.index')->with('success', 'GCEU deletado com sucesso.');
         } catch (\Exception $e) {
-            return back()->with('error', 'Falha ao deletar o visitante.');
+            return back()->with('error', 'Falha ao deletar o GCEU.');
         }
     }
 
@@ -89,5 +95,14 @@ class GceuController extends Controller
             DB::rollback();
             return redirect()->route('gceu.index')->with('error', $e->getMessage());
         }
+    }
+
+    public function visualizarHtml($id)
+    {
+        $gceu = app(VisualizarGCeuService::class)->findOne($id);
+        if (!$gceu) {
+            return redirect()->route('gceu.index')->with('error', 'GCEU não encontrado.');
+        }
+        return view('gceu.visualizar', ['gceu' =>  $gceu]);
     }
 }

@@ -917,7 +917,7 @@
                          </div>
                      </a>
                      <ul class="collapse submenu list-unstyled {{ Request::is('gceu/*') ? 'collapse show' : '' }}" id="gceu" data-parent="#gceu">
-                         <li {!! Request::is('gceu/cadastro') ? 'class="active"' : '' !!}>
+                         <li {!! Request::is('gceu/lista') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-lista'))
                                  <a href="{{ route('gceu.index') }}">Lista</a>
                              @endif

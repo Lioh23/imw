@@ -11,7 +11,6 @@ class MembresiaGeralController extends Controller
     {
         // Inclui registros que foram soft deleted
         $membro = MembresiaMembro::withTrashed()->findOrFail($id);
-
         return view('membresiaGeral.visualizar', ['membro' => $membro]);
     }
 }

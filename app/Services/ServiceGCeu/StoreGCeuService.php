@@ -12,7 +12,7 @@ class StoreGCeuService
     public function execute(array $data): void
     {
         $contato = preg_replace('/[^0-9]/', '', $data['contato']);
-        $dataMembro = [
+        $dataGCeu = [
             'nome' => $data['nome'],
             'anfitriao' => $data['anfitriao'],
             'email' => $data['email'],
@@ -28,11 +28,11 @@ class StoreGCeuService
             'data_de_criacao' => date('Y-m-d')
         ];
 
-        $membroId = $this->handleStoreGCeu($dataMembro);
+        $gceuId = $this->handleStoreGCeu($dataGCeu);
     }
 
-    private function handleStoreGCeu($data)
+    private function handleStoreGCeu($dataGCeu)
     {
-        $membro = GCeu::create($data);
+        $gceu = GCeu::create($dataGCeu);
     }
 }

@@ -4,18 +4,18 @@
 namespace App\Services\ServiceGCeu;
 
 use App\Exceptions\DeleteMembroException;
-use App\Models\MembresiaMembro;
+use App\Models\GCeu;
 use Illuminate\Support\Facades\DB;
 
 class DeletarGCeuService
 {
-    public function execute($membroId): void
+    public function execute($gceuId): void
     {
         try {
             DB::beginTransaction();
-            $membro = MembresiaMembro::findOrFail($membroId);
-            $membro->update(['status' => MembresiaMembro::STATUS_INATIVO]);
-            $membro->delete(); 
+            $gceu = GCeu::findOrFail($gceuId);
+            $gceu->update(['status' => GCeu::STATUS_INATIVO, 'deleted_at' => date('Y-m-d H:m:s')]);
+            $gceu->delete(); 
             DB::commit();
         } catch(\Exception $e) {
             throw new DeleteMembroException();

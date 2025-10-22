@@ -2,8 +2,7 @@
 
 @section('breadcrumb')
 <x-breadcrumb :breadcrumbs="[
-    ['text' => 'Secretaria', 'url' => '/', 'active' => false],
-    ['text' => 'Visitantes', 'url' => '/secretaria/visitante/', 'active' => false],
+    ['text' => 'GCEU', 'url' => '/gceu/lista', 'active' => false],
     ['text' => 'Editar', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
@@ -16,94 +15,52 @@
         <div class="widget-header">
             <div class="row">
                 <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                    <h4>Editar Visitante</h4>
+                    <h4>Editar GCEU</h4>
                 </div>
             </div>
         </div>
         <div class="widget-content widget-content-area">
-            @if($visitante)
-            <form class="form-vertical" action="{{ route('visitante.update', $visitante->membro_id ?? '') }}" method="POST">
+            @if($gceu)
+            <form class="form-vertical" action="{{ route('gceu.update',$gceu->id) }}" id="form_create_gceu" method="post">
                 @csrf
                 <div class="row">
-                    <div class="form-group mb-4 col-12">
-                        <label class="control-label">* Nome</label>
-                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror" minlength="4" value="{{ old('nome', $visitante->nome ?? '') }}" maxlength="100">
+                    <div class="form-group mb-4 col-6">
+                        <label class="control-label" for="nome">* Nome do GCEU</label>
+                        <input type="text" name="nome" class="form-control @error('nome') is-invalid @enderror" id="nome" required placeholder="Nome do GCEU" minlength="4" value="{{ $gceu->nome }}" maxlength="150">
                         @error('nome')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-                </div>
-
-                <div class="row">
-                    <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">* Sexo</label>
-                        <select name="sexo" class="form-control @error('sexo') is-invalid @enderror">
-                            <option value="" {{ old('sexo', $visitante->sexo ?? '') == '' ? 'selected' : '' }}>Selecione</option>
-                            <option value="M" {{ old('sexo', $visitante->sexo ?? '') == 'M' ? 'selected' : '' }}>Masculino</option>
-                            <option value="F" {{ old('sexo', $visitante->sexo ?? '') == 'F' ? 'selected' : '' }}>Feminino</option>
-                        </select>
-                        @error('sexo')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Data de Nascimento</label>
-                        <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" name="data_nascimento" value="{{ old('data_nascimento', optional($visitante->data_nascimento)->format('Y-m-d') ?? '') }}">
-                        @error('data_nascimento')
-                            <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group mb-4 col-md-4">
-                        <label class="control-label">Data de Conversão</label>
-                        <input type="date" class="form-control @error('data_conversao') is-invalid @enderror" name="data_conversao" value="{{ old('data_conversao', $visitante->data_conversao ?? '') }}">
-                        @error('data_conversao')
+                    <div class="form-group mb-4 col-6">
+                        <label class="control-label" for="anfitriao">* Anfitrião</label>
+                        <input type="text" name="anfitriao" id="anfitriao" class="form-control @error('anfitriao') is-invalid @enderror" placeholder="Nome do Anfitrião" minlength="4" value="{{ $gceu->anfitriao }}" required maxlength="100">
+                        @error('anfitriao')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                 </div>
-
                 <div class="row">
-                    <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">E-mail</label>
-                        <input type="email" name="email_preferencial" class="form-control @error('email_preferencial') is-invalid @enderror" value="{{ old('email_preferencial', $visitante->email_preferencial ?? '') }}" maxlength="100">
-                        @error('email_preferencial')
+                    <div class="form-group mb-4 col-md-5">
+                        <label class="control-label" for="email">E-mail</label>
+                        <input id="email" name="email" type="email" placeholder="E-mail" class="form-control @error('email') is-invalid @enderror" value="{{ $gceu->email }}" maxlength="100">
+                        @error('email')
+                        <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="form-group mb-4 col-md-3">
+                        <label class="control-label" for="contato">* Contato</label>
+                        <input id="contato" name="contato" type="text" class="form-control @error('contato') is-invalid @enderror" required placeholder="(00) 0000-0000" value="{{ $gceu->contato }}">
+                        @error('contato')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
-          
-                    <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">Telefone</label>
-                        <input type="text" id="telefone_preferencial" name="telefone_preferencial" class="form-control @error('telefone_preferencial') is-invalid @enderror" placeholder="ex: +55 (00) 0000-0000" value="{{ old('telefone_preferencial', $visitante->telefone_preferencial ?? '') }}">
-                        @error('telefone_preferencial')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div>
-
-                </div>
-                <div class="row">
-                    
-                  <!--   <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">Telefone Alternativo</label>
-                        <input type="text" id="telefone_alternativo" name="telefone_alternativo" class="form-control @error('telefone_alternativo') is-invalid @enderror" value="{{ old('telefone_alternativo', $visitante->telefone_alternativo ?? '') }}">
-                        @error('telefone_alternativo')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div> -->
-
-                  <!--   <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">Whatsapp</label>
-                        <input type="text" id="whatsapp" name="telefone_whatsapp" class="form-control @error('telefone_whatsapp') is-invalid @enderror" value="{{ old('telefone_whatsapp', $visitante->telefone_whatsapp ?? '') }}">
-                        @error('telefone_whatsapp')
-                        <div class="invalid-feedback">{{ $message }}</div>
-                        @enderror
-                    </div> -->
-
-                    <div class="form-group mb-4 col-md-6">
-                        <label class="control-label">Congregação</label>
-                        <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" >
-                            <option value="" {{ !$visitante->congregacao_id ? 'selected' : '' }}>Selecione</option>
+                    <div class="form-group mb-4 col-md-4">
+                        <label class="control-label">* Congregação</label>
+                        <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" required>
+                            <option value="" {{ old('congregacao_id') == '' ? 'selected' : '' }}>Selecione</option>
                             @foreach ($congregacoes as $congregacao)
-                                <option value="{{ $congregacao->id }}" {{$visitante->congregacao_id == $congregacao->id ? 'selected' : '' }}>{{ $congregacao->nome }}</option>
+                                <option value="{{ $congregacao->id }}" {{ $gceu->congregacao_id == $congregacao->id ? 'selected' : '' }}>{{ $congregacao->nome }}</option>
                             @endforeach
                         </select>
                         @error('congregacao_id')
@@ -111,8 +68,55 @@
                         @enderror
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                        <h4>Endereço GCEU</h4>
+                    </div>
+                    <div class="form-group mb-4 col-md-4">
+                        <label class="control-label">* CEP</label>
+                        <input id="cep" name="cep" type="text" class="form-control @error('cep') is-invalid @enderror" placeholder="00000-000" value="{{ $gceu->cep }}" required>
+                        @error('cep')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-6 col-md-6">
+                        <label class="control-label">Endereco</label>
+                        <input id="endereco" name="endereco" type="text" class="form-control @error('rua') is-invalid @enderror" placeholder="Endereco" value="{{ $gceu->endereco }}">
+                        @error('endereco')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-2 col-md-2">
+                        <label class="control-label">Número</label>
+                        <input id="numero" name="numero" type="text" class="form-control @error('numero') is-invalid @enderror" placeholder="Nº" value="{{ $gceu->numero }}">
+                        @error('numero')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-4 col-md-4">
+                        <label class="control-label">Bairro</label>
+                        <input id="bairro" name="bairro" type="text" class="form-control @error('bairro') is-invalid @enderror" placeholder="Bairro" value="{{ $gceu->bairro }}">
+                        @error('bairro')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-4 col-md-4">
+                        <label class="control-label">Cidade</label>
+                        <input id="cidade" name="cidade" type="text" class="form-control @error('cidade') is-invalid @enderror" placeholder="Cidade" value="{{ $gceu->cidade }}">
+                        @error('cidade')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-4 col-md-4">
+                        <label class="control-label">Estado</label>
+                        <input id="estado" name="estado" type="text" class="form-control @error('estado') is-invalid @enderror" placeholder="Estado" value="{{ $gceu->uf }}">
+                        @error('estado')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                </div>
 
-                <input type="submit" value="Atualizar" class="btn btn-primary ml-3 mt-3">
+                <input type="submit" value="Salvar" class="btn btn-primary btn-lg mt-3">
             </form>
             @else
             <div class="alert alert-warning" role="alert">

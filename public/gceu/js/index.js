@@ -12,7 +12,7 @@ $(document).ready(function() {
         $('.btn-confirm-delete').on('click', function() {
             const formId = $(this).data('form-id')
             swal({
-                title: 'Deseja realmente apagar os registros deste visitante?',
+                title: 'Deseja realmente apagar os registros deste GCEU?',
                 type: 'error',
                 showCancelButton: true,
                 confirmButtonText: "Deletar",
@@ -25,13 +25,13 @@ $(document).ready(function() {
             })
         })
         $('.btn-visualizar').click(function () {
-            $('#visualizarVisitantesModal').modal('show')
-            console.log($(this).data('membro-id'), "id")
+            $('#visualizarGCEUModal').modal('show')
+            console.log($(this).data('gceu-id'), "id")
             $.ajax({
                 type: "get",
-                url: "/membresia-geral/visualizar-html/" + $(this).data('membro-id'),
+                url: "/gceu/visualizar-html/" + $(this).data('gceu-id'),
                 beforeSend: function () {
-                    $('#visualizarVisitantesModal .modal-content').html('<div class="modal-body" style="min-height: 200px"></div>');
+                    $('#visualizarGCEUModal .modal-content').html('<div class="modal-body" style="min-height: 200px"></div>');
                     $('.loadable').block({
                         message: '<div class="spinner-border mr-2 text-secondary align-self-center loader-sm"></div>',
                         overlayCSS: {
@@ -50,11 +50,11 @@ $(document).ready(function() {
                     });
                 },
                 success: function (html) {
-                    $('#visualizarVisitantesModal .modal-content').html(html);
+                    $('#visualizarGCEUModal .modal-content').html(html);
                 },
                 error: function (error) {
-                    $('#visualizarVisitantesModal').modal('hide');
-                    toastr.error('Erro ao visualizar dados desta pessoa.');
+                    $('#visualizarGCEUModal').modal('hide');
+                    toastr.error('Erro ao visualizar dados desse GCEU.');
                 },
                 complete: function () {
                     $('.loadable').unblock();
@@ -95,9 +95,9 @@ $(document).ready(function() {
             {
                 targets: 5,
                 orderable: 0,
-                // render: function (data, type, row, meta) {
-                //     return `${row.actions}`
-                // }
+                render: function (data, type, row, meta) {
+                    return `${row.actions}`
+                }
             }
         ],
     }
