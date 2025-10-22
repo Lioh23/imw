@@ -51,10 +51,12 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">* Congregação</label>
                         <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" required>
                             <option value="" {{ old('congregacao_id') == '' ? 'selected' : '' }}>Selecione</option>
+                            <option value="sede" {{ old('congregacao_id') == 'sede' ? 'selected' : '' }}>SEDE</option>
                             @foreach ($congregacoes as $congregacao)
                                 <option value="{{ $congregacao->id }}" {{ old('congregacao_id') == $congregacao->id ? 'selected' : '' }}>{{ $congregacao->nome }}</option>
                             @endforeach

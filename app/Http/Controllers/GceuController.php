@@ -78,7 +78,7 @@ class GceuController extends Controller
     public function novo()
     {
         try {
-            return view('gceu.create', ['congregacoes' => Identifiable::fetchCongregacoes()]);
+            return view('gceu.create', ['congregacoes' => Identifiable::fetchCongregacoes(), 'instituicao_id' => Identifiable::fetchSessionIgrejaLocal()->id]);
         } catch (\Exception $e) {
             return back()->with('error', 'Falha ao abrir a página de novo visitante');
         }

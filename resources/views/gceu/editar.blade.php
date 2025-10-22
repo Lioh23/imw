@@ -59,6 +59,7 @@
                         <label class="control-label">* Congregação</label>
                         <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" required>
                             <option value="" {{ old('congregacao_id') == '' ? 'selected' : '' }}>Selecione</option>
+                            <option value="sede" {{ $gceu->congregacao_id == null ? 'selected' : '' }}>SEDE</option>
                             @foreach ($congregacoes as $congregacao)
                                 <option value="{{ $congregacao->id }}" {{ $gceu->congregacao_id == $congregacao->id ? 'selected' : '' }}>{{ $congregacao->nome }}</option>
                             @endforeach

@@ -1,0 +1,1 @@
+ALTER TABLE `gceu_cadastros` CHANGE `congregacao_id` `congregacao_id` BIGINT(20) UNSIGNED NULL DEFAULT NULL;

@@ -30,7 +30,7 @@ class UpdateGCeuRequest extends FormRequest
             'nome' => 'required',
             'anfitriao' => 'required',
             'contato' => 'nullable|string|min:10',
-            'congregacao_id' => 'nullable|exists:congregacoes_congregacoes,id',
+            'congregacao_id' => 'required',
             'cep' => 'required'
         ];
     }
