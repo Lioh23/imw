@@ -93,7 +93,7 @@
                         data-url="{{ route('gceu.list') }}">
                         <thead>
                             <tr>
-                                <th>NOME GCEU</th>
+                                <th>GCEU</th>
                                 <th>ANFITRIÃO</th>
                                 <th>CONTATO</th>
                                 <th>IGREJA</th>
