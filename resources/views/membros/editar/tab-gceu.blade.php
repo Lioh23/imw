@@ -11,24 +11,24 @@
                     </tr>
                 </thead>
                 <tbody id="gceuIndex-tbody">
-                    @forelse ($gceuMembros as $funcaoMinisterial)
+                    @forelse ($gceuMembros as $gceuMembro)
                     <tr>
                         <td>
-                            <select class="form-control ministerial-departamento" name="ministerial-departamento[]">
+                            <select class="form-control gceu" name="gceu[]">
                                 <option value="">Selecione</option>
-                                @foreach ($ministerios as $ministerio)
-                                <option value="{{ $ministerio->id }}" {{ $funcaoMinisterial->setor_id == $ministerio->id ? 'selected' : '' }}>
-                                    {{ $ministerio->descricao }}
+                                @foreach ($gceus as $gceu)
+                                <option value="{{ $gceu->id }}" {{ $gceuMembro->gceu_cadastro_id == $gceu->id ? 'selected' : '' }}>
+                                    {{ $gceu->nome }}
                                 </option>
                                 @endforeach
                             </select>
                         </td>
                         <td>
-                            <select class="form-control ministerial-funcao" name="ministerial-funcao[]">
+                            <select class="form-control gceu-funcao" name="gceu-funcao[]">
                                 <option value="">Selecione</option>
-                                @foreach ($funcoes as $funcao)
-                                <option value="{{ $funcao->id }}" {{ $funcaoMinisterial->tipoatuacao_id == $funcao->id ? 'selected' : '' }}>
-                                    {{ $funcao->descricao }}
+                                @foreach ($gceuFuncoes as $funcao)
+                                <option value="{{ $funcao->id }}" {{ $gceuMembro->gceu_funcao_id == $funcao->id ? 'selected' : '' }}>
+                                    {{ $funcao->funcao }}
                                 </option>
                                 @endforeach
                             </select>
@@ -59,7 +59,7 @@
                     @empty
                     <tr>
                         <td>
-                            <select class="form-control ministerial-departamento" name="ministerial-departamento[]">
+                            <select class="form-control gceu" name="gceu[]">
                                 <option value="">Selecione</option>
                                 @foreach ($gceus as $gceu)
                                 <option value="{{ $gceu->id }}">{{ $gceu->nome }}</option>
@@ -67,7 +67,7 @@
                             </select>
                         </td>
                         <td>
-                            <select class="form-control ministerial-funcao" name="ministerial-funcao[]">
+                            <select class="form-control gceu-funcao" name="gceu-funcao[]">
                                 <option value="">Selecione</option>
                                 @foreach ($gceuFuncoes as $funcao)
                                 <option value="{{ $funcao->id }}">{{ $funcao->funcao }}</option>

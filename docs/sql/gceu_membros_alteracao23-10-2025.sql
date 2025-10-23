@@ -1,0 +1,1 @@
+ALTER TABLE `gceu_membros` ADD `created_at` TIMESTAMP NOT NULL AFTER `gceu_funcao_id`, ADD `updated_at` TIMESTAMP NOT NULL AFTER `created_at`;
