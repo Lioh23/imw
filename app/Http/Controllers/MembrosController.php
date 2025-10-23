@@ -72,10 +72,14 @@ class MembrosController extends Controller
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
                 'congregacoes'         => $pessoa['congregacoes'],
                 'disciplinas'          => $disciplinas,
+                'gceus'                => $pessoa['gceus'],
+                'gceuFuncoes'          => $pessoa['gceuFuncoes'],
+                'gceuMembros'          => $pessoa['gceuMembros']
             ]);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('membro.index')->with('error', 'Registro não encontrado.');
         } catch(\Exception $e) {
+            dd($e);
             return redirect()->route('membro.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
     }

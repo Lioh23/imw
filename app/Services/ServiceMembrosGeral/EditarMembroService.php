@@ -3,6 +3,9 @@
 namespace App\Services\ServiceMembrosGeral;
 
 use App\Exceptions\MembroNotFoundException;
+use App\Models\GCeu;
+use App\Models\GCeuFuncoes;
+use App\Models\GCeuMembros;
 use App\Models\MembresiaCurso;
 use App\Models\MembresiaFormacao;
 use App\Models\MembresiaFuncaoEclesiastica;
@@ -38,7 +41,9 @@ class EditarMembroService
         $cursos = MembresiaCurso::orderBy('nome', 'asc')->get();
         $formacoes = MembresiaFormacao::orderBy('id', 'asc')->get();
         $funcoesEclesiasticas = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();
-
+        $gceus = GCeu::orderBy('nome', 'asc')->get();
+        $gceuFuncoes = GCeuFuncoes::orderBy('funcao', 'asc')->get();
+        $gceuMembros = GCeuMembros::get();
         return [
             'pessoa'               => $pessoa,
             'ministerios'          => $ministerios,
@@ -46,7 +51,10 @@ class EditarMembroService
             'cursos'               => $cursos,
             'formacoes'            => $formacoes,
             'funcoesEclesiasticas' => $funcoesEclesiasticas,
-            'congregacoes'         => Identifiable::fetchCongregacoes()
+            'congregacoes'         => Identifiable::fetchCongregacoes(),
+            'gceus'                => $gceus,
+            'gceuFuncoes'          => $gceuFuncoes,
+            'gceuMembros'          => $gceuMembros
         ];
     }
 }
