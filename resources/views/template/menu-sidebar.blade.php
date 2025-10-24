@@ -917,13 +917,13 @@
                          </div>
                      </a>
                      <ul class="collapse submenu list-unstyled {{ Request::is('gceu/*') ? 'collapse show' : '' }}" id="gceu" data-parent="#gceu">
-                         <li {!! Request::is('gceu/cadastro') ? 'class="active"' : '' !!}>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-index'))
-                                 <a href="{{ route('gceu.index') }}">Cadastro</a>
+                         <li {!! Request::is('gceu/lista') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-lista'))
+                                 <a href="{{ route('gceu.index') }}">Lista</a>
                              @endif
                          </li>
                          <li {!! Request::is('gceu/novo') ? 'class="active"' : '' !!}>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-cadastro'))
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-cadastrar'))
                                  <a href="{{ route('gceu.novo') }}">Novo</a>
                              @endif
                          </li>
