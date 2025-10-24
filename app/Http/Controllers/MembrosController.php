@@ -72,9 +72,9 @@ class MembrosController extends Controller
                 'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
                 'congregacoes'         => $pessoa['congregacoes'],
                 'disciplinas'          => $disciplinas,
-                'gceus'                => $pessoa['gceus'],
-                'gceuFuncoes'          => $pessoa['gceuFuncoes'],
-                'gceuMembros'          => $pessoa['gceuMembros']
+                //'gceus'                => $pessoa['gceus'],
+                //'gceuFuncoes'          => $pessoa['gceuFuncoes'],
+                //'gceuMembros'          => $pessoa['gceuMembros']
             ]);
         } catch(MembroNotFoundException $e) {
             return redirect()->route('membro.index')->with('error', 'Registro não encontrado.');

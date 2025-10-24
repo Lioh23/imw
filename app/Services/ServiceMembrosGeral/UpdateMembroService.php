@@ -14,7 +14,7 @@ use App\Models\MembresiaRolPermanente;
 use Illuminate\Support\Facades\Storage;
 use App\Models\MembresiaFuncaoMinisterial;
 use App\Exceptions\MembroNotFoundException;
-use App\Models\GCeuMembros;
+//use App\Models\GCeuMembros;
 use App\Models\MembresiaFuncaoEclesiastica;
 use App\Models\MembresiaFormacaoEclesiastica;
 use Ramsey\Uuid\Uuid;
@@ -29,13 +29,13 @@ class UpdateMembroService
         $dataFamiliar = $this->prepareFamiliarData($data);
         $dataFormacoes = $this->prepareFormacoesData($data);
         $dataMinisteriais = $this->prepareMinisteriaisData($data);
-        $dataGceu = $this->prepareGceuData($data);
+        //$dataGceu = $this->prepareGceuData($data);
         $membroID = $this->handleUpdateMembro($dataMembro);
         $this->handleUpdateContato($dataContato, $membroID);
         $this->handleUpdateFamiliar($dataFamiliar, $membroID);
         $this->handleUpdateFormacoes($dataFormacoes, $membroID);
         $this->handleUpdateMinisteriais($dataMinisteriais, $membroID);
-        $this->handleUpdateGceu($dataGceu, $membroID);
+        //$this->handleUpdateGceu($dataGceu, $membroID);
         if (isset($data['rol_atual']) && $data['rol_atual']) {
             $this->updateMembroRol($data['rol_atual'], $membroID);
         }
@@ -277,30 +277,30 @@ class UpdateMembroService
             ->delete();
     }
 
-    private function handleUpdateGCeu(array $dataGceu, $membroId): void
-    {
-        $updatedGceuIds = [];
+    // private function handleUpdateGCeu(array $dataGceu, $membroId): void
+    // {
+    //     $updatedGceuIds = [];
 
-        foreach ($dataGceu as $gceu) {
-            if (!empty($gceu['gceu_cadastro_id']) && !empty($gceu['gceu_funcao_id'])) {
-                $gceu['membro_id'] = $membroId;
-                $gceuMembrosModel = GCeuMembros::updateOrCreate(
-                    [
-                        'membro_id' => $membroId,
-                        'gceu_cadastro_id' => $gceu['gceu_cadastro_id'],
-                        'gceu_funcao_id' => $gceu['gceu_funcao_id'],
-                    ],
-                    $gceu
-                );
+    //     foreach ($dataGceu as $gceu) {
+    //         if (!empty($gceu['gceu_cadastro_id']) && !empty($gceu['gceu_funcao_id'])) {
+    //             $gceu['membro_id'] = $membroId;
+    //             $gceuMembrosModel = GCeuMembros::updateOrCreate(
+    //                 [
+    //                     'membro_id' => $membroId,
+    //                     'gceu_cadastro_id' => $gceu['gceu_cadastro_id'],
+    //                     'gceu_funcao_id' => $gceu['gceu_funcao_id'],
+    //                 ],
+    //                 $gceu
+    //             );
 
-                $updatedGceuIds[] = $gceuMembrosModel->id;
-            }
-        }
+    //             $updatedGceuIds[] = $gceuMembrosModel->id;
+    //         }
+    //     }
 
-        GCeuMembros::where('membro_id', $membroId)
-            ->whereNotIn('id', $updatedGceuIds)
-            ->delete();
-    }
+    //     GCeuMembros::where('membro_id', $membroId)
+    //         ->whereNotIn('id', $updatedGceuIds)
+    //         ->delete();
+    // }
 
     private function updateMembroRol($rolAtual, $membroId)
     {
