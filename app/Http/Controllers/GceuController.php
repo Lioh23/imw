@@ -68,8 +68,13 @@ class GceuController extends Controller
     {
         $congregacoes = Identifiable::fetchCongregacoes();
         try {
-            app(DeletarGCeuService::class)->execute($id);
-            return redirect()->route('gceu.index')->with('success', 'GCEU deletado com sucesso.');
+            $existe = GCeu::join('gceu_membros', 'gceu_membros.gceu_cadastro_id','gceu_cadastros.id')->where('gceu_cadastros.id',$id)->first();
+            if($existe){
+                return back()->with('error', 'Não poderá remover esse CGEU, pois existe membros vinculados.');
+            }else{
+                app(DeletarGCeuService::class)->execute($id);
+                return redirect()->route('gceu.index')->with('success', 'GCEU deletado com sucesso.');
+            }
         } catch (\Exception $e) {
             return back()->with('error', 'Falha ao deletar o GCEU.');
         }
