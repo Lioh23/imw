@@ -81,6 +81,37 @@ $(document).ready(function () {
     atualizarBotoesMinisterial();
     atualizarBotoesFormacao();
 
+    // Função para adicionar linha de gceuIndex
+    $('body').on('click', '.adicionar-linha-gceuIndex', function () {
+        var novaLinha = $('#gceuIndex-tbody tr:last').clone();
+        novaLinha.find('input').val('');
+        novaLinha.find('select').prop('selectedIndex', 0);
+        $('#gceuIndex-tbody').append(novaLinha);
+        atualizarBotoesGceuIndex();
+    });
+
+    // Função para remover linha de gceuIndex com confirmação
+    $('body').on('click', '.apagar-linha-gceuIndex', function () {
+        if ($('#gceuIndex-tbody tr').length > 1) {
+            var confirma = confirm("Tem certeza que deseja remover esta linha?");
+            if (confirma) {
+                $(this).closest('tr').remove();
+                atualizarBotoesGceuIndex();
+            }
+        } else {
+            alert("Não é possível remover a última linha.");
+        }
+    });
+
+    // Função para atualizar a visibilidade dos botões de ministério
+    function atualizarBotoesGceuIndex() {
+        $('.adicionar-linha-gceuIndex, .apagar-linha-gceuIndex').hide();
+        $('#gceuIndex-tbody tr:last .adicionar-linha-gceuIndex').show();
+        if ($('#gceuIndex-tbody tr').length > 1) {
+            $('.apagar-linha-gceuIndex').show();
+        }
+    }
+
 
     //Foto Usuario
     // Adiciona um evento de clique ao botão "upload-picture"

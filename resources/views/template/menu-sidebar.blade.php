@@ -895,7 +895,7 @@
              @endif
 
               @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu'))
-                 <!-- <li class="menu">
+                 <li class="menu">
                      <a href="#gceu" data-toggle="collapse" aria-expanded="{{Request::is('gceu/*') ? 'true' : 'false' }}" class="dropdown-toggle">
                          <div class="">
                              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
@@ -917,18 +917,18 @@
                          </div>
                      </a>
                      <ul class="collapse submenu list-unstyled {{ Request::is('gceu/*') ? 'collapse show' : '' }}" id="gceu" data-parent="#gceu">
-                         <li {!! Request::is('gceu/lista') ? 'class="active"' : '' !!}>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-lista'))
-                                 <a href="{{ route('gceu.index') }}">Lista</a>
+                         <li {!! Request::is('gceu/cadastro') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-index'))
+                                 <a href="{{ route('gceu.index') }}">Cadastro</a>
                              @endif
                          </li>
                          <li {!! Request::is('gceu/novo') ? 'class="active"' : '' !!}>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-cadastrar'))
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-cadastro'))
                                  <a href="{{ route('gceu.novo') }}">Novo</a>
                              @endif
                          </li>
                      </ul>
-                 </li> -->
+                 </li>
              @endif
 
              @if (auth()->check() && auth()->user()->hasPerfilRegra('distrito-gestao-igrejas'))

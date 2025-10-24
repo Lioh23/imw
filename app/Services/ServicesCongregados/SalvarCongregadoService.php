@@ -2,6 +2,7 @@
 
 namespace App\Services\ServicesCongregados;
 
+use App\Models\GCeuMembros;
 use App\Models\MembresiaContato;
 use App\Models\MembresiaFamiliar;
 use App\Models\MembresiaFormacaoEclesiastica;
@@ -22,12 +23,14 @@ class SalvarCongregadoService
         $dataFamiliar = $this->prepareFamiliarData($data);
         $dataFormacoes = $this->prepareFormacoesData($data);
         $dataMinisteriais = $this->prepareMinisteriaisData($data);
+        $dataGceu = $this->prepareGceuData($data);
 
         $membroID = $this->handleCreateMembro($dataMembro);
         $this->handleCreateContato($dataContato, $membroID);
         $this->handleCreateFamiliar($dataFamiliar, $membroID);
         $this->handleCreateFormacoes($dataFormacoes, $membroID);
         $this->handleCreateMinisteriais($dataMinisteriais, $membroID);
+        $this->handleUpdateGceu($dataGceu, $membroID);
 
         if (isset($data['foto'])) {
             $this->handlePhotoUpload($data['foto'], $membroID);
@@ -57,6 +60,7 @@ class SalvarCongregadoService
             'estado_civil'  => $data['estado_civil'],
             'nacionalidade'  => $data['nacionalidade'],
             'naturalidade'  => $data['naturalidade'],
+            'novo_convertido' => $data['novo_convertido'],
             'uf'  => $data['uf'] ?? null,
             'escolaridade_id'  => $data['escolaridade_id'],
             'profissao'  => $data['profissao'],
@@ -146,6 +150,22 @@ class SalvarCongregadoService
         return $dataMinisteriais;
     }
 
+    private function prepareGceuData(array $data): array
+    {
+        $dataGceuMembro = [];
+        if (isset($data['gceu'])) {
+            foreach ($data['gceu'] as $index => $gceu) {
+                if($gceu != null){                
+                    $dataGceuMembro[] = [
+                        'gceu_cadastro_id' => $gceu,
+                        'gceu_funcao_id' => $data['gceu-funcao'][$index] ?? null,
+                    ];
+                }
+            }
+        }
+        return $dataGceuMembro;
+    }
+
     private function handleCreateMembro($data)
     {
         $membresia = MembresiaMembro::Create($data);
@@ -213,5 +233,31 @@ class SalvarCongregadoService
             ->whereNotIn('id', $updatedMinisterialIds)
             ->delete();
     }
+
+    private function handleUpdateGCeu(array $dataGceu, $membroId): void
+    {
+        $updatedGceuIds = [];
+
+        foreach ($dataGceu as $gceu) {
+            if (!empty($gceu['gceu_cadastro_id']) && !empty($gceu['gceu_funcao_id'])) {
+                $gceu['membro_id'] = $membroId;
+                $gceuMembrosModel = GCeuMembros::updateOrCreate(
+                    [
+                        'membro_id' => $membroId,
+                        'gceu_cadastro_id' => $gceu['gceu_cadastro_id'],
+                        'gceu_funcao_id' => $gceu['gceu_funcao_id'],
+                    ],
+                    $gceu
+                );
+
+                $updatedGceuIds[] = $gceuMembrosModel->id;
+            }
+        }
+
+        GCeuMembros::where('membro_id', $membroId)
+            ->whereNotIn('id', $updatedGceuIds)
+            ->delete();
+    }
+
 
 }

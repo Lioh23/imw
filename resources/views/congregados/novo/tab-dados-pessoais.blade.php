@@ -15,15 +15,28 @@
       <div class="col-xl-9">
           <div class="form-group @error('nome') has-error @enderror">
             <div class="row mb-4">
-              <div class="col-xl-6">
+              <div class="col-xl-9">
                 <label for="nome">* Nome</label>
                 <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome" name="nome" value="{{ old('nome') }}">
                 @error('nome')
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
-              
+
               <div class="col-xl-3">
+                <label for="novo_convertido">* Novo Convertido</label>
+                <select class="form-control" id="novo_convertido" name="novo_convertido">
+                  <option value="">Selecione</option>
+                  <option value="S" {{ old('novo_convertido') == 'S' ? 'selected' : '' }}>Sim</option>
+                  <option value="N" {{ old('novo_convertido') == 'N' ? 'selected' : '' }} selected>Não</option>
+                </select>
+                @error('novo_convertido')
+                <span class="help-block text-danger">{{ $message }}</span>
+                @enderror
+              </div>
+            </div>
+            <div class="row mb-4">
+              <div class="col-xl-4">
                 <label for="nascimento">* Data de Nascimento</label>
                 <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror" id="data_nascimento" name="data_nascimento" value="{{ old('data_nascimento') }}" min="1900-01-01">
                 @error('data_nascimento')
@@ -31,7 +44,7 @@
                 @enderror
               </div>
 
-              <div class="col-xl-3">
+              <div class="col-xl-4">
                 <label for="sexo">Sexo</label>
                 <select class="form-control" id="sexo" name="sexo">
                   <option value="">Selecione</option>
@@ -42,11 +55,8 @@
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
-            </div>
-            
-            <div class="row mb-4">
-    
-              <div class="col-xl-3">
+
+              <div class="col-xl-4">
                 <label for="estado_civil">* Estado Civíl</label>
                 <select class="form-control @error('estado_civil') is-invalid @enderror" id="estado_civil" name="estado_civil">
                   <option value="">Selecione</option>
@@ -59,8 +69,12 @@
                 <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
+            </div>
+            
+            <div class="row mb-4">   
               
-              <div class="col-xl-3">
+              
+              <div class="col-xl-4">
                 <label for="nacionalidade">* Nacionalidade</label>
                 <select class="form-control @error('estado_civil') is-invalid @enderror" id="nacionalidade" name="nacionalidade">
                   <option value="">Selecione</option>
@@ -325,7 +339,7 @@
                 @enderror
               </div>
 
-              <div class="col-xl-3">
+              <div class="col-xl-4">
                 <label for="naturalidade">* Naturalidade</label>
                 <input type="text" class="form-control @error('naturalidade') is-invalid @enderror" id="naturalidade" name="naturalidade" value="{{ old('naturalidade') }}" >
                 @error('naturalidade')
@@ -333,7 +347,7 @@
                 @enderror
               </div>
 
-              <div class="col-xl-3">
+              <div class="col-xl-4">
                 <label for="uf">* UF</label>
                 <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf">
                   <option value="">Selecione</option>
@@ -431,7 +445,7 @@
               </div>
 
               <div class="col-xl-3">
-                <label for="documento_complemento">Complemento Documento</label>
+                <label for="documento_complemento">Complemento Doc.</label>
                 <input type="text" class="form-control" id="documento_complemento" name="documento_complemento" value="{{ old('documento_complemento') }}">
                 @error('documento_complemento')
                 <span class="help-block text-danger">{{ $message }}</span>

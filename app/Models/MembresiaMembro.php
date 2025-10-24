@@ -40,6 +40,7 @@ class MembresiaMembro extends Model
         'igreja_id',
         'regiao_id',
         'escolaridade_id',
+        'novo_convertido',
         'profissao',
         'documento',
         'documento_complemento',

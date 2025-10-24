@@ -3,9 +3,9 @@
 namespace App\Services\ServiceMembrosGeral;
 
 use App\Exceptions\MembroNotFoundException;
-// use App\Models\GCeu;
-// use App\Models\GCeuFuncoes;
-//use App\Models\GCeuMembros;
+use App\Models\GCeu;
+use App\Models\GCeuFuncoes;
+use App\Models\GCeuMembros;
 use App\Models\MembresiaCurso;
 use App\Models\MembresiaFormacao;
 use App\Models\MembresiaFuncaoEclesiastica;
@@ -34,16 +34,15 @@ class EditarMembroService
             $disk = Storage::disk('s3');
             $pessoa->foto = $disk->temporaryUrl($pessoa->foto, Carbon::now()->addMinutes(15));
         }
-
-
+        
         $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
         $funcoes = MembresiaTipoAtuacao::orderBy('descricao', 'asc')->get();
         $cursos = MembresiaCurso::orderBy('nome', 'asc')->get();
         $formacoes = MembresiaFormacao::orderBy('id', 'asc')->get();
         $funcoesEclesiasticas = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();
-        //$gceus = GCeu::orderBy('nome', 'asc')->get();
-       // $gceuFuncoes = GCeuFuncoes::orderBy('funcao', 'asc')->get();
-        //$gceuMembros = GCeuMembros::get();
+        $gceus = GCeu::orderBy('nome', 'asc')->get();
+        $gceuFuncoes = GCeuFuncoes::orderBy('funcao', 'asc')->get();
+        $gceuMembros = GCeuMembros::where(['membro_id' => $id])->get();
         return [
             'pessoa'               => $pessoa,
             'ministerios'          => $ministerios,
@@ -52,9 +51,9 @@ class EditarMembroService
             'formacoes'            => $formacoes,
             'funcoesEclesiasticas' => $funcoesEclesiasticas,
             'congregacoes'         => Identifiable::fetchCongregacoes(),
-            //'gceus'                => $gceus,
-            //'gceuFuncoes'          => $gceuFuncoes,
-            //'gceuMembros'          => $gceuMembros
+            'gceus'                => $gceus,
+            'gceuFuncoes'          => $gceuFuncoes,
+            'gceuMembros'          => $gceuMembros
         ];
     }
 }

@@ -31,7 +31,6 @@ class CongregadosController extends Controller
     }
 
     public function novo() {
-
         try {
             $data = app(NovoCongregadoService::class)->execute();
 

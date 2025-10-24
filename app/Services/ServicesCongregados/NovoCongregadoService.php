@@ -2,6 +2,8 @@
 
 namespace App\Services\ServicesCongregados;
 
+use App\Models\GCeu;
+use App\Models\GCeuFuncoes;
 use App\Models\MembresiaCurso;
 use App\Models\MembresiaFormacao;
 use App\Models\MembresiaFuncaoEclesiastica;
@@ -27,7 +29,9 @@ class NovoCongregadoService
             'cursos'               => $cursos,
             'formacoes'            => $formacoes,
             'funcoesEclesiasticas' => $funcoesEclesiasticas,
-            'congregacoes'         => Identifiable::fetchCongregacoes()
+            'congregacoes'         => Identifiable::fetchCongregacoes(),
+            'gceus'                => GCeu::orderBy('nome', 'asc')->get(),
+            'gceuFuncoes'          => GCeuFuncoes::orderBy('funcao', 'asc')->get()
         ];
     }
 }

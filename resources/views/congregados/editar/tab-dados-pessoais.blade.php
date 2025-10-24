@@ -18,7 +18,7 @@
               <div class="col-xl-9">
                   <div class="form-group @error('nome') has-error @enderror">
                       <div class="row mb-4">
-                          <div class="col-xl-6">
+                          <div class="col-xl-9">
                               <label for="nome">* Nome</label>
                               <input type="text" class="form-control @error('nome') is-invalid @enderror"
                                   id="nome" name="nome" value="{{ old('nome', $pessoa->nome) }}" maxlength="100">
@@ -27,7 +27,20 @@
                               @enderror
                           </div>
 
-                          <div class="col-xl-3">
+                            <div class="col-xl-3">
+                                <label for="novo_convertido">* Novo Convertido</label>
+                                <select class="form-control" id="novo_convertido" name="novo_convertido">
+                                <option value="">Selecione</option>
+                                <option value="S" {{ $pessoa->novo_convertido == 'S' ? 'selected' : '' }}>Sim</option>
+                                <option value="N" {{ $pessoa->novo_convertido == 'N' ? 'selected' : '' }}>Não</option>
+                                </select>
+                                @error('novo_convertido')
+                                <span class="help-block text-danger">{{ $message }}</span>
+                                @enderror
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+                          <div class="col-xl-4">
                               <label for="nascimento">* Data de Nascimento</label>
                               <input type="date" class="form-control @error('data_nascimento') is-invalid @enderror"
                                   id="data_nascimento" name="data_nascimento"
@@ -37,7 +50,7 @@
                               @enderror
                           </div>
 
-                          <div class="col-xl-3">
+                          <div class="col-xl-4">
                               <label for="sexo">Sexo</label>
                               <select class="form-control" id="sexo" name="sexo">
                                   <option value="">Selecione</option>
@@ -48,11 +61,7 @@
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
                           </div>
-                      </div>
-
-                      <div class="row mb-4">
-
-                          <div class="col-xl-3">
+                          <div class="col-xl-4">
                               <label for="estado_civil">* Estado Civíl</label>
                               <select class="form-control @error('estado_civil') is-invalid @enderror" id="estado_civil"
                                   name="estado_civil">
@@ -70,8 +79,10 @@
                                   <span class="help-block text-danger">{{ $message }}</span>
                               @enderror
                           </div>
+                      </div>
 
-                          <div class="col-xl-3">
+                      <div class="row mb-4">
+                          <div class="col-xl-4">
                               <label for="nacionalidade">* Nacionalidade</label>
                               <select class="form-control @error('estado_civil') is-invalid @enderror"
                                   id="nacionalidade" name="nacionalidade">
@@ -340,7 +351,7 @@
                               @enderror
                           </div>
 
-                          <div class="col-xl-3">
+                          <div class="col-xl-4">
                               <label for="naturalidade">* Naturalidade</label>
                               <input type="text" class="form-control @error('naturalidade') is-invalid @enderror"
                                   id="naturalidade" name="naturalidade"
@@ -350,7 +361,7 @@
                               @enderror
                           </div>
 
-                          <div class="col-xl-3">
+                          <div class="col-xl-4">
                               <label for="uf">* UF</label>
                               <select class="form-control @error('uf') is-invalid @enderror" id="uf" name="uf" {{ $pessoa->nacionalidade != 'BR' ? 'disabled' : '' }}>
                                   <option value="">Selecione</option>
