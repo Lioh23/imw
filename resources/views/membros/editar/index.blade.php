@@ -102,7 +102,7 @@
                   @include('membros.editar.tab-disciplina')
                 @endif
                 @include('membros.editar.tab-historico')
-                @include('membros.editar.tab-gceu')
+                {{-- @include('membros.editar.tab-gceu') --}}
             </div>
           </div>
       </div>

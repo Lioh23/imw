@@ -24,9 +24,12 @@ trait EstatisticaTotalMembrosUtils
                     'ii.nome as instituicao',
                     DB::raw('COALESCE(COUNT(mm.id), 0) as total')
                 )
-                ->where('ii.regiao_id', $regiaoId)
+                ->where(['ii.regiao_id' => $regiaoId, 'ii.tipo_instituicao_id' => 2, 'ii.ativo' => 1, 'mm.status' => 'A', 'mm.vinculo' => 'M'])
                 ->groupBy('ii.id', 'ii.nome')
                 ->orderByDesc('total')
+                // ->where('ii.regiao_id', $regiaoId)
+                // ->groupBy('ii.id', 'ii.nome')
+                ->orderByDesc('total', 'DESC')
                 ->get();
         } else {
             $result = DB::table('instituicoes_instituicoes as ii')

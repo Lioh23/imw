@@ -90,18 +90,26 @@ trait TotalizacaoRegiaoUtils
 
     public static function fetchDezDistritoBatismo($dataFinal, $dataInicial)
     {
-
         $instituicoes = DB::table('instituicoes_instituicoes as ii')->selectRaw('COUNT(*) as total, ii.nome')
             ->from('instituicoes_instituicoes as ii')
-            ->join('membresia_membros as mm', 'mm.distrito_id', '=', 'ii.id')
-            ->where('ii.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO)
-            ->where('mm.status', 'A')
-            ->where('ii.ativo', 1)
-            ->whereBetween('mm.data_batismo', [$dataInicial, $dataFinal])
-            ->groupBy('mm.distrito_id', 'ii.nome')
-            ->orderByDesc('total')
+            ->leftJoin('membresia_membros as mm', 'mm.igreja_id', '=', 'ii.id')
+            ->leftJoin('membresia_rolpermanente as mr', 'mr.membro_id', '=', 'mm.id')
+            ->where(['ii.tipo_instituicao_id' => InstituicoesTipoInstituicao::DISTRITO, 'ii.ativo' => 1, 'mr.modo_recepcao_id' => 1])
+            ->whereBetween('mr.dt_recepcao', [$dataInicial, $dataFinal])
+            ->groupBy('ii.id', 'ii.nome')
+            ->orderByDesc('total', 'DESC')
             ->limit(10)
             ->get();
+            // ->from('instituicoes_instituicoes as ii')
+            // ->join('membresia_membros as mm', 'mm.distrito_id', '=', 'ii.id')
+            // ->where('ii.tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO)
+            // ->where('mm.status', 'A')
+            // ->where('ii.ativo', 1)
+            // ->whereBetween('mm.data_batismo', [$dataInicial, $dataFinal])
+            // ->groupBy('mm.distrito_id', 'ii.nome')
+            // ->orderByDesc('total')
+            // ->limit(10)
+            // ->get();
 
         $total = $instituicoes->sum('total');
         $totalPorcentagem = $instituicoes->map(function ($instituicao) use ($total) {
@@ -166,20 +174,28 @@ trait TotalizacaoRegiaoUtils
 
     public static function fetchDezIgrejaBatismo($dataFinal, $dataInicial)
     {
-
         $instituicoes = DB::table('instituicoes_instituicoes as ii')->selectRaw('COUNT(*) as total, ii.nome')
             ->from('instituicoes_instituicoes as ii')
-            ->leftJoin('membresia_membros as mm', function ($join) use ($dataInicial, $dataFinal)  {
-                $join->on('mm.igreja_id', '=', 'ii.id')
-                    ->where('mm.status', 'A')
-                    ->whereBetween('mm.data_batismo', [$dataInicial, $dataFinal]);
-            })
-            ->where('ii.tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
-            ->where('ii.ativo', 1)
+            ->leftJoin('membresia_membros as mm', 'mm.igreja_id', '=', 'ii.id')
+            ->leftJoin('membresia_rolpermanente as mr', 'mr.membro_id', '=', 'mm.id')
+            ->where(['ii.tipo_instituicao_id' => InstituicoesTipoInstituicao::IGREJA_LOCAL, 'ii.ativo' => 1, 'mr.modo_recepcao_id' => 1])
+            ->whereBetween('mr.dt_recepcao', [$dataInicial, $dataFinal])
             ->groupBy('ii.id', 'ii.nome')
-            ->orderByDesc('total')
+            ->orderByDesc('total', 'DESC')
             ->limit(10)
             ->get();
+            // ->from('instituicoes_instituicoes as ii')
+            // ->leftJoin('membresia_membros as mm', function ($join) use ($dataInicial, $dataFinal)  {
+            //     $join->on('mm.igreja_id', '=', 'ii.id')
+            //         ->where('mm.status', 'A')
+            //         ->whereBetween('mm.data_batismo', [$dataInicial, $dataFinal]);
+            // })
+            // ->where('ii.tipo_instituicao_id', InstituicoesTipoInstituicao::IGREJA_LOCAL)
+            // ->where('ii.ativo', 1)
+            // ->groupBy('ii.id', 'ii.nome')
+            // ->orderByDesc('total')
+            // ->limit(10)
+            // ->get();
 
         $total = $instituicoes->sum('total');
         $totalPorcentagem = $instituicoes->map(function ($instituicao) use ($total) {

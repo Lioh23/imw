@@ -9,6 +9,7 @@ use App\Services\ServiceEstatisticas\TotalMembresiaServices;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use App\Traits\Identifiable;
 class RegiaoEstatisticasController extends Controller
 {
     public function totalMembresia(Request $request)
@@ -32,8 +33,9 @@ class RegiaoEstatisticasController extends Controller
         // Capturar os anos do request
         $anoinicio = request('anoinicio', date('Y') - 4);
         $anofinal = request('anofinal', date('Y'));
-        $regiao_id = auth()->user()->pessoa->regiao_id;
-
+        //$regiao_id = auth()->user()->pessoa->regiao_id;
+        $regiao = Identifiable::fetchtSessionRegiao();
+        $regiao_id = $regiao->id;
         // ===========================
         // 🔹 Criar colunas de contagem de membros por ano
         // ===========================
