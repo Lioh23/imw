@@ -93,7 +93,7 @@ class UpdateMembroService
             'data_nascimento' => Carbon::createFromFormat('Y-m-d', $data['data_nascimento']),
             'estado_civil'  => $data['estado_civil'],
             'nacionalidade'  => $data['nacionalidade'],
-            'novo_convertido' => $data['novo_convertido'],
+            'novo_convertido' => isset($data['novo_convertido']) ? $data['novo_convertido'] : 'N',
             'naturalidade'  => $data['naturalidade'],
             'uf'  => $data['uf'] ?? null,
             'escolaridade_id'  => $data['escolaridade_id'],

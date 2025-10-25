@@ -919,14 +919,32 @@
                      <ul class="collapse submenu list-unstyled {{ Request::is('gceu/*') ? 'collapse show' : '' }}" id="gceu" data-parent="#gceu">
                          <li {!! Request::is('gceu/lista') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-lista'))
-                                 <a href="{{ route('gceu.index') }}">Lista</a>
+                                 <a href="{{ route('gceu.index') }}">Cadastro</a>
                              @endif
                          </li>
-                         <li {!! Request::is('gceu/novo') ? 'class="active"' : '' !!}>
+                         <!-- <li {!! Request::is('gceu/novo') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-cadastrar'))
                                  <a href="{{ route('gceu.novo') }}">Novo</a>
                              @endif
+                         </li> -->
+                         <!-- <li class="submenu-fixo mt-3 mb-3">
+                            <span>Relatórios</span>
                          </li>
+                         <li>
+                            <a href="#">Lista de líderes</a>
+                         </li>
+                         <li>
+                            <a href="#">Lista de integrantes</a>
+                         </li>
+                         <li>
+                            <a href="#">Lista de novos convertidos</a>
+                         </li>
+                         <li>
+                            <a href="#">Lista de GCEUs</a>
+                         </li>
+                         <li>
+                            <a href="#">Anfitriões</a>
+                         </li> -->
                      </ul>
                  </li>
              @endif

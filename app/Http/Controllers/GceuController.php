@@ -9,6 +9,7 @@ use App\Http\Requests\StoreGCeuRequest;
 use App\Http\Requests\UpdateGCeuRequest;
 use App\Models\GCeu;
 use App\Models\MembresiaMembro;
+use App\Services\ServiceGCeu\CartaPastoralGCeuService;
 use App\Services\ServiceGCeu\DeletarGCeuService;
 use App\Services\ServiceGCeu\EditarGCeuService;
 use App\Services\ServiceGCeu\StoreGCeuService;
@@ -109,5 +110,16 @@ class GceuController extends Controller
             return redirect()->route('gceu.index')->with('error', 'GCEU não encontrado.');
         }
         return view('gceu.visualizar', ['gceu' =>  $gceu]);
+    }
+    public function cartaPastoral($gceuId)
+    {
+        $data = app(CartaPastoralGCeuService::class)->getList($gceuId);
+        $congregacoes = Identifiable::fetchCongregacoes();
+        if (!$data) {
+            return redirect()->route('gceu.index')->with('error', 'GCEU não encontrado.');
+        }
+        // return view('gceu.editar', compact('gceu', 'congregacoes'));
+        // $data = app(IdentificaDadosIndexService::class)->execute($request->all());
+        return view('gceu.carta-pastoral.index', $data);
     }
 }
