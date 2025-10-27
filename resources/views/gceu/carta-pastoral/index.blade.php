@@ -69,7 +69,7 @@
 
                 <div class="table-responsive">
                     <table class="table table-bordered table-striped table-hover mb-4" id="datatable"
-                        data-url="{{-- route('gceu.list') --}}">
+                        data-url="{{ route('gceu.list') }}">
                         <thead>
                             <tr>
                                 <th>CARTA PASTORAL</th>
