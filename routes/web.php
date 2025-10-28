@@ -393,13 +393,12 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/visualizar-html/{id}', [GceuController::class, 'visualizarHtml'])->name('visualizar-html');
             //Palavra pastoral
             Route::get('/carta-pastoral/{id}', [GceuController::class, 'cartaPastoral'])->name('carta-pastoral')->middleware(['seguranca:gceu-carta-pastoral']);
-            Route::get('/carta-pastoral/list', [GceuController::class, 'list'])->name('list')->middleware(['seguranca:gceu-lista']);
-            // Route::get('/novo', [GceuController::class, 'novo'])->name('novo')->middleware(['seguranca:gceu-cadastrar']);
-            // Route::post('/store', [GceuController::class, 'store'])->name('store')->middleware(['seguranca:gceu-cadastrar']);
-            // Route::get('/editar/{id}', [GceuController::class, 'editar'])->name('editar')->middleware(['seguranca:gceu-atualizar']);
-            // Route::post('/editar/{id}', [GceuController::class, 'update'])->name('update')->middleware(['seguranca:gceu-atualizar']);
-            // Route::post('/deletar/{id}', [GceuController::class, 'deletar'])->name('deletar')->middleware(['seguranca:gceu-excluir']);
-            // Route::get('/visualizar-html/{id}', [GceuController::class, 'visualizarHtml'])->name('visualizar-html');
+            Route::get('/carta-pastoral-novo/{id}', [GceuController::class, 'cartaPastoralNovo'])->name('carta-pastoral.novo')->middleware(['seguranca:gceu-carta-pastoral-cadastrar']);
+            Route::post('/carta-pastoral/store', [GceuController::class, 'cartaPastoralStore'])->name('carta-pastoral-store')->middleware(['seguranca:gceu-carta-pastoral-cadastrar']);
+            Route::get('/carta-pastoral/editar/{id}', [GceuController::class, 'cartaPastoralEditar'])->name('carta-pastoral.editar')->middleware(['seguranca:gceu-carta-pastoral-atualizar']);
+            Route::post('/carta-pastoral/editar/{id}', [GceuController::class, 'cartaPastoralUpdate'])->name('carta-pastoral-update')->middleware(['seguranca:gceu-carta-pastoral-atualizar']);
+            Route::post('/carta-pastoral/deletar/{id}', [GceuController::class, 'cartaPastoralDeletar'])->name('carta-pastoral.deletar')->middleware(['seguranca:gceu-carta-pastoral-excluir']);
+            Route::get('/carta-pastoral/visualizar-html/{id}', [GceuController::class, 'cartaPastoralVisualizarHtml'])->name('carta-pastoral-visualizar-html');
         });
 
         /* Por enquanto somente visualiações */

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\GCeuCartaPastoralDatatable;
 use App\DataTables\GCeuDatatable;
 use App\Http\Requests\UpdateVisitanteRequest;
 use App\Rules\ValidDateOfBirth;
@@ -114,12 +115,81 @@ class GceuController extends Controller
     public function cartaPastoral($gceuId)
     {
         $data = app(CartaPastoralGCeuService::class)->getList($gceuId);
-        $congregacoes = Identifiable::fetchCongregacoes();
         if (!$data) {
             return redirect()->route('gceu.index')->with('error', 'GCEU não encontrado.');
         }
-        // return view('gceu.editar', compact('gceu', 'congregacoes'));
-        // $data = app(IdentificaDadosIndexService::class)->execute($request->all());
         return view('gceu.carta-pastoral.index', $data);
+    }
+    
+    public function cartaPastoralEditar($id)
+    {
+        $gceu = app(EditarGCeuService::class)->findOne($id);
+        $congregacoes = Identifiable::fetchCongregacoes();
+        if (!$gceu) {
+            return redirect()->route('gceu.index')->with('error', 'GCEU não encontrado.');
+        }
+        return view('gceu.editar', compact('gceu', 'congregacoes'));
+    }
+
+    public function cartaPastoralUpdate(UpdateGCeuRequest $request, $id)
+    {
+        try {
+            DB::beginTransaction();
+            app(EditarGCeuService::class)->execute($id, $request->all());
+            DB::commit();
+            return redirect()->route('gceu.editar', ['id' => $id])->with('success', 'GCEU atualizado com sucesso.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return redirect()->route('gceu.editar', ['id' => $id])->with('error', 'Falha ao atualizar o GCEU.');
+        }
+    }
+
+    public function cartaPastoralDeletar($id)
+    {
+        $congregacoes = Identifiable::fetchCongregacoes();
+        try {
+            $existe = GCeu::join('gceu_membros', 'gceu_membros.gceu_cadastro_id','gceu_cadastros.id')->where('gceu_cadastros.id',$id)->first();
+            if($existe){
+                return back()->with('error', 'Não poderá remover esse CGEU, pois existe membros vinculados.');
+            }else{
+                app(DeletarGCeuService::class)->execute($id);
+                return redirect()->route('gceu.index')->with('success', 'GCEU deletado com sucesso.');
+            }
+        } catch (\Exception $e) {
+            return back()->with('error', 'Falha ao deletar o GCEU.');
+        }
+    }
+
+    public function cartaPastoralNovo($id)
+    {
+        try {
+            $data['gceu'] = GCeu::where('id',$id)->first();
+            return view('gceu.carta-pastoral.create', $data);
+        } catch (\Exception $e) {
+            return back()->with('error', 'Falha ao abrir a página nova carta pastoral');
+        }
+    }
+
+    public function cartaPastoralStore(StoreGCeuRequest $request)
+    {
+        try {
+            DB::beginTransaction();
+            app(StoreGCeuService::class)->execute($request->all());
+            DB::commit();
+            return redirect()->route('gceu.index')->with('success', 'GCEU cadastrado com sucesso.');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->route('gceu.index')->with('error', $e->getMessage());
+        }
+    }
+
+    public function cartaPastoralVisualizarHtml($id)
+    {
+        $gceu = app(VisualizarGCeuService::class)->findOne($id);
+        if (!$gceu) {
+            return redirect()->route('gceu.index')->with('error', 'GCEU não encontrado.');
+        }
+        return view('gceu.visualizar', ['gceu' =>  $gceu]);
     }
 }

@@ -4,6 +4,7 @@
 /public/storage
 /storage/*.key
 /vendor
+/uploads
 package-lock.json
 .env
 .env.backup

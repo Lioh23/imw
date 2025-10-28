@@ -1,7 +1,7 @@
 @extends('template.layout')
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
-        ['text' => 'GCEU', 'url' => '/gceu', 'active' => false],
+        ['text' => 'GCEU', 'url' => '/gceu/lista', 'active' => false],
         ['text' => 'Carta Pastoral', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
@@ -11,8 +11,11 @@
     <link href="{{ asset('theme/plugins/sweetalerts/sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/components/custom-sweetalert.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('theme/plugins/table/datatable/datatables.css') }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
 
     <style>
         .swal2-popup .swal2-styled.swal2-cancel {
@@ -26,7 +29,7 @@
     <div class="container-fluid d-flex justify-content-between">
         {{-- esquerda --}}
         <div>
-            <a href="{{ route('gceu.novo') }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
+            <a href="{{ route('gceu.carta-pastoral.novo', $gceu->id) }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="feather feather-plus-circle">
@@ -52,24 +55,9 @@
                 </div>
             </div>
             <div class="widget-content widget-content-area">
-                <form id="searchForm" class="mb-5">
-                    <input type="radio" name="excluido" value="0" class="new-control-input"
-                         {{ request()->input('excluido') == '0' || request()->input('excluido') == null ? 'checked' : '' }}>
-                    
-                    <div class="row mb-4">
-                        <div class="col-4">
-                            <input type="text" name="search" id="searchInput" class="form-control form-control-sm"
-                                placeholder="Pesquisar...">
-                        </div>
-                        <div class="col-auto" style="margin-left: -19px;">
-                            <button type="submit" class="btn btn-primary btn-rounded"><x-bx-search /> Pesquisar</button>
-                        </div>
-                    </div>
-                </form>
 
                 <div class="table-responsive">
-                    <table class="table table-bordered table-striped table-hover mb-4" id="datatable"
-                        data-url="{{ route('gceu.list') }}">
+                    <table class="table table-bordered table-striped table-hover mb-4" id="cartaPastoral">
                         <thead>
                             <tr>
                                 <th>CARTA PASTORAL</th>
@@ -79,12 +67,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                            @foreach($cartasPastorais as $cartaPastoral)
                             <tr>
-                                <td>Ser persistente é um grande passo para o sucesso.</td>
-                                <td>Pastor Teste</td>
-                                <td>24/10/2025</td>
-                                <td></td>
+                                <td>{{ $cartaPastoral->titulo }}</td>
+                                <td>{{ $cartaPastoral->pastor }}</td>
+                                <td>{{ formatDate($cartaPastoral->data_criacao) }}</td>
+                                <td>@include('gceu.carta-pastoral.slice-actions')</td>
                             </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
@@ -101,9 +91,21 @@
 @endsection
 
 @section('extras-scripts')
-    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
-    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
-    <script src="{{ asset('theme/plugins/table/datatable/datatables.js') }}"></script>
-    <script src="{{ asset('custom/js/imw_datatables.js') }}?time={{ time() }}"></script>
-    <script src="{{ asset('gceu/js/index.js') }}?time={{ time() }}"></script>
+    <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+    <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
+    <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#cartaPastoral').DataTable(
+                {
+                    language: {
+                        url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+                    }
+                }
+            );
+        });
+    </script>
 @endsection
