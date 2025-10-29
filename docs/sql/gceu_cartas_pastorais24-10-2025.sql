@@ -1,7 +1,7 @@
 
 CREATE TABLE `gceu_cartas_pastorais` (
   `id` bigint(20) NOT NULL,
-  `gceu_cadastro_id` bigint(20) UNSIGNED NOT NULL,
+  `instituicao_id` bigint(20) UNSIGNED NOT NULL,
   `pessoa_id` bigint(20) UNSIGNED NOT NULL,
   `titulo` varchar(255) NOT NULL,
   `introducao` varchar(500) NOT NULL,

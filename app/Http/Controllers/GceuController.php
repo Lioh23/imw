@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\DataTables\GCeuCartaPastoralDatatable;
 use App\DataTables\GCeuDatatable;
+use App\Http\Requests\StoreGCeuCartaPastoralRequest;
 use App\Http\Requests\UpdateVisitanteRequest;
 use App\Rules\ValidDateOfBirth;
 use App\Http\Requests\StoreGCeuRequest;
@@ -13,6 +14,7 @@ use App\Models\MembresiaMembro;
 use App\Services\ServiceGCeu\CartaPastoralGCeuService;
 use App\Services\ServiceGCeu\DeletarGCeuService;
 use App\Services\ServiceGCeu\EditarGCeuService;
+use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\StoreGCeuService;
 use App\Services\ServiceGCeu\VisualizarGCeuService;
 use App\Services\ServiceVisitantes\DeletarVisitanteService;
@@ -112,11 +114,12 @@ class GceuController extends Controller
         }
         return view('gceu.visualizar', ['gceu' =>  $gceu]);
     }
-    public function cartaPastoral($gceuId)
+    public function cartaPastoral()
     {
-        $data = app(CartaPastoralGCeuService::class)->getList($gceuId);
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $data = app(CartaPastoralGCeuService::class)->getList($igrejaId);
         if (!$data) {
-            return redirect()->route('gceu.index')->with('error', 'GCEU não encontrado.');
+            return redirect()->route('gceu.index')->with('error', 'Carta pastoral não encontrada.');
         }
         return view('gceu.carta-pastoral.index', $data);
     }
@@ -161,26 +164,27 @@ class GceuController extends Controller
         }
     }
 
-    public function cartaPastoralNovo($id)
+    public function cartaPastoralNovo()
     {
         try {
-            $data['gceu'] = GCeu::where('id',$id)->first();
+            $data['instituicao_id'] = Identifiable::fetchSessionIgrejaLocal()->id;
+            $data['instituicao'] = Identifiable::fetchSessionIgrejaLocal()->nome;
             return view('gceu.carta-pastoral.create', $data);
         } catch (\Exception $e) {
             return back()->with('error', 'Falha ao abrir a página nova carta pastoral');
         }
     }
 
-    public function cartaPastoralStore(StoreGCeuRequest $request)
+    public function cartaPastoralStore(StoreGCeuCartaPastoralRequest $request)
     {
         try {
             DB::beginTransaction();
-            app(StoreGCeuService::class)->execute($request->all());
+            app(StoreGCeuCartaPastoralService::class)->execute($request->all());
             DB::commit();
-            return redirect()->route('gceu.index')->with('success', 'GCEU cadastrado com sucesso.');
+            return redirect()->route('gceu.carta-pastoral')->with('success', 'Carta pastoral cadastrada com sucesso.');
         } catch (\Exception $e) {
             DB::rollback();
-            return redirect()->route('gceu.index')->with('error', $e->getMessage());
+            return redirect()->route('gceu.carta-pastoral')->with('error', $e->getMessage());
         }
     }
 

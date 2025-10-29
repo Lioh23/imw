@@ -2,19 +2,19 @@
 
 namespace App\Services\ServiceGCeu;
 
-use App\Models\GCeu;
+use App\Models\GCeuCartaPastoral;
 use App\Traits\Identifiable;
 
 class CartaPastoralGCeuService
 {
     public function getList($id): array
     {
-        $cartasPastorais = GCeu::select('gceu_cartas_pastorais.*', 'pessoas_pessoas.nome as pastor')
-                    ->join('gceu_cartas_pastorais','gceu_cartas_pastorais.gceu_cadastro_id', 'gceu_cadastros.id')
+        $cartasPastorais = GCeuCartaPastoral::select('gceu_cartas_pastorais.*', 'pessoas_pessoas.nome as pastor')
                     ->join('pessoas_pessoas', 'pessoas_pessoas.id', 'gceu_cartas_pastorais.pessoa_id')
-                    ->where('gceu_cadastros.id', $id)->get();
-        $data['gceu'] = GCeu::where('id', $id)->first();
+                    ->where('gceu_cartas_pastorais.instituicao_id', $id)->get();
         $data['cartasPastorais'] = $cartasPastorais;
+        $data['instituicao'] = Identifiable::fetchSessionIgrejaLocal()->nome;
+        $data['instituicao_id'] = Identifiable::fetchSessionIgrejaLocal()->id;
         return $data;
     }
 }

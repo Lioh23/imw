@@ -29,7 +29,7 @@
     <div class="container-fluid d-flex justify-content-between">
         {{-- esquerda --}}
         <div>
-            <a href="{{ route('gceu.carta-pastoral.novo', $gceu->id) }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
+            <a href="{{ route('gceu.carta-pastoral.novo', $instituicao_id) }}" class="btn btn-primary position-relative mt-3 mb-3 ml-2">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                     class="feather feather-plus-circle">
@@ -50,7 +50,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Lista de Cartas Pastorais - GCEU: <u>{{ $gceu->nome }}</u></h4>
+                        <h4>Lista de Cartas Pastorais - Igreja: <u>{{ $instituicao }}</u></h4>
                     </div>
                 </div>
             </div>

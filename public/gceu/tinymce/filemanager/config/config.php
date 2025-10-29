@@ -66,7 +66,7 @@ $config = array(
 	| with start and final /
 	|
 	*/
-	'upload_dir' => '/resources/js/tinymce_tsa/uploads/',
+	'upload_dir' => '/gceu/tinymce/uploads/',
 	
 	/*
 	|--------------------------------------------------------------------------
