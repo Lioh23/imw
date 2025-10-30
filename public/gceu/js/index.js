@@ -26,7 +26,6 @@ $(document).ready(function() {
         })
         $('.btn-visualizar').click(function () {
             $('#visualizarGCEUModal').modal('show')
-            console.log($(this).data('gceu-id'), "id")
             $.ajax({
                 type: "get",
                 url: "/gceu/visualizar-html/" + $(this).data('gceu-id'),

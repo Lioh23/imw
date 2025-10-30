@@ -121,7 +121,7 @@
             </form>
             @else
             <div class="alert alert-warning" role="alert">
-                Visitante não encontrado.
+                CGEU não encontrado.
             </div>
             @endif
         </div>

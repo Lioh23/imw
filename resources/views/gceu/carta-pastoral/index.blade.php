@@ -81,7 +81,7 @@
             </div>
         </div>
     </div>
-    <div class="modal fade" tabindex="-1" id="visualizarGCEUModal" aria-hidden="true">
+    <div class="modal fade" tabindex="-1" id="visualizarGCEUCartaPastoralModal" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl">
             <div class="modal-content loadable">
                 <div class="modal-body" style="min-height: 200px"></div>
@@ -91,12 +91,14 @@
 @endsection
 
 @section('extras-scripts')
+    <script src="{{ asset('theme/plugins/sweetalerts/promise-polyfill.js') }}"></script>
+    <script src="{{ asset('theme/plugins/sweetalerts/sweetalert2.min.js') }}"></script>
     <script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
     <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
     <script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
     <script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
-
+    <script src="{{ asset('gceu/js/cartaPastoral.js') }}?time={{ time() }}"></script>
     <script>
         $(document).ready(function() {
             $('#cartaPastoral').DataTable(

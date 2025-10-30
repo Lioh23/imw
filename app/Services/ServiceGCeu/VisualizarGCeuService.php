@@ -5,7 +5,7 @@ namespace App\Services\ServiceGCeu;
 use App\Models\GCeu;
 use App\Traits\Identifiable;
 
-class VisualizarGCeuService
+class VisualizarGCeuService 
 {
     public function findOne($id): ?GCeu
     {

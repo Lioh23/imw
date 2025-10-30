@@ -26,7 +26,7 @@
 </style>
 
 <div class="modal-header">
-    <h5 class="modal-title">Dados: {{ $gceu->nome }}</h5>
+    <h5 class="modal-title">Visualização da Carta Pastoral</h5>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
         <span aria-hidden="true">&times;</span>
     </button>
@@ -36,26 +36,12 @@
     <div class="row">
         <div class="col-12">
             <div class="tab-content">
-                <table class="table table-bordered table-striped table-hover mb-4 dataTable no-footer">
-                    <thead>
-                        <tr><th>Nome:</th><th>Anfitriao:</th><th>Contato:</th> <th>E-mail:</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>{{ $gceu->nome }}</td><td>{{ $gceu->anfitriao }}</td> <td>{{ $gceu->contato }}</td> <td>{{ $gceu->email }}</td></tr>
-                    </tbody>
-                    <thead>
-                        <tr><th>CEP:</th><th>Endereco:</th><th>Número:</th> <th>Bairro:</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>{{ $gceu->cep }}</td><td>{{ $gceu->endereco }}</td> <td>{{ $gceu->numero }}</td>  <td>{{ $gceu->bairro }}</td></tr>
-                    </tbody>
-                    <thead>
-                        <tr><th>Cidade:</th><th>UF:</th><th>Igreja:</th> <th>Congregação:</th></tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>{{ $gceu->cidade }}</td><td>{{ $gceu->uf }}</td> <td>{{ $gceu->igreja }}</td>  <td>{{ $gceu->congregacao }}</td></tr>
-                    </tbody>
-                </table>
+                <div><h6>Titulo</h6></div>
+                <div style="margin-bottom: 15px;">{{ $cartaPastoral->titulo }}</div>
+                <div><h6>Carta Pastoral</h6></div>
+                <div style="margin-bottom: 15px;">{!! $cartaPastoral->conteudo !!}</div>
+                <div><h6>Pastor</h6></div>
+                <div>{{ $cartaPastoral->pastor }}</div>
             </div>
         </div>
     </div>
