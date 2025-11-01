@@ -17,6 +17,7 @@ use App\Services\ServiceGCeu\DeletarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\DeletarGCeuService;
 use App\Services\ServiceGCeu\EditarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\EditarGCeuService;
+use App\Services\ServiceGCeu\GCeuDiarioService;
 use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\StoreGCeuService;
 use App\Services\ServiceGCeu\VisualizarGCeuCartaPastoralService;
@@ -119,6 +120,7 @@ class GceuController extends Controller
         }
         return view('gceu.visualizar', ['gceu' =>  $gceu]);
     }
+
     public function cartaPastoral()
     {
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
@@ -205,5 +207,16 @@ class GceuController extends Controller
 
         $pdf = FacadePdf::loadView('gceu.carta-pastoral.pdf', ['cartaPastoral' =>  $cartaPastoral]);
         return $pdf->stream('carta-pastoral-'.$cartaPastoral->titulo.'.pdf');
+    }
+
+    public function diario(Request $request)
+    {
+        $data = $request->all();
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $data = app(GCeuDiarioService::class)->getList($igrejaId, $data);
+        if (!$data) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        return view('gceu.diario.index', $data);
     }
 }

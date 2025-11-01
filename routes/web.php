@@ -400,6 +400,8 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/carta-pastoral/deletar/{id}', [GceuController::class, 'cartaPastoralDeletar'])->name('carta-pastoral.deletar')->middleware(['seguranca:gceu-carta-pastoral-excluir']);
             Route::get('/carta-pastoral/visualizar-html/{id}', [GceuController::class, 'cartaPastoralVisualizarHtml'])->name('carta-pastoral-visualizar-html');
             Route::get('/carta-pastoral/visualizar-pdf/{id}', [GceuController::class, 'cartaPastoralPdf'])->name('carta-pastoral.pdf');
+            //Diario
+            Route::get('/diario', [GceuController::class, 'diario'])->name('diario')->middleware(['seguranca:gceu-diario']);
         });
 
         /* Por enquanto somente visualiações */

@@ -927,11 +927,11 @@
                                  <a href="{{ route('gceu.carta-pastoral') }}">Carta Pastoral</a>
                              @endif
                          </li>
-                         <!-- <li {!! Request::is('gceu/novo') ? 'class="active"' : '' !!}>
-                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-cadastrar'))
-                                 <a href="{{ route('gceu.novo') }}">Novo</a>
+                         <li {!! Request::is('gceu/diario*') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-diario'))
+                                 <a href="{{ route('gceu.diario') }}">Diário</a>
                              @endif
-                         </li> -->
+                         </li>
                          <!-- <li class="submenu-fixo mt-3 mb-3">
                             <span>Relatórios</span>
                          </li>
