@@ -2,7 +2,7 @@
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
         ['text' => 'GCEU', 'url' => '/gceu/lista', 'active' => false],
-        ['text' => 'Carta Pastoral', 'url' => '#', 'active' => true],
+        ['text' => 'Diário', 'url' => '#', 'active' => true],
     ]"></x-breadcrumb>
 @endsection
 
@@ -71,7 +71,7 @@
                                         <div class="card">
                                             <div class="card-body">
                                                 <p>{{ $membro->nome }}</p>
-                                                Presente: 
+                                                Presença: 
                                                 <div class="form-check form-check-inline">
                                                     <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
                                                     <label class="form-check-label" for="inlineRadio1">Sim</label>
