@@ -11,7 +11,6 @@ trait QuantidadeMembrosUtils
 	public static function fetch($dataInicial, $dataFinal, $tipo, $distritoId, $regiaoId = null): Collection
 	{
 		$vinculoCondition = $tipo === 'C' ? ['C', 'M'] : ['M'];
-
 		$results = DB::table('instituicoes_instituicoes as ii')
 			->select('ii.id', 'ii.nome', 'dist.nome as distrito')
 			->selectRaw("
@@ -38,12 +37,12 @@ trait QuantidadeMembrosUtils
 			->when($distritoId == 'all' && $regiaoId, 
 				fn ($query) => $query->whereIn('ii.instituicao_pai_id', Identifiable::fetchDistritosIdByRegiao($regiaoId)),
 				fn ($query) => $query->where('ii.instituicao_pai_id', $distritoId),
-			)
+			)->where('ii.ativo',1)
 			->groupBy('ii.id', 'ii.nome', 'dist.nome')
 			->orderBy('dist.nome', 'asc')
 			->orderBy('ii.nome', 'asc')
 			->get();
-
+	
 		return $results;
 	}
 }
