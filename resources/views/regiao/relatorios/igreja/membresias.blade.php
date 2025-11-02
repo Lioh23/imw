@@ -118,7 +118,7 @@
                             <th colspan="2" style="text-align: center;">ATUAL</th>
                             <th style="text-align: center;">TOTAL</th>
                             <th style="text-align: center;">%ROL</th>
-                            <th style="text-align: center;">TOTAL GERAL</th>
+                            <th style="text-align: center;">VARIAÇÃO</th>
                         </tr>
                         <tr>
                             <th></th>   
@@ -358,7 +358,7 @@
                             <th style="text-align: center;">ANTERIOR</th>
                             <th style="text-align: center;">ATUAL</th>
                             <th style="text-align: center;">%ROL</th>
-                            <th style="text-align: center;">TOTAL GERAL</th>
+                            <th style="text-align: center;">VARIAÇÃO</th>
                         </tr>
                     </thead>
                     <tbody>
