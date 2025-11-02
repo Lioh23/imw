@@ -319,7 +319,7 @@
                             <td style="text-align: center;">{{ array_sum($totalRolAtualF) }}</td>
                             <td style="text-align: center;">{{ array_sum($valorTotalRolAtualMF) }}</td>
                             <td style="text-align: center;">
-                                @if( $valorTotalRolAnteriorPercent > 0)
+                                @if( array_sum($valorTotalRolAnteriorMF) > 0)
                                     {{ decimal((array_sum($valorTotalRolAtualMF) - array_sum($valorTotalRolAnteriorMF))/array_sum($valorTotalRolAnteriorMF)*100) }}%
                                 @else
                                     {{ decimal(0) }}%
