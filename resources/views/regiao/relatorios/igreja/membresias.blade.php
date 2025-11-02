@@ -320,7 +320,7 @@
                             <td style="text-align: center;">{{ array_sum($valorTotalRolAtualMF) }}</td>
                             <td style="text-align: center;">
                                 @if($totalRolAtualMF > 0)
-                                    {{ ($valorTotalRolAtualMF - $totalRolAnteriorMF) / $totalRolAnteriorMF * 100}}%
+                                    {{ ($totalRolAtualMF - $totalRolAnteriorMF) / $totalRolAnteriorMF * 100}}%
                                 @else
                                     0%
                                 @endif  
