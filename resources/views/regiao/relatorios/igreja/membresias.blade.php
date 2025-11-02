@@ -212,7 +212,7 @@
                                 $totalTransferenciaExcluidosF[] = $transferenciaExcluidosF;
                                 $totalExcluidoM = $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][2]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_masculino + $item['membrosExcluidos'][4]->sexo_masculino + $item['membrosExcluidos'][5]->sexo_masculino;
                                 $valorTotalExcluidoM[] = $totalExcluidoM;
-                                $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino;
+                                $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][5]->sexo_feminino;
                                 $valorTotalExcluidoF[] = $totalExcluidoF;
                                 $rolAnteriorM = $item['rolAnterior']->sexo_masculino;
                                 $totalRolAnteriorM[] = $rolAnteriorM;
@@ -228,7 +228,8 @@
                                 $valorTotalRolAtualMF[] = $totalRolAtualMF;
 
                                 $rolPorcentagem = $item['rolAnterior']->total > 0 ? decimal(($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100) : decimal(0);
-                                $totalRolPorcentagem[] = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
+                                $totalRolPorcentagem = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
+                                $totalRolPorcentagemGeral += $totalRolPorcentagem;
                                 $geral = ($totalRecebidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
                                 $valorGeral[] = $geral;
                             @endphp
@@ -312,11 +313,12 @@
                             <td style="text-align: center;">{{ array_sum($totalRolAtualM) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAtualF) }}</td>
                             <td style="text-align: center;">{{ array_sum($valorTotalRolAtualMF) }}</td>
-                            <td style="text-align: center;">{{ decimal(array_sum($totalRolPorcentagem)) }}%</td>
+                            <td style="text-align: center;">{{ decimal($totalRolPorcentagem) }}%</td>
                             <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
                         </tr>
                     </tbody>
                 </table>
+                    @php unset($totalRolPorcentagem) @endphp
                 @else 
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="ano-eclesiastico-simplificado">
                     <thead>
@@ -350,6 +352,7 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php $totalRolPorcentagemGeral = 0; @endphp
                         @forelse($membresias as $item)
                             @php 
                                 $totalRecebidoM = $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][2]->sexo_masculino + $item['membrosRecebidos'][3]->sexo_masculino + $item['membrosRecebidos'][4]->sexo_masculino;
@@ -357,7 +360,7 @@
 
                                 $totalExcluidoM = $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][2]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_masculino + $item['membrosExcluidos'][4]->sexo_masculino + $item['membrosExcluidos'][5]->sexo_masculino;
 
-                                $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino;
+                                $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][5]->sexo_feminino;
                                 $adesao = $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][1]->sexo_feminino;
                                 $totalAdesao[] = $adesao;
                                 $batismo = $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][0]->sexo_feminino;
@@ -389,7 +392,8 @@
                                 $rolAtual = $item['rolAtual']->total;
                                 $totalRolAtual[] = $rolAtual;
                                 $rolPorcentagem = $item['rolAnterior']->total > 0 ? decimal(($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100) : decimal(0);
-                                $totalRolPorcentagem[] = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
+                                $totalRolPorcentagem = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
+                                $totalRolPorcentagemGeral += $totalRolPorcentagem;
                                 $geral = ($totalRecebidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
                                 $valorGeral[] = $geral;
                             @endphp
@@ -414,6 +418,7 @@
                                 <td style="text-align: center;">{{ $rolPorcentagem }}%</td>
                                 <td style="text-align: center;">{{ $geral }}</td>
                             </tr>
+                            @php unset($totalRolPorcentagem); @endphp
                         @empty
                         <tr>
                             <td colspan="8">
@@ -440,7 +445,7 @@
                             <td style="text-align: center;">{{ array_sum($totalExcluidos) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAnterior) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAtual) }}</td>
-                            <td style="text-align: center;">{{ decimal(array_sum($totalRolPorcentagem)) }}%</td>
+                            <td style="text-align: center;">{{ decimal($totalRolPorcentagemGeral) }}%</td>
                             <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
                         </tr>
                        @endif                      
