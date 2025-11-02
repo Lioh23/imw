@@ -425,7 +425,7 @@
                                 <td style="text-align: center;">{{ $rolAtual }}</td>
                                 <td style="text-align: center;">
                                     @if($rolAnterior > 0)
-                                        {{ decimal($totalRolAtual - $rolAnterior) / $rolAnterior * 100 }}%
+                                        {{ decimal($rolAtual - $rolAnterior) / $rolAnterior * 100 }}%
                                     @else
                                         {{ decimal(0) }}%
                                     @endif 
@@ -460,7 +460,7 @@
                             <td style="text-align: center;">{{ array_sum($totalRolAtual) }}</td>
                             <td style="text-align: center;">
                                  @if(array_sum($totalRolAnterior) > 0)
-                                    {{ decimal((array_sum($totalRolAtual) - array_sum($totalRolAnterior) / array_sum($totalRolAnterior)) * 100) }}%
+                                    {{ decimal((array_sum($totalRolAtual) - array_sum($totalRolAnterior)) / array_sum($totalRolAnterior) * 100) }}%
                                 @else
                                     {{ decimal(0) }}%
                                 @endif 
