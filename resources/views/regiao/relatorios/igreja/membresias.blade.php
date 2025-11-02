@@ -228,8 +228,7 @@
                                 $valorTotalRolAtualMF[] = $totalRolAtualMF;
 
                                 $rolPorcentagem = $item['rolAnterior']->total > 0 ? decimal(($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100) : decimal(0);
-                                $totalRolPorcentagem = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
-                                $totalRolPorcentagemGeral += $totalRolPorcentagem;
+                                $totalRolPorcentagem[] = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
                                 $geral = ($totalRecebidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
                                 $valorGeral[] = $geral;
                             @endphp
@@ -268,7 +267,13 @@
                                 <td style="text-align: center;">{{ $rolAtualM }}</td>
                                 <td style="text-align: center;">{{ $rolAtualF }}</td>
                                 <td style="text-align: center;">{{ $totalRolAtualMF }}</td>
-                                <td style="text-align: center;">{{ $rolPorcentagem }}%</td>
+                                <td style="text-align: center;">
+                                    @if($totalRolAnteriorMF > 0)
+                                        {{ ($totalRolAtualMF - $totalRolAnteriorMF) / $totalRolAnteriorMF * 100}}%
+                                    @else
+                                        0%
+                                    @endif                                    
+                                </td>
                                 <td style="text-align: center;">{{ $geral }}</td>
                             </tr>
                         @empty
@@ -313,12 +318,17 @@
                             <td style="text-align: center;">{{ array_sum($totalRolAtualM) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAtualF) }}</td>
                             <td style="text-align: center;">{{ array_sum($valorTotalRolAtualMF) }}</td>
-                            <td style="text-align: center;">{{ decimal($totalRolPorcentagem) }}%</td>
+                            <td style="text-align: center;">
+                                @if($totalRolAtualMF > 0)
+                                    {{ ($valorTotalRolAtualMF - $totalRolAnteriorMF) / $totalRolAnteriorMF * 100}}%
+                                @else
+                                    0%
+                                @endif  
+                            </td>
                             <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
                         </tr>
                     </tbody>
                 </table>
-                    @php unset($totalRolPorcentagem) @endphp
                 @else 
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="ano-eclesiastico-simplificado">
                     <thead>
@@ -352,7 +362,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @php $totalRolPorcentagemGeral = 0; @endphp
                         @forelse($membresias as $item)
                             @php 
                                 $totalRecebidoM = $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][2]->sexo_masculino + $item['membrosRecebidos'][3]->sexo_masculino + $item['membrosRecebidos'][4]->sexo_masculino;
@@ -392,8 +401,7 @@
                                 $rolAtual = $item['rolAtual']->total;
                                 $totalRolAtual[] = $rolAtual;
                                 $rolPorcentagem = $item['rolAnterior']->total > 0 ? decimal(($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100) : decimal(0);
-                                $totalRolPorcentagem = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
-                                $totalRolPorcentagemGeral += $totalRolPorcentagem;
+                                $totalRolPorcentagem[] = $item['rolAnterior']->total > 0 ? ($item['rolAtual']->total - $item['rolAnterior']->total)/$item['rolAnterior']->total * 100 : 0;
                                 $geral = ($totalRecebidoM + $totalRecebidoF) -  ($totalExcluidoM  + $totalExcluidoF);
                                 $valorGeral[] = $geral;
                             @endphp
@@ -418,7 +426,6 @@
                                 <td style="text-align: center;">{{ $rolPorcentagem }}%</td>
                                 <td style="text-align: center;">{{ $geral }}</td>
                             </tr>
-                            @php unset($totalRolPorcentagem); @endphp
                         @empty
                         <tr>
                             <td colspan="8">
@@ -445,7 +452,7 @@
                             <td style="text-align: center;">{{ array_sum($totalExcluidos) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAnterior) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAtual) }}</td>
-                            <td style="text-align: center;">{{ decimal($totalRolPorcentagemGeral) }}%</td>
+                            <td style="text-align: center;">{{ decimal(array_sum($totalRolPorcentagem)) }}%</td>
                             <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
                         </tr>
                        @endif                      
