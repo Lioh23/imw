@@ -269,9 +269,9 @@
                                 <td style="text-align: center;">{{ $totalRolAtualMF }}</td>
                                 <td style="text-align: center;">
                                     @if($totalRolAnteriorMF > 0)
-                                        {{ ($totalRolAtualMF - $totalRolAnteriorMF) / $totalRolAnteriorMF * 100}}%
+                                        {{ decimal(($totalRolAtualMF - $totalRolAnteriorMF) / $totalRolAnteriorMF * 100) }}%
                                     @else
-                                        0%
+                                        {{ decimal(0) }}%
                                     @endif                                    
                                 </td>
                                 <td style="text-align: center;">{{ $geral }}</td>
@@ -319,10 +319,10 @@
                             <td style="text-align: center;">{{ array_sum($totalRolAtualF) }}</td>
                             <td style="text-align: center;">{{ array_sum($valorTotalRolAtualMF) }}</td>
                             <td style="text-align: center;">
-                                @if($totalRolAtualMF > 0)
-                                    {{ ($totalRolAtualMF - $totalRolAnteriorMF) / $totalRolAnteriorMF * 100}}%
+                                @if(array_sum($valorTotalRolAnteriorMF) > 0)
+                                    {{ decimal((array_sum($valorTotalRolAtualMF) - array_sum($valorTotalRolAnteriorMF) / array_sum($valorTotalRolAnteriorMF)) * 100) }}%
                                 @else
-                                    0%
+                                    {{ decimal(0) }}%
                                 @endif  
                             </td>
                             <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
@@ -423,7 +423,13 @@
                                 <td style="text-align: center;">{{ $excluidos }}</td>
                                 <td style="text-align: center;">{{ $rolAnterior }}</td>
                                 <td style="text-align: center;">{{ $rolAtual }}</td>
-                                <td style="text-align: center;">{{ $rolPorcentagem }}%</td>
+                                <td style="text-align: center;">
+                                    @if($rolAnterior > 0)
+                                        {{ decimal($totalRolAtual - $rolAnterior) / $rolAnterior * 100 }}%
+                                    @else
+                                        {{ decimal(0) }}%
+                                    @endif 
+                                </td>
                                 <td style="text-align: center;">{{ $geral }}</td>
                             </tr>
                         @empty
@@ -452,7 +458,12 @@
                             <td style="text-align: center;">{{ array_sum($totalExcluidos) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAnterior) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAtual) }}</td>
-                            <td style="text-align: center;">{{ decimal(array_sum($totalRolPorcentagem)) }}%</td>
+                            <td style="text-align: center;">
+                                 @if(array_sum($totalRolAnterior) > 0)
+                                    {{ decimal((array_sum($totalRolAtual) - array_sum($totalRolAnterior) / array_sum($totalRolAnterior)) * 100) }}%
+                                @else
+                                    {{ decimal(0) }}%
+                                @endif 
                             <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
                         </tr>
                        @endif                      
