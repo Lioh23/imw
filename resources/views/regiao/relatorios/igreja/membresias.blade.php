@@ -320,7 +320,7 @@
                             <td style="text-align: center;">{{ array_sum($valorTotalRolAtualMF) }}</td>
                             <td style="text-align: center;">
                                 @if( array_sum($valorTotalRolAnteriorMF) > 0)
-                                    {{ decimal((array_sum($valorTotalRolAtualMF) - array_sum($valorTotalRolAnteriorMF))/array_sum($valorTotalRolAnteriorMF)*100) }}%
+                                    {{ number_format(decimal((array_sum($valorTotalRolAtualMF) - array_sum($valorTotalRolAnteriorMF))/array_sum($valorTotalRolAnteriorMF)*100),2) }}%
                                 @else
                                     {{ decimal(0) }}%
                                 @endif  
@@ -425,7 +425,7 @@
                                 <td style="text-align: center;">{{ $rolAtual }}</td>
                                 <td style="text-align: center;">
                                     @if($rolAnterior > 0)
-                                        {{ decimal($rolAtual - $rolAnterior) / $rolAnterior * 100 }}%
+                                        {{ number_format(decimal(($rolAtual - $rolAnterior) / $rolAnterior * 100), 2) }}%
                                     @else
                                         {{ decimal(0) }}%
                                     @endif 
@@ -460,7 +460,7 @@
                             <td style="text-align: center;">{{ array_sum($totalRolAtual) }}</td>
                             <td style="text-align: center;">
                                  @if(array_sum($totalRolAnterior) > 0)
-                                    {{ decimal((array_sum($totalRolAtual) - array_sum($totalRolAnterior)) / array_sum($totalRolAnterior) * 100) }}%
+                                    {{ number_format(decimal((array_sum($totalRolAtual) - array_sum($totalRolAnterior)) / array_sum($totalRolAnterior) * 100),2) }}%
                                 @else
                                     {{ decimal(0) }}%
                                 @endif 
