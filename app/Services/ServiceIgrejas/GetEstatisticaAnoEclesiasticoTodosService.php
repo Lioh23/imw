@@ -129,9 +129,8 @@ class GetEstatisticaAnoEclesiasticoTodosService
                 SELECT count(*)
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mm.id = mr.membro_id 
-                AND mr.dt_recepcao <= $dataFinal
-                AND (mr.dt_exclusao > $dataFinal OR mr.dt_exclusao IS NULL)
-                
+                AND mr.dt_recepcao <= '$dataFinal'
+                AND (mr.dt_exclusao > '$dataFinal' OR mr.dt_exclusao IS NULL)
                 AND mr.igreja_id = $igrejaId
                 AND mm.sexo = 'M'  
             ) sexo_masculino,  
@@ -139,9 +138,8 @@ class GetEstatisticaAnoEclesiasticoTodosService
                 SELECT count(*)
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mm.id = mr.membro_id 
-                AND mr.dt_recepcao <= $dataFinal
-                AND (mr.dt_exclusao > $dataFinal OR mr.dt_exclusao IS NULL)
-                
+                AND mr.dt_recepcao <= '$dataFinal'
+                AND (mr.dt_exclusao > '$dataFinal' OR mr.dt_exclusao IS NULL)
                 AND mr.igreja_id = $igrejaId
                 AND mm.sexo = 'F' 
                 
@@ -152,9 +150,8 @@ class GetEstatisticaAnoEclesiasticoTodosService
                 SELECT count(*)
                 FROM membresia_rolpermanente mr, membresia_membros mm 
                 WHERE mm.id = mr.membro_id 
-                AND mr.dt_recepcao <= $dataFinal
-                AND (mr.dt_exclusao > $dataFinal OR mr.dt_exclusao IS NULL)
-               
+                AND mr.dt_recepcao <= '$dataFinal'
+                AND (mr.dt_exclusao > '$dataFinal' OR mr.dt_exclusao IS NULL)
                 AND mr.igreja_id = $igrejaId
             ) total";
 
