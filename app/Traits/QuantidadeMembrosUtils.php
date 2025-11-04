@@ -14,12 +14,14 @@ trait QuantidadeMembrosUtils
 		$results = DB::table('instituicoes_instituicoes as ii')
 			->select('ii.id', 'ii.nome', 'dist.nome as distrito')
 			->selectRaw("
-				COUNT(CASE 
-					WHEN mr.dt_recepcao <= '{$dataInicial}' AND (mr.dt_exclusao IS NULL OR mr.dt_exclusao >= '{$dataInicial}') THEN mm.id
+				COUNT(CASE
+					WHEN mm.vinculo='M' and mr.dt_recepcao <= '{$dataInicial}' AND (mr.dt_exclusao IS NULL OR mr.dt_exclusao >= '{$dataInicial}') THEN mm.id
+					when mm.vinculo='C' then mm.id
 					ELSE NULL
 				END) AS total_ate_datainicial,
-				COUNT(CASE 
-					WHEN mr.dt_recepcao <= '{$dataFinal}' AND (mr.dt_exclusao IS NULL OR mr.dt_exclusao >= '{$dataFinal}') THEN mm.id
+				COUNT(CASE
+					WHEN mm.vinculo='M' and mr.dt_recepcao <= '{$dataFinal}' AND (mr.dt_exclusao IS NULL OR mr.dt_exclusao >= '{$dataFinal}') THEN mm.id
+					when mm.vinculo='C' then mm.id
 					ELSE NULL
 				END) AS total_ate_datafinal
 			")
