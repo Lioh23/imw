@@ -72,9 +72,9 @@
                 <a href="{{ route('membro.exclusao', ['id' => $pessoa->id]) }}" class="btn btn-danger">
                     <x-bx-minus-circle/> Excluir
                 </a>
-                <a href="{{ route('membro.transferencia_interna', ['id' => $pessoa->id]) }}" class="btn btn-primary">
+                <!-- <a href="{{ route('membro.transferencia_interna', ['id' => $pessoa->id]) }}" class="btn btn-primary">
                     <x-bx-transfer-alt/> Transferir Internamente
-                </a>
+                </a> -->
             </div>
         </div>
     </blockquote>
