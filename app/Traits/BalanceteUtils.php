@@ -78,7 +78,7 @@ trait BalanceteUtils
                 JOIN 
                     financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
                 WHERE 
-                    fl.deleted_at IS NULL ";
+                    fl.deleted_at IS NULL AND fl.conciliado = 1 ";
                     if ($instituicaoId) {
                         $sql .= "AND fl.instituicao_id = '$instituicaoId' ";
                     }
