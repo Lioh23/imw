@@ -16,28 +16,28 @@ class BalanceteRegiaoService
     {
         //if($instituicaoId != 'all'){
         //$instituicaoId = session()->get('session_perfil')->instituicao_id;
-            $instituicaoId = $instituicaoId;
-            if (empty($dataInicial)) {
-                $dataInicial = Carbon::now()->format('m/Y');
-            }
+        $instituicaoId = $instituicaoId;
+        if (empty($dataInicial)) {
+            $dataInicial = Carbon::now()->format('m/Y');
+        }
 
-            if (empty($dataFinal)) {
-                $dataFinal = Carbon::now()->format('m/Y');
-            }
-            $igreja = Identifiable::fetchIgreja($instituicaoId);
-            $tituloNome = 'Relatório Balancete: ';
-            $periodo = ' - no Período de '. $dataInicial.' - '.$dataFinal;
-            
-            $dataIni = explode('/',$dataInicial);
-            $tdInicial = $dataIni[1].$dataIni[0];        
-            $dataFin = explode('/',$dataFinal); 
-            $tdFinal  = $dataFin[1].$dataFin[0];
-            $sql = "
-                SELECT 'total_saidas', sum(fscm.total_saidas )
-                    FROM financeiro_saldo_consolidado_mensal fscm
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
-            $existeSaldoConsolidado = DB::select($sql);
-           // dd($existeSaldoConsolidado);
+        if (empty($dataFinal)) {
+            $dataFinal = Carbon::now()->format('m/Y');
+        }
+        $igreja = Identifiable::fetchIgreja($instituicaoId);
+        $tituloNome = 'Relatório Balancete: ';
+        $periodo = ' - no Período de '. $dataInicial.' - '.$dataFinal;
+        
+        $dataIni = explode('/',$dataInicial);
+        $tdInicial = $dataIni[1].$dataIni[0];        
+        $dataFin = explode('/',$dataFinal); 
+        $tdFinal  = $dataFin[1].$dataFin[0];
+        $sql = "
+            SELECT  *
+                FROM financeiro_saldo_consolidado_mensal fscm
+                WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+        $existeSaldoConsolidado = DB::select($sql);
+        if(count($existeSaldoConsolidado)){ //fscm.instituicao_id = '$instituicaoId' AND
             return [
                 'instituicao'   => $instituicaoId,
                 'caixas'        => BalanceteUtils::handleCaixasRegiao($dataInicial, $dataFinal, $caixaId, $instituicaoId),
@@ -46,6 +46,16 @@ class BalanceteRegiaoService
                 'igrejas'       => BalanceteUtils::handleListaIgrejasByRegiao($regiao->id),
                 'titulo'        => isset($igreja->nome) ? $tituloNome.$igreja->nome.$periodo : $tituloNome.'Todas Igrejas'.$periodo,
             ];
+        }else{
+            return [
+                'instituicao'   => 'NaoExiste',
+                'caixas'        => [],
+                'caixasSelect'  => [],
+                'lancamentos'   => [],
+                'igrejas'       => [],
+                'titulo'        => '',
+            ];
+        }
         /*}else{
             $totasIgrejas = BalanceteUtils::handleListaIgrejasByRegiao($regiao->id);
             foreach($totasIgrejas as $igreja){
