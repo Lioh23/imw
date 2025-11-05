@@ -2,9 +2,11 @@
 
 namespace App\Services\ServiceFinanceiroRelatorios;
 
+use App\Models\FinanceiroSaldoConsolidadoMensal;
 use App\Traits\BalanceteUtils;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class BalanceteRegiaoService
 {
@@ -25,6 +27,17 @@ class BalanceteRegiaoService
             $igreja = Identifiable::fetchIgreja($instituicaoId);
             $tituloNome = 'Relatório Balancete: ';
             $periodo = ' - no Período de '. $dataInicial.' - '.$dataFinal;
+            
+            $dataIni = explode('/',$dataInicial);
+            $tdInicial = $dataIni[1].$dataIni[0];        
+            $dataFin = explode('/',$dataFinal); 
+            $tdFinal  = $dataFin[1].$dataFin[0];
+            $sql = "
+                SELECT 'total_saidas', sum(fscm.total_saidas )
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+            $existeSaldoConsolidado = DB::select($sql);
+           // dd($existeSaldoConsolidado);
             return [
                 'instituicao'   => $instituicaoId,
                 'caixas'        => BalanceteUtils::handleCaixasRegiao($dataInicial, $dataFinal, $caixaId, $instituicaoId),

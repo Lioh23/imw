@@ -75,9 +75,13 @@
 </div>
 
 @if(request()->input('dt_inicial'))
+
 <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
+        @if($instituicao == 0)
+            Não  existe movimento consolidado para o período escolhido
+        @else
             <!-- Conteúdo -->
             <div class="card mb-3">
                 <div class="card-body">
@@ -248,6 +252,7 @@
                 </div>
             </div>
             <!-- Fim do Conteúdo -->
+        @endif
         </div>
     </div>
 </div>
