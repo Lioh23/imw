@@ -40,7 +40,7 @@ trait BalanceteUtils
         if ($caixaID !== 'all') {
             $sql .= "AND fc.id = '$caixaID' ";
         }
-        $sql .= "AND fl.deleted_at IS NULL 
+        $sql .= "AND fl.deleted_at IS NULL AND fl.conciliado = 1 
                 AND fl.data_movimento BETWEEN '$dataInicial' AND '$dataFinal'
                 GROUP BY 
                     fc.descricao,
