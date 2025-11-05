@@ -17,6 +17,7 @@ use App\Services\ServiceGCeu\DeletarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\DeletarGCeuService;
 use App\Services\ServiceGCeu\EditarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\EditarGCeuService;
+use App\Services\ServiceGCeu\GCeuDiarioPresencaFaltaService;
 use App\Services\ServiceGCeu\GCeuDiarioService;
 use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\StoreGCeuService;
@@ -219,4 +220,15 @@ class GceuController extends Controller
         }
         return view('gceu.diario.index', $data);
     }
+
+    public function diarioPresencaFalta(Request $request)
+    {
+        $data = $request->all();
+        $data = app(GCeuDiarioPresencaFaltaService::class)->salvarDiario($data);
+        if (!$data) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        return view('gceu.diario.index', $data);
+    }
+    
 }

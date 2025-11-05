@@ -21,6 +21,9 @@
         .swal2-popup .swal2-styled.swal2-cancel {
             color: white !important;
         }
+        .cursor-pointer{
+            cursor: pointer;
+        }
     </style>
 @endsection
 
@@ -42,7 +45,7 @@
                     <div class="row">
                         <div class="mb-3 col-lg-4 col-md-6 col-sm-12" id="filtros_data">
                             <label class="control-label">*Data:</label>
-                            <input type="date" class="form-control @error('dt_inicial') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->input('dt_inicial') }}" required placeholder="ex: 31/12/2000">
+                            <input type="date" class="form-control @error('dt-gceu') is-invalid @enderror" id="dt-gceu" name="dt_gceu" value="{{ request()->input('dt_gceu') }}" required placeholder="ex: 31/12/2000">
                         </div>
                         <div class="mb-3 col-lg-5 col-md-6 col-sm-12">
                             <label class="control-label">GCEU:</label>
@@ -64,8 +67,8 @@
                     <div class="row">
                         <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                             <h4>Diário para registro de presença/ausência do GCEU: </h4>
-                             <div class="col-xl-12 col-md-12 col-sm-12 col-12">&nbsp;</div>
-                             <div class="row">
+                            <div class="col-xl-12 col-md-12 col-sm-12 col-12">&nbsp;</div>
+                            <div class="row">
                                 @foreach($membros as $membro)
                                     <div class="col-sm-4">
                                         <div class="card">
@@ -73,12 +76,12 @@
                                                 <p>{{ $membro->nome }}</p>
                                                 Presença: 
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-                                                    <label class="form-check-label" for="inlineRadio1">Sim</label>
+                                                    <input class="form-check-input cursor-pointer cgeu-presenca-falta" onclick="presencaDiario()" type="radio" data-membroid="{{ $membro->membro_id }}" data-gceuid="{{ $membro->gceu_id }}" data-valor="1" name="{{ $membro->membro_id }}" id="{{ $membro->membro_id }}" value="1">
+                                                    <label class="form-check-label cursor-pointer" for="{{ $membro->membro_id }}">Sim</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                    <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-                                                    <label class="form-check-label" for="inlineRadio2">Não</label>
+                                                    <input class="form-check-input cursor-pointer cgeu-presenca-falta" onclick="presencaDiario()" type="radio" data-membroid="{{ $membro->membro_id }}" data-gceuid="{{ $membro->gceu_id }}"  data-valor="0" name="{{ $membro->membro_id }}" id="{{ $membro->membro_id }}{{ $membro->membro_id }}" value="0">
+                                                    <label class="form-check-label cursor-pointer" for="{{ $membro->membro_id }}{{ $membro->membro_id }}">Não</label>
                                                 </div>
                                             </div>
                                         </div>
@@ -86,20 +89,43 @@
                                 @endforeach
                             </div>
                         </div>
+                    </div>
                 @endif
             </div>
                 
         </div>
     </div>
-    <div class="modal fade" tabindex="-1" id="visualizarGCEUCartaPastoralModal" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-xl">
-            <div class="modal-content loadable">
-                <div class="modal-body" style="min-height: 200px"></div>
-            </div>
-        </div>
-    </div>
 @endsection
 
 @section('extras-scripts')
+<script>
+    $(document).on('click', '.cgeu-presenca-falta', function(){
+        let valor = $(this).val();
+        let gceu_id = $(this).data('gceuid');
+        let membro_id = $(this).data('membroid');
+        let dt_gceu = $('#dt-gceu').val();
+        if(!dt_gceu){
+            toastr.warning('Escolha uma data para registrar a  presença/ausência.');
+            return false
+        }
+        $.ajax({
+            url: "/gceu/diario-presenca-falta/",
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: "POST",
+            data: {
+                valor, gceu_id, membro_id, dt_gceu
+            },
+            success: function (data) {
+                toastr.success('Diário confirmado com sucesso');
+            },
+            error: function (data) {
+                toastr.error('Erro ao registar o diário');
+            }
+        });
+    })
+
+</script>
 
 @endsection
