@@ -20,7 +20,7 @@ trait BalanceteUtils
 
     public static function handleLancamentos($dt_inicial, $dt_final, $caixaID, $instituicaoId)
     {
-        dd('oi');
+        
         // Usando Carbon para manipulação de datas
         $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
         $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
