@@ -35,7 +35,7 @@
             <div class="widget-header">
                 <div class="row">
                     <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                        <h4>Diário dos GCEUs da Igreja: <u>{{ $instituicao }}</u></h4>
+                        <h4>Diário dos GCEUs da Igreja: <u id="instituicao">{{ $instituicao }}</u></h4>
                     </div>
                 </div>
             </div>
@@ -73,14 +73,22 @@
                                     <div class="col-sm-4">
                                         <div class="card">
                                             <div class="card-body">
-                                                <p>{{ $membro->nome }}</p>
-                                                Presença: 
+                                                
+                                                <p>
+                                                    {{ $membro->nome }} 
+                                                    @if($membro->presenca === 0)
+                                                        <i class="fas fa-times-circle" style="float: right; color: red;"></i> 
+                                                    @elseif($membro->presenca === 1)
+                                                        <i class="fas fa-check-circle"  style="float: right; color: green;"></i>
+                                                    @endif
+                                                </p>
+                                                Presença:
                                                 <div class="form-check form-check-inline">
-                                                    <input class="form-check-input cursor-pointer cgeu-presenca-falta" onclick="presencaDiario()" type="radio" data-membroid="{{ $membro->membro_id }}" data-gceuid="{{ $membro->gceu_id }}" data-valor="1" name="{{ $membro->membro_id }}" id="{{ $membro->membro_id }}" value="1">
+                                                    <input class="form-check-input cursor-pointer cgeu-presenca-falta" onclick="presencaDiario()" type="radio" data-nome="{{ $membro->nome }}" data-membroid="{{ $membro->membro_id }}" data-gceuid="{{ $membro->gceu_id }}" data-valor="1" name="{{ $membro->membro_id }}" id="{{ $membro->membro_id }}" {{ $membro->presenca === 1 ? 'checked' : '' }} value="1">
                                                     <label class="form-check-label cursor-pointer" for="{{ $membro->membro_id }}">Sim</label>
                                                     </div>
                                                     <div class="form-check form-check-inline">
-                                                    <input class="form-check-input cursor-pointer cgeu-presenca-falta" onclick="presencaDiario()" type="radio" data-membroid="{{ $membro->membro_id }}" data-gceuid="{{ $membro->gceu_id }}"  data-valor="0" name="{{ $membro->membro_id }}" id="{{ $membro->membro_id }}{{ $membro->membro_id }}" value="0">
+                                                    <input class="form-check-input cursor-pointer cgeu-presenca-falta" onclick="presencaDiario()" type="radio" data-nome="{{ $membro->nome }}" data-membroid="{{ $membro->membro_id }}" data-gceuid="{{ $membro->gceu_id }}"  data-valor="0" name="{{ $membro->membro_id }}" id="{{ $membro->membro_id }}{{ $membro->membro_id }}" {{ $membro->presenca === 0 ? 'checked' : '' }} value="0">
                                                     <label class="form-check-label cursor-pointer" for="{{ $membro->membro_id }}{{ $membro->membro_id }}">Não</label>
                                                 </div>
                                             </div>
@@ -104,6 +112,7 @@
         let gceu_id = $(this).data('gceuid');
         let membro_id = $(this).data('membroid');
         let dt_gceu = $('#dt-gceu').val();
+        let nome = $(this).data('nome');
         if(!dt_gceu){
             toastr.warning('Escolha uma data para registrar a  presença/ausência.');
             return false
@@ -114,14 +123,31 @@
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             type: "POST",
+            dataType: "json",
             data: {
-                valor, gceu_id, membro_id, dt_gceu
+                valor, gceu_id, membro_id, dt_gceu, nome
+            },            
+            success: function (response) {
+                if(valor == 1){
+                    var msg = `Presença confirmada com sucesso para ${nome}`
+                }else{
+                    var msg = `Falta confirmada com sucesso para ${nome}`
+                }
+                toastr.success(msg);
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
             },
-            success: function (data) {
-                toastr.success('Diário confirmado com sucesso');
-            },
-            error: function (data) {
-                toastr.error('Erro ao registar o diário');
+            error: function (response) {
+                if(valor == 1){
+                    var msg = `Presença confirmada com sucesso para ${nome}`
+                }else{
+                    var msg = `Falta confirmada com sucesso para ${nome}`
+                }
+                toastr.success(msg);
+                setTimeout(function() {
+                    window.location.reload();
+                }, 1000);
             }
         });
     })
