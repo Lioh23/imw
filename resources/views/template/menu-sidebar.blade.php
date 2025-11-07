@@ -937,9 +937,9 @@
                                 <span>Relatórios</span>
                             @endif
                          </li>
-                         <li>
+                         <li {!! Request::is('gceu/relatorio-lideres*') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-lideres'))
-                                <a href="#">Lista de líderes</a>
+                                <a href="{{ route('gceu.relatorio.lideres') }}">Lista de líderes</a>
                             @endif
                          </li>
                          <!-- <li>

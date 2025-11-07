@@ -15,6 +15,6 @@ ALTER TABLE `gceu_diario`
 
 ALTER TABLE `gceu_diario`
   MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT;
-COMMIT;
+
 
 

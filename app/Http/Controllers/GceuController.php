@@ -19,6 +19,7 @@ use App\Services\ServiceGCeu\EditarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\EditarGCeuService;
 use App\Services\ServiceGCeu\GCeuDiarioPresencaFaltaService;
 use App\Services\ServiceGCeu\GCeuDiarioService;
+use App\Services\ServiceGCeu\GCeuRelatorioLideresService;
 use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\StoreGCeuService;
 use App\Services\ServiceGCeu\VisualizarGCeuCartaPastoralService;
@@ -229,6 +230,17 @@ class GceuController extends Controller
             return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
         }
         return view('gceu.diario.index', $data);
+    }
+
+    public function gceuRelatorioLideres()
+    {
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $data = app(GCeuRelatorioLideresService::class)->getList($igrejaId);
+        $data['igreja'] =  Identifiable::fetchSessionIgrejaLocal()->nome;
+        if (!$data) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        return view('gceu.relatorio-igreja.lideres', $data);
     }
     
 }
