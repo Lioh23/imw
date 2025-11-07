@@ -932,13 +932,17 @@
                                  <a href="{{ route('gceu.diario') }}">Diário</a>
                              @endif
                          </li>
-                         <!-- <li class="submenu-fixo mt-3 mb-3">
-                            <span>Relatórios</span>
+                         <li class="submenu-fixo mt-3 mb-3">
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-relatorios'))
+                                <span>Relatórios</span>
+                            @endif
                          </li>
                          <li>
-                            <a href="#">Lista de líderes</a>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-lideres'))
+                                <a href="#">Lista de líderes</a>
+                            @endif
                          </li>
-                         <li>
+                         <!-- <li>
                             <a href="#">Lista de integrantes</a>
                          </li>
                          <li>
