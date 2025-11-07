@@ -36,6 +36,8 @@ trait BalanceteUtils
                     financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
                 JOIN 
                     financeiro_caixas fc ON fc.id = fl.caixa_id
+                JOIN
+                    instituicoes_instituicoes ii on ii.id = fl.instituicao_id AND ii.tipo_instituicao_id = 1
                 WHERE 
                     fl.instituicao_id = '$instituicaoId' ";
         if ($caixaID !== 'all') {
@@ -195,43 +197,44 @@ trait BalanceteUtils
         // Construção da query com as variáveis diretamente
 
         $sql = "SELECT 'saldo_inicial', sum(fscm.saldo_anterior ) AS saldo
-                    FROM financeiro_saldo_consolidado_mensal fscm
-                    WHERE fscm.ano=$dataIni[1] AND fscm.mes=$dataIni[0]";
+                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
+                    WHERE ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 AND fscm.ano=$dataIni[1] AND fscm.mes=$dataIni[0]";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
+
         $sql .= " UNION 
                 SELECT 'total_entradas', sum(fscm.total_entradas )
-                    FROM financeiro_saldo_consolidado_mensal fscm
+                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
                     WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal ";
                     if ($instituicaoId) {
-                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
+                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 ";
                     }
         $sql .= " UNION 
                 SELECT 'total_saidas', sum(fscm.total_saidas )
-                    FROM financeiro_saldo_consolidado_mensal fscm
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 ";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
         $sql .= " UNION 
                 SELECT 'total_tranf_entradas', sum(fscm.total_transf_entradas  )
-                    FROM financeiro_saldo_consolidado_mensal fscm
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 ";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
         $sql .= " UNION 
                 SELECT 'total_transf_saidas', sum(fscm.total_transf_saidas  )
-                    FROM financeiro_saldo_consolidado_mensal fscm
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
         $sql .= " UNION 
                 SELECT 'saldo_atual', sum(fscm.saldo_final )
-                    FROM financeiro_saldo_consolidado_mensal fscm
-                    WHERE fscm.ano=$dataFin[1] AND fscm.mes=$dataFin[0]";
+                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
+                    WHERE fscm.ano=$dataFin[1] AND fscm.mes=$dataFin[0]  AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
