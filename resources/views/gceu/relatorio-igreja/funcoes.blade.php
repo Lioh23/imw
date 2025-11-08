@@ -73,7 +73,7 @@
   <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
-          
+          <h4>{{ $titulo }}</h4>          
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>

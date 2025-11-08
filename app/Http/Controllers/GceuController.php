@@ -237,7 +237,7 @@ class GceuController extends Controller
         if($funcao == null){
             $data['titulo'] =  "Relatório de todas as funções do GCEU da Igreja: ".$data['igreja'];
         }else{
-            $data['titulo'] =  "Relatório da função: { $funcao->funcao } do GCEU da Igreja: ".$data['igreja'];
+            $data['titulo'] =  "Relatório da função: $funcao->funcao do GCEU da Igreja: ".$data['igreja'];
         }
         if (!$data) {
             return redirect()->route('gceu.index')->with('error', 'Relatório líderes GCEU não encontradd.');
