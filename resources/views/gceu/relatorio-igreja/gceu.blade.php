@@ -4,7 +4,7 @@
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Home', 'url' => '/', 'active' => false],
     ['text' => 'GCEU', 'url' => '/gceu/lista', 'active' => false],
-    ['text' => 'Relatório Lideres', 'url' => '#', 'active' => true]
+    ['text' => 'Relatório de GCEU', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
 
@@ -36,7 +36,7 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório Líderes GCEU da Igreja: {{ $igreja }}</h4>
+              <h4>{{ $titulo }}</h4>
           </div>
       </div>
   </div>
@@ -51,7 +51,7 @@
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
-                            <th>NOME</th>
+                            <th>ANFITRIÃO</th>
                             <th>CONTATO</th>
                             <th>GCEU</th>
                             <th>ENDEREÇO GCEU</th>
@@ -60,10 +60,10 @@
                     <tbody>
                       @foreach ($dados as $item)
                           <tr>
-                            <td>{{ $item->lider }}</td>
+                            <td>{{ $item->anfitriao }}</td>
                             <td>{{ formatStr($item->contato, '## (##) #####-####') }}</td>
                             <td>{{ $item->nome }}</td>
-                            <td>{{ $item->endereco }}</td>
+                            <td>{{ $item->endereco }} {{ $item->numero }}, {{ $item->bairro }}, {{ $item->cidade }}, {{ $item->uf }}</td>
                           </tr>
                       @endforeach
                     </tbody>
@@ -108,14 +108,14 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-excel"></i> Excel',
               titleAttr: 'Excel',
-              title: "Relatório Líderes GCEU da Igreja: {{ $igreja }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              title: "{{ $titulo }}"
             },
             {
               extend: 'pdf',
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
-              title: "Relatório Líderes GCEU da Igreja: {{ $igreja }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
+              title: "{{ $titulo }}",
 
               customize: function (doc) {
                         doc.content.splice(0,1);
@@ -137,7 +137,7 @@
                                     {
                                         alignment: 'left',
                                         italics: false,
-                                        text: `Relatório Líderes GCEU da Igreja: {{ $igreja }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}`,
+                                        text: `{{ $titulo }}`,
                                         fontSize: 14,
                                         margin: [10,0]
                                     },

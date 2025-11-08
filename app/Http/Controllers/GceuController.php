@@ -2,16 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\DataTables\GCeuCartaPastoralDatatable;
 use App\DataTables\GCeuDatatable;
 use App\Http\Requests\StoreGCeuCartaPastoralRequest;
-use App\Http\Requests\UpdateVisitanteRequest;
-use App\Rules\ValidDateOfBirth;
 use App\Http\Requests\StoreGCeuRequest;
 use App\Http\Requests\UpdateGCeuCartaPastoralRequest;
 use App\Http\Requests\UpdateGCeuRequest;
 use App\Models\GCeu;
-use App\Models\MembresiaMembro;
 use App\Services\ServiceGCeu\CartaPastoralGCeuService;
 use App\Services\ServiceGCeu\DeletarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\DeletarGCeuService;
@@ -19,13 +15,12 @@ use App\Services\ServiceGCeu\EditarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\EditarGCeuService;
 use App\Services\ServiceGCeu\GCeuDiarioPresencaFaltaService;
 use App\Services\ServiceGCeu\GCeuDiarioService;
-use App\Services\ServiceGCeu\GCeuRelatorioLideresService;
+use App\Services\ServiceGCeu\GCeuRelatorioFuncoesService;
+use App\Services\ServiceGCeu\GCeuRelatorioGceuService;
 use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\StoreGCeuService;
 use App\Services\ServiceGCeu\VisualizarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\VisualizarGCeuService;
-use App\Services\ServiceVisitantes\DeletarVisitanteService;
-use App\Services\ServiceVisitantes\EditarVisitanteService;
 use App\Services\ServiceVisitantes\IdentificaDadosIndexService;
 use App\Traits\Identifiable;
 use Illuminate\Http\Request;
@@ -217,7 +212,7 @@ class GceuController extends Controller
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
         $data = app(GCeuDiarioService::class)->getList($igrejaId, $data);
         if (!$data) {
-            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+            return redirect()->route('gceu.index')->with('error', 'Carta pastoral não encontrada.');
         }
         return view('gceu.diario.index', $data);
     }
@@ -227,20 +222,39 @@ class GceuController extends Controller
         $data = $request->all();
         $data = app(GCeuDiarioPresencaFaltaService::class)->salvarDiario($data);
         if (!$data) {
-            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+            return redirect()->route('gceu.index')->with('error', 'Carta pastoral não encontrada.');
         }
         return view('gceu.diario.index', $data);
     }
 
-    public function gceuRelatorioLideres()
+    public function gceuRelatorioFuncoes()
+    {
+
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $funcao = app(GCeuRelatorioFuncoesService::class)->getFuncao(request()->funcao_id);
+        $data = app(GCeuRelatorioFuncoesService::class)->getList($igrejaId, request()->funcao_id);
+        $data['igreja'] = Identifiable::fetchSessionIgrejaLocal()->nome;
+        if($funcao == null){
+            $data['titulo'] =  "Relatório de todas as funções do GCEU da Igreja: ".$data['igreja'];
+        }else{
+            $data['titulo'] =  "Relatório da função: { $funcao->funcao } do GCEU da Igreja: ".$data['igreja'];
+        }
+        if (!$data) {
+            return redirect()->route('gceu.index')->with('error', 'Relatório líderes GCEU não encontradd.');
+        }
+        return view('gceu.relatorio-igreja.funcoes', $data);
+    }
+
+    public function gceuRelatorioGceu()
     {
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
-        $data = app(GCeuRelatorioLideresService::class)->getList($igrejaId);
-        $data['igreja'] =  Identifiable::fetchSessionIgrejaLocal()->nome;
+        $data = app(GCeuRelatorioGceuService::class)->getList($igrejaId);
+        $data['titulo'] =  "Relatório de GCEU da Igreja: ".Identifiable::fetchSessionIgrejaLocal()->nome;
+
         if (!$data) {
-            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+            return redirect()->route('gceu.index')->with('error', 'Relatório de GCEU não encontrado.');
         }
-        return view('gceu.relatorio-igreja.lideres', $data);
+        return view('gceu.relatorio-igreja.gceu', $data);
     }
     
 }

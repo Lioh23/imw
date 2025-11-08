@@ -937,9 +937,14 @@
                                 <span>Relatórios</span>
                             @endif
                          </li>
-                         <li {!! Request::is('gceu/relatorio-lideres*') ? 'class="active"' : '' !!}>
-                            @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-lideres'))
-                                <a href="{{ route('gceu.relatorio.lideres') }}">Lista de líderes</a>
+                         <li {!! Request::is('gceu/relatorio-gceu*') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-gceu'))
+                                <a href="{{ route('gceu.relatorio.gceu') }}">Lista de GCEU</a>
+                            @endif
+                         </li>
+                         <li {!! Request::is('gceu/relatorio-funcoes*') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-funcoes'))
+                                <a href="{{ route('gceu.relatorio.funcoes') }}">Lista de Funções</a>
                             @endif
                          </li>
                          <!-- <li>

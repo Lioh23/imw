@@ -404,7 +404,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/diario', [GceuController::class, 'diario'])->name('diario')->middleware(['seguranca:gceu-diario']);
             Route::post('/diario-presenca-falta', [GceuController::class, 'diarioPresencaFalta'])->name('diario.presenca.falta')->middleware(['seguranca:gceu-diario']);
             //Relatórios
-            Route::get('/relatorio-lideres', [GceuController::class, 'gceuRelatorioLideres'])->name('relatorio.lideres')->middleware(['seguranca:gceu-igreja-lista-lideres']);
+            Route::get('/relatorio-gceu', [GceuController::class, 'gceuRelatorioGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-igreja-lista-gceu']);
+            Route::get('/relatorio-funcoes', [GceuController::class, 'gceuRelatorioFuncoes'])->name('relatorio.funcoes')->middleware(['seguranca:gceu-igreja-lista-funcoes']);
         });
 
         /* Por enquanto somente visualiações */
