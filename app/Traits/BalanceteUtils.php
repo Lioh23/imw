@@ -206,9 +206,9 @@ trait BalanceteUtils
         $sql .= " UNION 
                 SELECT 'total_entradas', sum(fscm.total_entradas )
                     FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal ";
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 ";
                     if ($instituicaoId) {
-                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 ";
+                        $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
         $sql .= " UNION 
                 SELECT 'total_saidas', sum(fscm.total_saidas )
