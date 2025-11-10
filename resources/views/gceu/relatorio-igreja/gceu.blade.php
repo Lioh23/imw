@@ -55,6 +55,7 @@
                             <th>CONTATO</th>
                             <th>GCEU</th>
                             <th>ENDEREÇO GCEU</th>
+                            <th>MAPS</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -64,6 +65,7 @@
                             <td>{{ formatStr($item->contato, '## (##) #####-####') }}</td>
                             <td>{{ $item->nome }}</td>
                             <td>{{ $item->endereco }} {{ $item->numero }}, {{ $item->bairro }}, {{ $item->cidade }}, {{ $item->uf }}</td>
+                            <td><a href="https://www.google.com/maps/?q={{ $item->endereco }} {{ $item->numero }}, {{ $item->bairro }}, {{ $item->cidade }}, {{ $item->uf }}" title="Acessar no Google Maps" target="_blank" rel="noopener noreferrer"><i class="fas fa-map-marker-alt" style="margin-left: 25px;"></i></a></td>
                           </tr>
                       @endforeach
                     </tbody>

@@ -50,10 +50,10 @@
                         <tr><td>{{ $gceu->cep }}</td><td>{{ $gceu->endereco }}</td> <td>{{ $gceu->numero }}</td>  <td>{{ $gceu->bairro }}</td></tr>
                     </tbody>
                     <thead>
-                        <tr><th>Cidade:</th><th>UF:</th><th>Igreja:</th> <th>Congregação:</th></tr>
+                        <tr><th>Cidade:</th><th>UF:</th><th>Igreja:</th> <th>Maps:</th></tr>
                     </thead>
                     <tbody>
-                        <tr><td>{{ $gceu->cidade }}</td><td>{{ $gceu->uf }}</td> <td>{{ $gceu->igreja }}</td>  <td>{{ $gceu->congregacao }}</td></tr>
+                        <tr><td>{{ $gceu->cidade }}</td><td>{{ $gceu->uf }}</td> <td>{{ $gceu->igreja }}</td>  <td ><a href="https://www.google.com/maps/?q='{{ $gceu->endereco }}, {{ $gceu->numero }}, {{ $gceu->bairro }}, {{ $gceu->cidade }}, {{ $gceu->uf }}'"  title="Acessar no Google Maps" target="_blank" rel="noopener noreferrer"><i class="fas fa-map-marker-alt" style="margin-left: 25px;"></i></a></td></tr>
                     </tbody>
                 </table>
             </div>

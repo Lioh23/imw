@@ -947,18 +947,11 @@
                                 <a href="{{ route('gceu.relatorio.funcoes') }}">Lista de Funções</a>
                             @endif
                          </li>
-                         <!-- <li>
-                            <a href="#">Lista de integrantes</a>
+                         <li {!! Request::is('gceu/relatorio-aniversariantes*') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-aniversariantes'))
+                                <a href="{{ route('gceu.relatorio.aniversariantes') }}">Aniversariantes</a>
+                            @endif
                          </li>
-                         <li>
-                            <a href="#">Lista de novos convertidos</a>
-                         </li>
-                         <li>
-                            <a href="#">Lista de GCEUs</a>
-                         </li>
-                         <li>
-                            <a href="#">Anfitriões</a>
-                         </li> -->
                      </ul>
                  </li>
              @endif

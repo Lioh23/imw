@@ -256,5 +256,17 @@ class GceuController extends Controller
         }
         return view('gceu.relatorio-igreja.gceu', $data);
     }
+
+    public function gceuRelatorioGceu()
+    {
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $data = app(GCeuRelatorioGceuService::class)->getList($igrejaId);
+        $data['titulo'] =  "Relatório de GCEU da Igreja: ".Identifiable::fetchSessionIgrejaLocal()->nome;
+
+        if (!$data) {
+            return redirect()->route('gceu.index')->with('error', 'Relatório de GCEU não encontrado.');
+        }
+        return view('gceu.relatorio-igreja.gceu', $data);
+    }
     
 }

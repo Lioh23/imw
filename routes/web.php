@@ -406,6 +406,7 @@ Route::middleware(['auth'])->group(function () {
             //Relatórios
             Route::get('/relatorio-gceu', [GceuController::class, 'gceuRelatorioGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-igreja-lista-gceu']);
             Route::get('/relatorio-funcoes', [GceuController::class, 'gceuRelatorioFuncoes'])->name('relatorio.funcoes')->middleware(['seguranca:gceu-igreja-lista-funcoes']);
+            Route::get('/relatorio-aniversariantes', [GceuController::class, 'gceuRelatorioAniversariantes'])->name('relatorio.aniversariantes')->middleware(['seguranca:gceu-igreja-lista-aniversariantes']);
         });
 
         /* Por enquanto somente visualiações */

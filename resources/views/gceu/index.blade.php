@@ -97,6 +97,7 @@
                                 <th>ANFITRIÃO</th>
                                 <th>CONTATO</th>
                                 <th>IGREJA</th>
+                                <th>MAPS</th>
                                 <th>CRIADO EM</th>
                                 <th></th>
                             </tr>
