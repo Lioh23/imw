@@ -257,7 +257,7 @@ class GceuController extends Controller
         return view('gceu.relatorio-igreja.gceu', $data);
     }
 
-    public function gceuRelatorioGceu()
+    public function gceuRelatorioAniversariantes()
     {
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
         $data = app(GCeuRelatorioGceuService::class)->getList($igrejaId);
