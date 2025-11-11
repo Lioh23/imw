@@ -15,6 +15,7 @@ use App\Services\ServiceGCeu\EditarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\EditarGCeuService;
 use App\Services\ServiceGCeu\GCeuDiarioPresencaFaltaService;
 use App\Services\ServiceGCeu\GCeuDiarioService;
+use App\Services\ServiceGCeu\GCeuRelatorioAniversariantesService;
 use App\Services\ServiceGCeu\GCeuRelatorioFuncoesService;
 use App\Services\ServiceGCeu\GCeuRelatorioGceuService;
 use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
@@ -260,13 +261,13 @@ class GceuController extends Controller
     public function gceuRelatorioAniversariantes()
     {
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
-        $data = app(GCeuRelatorioGceuService::class)->getList($igrejaId);
-        $data['titulo'] =  "Relatório de GCEU da Igreja: ".Identifiable::fetchSessionIgrejaLocal()->nome;
+        $data = app(GCeuRelatorioAniversariantesService::class)->getList($igrejaId);
+        $data['titulo'] =  "Relatório de Aniversariantes GCEU da Igreja: ".Identifiable::fetchSessionIgrejaLocal()->nome;
 
         if (!$data) {
-            return redirect()->route('gceu.index')->with('error', 'Relatório de GCEU não encontrado.');
+            return redirect()->route('gceu.index')->with('error', 'Relatório de Aniversariantes não encontrado.');
         }
-        return view('gceu.relatorio-igreja.gceu', $data);
+        return view('gceu.relatorio-igreja.aniversariantes', $data);
     }
     
 }
