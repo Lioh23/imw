@@ -246,6 +246,11 @@ Route::middleware(['auth'])->group(function () {
 
             //Orcamentos
             Route::get('/recursos-humanos', [FinanceiroController::class, 'RecursoHumanoDistrito'])->name('recurso.humano')->middleware(['seguranca:distrito-recurso-humano']);
+
+            //CGEU
+            Route::get('/relatorio-gceu', [GceuController::class, 'gceuRelatorioDistritoGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-distrito-lista-gceu']);
+            Route::get('/relatorio-funcoes-gceu', [GceuController::class, 'gceuRelatorioFuncoes'])->name('relatorio.funcoes.gceu')->middleware(['seguranca:gceu-distrito-lista-funcoes']);
+            Route::get('/relatorio-aniversariantes-gceu', [GceuController::class, 'gceuRelatorioAniversariantes'])->name('relatorio.aniversariantes.gceu')->middleware(['seguranca:gceu-distrito-lista-aniversariantes']);
         });
 
         Route::prefix('regiao/relatorio')->name('regiao.')->group(function () {
@@ -403,10 +408,11 @@ Route::middleware(['auth'])->group(function () {
             //Diario
             Route::get('/diario', [GceuController::class, 'diario'])->name('diario')->middleware(['seguranca:gceu-diario']);
             Route::post('/diario-presenca-falta', [GceuController::class, 'diarioPresencaFalta'])->name('diario.presenca.falta')->middleware(['seguranca:gceu-diario']);
-            //Relatórios
+            //Relatórios Igreja
             Route::get('/relatorio-gceu', [GceuController::class, 'gceuRelatorioGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-igreja-lista-gceu']);
             Route::get('/relatorio-funcoes', [GceuController::class, 'gceuRelatorioFuncoes'])->name('relatorio.funcoes')->middleware(['seguranca:gceu-igreja-lista-funcoes']);
             Route::get('/relatorio-aniversariantes', [GceuController::class, 'gceuRelatorioAniversariantes'])->name('relatorio.aniversariantes')->middleware(['seguranca:gceu-igreja-lista-aniversariantes']);
+            
         });
 
         /* Por enquanto somente visualiações */

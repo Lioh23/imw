@@ -4,7 +4,7 @@
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Home', 'url' => '/', 'active' => false],
     ['text' => 'GCEU', 'url' => '/gceu/lista', 'active' => false],
-    ['text' => 'Relatório Lista de Funções', 'url' => '#', 'active' => true]
+    ['text' => 'Relatório de Aniversariantes GCEU', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
 
@@ -36,71 +36,38 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório de funções de GCEU da Igreja: {{ $igreja }}</h4>
+              <h4>{{ $titulo }}</h4>
           </div>
       </div>
-    </div>
-    <div class="widget-content widget-content-area">
-      <form class="form-vertical" id="filter_form">
-        
-        {{-- Congregação --}}
-        <div class="form-group row mb-4">
-          <div class="col-lg-4">
-            <label class="control-label">Função:</label>
-            <select id="funcao_id" name="funcao_id" class="form-control @error('funcao_id') is-invalid @enderror" >
-              <option value="" {{ request()->funcao_id == '' ? 'selected' : '' }}>TODOS</option>
-              @foreach ($funcoes as $funcao)
-                <option value="{{ $funcao->id }}" {{ request()->funcao_id == $funcao->id ? 'selected' : '' }}>{{ $funcao->funcao }}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="col-lg-6">
-            <label class="control-label">GCEU:</label>
-            <select id="gceu_id" name="gceu_id" class="form-control @error('gceu_id') is-invalid @enderror" >
-              <option value="" {{ request()->gceu_id == '' ? 'selected' : '' }}>TODOS</option>
-              @foreach ($gceus as $gceu)
-                <option value="{{ $gceu->id }}" {{ request()->gceu_id == $gceu->id ? 'selected' : '' }}>{{ $gceu->nome }}</option>
-              @endforeach
-            </select>
-          </div>
-          <div class="col-lg-2">
-            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn" style="margin-top: 30px;">
-              <x-bx-search /> Buscar 
-            </button>
-          </div>
-        </div>
-      </form>
-    </div>
+  </div>
   </div>
 </div>
 
   <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
-          <h4>{{ $titulo }}</h4>          
+          
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
-                            <th>MEMBRO</th>
+                            <th>NOME</th>
+                            <th>ANIVERSÁRIO</th>
+                            <th>NASCIMENTO</th>
+                            <th>IDADE</th>
                             <th>CONTATO</th>
-                            <th>FUNÇÃO</th>
                             <th>GCEU</th>
-                            <th>ENDEREÇO GCEU</th>
-                            <th>ANFITRIAO</th>
-                            <th>CONTATO</th>
                         </tr>
                     </thead>
                     <tbody>
                       @foreach ($dados as $item)
                           <tr>
-                            <td>{{ $item->lider }}</td>
-                            <td>{{ formatStr($item->telefone_preferencial, '## (##) #####-####') }}</td>
-                            <td>{{ $item->funcao }}</td>
                             <td>{{ $item->nome }}</td>
-                            <td>{{ $item->endereco }} {{ $item->numero }}, {{ $item->bairro }}, {{ $item->cidade }}, {{ $item->uf }}</td>
-                            <td>{{ $item->anfitriao }}</td>
+                            <td>{{ $item->aniversario }}</td>
+                            <td>{{ formatDate($item->data_nascimento) }}</td>
+                            <td>{{ $item->idade }}</td>
                             <td>{{ formatStr($item->contato, '## (##) #####-####') }}</td>
+                            <td>{{ $item->gceu }}</td>
                           </tr>
                       @endforeach
                     </tbody>

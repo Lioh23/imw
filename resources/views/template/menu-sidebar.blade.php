@@ -431,6 +431,29 @@
                                  <a href="{{ route('distrito.relatorio.congregacaoporigreja') }}">Congregações por Igrejas</a>
                              @endif
                          </li>
+
+                        @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-relatorios'))
+                            <li class="submenu-fixo mt-3 mb-3">
+                                <span>GCEU</span>                                
+                            </li>
+                            <li {!! Request::is('distrito/relatorio-gceu') ? 'class="active"' : '' !!}>
+                                @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-lista-gceu'))
+                                    <a href="{{ route('distrito.relatorio.gceu') }}">Lista GCEU</a>
+                                @endif
+                            </li>
+
+                            <li {!! Request::is('distrito/relatorio-funcoes-gceu') ? 'class="active"' : '' !!}>
+                                @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-lista-funcoes'))
+                                    <a href="{{-- route('distrito.relatorio.funcoes.gceu') --}}">Lista Funcao</a>
+                                @endif
+                            </li>
+
+                            <li {!! Request::is('distrito/relatorio-aniversariantes-gceu') ? 'class="active"' : '' !!}>
+                                @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-lista-aniversariantes'))
+                                    <a href="{{-- route('distrito.relatorio.aniversariantes.gceu') --}}">Lista Aniversariantes</a>
+                                @endif
+                            </li>
+                        @endif
                      </ul>
                  </li>
              @endif

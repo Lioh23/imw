@@ -7,7 +7,7 @@ use App\Models\GCeuFuncoes;
 
 class GCeuRelatorioFuncoesService
 {
-    public function getList($igrejaId, $funcaoId)
+    public function getList($igrejaId, $funcaoId, $gceuId)
     {
         $dados =  GCeu::select('gceu_cadastros.*', 'gceu_funcoes.funcao', 'membresia_membros.nome as lider', 'membresia_contatos.telefone_preferencial')
                 ->join('gceu_membros', 'gceu_membros.gceu_cadastro_id', 'gceu_cadastros.id')
@@ -16,14 +16,18 @@ class GCeuRelatorioFuncoesService
                 ->leftJoin('membresia_contatos', 'membresia_contatos.membro_id', 'membresia_membros.id')
                 ->where(['gceu_cadastros.instituicao_id' => $igrejaId, 'gceu_cadastros.status' => 'A'])
                 ->when($funcaoId, function ($query) use ($funcaoId) {
-                        $query->where('gceu_membros.gceu_funcao_id', $funcaoId);
-                    })
+                    $query->where('gceu_membros.gceu_funcao_id', $funcaoId);
+                })
+                ->when($gceuId, function ($query) use ($gceuId) {
+                    $query->where('gceu_cadastros.id', $gceuId);
+                })
                 ->get();
         $funcoes = GCeuFuncoes::get();
-        return ['dados' => $dados, 'funcoes' => $funcoes];
+        $gceus = GCeu::where(['instituicao_id' => $igrejaId])->get();
+        return ['dados' => $dados, 'funcoes' => $funcoes, 'gceus' => $gceus];
     }
 
-     public function getFuncao($id)
+    public function getFuncao($id)
     {
         return  GCeuFuncoes::find($id);
     }

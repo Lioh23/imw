@@ -16,7 +16,9 @@ use App\Services\ServiceGCeu\EditarGCeuService;
 use App\Services\ServiceGCeu\GCeuDiarioPresencaFaltaService;
 use App\Services\ServiceGCeu\GCeuDiarioService;
 use App\Services\ServiceGCeu\GCeuRelatorioAniversariantesService;
+use App\Services\ServiceGCeu\GCeuRelatorioDistritoGceuService;
 use App\Services\ServiceGCeu\GCeuRelatorioFuncoesService;
+use App\Services\ServiceGCeu\GCeuService;
 use App\Services\ServiceGCeu\GCeuRelatorioGceuService;
 use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\StoreGCeuService;
@@ -233,7 +235,7 @@ class GceuController extends Controller
 
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
         $funcao = app(GCeuRelatorioFuncoesService::class)->getFuncao(request()->funcao_id);
-        $data = app(GCeuRelatorioFuncoesService::class)->getList($igrejaId, request()->funcao_id);
+        $data = app(GCeuRelatorioFuncoesService::class)->getList($igrejaId, request()->funcao_id, request()->gceu_id);
         $data['igreja'] = Identifiable::fetchSessionIgrejaLocal()->nome;
         if($funcao == null){
             $data['titulo'] =  "Relatório de todas as funções do GCEU da Igreja: ".$data['igreja'];
@@ -248,7 +250,7 @@ class GceuController extends Controller
 
     public function gceuRelatorioGceu()
     {
-        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;        
         $data = app(GCeuRelatorioGceuService::class)->getList($igrejaId);
         $data['titulo'] =  "Relatório de GCEU da Igreja: ".Identifiable::fetchSessionIgrejaLocal()->nome;
 
@@ -263,6 +265,47 @@ class GceuController extends Controller
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
         $data = app(GCeuRelatorioAniversariantesService::class)->getList($igrejaId);
         $data['titulo'] =  "Relatório de Aniversariantes GCEU da Igreja: ".Identifiable::fetchSessionIgrejaLocal()->nome;
+
+        if (!$data) {
+            return redirect()->route('gceu.index')->with('error', 'Relatório de Aniversariantes não encontrado.');
+        }
+        return view('gceu.relatorio-igreja.aniversariantes', $data);
+    }
+
+    public function gceuRelatorioDistritoFuncoes()
+    {
+
+        $igrejaId = Identifiable::fetchtSessionDistrito()->id;
+        $funcao = app(GCeuRelatorioFuncoesService::class)->getFuncao(request()->funcao_id);
+        $data = app(GCeuRelatorioFuncoesService::class)->getList($igrejaId, request()->funcao_id, request()->gceu_id);
+        $data['igreja'] = Identifiable::fetchtSessionDistrito()->nome;
+        if($funcao == null){
+            $data['titulo'] =  "Relatório de todas as funções do GCEU do Distrito: ".$data['igreja'];
+        }else{
+            $data['titulo'] =  "Relatório da função: $funcao->funcao do GCEU do Distrito: ".$data['igreja'];
+        }
+        if (!$data) {
+            return redirect()->route('gceu.index')->with('error', 'Relatório funções GCEU não encontradd.');
+        }
+        return view('gceu.relatorio-igreja.funcoes', $data);
+    }
+
+    public function gceuRelatorioDistritoGceu()
+    {
+        $distritoId = Identifiable::fetchtSessionDistrito()->id;        
+        $data = app(GCeuRelatorioDistritoGceuService::class)->getList($distritoId);
+        $data['titulo'] =  "Relatório de GCEU do Distrito: ".Identifiable::fetchtSessionDistrito()->nome;
+        if (!$data) {
+            return redirect()->route('gceu.index')->with('error', 'Relatório de GCEU não encontrado.');
+        }
+        return view('gceu.relatorio-distrito.gceu', $data);
+    }
+
+    public function gceuRelatorioDistritoAniversariantes()
+    {
+        $igrejaId = Identifiable::fetchtSessionDistrito()->id;
+        $data = app(GCeuRelatorioAniversariantesService::class)->getList($igrejaId);
+        $data['titulo'] =  "Relatório de Aniversariantes GCEU do Distrito: ".Identifiable::fetchtSessionDistrito()->nome;
 
         if (!$data) {
             return redirect()->route('gceu.index')->with('error', 'Relatório de Aniversariantes não encontrado.');
