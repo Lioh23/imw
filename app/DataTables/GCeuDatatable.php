@@ -15,8 +15,10 @@ class GCeuDatatable extends AbstractDatatable
 
     public function getQueryBuilder($parameters = []): Builder
     {
+        $instituicao_id = Identifiable::fetchSessionIgrejaLocal()->id;
         return GCeu::select('gceu_cadastros.*', 'instituicoes_instituicoes.nome as instituicao')
             ->join('instituicoes_instituicoes', 'instituicoes_instituicoes.id', '=', 'gceu_cadastros.instituicao_id')
+            ->where('gceu_cadastros.instituicao_id', $instituicao_id)
             ->when(isset($parameters['search']), function ($query) use ($parameters) {
                 $query->where('nome', 'like', "%{$parameters['search']}%");
             })

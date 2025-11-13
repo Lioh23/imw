@@ -444,13 +444,13 @@
 
                             <li {!! Request::is('distrito/relatorio-funcoes-gceu') ? 'class="active"' : '' !!}>
                                 @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-lista-funcoes'))
-                                    <a href="{{-- route('distrito.relatorio.funcoes.gceu') --}}">Lista Funcao</a>
+                                    <a href="{{ route('distrito.relatorio.funcoes.gceu') }}">Lista Funcao</a>
                                 @endif
                             </li>
 
                             <li {!! Request::is('distrito/relatorio-aniversariantes-gceu') ? 'class="active"' : '' !!}>
                                 @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-lista-aniversariantes'))
-                                    <a href="{{-- route('distrito.relatorio.aniversariantes.gceu') --}}">Lista Aniversariantes</a>
+                                    <a href="{{ route('distrito.relatorio.aniversariantes.gceu') }}">Lista Aniversariantes</a>
                                 @endif
                             </li>
                         @endif

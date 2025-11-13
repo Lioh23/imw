@@ -51,17 +51,19 @@
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
-                            <th>NOME</th>
-                            <th>ANIVERSÁRIO</th>
-                            <th>NASCIMENTO</th>
-                            <th>IDADE</th>
-                            <th>CONTATO</th>
-                            <th>GCEU</th>
+                          <th>#</th>
+                          <th>NOME</th>
+                          <th>ANIVERSÁRIO</th>
+                          <th>NASCIMENTO</th>
+                          <th>IDADE</th>
+                          <th>CONTATO</th>
+                          <th>GCEU</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($dados as $item)
+                      @foreach ($dados as $key => $item)
                           <tr>
+                            <td>{{ $key += 1 }}</td>
                             <td>{{ $item->nome }}</td>
                             <td>{{ $item->aniversario }}</td>
                             <td>{{ formatDate($item->data_nascimento) }}</td>
@@ -71,6 +73,14 @@
                           </tr>
                       @endforeach
                     </tbody>
+                    @isset($key)
+                    <tfoot>
+                      <tr>
+                          <td>{{ $key }}</td>
+                          <td colspan="6"></td>
+                        </tr>
+                    </tfoot>
+                    @endif
                 </table>
             </div>
         </div>

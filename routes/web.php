@@ -249,8 +249,8 @@ Route::middleware(['auth'])->group(function () {
 
             //CGEU
             Route::get('/relatorio-gceu', [GceuController::class, 'gceuRelatorioDistritoGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-distrito-lista-gceu']);
-            Route::get('/relatorio-funcoes-gceu', [GceuController::class, 'gceuRelatorioFuncoes'])->name('relatorio.funcoes.gceu')->middleware(['seguranca:gceu-distrito-lista-funcoes']);
-            Route::get('/relatorio-aniversariantes-gceu', [GceuController::class, 'gceuRelatorioAniversariantes'])->name('relatorio.aniversariantes.gceu')->middleware(['seguranca:gceu-distrito-lista-aniversariantes']);
+            Route::get('/relatorio-funcoes-gceu', [GceuController::class, 'gceuRelatorioDistritoFuncoes'])->name('relatorio.funcoes.gceu')->middleware(['seguranca:gceu-distrito-lista-funcoes']);
+            Route::get('/relatorio-aniversariantes-gceu', [GceuController::class, 'gceuRelatorioDistritoAniversariantes'])->name('relatorio.aniversariantes.gceu')->middleware(['seguranca:gceu-distrito-lista-aniversariantes']);
         });
 
         Route::prefix('regiao/relatorio')->name('regiao.')->group(function () {

@@ -46,6 +46,15 @@
         {{-- Congregação --}}
         <div class="form-group row mb-4">
           <div class="col-lg-4">
+            <label class="control-label">Igreja:</label>
+            <select id="instituicao_id" name="instituicao_id" class="form-control @error('instituicao_id') is-invalid @enderror" >
+              <option value="" {{ request()->instituicao_id == '' ? 'selected' : '' }}>TODAS</option>
+              @foreach($igrejas as $igreja)
+                <option value="{{ $igreja->id_igreja }}" {{ request()->instituicao_id == $igreja->id_igreja ? 'selected' : '' }}>{{ $igreja->igreja_nome }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-lg-2">
             <label class="control-label">Função:</label>
             <select id="funcao_id" name="funcao_id" class="form-control @error('funcao_id') is-invalid @enderror" >
               <option value="" {{ request()->funcao_id == '' ? 'selected' : '' }}>TODOS</option>
@@ -54,7 +63,7 @@
               @endforeach
             </select>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-4">
             <label class="control-label">GCEU:</label>
             <select id="gceu_id" name="gceu_id" class="form-control @error('gceu_id') is-invalid @enderror" >
               <option value="" {{ request()->gceu_id == '' ? 'selected' : '' }}>TODOS</option>
@@ -82,6 +91,8 @@
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
+                           <th>#</th>
+                            <th>IGREJA</th>
                             <th>MEMBRO</th>
                             <th>CONTATO</th>
                             <th>FUNÇÃO</th>
@@ -92,8 +103,10 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($dados as $item)
+                      @foreach ($dados as $key => $item)
                           <tr>
+                            <td>{{ $key += 1 }}</td>
+                            <td>{{ $item->igreja_nome }}</td>
                             <td>{{ $item->lider }}</td>
                             <td>{{ formatStr($item->telefone_preferencial, '## (##) #####-####') }}</td>
                             <td>{{ $item->funcao }}</td>
@@ -104,6 +117,14 @@
                           </tr>
                       @endforeach
                     </tbody>
+                    @isset($key)
+                    <tfoot>
+                      <tr>
+                          <td>{{ $key }}</td>
+                          <td colspan="7"></td>
+                        </tr>
+                    </tfoot>
+                    @endif
                 </table>
             </div>
         </div>

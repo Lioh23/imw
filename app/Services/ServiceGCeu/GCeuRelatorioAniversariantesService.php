@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\DB;
 
 class GCeuRelatorioAniversariantesService
 {
-    public function getList($igrejaId)
+    public function getList($distritoId)
     {
         $dados =  GCeu::select(
                         'gceu_cadastros.nome as gceu',
@@ -25,7 +25,7 @@ class GCeuRelatorioAniversariantesService
                 ->join('membresia_membros', 'membresia_membros.id', 'gceu_membros.membro_id')
                 ->join('gceu_funcoes', 'gceu_funcoes.id', 'gceu_membros.gceu_funcao_id')
                 ->leftJoin('membresia_contatos', 'membresia_contatos.membro_id', 'membresia_membros.id')
-                ->where(['gceu_cadastros.instituicao_id' => $igrejaId, 'gceu_cadastros.status' => 'A'])
+                ->where(['gceu_cadastros.instituicao_id' => $distritoId, 'gceu_cadastros.status' => 'A'])
                 ->orderBy('gceu_cadastros.nome', 'ASC')
                 ->orderBy('membresia_membros.nome', 'ASC')
                 ->get();

@@ -39,7 +39,38 @@
               <h4>{{ $titulo }}</h4>
           </div>
       </div>
-  </div>
+    </div>
+    <div class="widget-content widget-content-area">
+      <form class="form-vertical" id="filter_form">
+        
+        {{-- Congregação --}}
+        <div class="form-group row mb-4">
+          <div class="col-lg-4">
+            <label class="control-label">Igreja:</label>
+            <select id="instituicao_id" name="instituicao_id" class="form-control @error('instituicao_id') is-invalid @enderror" >
+              <option value="" {{ request()->instituicao_id == '' ? 'selected' : '' }}>TODAS</option>
+              @foreach($igrejas as $igreja)
+                <option value="{{ $igreja->id_igreja }}" {{ request()->instituicao_id == $igreja->id_igreja ? 'selected' : '' }}>{{ $igreja->igreja_nome }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-lg-4">
+            <label class="control-label">GCEU:</label>
+            <select id="gceu_id" name="gceu_id" class="form-control @error('gceu_id') is-invalid @enderror" >
+              <option value="" {{ request()->gceu_id == '' ? 'selected' : '' }}>TODOS</option>
+              @foreach ($gceus as $gceu)
+                <option value="{{ $gceu->id }}" {{ request()->gceu_id == $gceu->id ? 'selected' : '' }}>{{ $gceu->nome }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-lg-2">
+            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn" style="margin-top: 30px;">
+              <x-bx-search /> Buscar 
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   </div>
 </div>
 
@@ -51,17 +82,21 @@
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
-                            <th>NOME</th>
-                            <th>ANIVERSÁRIO</th>
-                            <th>NASCIMENTO</th>
-                            <th>IDADE</th>
-                            <th>CONTATO</th>
-                            <th>GCEU</th>
+                          <th>#</th>
+                          <th>IGREJA</th>
+                          <th>NOME</th>
+                          <th>ANIVERSÁRIO</th>
+                          <th>NASCIMENTO</th>
+                          <th>IDADE</th>
+                          <th>CONTATO</th>
+                          <th>GCEU</th>
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($dados as $item)
+                      @foreach ($dados as $key => $item)
                           <tr>
+                            <td>{{ $key += 1 }}</td>
+                            <td>{{ $item->igreja_nome }}</td>
                             <td>{{ $item->nome }}</td>
                             <td>{{ $item->aniversario }}</td>
                             <td>{{ formatDate($item->data_nascimento) }}</td>
@@ -71,6 +106,14 @@
                           </tr>
                       @endforeach
                     </tbody>
+                    @isset($key)
+                    <tfoot>
+                      <tr>
+                          <td>{{ $key }}</td>
+                          <td colspan="7"></td>
+                        </tr>
+                    </tfoot>
+                    @endif
                 </table>
             </div>
         </div>

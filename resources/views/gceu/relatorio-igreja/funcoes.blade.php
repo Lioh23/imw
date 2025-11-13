@@ -82,6 +82,7 @@
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
+                            <th>#</th>
                             <th>MEMBRO</th>
                             <th>CONTATO</th>
                             <th>FUNÇÃO</th>
@@ -92,8 +93,9 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($dados as $item)
+                      @foreach ($dados as $key => $item)
                           <tr>
+                            <td>{{ $key += 1 }}</td>
                             <td>{{ $item->lider }}</td>
                             <td>{{ formatStr($item->telefone_preferencial, '## (##) #####-####') }}</td>
                             <td>{{ $item->funcao }}</td>
@@ -104,6 +106,14 @@
                           </tr>
                       @endforeach
                     </tbody>
+                    @isset($key)
+                    <tfoot>
+                      <tr>
+                          <td>{{ $key }}</td>
+                          <td colspan="7"></td>
+                        </tr>
+                    </tfoot>
+                    @endif
                 </table>
             </div>
         </div>

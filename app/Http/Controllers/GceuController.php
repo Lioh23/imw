@@ -16,6 +16,8 @@ use App\Services\ServiceGCeu\EditarGCeuService;
 use App\Services\ServiceGCeu\GCeuDiarioPresencaFaltaService;
 use App\Services\ServiceGCeu\GCeuDiarioService;
 use App\Services\ServiceGCeu\GCeuRelatorioAniversariantesService;
+use App\Services\ServiceGCeu\GCeuRelatorioDistritoAniversariantesService;
+use App\Services\ServiceGCeu\GCeuRelatorioDistritoFuncoesService;
 use App\Services\ServiceGCeu\GCeuRelatorioDistritoGceuService;
 use App\Services\ServiceGCeu\GCeuRelatorioFuncoesService;
 use App\Services\ServiceGCeu\GCeuService;
@@ -272,12 +274,13 @@ class GceuController extends Controller
         return view('gceu.relatorio-igreja.aniversariantes', $data);
     }
 
-    public function gceuRelatorioDistritoFuncoes()
+    public function gceuRelatorioDistritoFuncoes(Request $request)
     {
 
-        $igrejaId = Identifiable::fetchtSessionDistrito()->id;
-        $funcao = app(GCeuRelatorioFuncoesService::class)->getFuncao(request()->funcao_id);
-        $data = app(GCeuRelatorioFuncoesService::class)->getList($igrejaId, request()->funcao_id, request()->gceu_id);
+        $distritoId = Identifiable::fetchtSessionDistrito()->id;
+        $funcao = app(GCeuRelatorioDistritoFuncoesService::class)->getFuncao(request()->funcao_id);
+        $data = app(GCeuRelatorioDistritoFuncoesService::class)->getList($distritoId, request()->funcao_id, request()->gceu_id);
+        
         $data['igreja'] = Identifiable::fetchtSessionDistrito()->nome;
         if($funcao == null){
             $data['titulo'] =  "Relatório de todas as funções do GCEU do Distrito: ".$data['igreja'];
@@ -287,14 +290,15 @@ class GceuController extends Controller
         if (!$data) {
             return redirect()->route('gceu.index')->with('error', 'Relatório funções GCEU não encontradd.');
         }
-        return view('gceu.relatorio-igreja.funcoes', $data);
+        return view('gceu.relatorio-distrito.funcoes', $data);
     }
 
     public function gceuRelatorioDistritoGceu()
     {
-        $distritoId = Identifiable::fetchtSessionDistrito()->id;        
+        $distritoId = Identifiable::fetchtSessionDistrito()->id;    
         $data = app(GCeuRelatorioDistritoGceuService::class)->getList($distritoId);
         $data['titulo'] =  "Relatório de GCEU do Distrito: ".Identifiable::fetchtSessionDistrito()->nome;
+
         if (!$data) {
             return redirect()->route('gceu.index')->with('error', 'Relatório de GCEU não encontrado.');
         }
@@ -303,14 +307,15 @@ class GceuController extends Controller
 
     public function gceuRelatorioDistritoAniversariantes()
     {
-        $igrejaId = Identifiable::fetchtSessionDistrito()->id;
-        $data = app(GCeuRelatorioAniversariantesService::class)->getList($igrejaId);
+        $distritoId = Identifiable::fetchtSessionDistrito()->id;
+        $data = app(GCeuRelatorioDistritoAniversariantesService::class)->getList($distritoId);
+
         $data['titulo'] =  "Relatório de Aniversariantes GCEU do Distrito: ".Identifiable::fetchtSessionDistrito()->nome;
 
         if (!$data) {
             return redirect()->route('gceu.index')->with('error', 'Relatório de Aniversariantes não encontrado.');
         }
-        return view('gceu.relatorio-igreja.aniversariantes', $data);
+        return view('gceu.relatorio-distrito.aniversariantes', $data);
     }
     
 }

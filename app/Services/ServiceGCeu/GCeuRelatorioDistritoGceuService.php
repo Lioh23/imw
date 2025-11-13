@@ -9,7 +9,6 @@ class GCeuRelatorioDistritoGceuService
 {
     public function getList($distritoId)
     {
-
         $dados = DB::table('instituicoes_instituicoes as igreja')
             ->select(
                 'distrito.id',
@@ -24,10 +23,25 @@ class GCeuRelatorioDistritoGceuService
                 $join->on('gceu.instituicao_id', '=', 'igreja.id');
             })
             ->where(['distrito.id' => $distritoId, 'gceu.status' => 'A'])
+            ->when(request()->get('instituicao_id'), function ($query) {
+                $query->where('igreja.id', request()->get('instituicao_id'));
+            })
             ->orderBy('distrito.nome')
             ->orderBy('igreja.id')
             ->get();
-
-        return ['dados' => $dados];
+        
+        $igrejas = DB::table('instituicoes_instituicoes as igreja')
+            ->select(
+                'distrito.id',
+                'distrito.nome as distrito_nome',
+                'igreja.id as id_igreja',
+                'igreja.nome as igreja_nome',
+            )->join('instituicoes_instituicoes as distrito', function ($join) {
+                $join->on('distrito.id', '=', 'igreja.instituicao_pai_id');
+            })
+            ->where(['distrito.id' => $distritoId])
+            ->orderBy('igreja.nome')
+            ->get();
+        return ['dados' => $dados, 'igrejas' => $igrejas];
     }
 }
