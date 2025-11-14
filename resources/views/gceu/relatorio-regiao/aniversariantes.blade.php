@@ -45,16 +45,25 @@
         
         {{-- Congregação --}}
         <div class="form-group row mb-4">
-          <div class="col-lg-4">
-            <label class="control-label">Igreja:</label>
-            <select id="instituicao_id" name="instituicao_id" class="form-control @error('instituicao_id') is-invalid @enderror" >
-              <option value="" {{ request()->instituicao_id == '' ? 'selected' : '' }}>TODAS</option>
-              @foreach($igrejas as $igreja)
-                <option value="{{ $igreja->id_igreja }}" {{ request()->instituicao_id == $igreja->id_igreja ? 'selected' : '' }}>{{ $igreja->igreja_nome }}</option>
+          <div class="col-lg-3">
+            <label class="control-label">Distrito:</label>
+            <select id="regiao_id" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror" >
+              <option value="" {{ request()->distrito_id == '' ? 'selected' : '' }}>TODOS</option>
+              @foreach($distritos as $distrito)
+                <option value="{{ $distrito->id }}" {{ request()->distrito_id == $distrito->id ? 'selected' : '' }}>{{ $distrito->distrito_nome }}</option>
               @endforeach
             </select>
           </div>
           <div class="col-lg-4">
+            <label class="control-label">Igreja:</label>
+            <select id="igreja_id" name="igreja_id" class="form-control @error('igreja_id') is-invalid @enderror" >
+              <option value="" {{ request()->igreja_id == '' ? 'selected' : '' }}>TODAS</option>
+              @foreach($igrejas as $igreja)
+                <option value="{{ $igreja->id_igreja }}" {{ request()->igreja_id == $igreja->id_igreja ? 'selected' : '' }}>{{ $igreja->igreja_nome }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-lg-3">
             <label class="control-label">GCEU:</label>
             <select id="gceu_id" name="gceu_id" class="form-control @error('gceu_id') is-invalid @enderror" >
               <option value="" {{ request()->gceu_id == '' ? 'selected' : '' }}>TODOS</option>

@@ -293,7 +293,7 @@ Route::middleware(['auth'])->group(function () {
             //CGEU
             Route::get('/gceu', [GceuController::class, 'gceuRelatorioRegiaoGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-regiao-lista-gceu']);
             Route::get('/relatorio-funcoes-gceu', [GceuController::class, 'gceuRelatorioRegiaoFuncoes'])->name('relatorio.funcoes.gceu')->middleware(['seguranca:gceu-regiao-lista-funcoes']);
-            Route::get('/relatorio-aniversariantes-gceu', [GceuController::class, 'gceuRelatorioRegiaoAniversariantes'])->name('relatorio.aniversariantes.gceu')->middleware(['seguranca:gceu-distrito-lista-aniversariantes']);
+            Route::get('/relatorio-aniversariantes-gceu', [GceuController::class, 'gceuRelatorioRegiaoAniversariantes'])->name('relatorio.aniversariantes.gceu')->middleware(['seguranca:gceu-regiao-lista-aniversariantes']);
         });
 
         // Relatórios Região Clérigos

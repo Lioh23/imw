@@ -649,7 +649,11 @@
                                     <a href="{{ route('regiao.relatorio.funcoes.gceu') }}">Lista Função</a>
                                 @endif
                             </li>
-
+                            <li {!! Request::is('regiao/relatorio/relatorio-aniversariantes-gceu') ? 'class="active"' : '' !!}>
+                                @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-regiao-lista-aniversariantes'))
+                                    <a href="{{ route('regiao.relatorio.aniversariantes.gceu') }}">Lista Aniversariantes</a>
+                                @endif
+                            </li>
                         @endif
                      </ul>
                  </li>

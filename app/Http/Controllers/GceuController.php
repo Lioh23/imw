@@ -23,6 +23,7 @@ use App\Services\ServiceGCeu\GCeuRelatorioFuncoesService;
 use App\Services\ServiceGCeu\GCeuRelatorioRegiaoFuncoesService;
 use App\Services\ServiceGCeu\GCeuService;
 use App\Services\ServiceGCeu\GCeuRelatorioGceuService;
+use App\Services\ServiceGCeu\GCeuRelatorioRegiaoAniversariantesService;
 use App\Services\ServiceGCeu\GCeuRelatorioRegiaoGceuService;
 use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\StoreGCeuService;
@@ -351,5 +352,16 @@ class GceuController extends Controller
         return view('gceu.relatorio-regiao.funcoes', $data);
     }
     
-    
+    public function gceuRelatorioRegiaoAniversariantes()
+    {
+        $regiaoId = Identifiable::fetchtSessionRegiao()->id;
+        $data = app(GCeuRelatorioRegiaoAniversariantesService::class)->getList($regiaoId);
+
+        $data['titulo'] =  "Relatório de Aniversariantes GCEU da Região: ".Identifiable::fetchtSessionRegiao()->nome;
+
+        if (!$data) {
+            return redirect()->route('gceu.index')->with('error', 'Relatório de Aniversariantes não encontrado.');
+        }
+        return view('gceu.relatorio-regiao.aniversariantes', $data);
+    }
 }
