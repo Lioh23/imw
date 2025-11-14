@@ -36,7 +36,7 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório de funções de GCEU da Igreja: {{ $igreja }}</h4>
+              <h4>Relatório de funções de GCEU da Região: {{ $igreja }}</h4>
           </div>
       </div>
     </div>
@@ -57,7 +57,7 @@
           <div class="col-lg-2">
             <label class="control-label">Função:</label>
             <select id="funcao_id" name="funcao_id" class="form-control @error('funcao_id') is-invalid @enderror" >
-              <option value="" {{ request()->funcao_id == '' ? 'selected' : '' }}>TODOS</option>
+              <option value="" {{ request()->funcao_id == '' ? 'selected' : '' }}>TODAS</option>
               @foreach ($funcoes as $funcao)
                 <option value="{{ $funcao->id }}" {{ request()->funcao_id == $funcao->id ? 'selected' : '' }}>{{ $funcao->funcao }}</option>
               @endforeach

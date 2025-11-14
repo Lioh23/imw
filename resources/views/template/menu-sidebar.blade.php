@@ -444,7 +444,7 @@
 
                             <li {!! Request::is('distrito/relatorio-funcoes-gceu') ? 'class="active"' : '' !!}>
                                 @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-lista-funcoes'))
-                                    <a href="{{ route('distrito.relatorio.funcoes.gceu') }}">Lista Funcao</a>
+                                    <a href="{{ route('distrito.relatorio.funcoes.gceu') }}">Lista Função</a>
                                 @endif
                             </li>
 
@@ -634,6 +634,23 @@
                                 <a href="{{ route('regiao.conta.bancaria.igreja') }}">Conta Bancária por Igreja</a>
                             @endif
                         </li>
+
+                        @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-regiao-relatorios'))
+                            <li class="submenu-fixo mt-3 mb-3">
+                                <span>GCEU</span>
+                            </li>
+                            <li {!! Request::is('regiao/relatorio/gceu') ? 'class="active"' : '' !!}>
+                                @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-regiao-lista-gceu'))
+                                    <a href="{{ route('regiao.relatorio.gceu') }}">Lista GCEU</a>
+                                @endif
+                            </li>
+                            <li {!! Request::is('regiao/relatorio/relatorio-funcoes-gceu') ? 'class="active"' : '' !!}>
+                                @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-regiao-lista-funcoes'))
+                                    <a href="{{ route('regiao.relatorio.funcoes.gceu') }}">Lista Função</a>
+                                @endif
+                            </li>
+
+                        @endif
                      </ul>
                  </li>
              @endif

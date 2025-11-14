@@ -4,7 +4,7 @@
 <x-breadcrumb :breadcrumbs="[
     ['text' => 'Home', 'url' => '/', 'active' => false],
     ['text' => 'GCEU', 'url' => '/gceu/lista', 'active' => false],
-    ['text' => 'Relatório Lista de Funções', 'url' => '#', 'active' => true]
+    ['text' => 'Relatório de Aniversariantes GCEU', 'url' => '#', 'active' => true]
 ]"></x-breadcrumb>
 @endsection
 
@@ -36,7 +36,7 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório de funções de GCEU da Igreja: {{ $igreja }}</h4>
+              <h4>{{ $titulo }}</h4>
           </div>
       </div>
     </div>
@@ -46,15 +46,15 @@
         {{-- Congregação --}}
         <div class="form-group row mb-4">
           <div class="col-lg-4">
-            <label class="control-label">Função:</label>
-            <select id="funcao_id" name="funcao_id" class="form-control @error('funcao_id') is-invalid @enderror" >
-              <option value="" {{ request()->funcao_id == '' ? 'selected' : '' }}>TODAS</option>
-              @foreach ($funcoes as $funcao)
-                <option value="{{ $funcao->id }}" {{ request()->funcao_id == $funcao->id ? 'selected' : '' }}>{{ $funcao->funcao }}</option>
+            <label class="control-label">Igreja:</label>
+            <select id="instituicao_id" name="instituicao_id" class="form-control @error('instituicao_id') is-invalid @enderror" >
+              <option value="" {{ request()->instituicao_id == '' ? 'selected' : '' }}>TODAS</option>
+              @foreach($igrejas as $igreja)
+                <option value="{{ $igreja->id_igreja }}" {{ request()->instituicao_id == $igreja->id_igreja ? 'selected' : '' }}>{{ $igreja->igreja_nome }}</option>
               @endforeach
             </select>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-4">
             <label class="control-label">GCEU:</label>
             <select id="gceu_id" name="gceu_id" class="form-control @error('gceu_id') is-invalid @enderror" >
               <option value="" {{ request()->gceu_id == '' ? 'selected' : '' }}>TODOS</option>
@@ -77,32 +77,32 @@
   <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-content widget-content-area">
-          <h4>{{ $titulo }}</h4>          
+          
             <div class="table-responsive">
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>MEMBRO</th>
-                            <th>CONTATO</th>
-                            <th>FUNÇÃO</th>
-                            <th>GCEU</th>
-                            <th>ENDEREÇO GCEU</th>
-                            <th>ANFITRIAO</th>
-                            <th>CONTATO</th>
+                          <th>#</th>
+                          <th>IGREJA</th>
+                          <th>NOME</th>
+                          <th>ANIVERSÁRIO</th>
+                          <th>NASCIMENTO</th>
+                          <th>IDADE</th>
+                          <th>CONTATO</th>
+                          <th>GCEU</th>
                         </tr>
                     </thead>
                     <tbody>
                       @foreach ($dados as $key => $item)
                           <tr>
                             <td>{{ $key += 1 }}</td>
-                            <td>{{ $item->lider }}</td>
-                            <td>{{ formatStr($item->telefone_preferencial, '## (##) #####-####') }}</td>
-                            <td>{{ $item->funcao }}</td>
+                            <td>{{ $item->igreja_nome }}</td>
                             <td>{{ $item->nome }}</td>
-                            <td>{{ $item->endereco }} {{ $item->numero }}, {{ $item->bairro }}, {{ $item->cidade }}, {{ $item->uf }}</td>
-                            <td>{{ $item->anfitriao }}</td>
+                            <td>{{ $item->aniversario }}</td>
+                            <td>{{ formatDate($item->data_nascimento) }}</td>
+                            <td>{{ $item->idade }}</td>
                             <td>{{ formatStr($item->contato, '## (##) #####-####') }}</td>
+                            <td>{{ $item->gceu }}</td>
                           </tr>
                       @endforeach
                     </tbody>

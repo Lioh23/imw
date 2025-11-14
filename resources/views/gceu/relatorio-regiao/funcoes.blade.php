@@ -36,7 +36,7 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório de funções de GCEU da Igreja: {{ $igreja }}</h4>
+              <h4>Relatório de funções de GCEU da Região: {{ $igreja }}</h4>
           </div>
       </div>
     </div>
@@ -44,8 +44,26 @@
       <form class="form-vertical" id="filter_form">
         
         {{-- Congregação --}}
-        <div class="form-group row mb-4">
+        <div class="form-group row mb-3">
           <div class="col-lg-4">
+            <label class="control-label">Distrito:</label>
+            <select id="regiao_id" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror" >
+              <option value="" {{ request()->distrito_id == '' ? 'selected' : '' }}>TODOS</option>
+              @foreach($distritos as $distrito)
+                <option value="{{ $distrito->id }}" {{ request()->distrito_id == $distrito->id ? 'selected' : '' }}>{{ $distrito->distrito_nome }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-lg-4">
+            <label class="control-label">Igreja:</label>
+            <select id="igreja_id" name="igreja_id" class="form-control @error('igreja_id') is-invalid @enderror" >
+              <option value="" {{ request()->igreja_id == '' ? 'selected' : '' }}>TODAS</option>
+              @foreach($igrejas as $igreja)
+                <option value="{{ $igreja->id_igreja }}" {{ request()->igreja_id == $igreja->id_igreja ? 'selected' : '' }}>{{ $igreja->igreja_nome }}</option>
+              @endforeach
+            </select>
+          </div>
+          <div class="col-lg-2">
             <label class="control-label">Função:</label>
             <select id="funcao_id" name="funcao_id" class="form-control @error('funcao_id') is-invalid @enderror" >
               <option value="" {{ request()->funcao_id == '' ? 'selected' : '' }}>TODAS</option>
@@ -54,7 +72,7 @@
               @endforeach
             </select>
           </div>
-          <div class="col-lg-6">
+          <div class="col-lg-2">
             <label class="control-label">GCEU:</label>
             <select id="gceu_id" name="gceu_id" class="form-control @error('gceu_id') is-invalid @enderror" >
               <option value="" {{ request()->gceu_id == '' ? 'selected' : '' }}>TODOS</option>
@@ -82,7 +100,9 @@
                 <table class="table table-bordered table-striped table-hover mb-4 display nowrap" id="aniversariantes">
                     <thead>
                         <tr>
-                            <th>#</th>
+                           <th>#</th>
+                            <th>DISTRITO</th>
+                            <th>IGREJA</th>
                             <th>MEMBRO</th>
                             <th>CONTATO</th>
                             <th>FUNÇÃO</th>
@@ -96,6 +116,8 @@
                       @foreach ($dados as $key => $item)
                           <tr>
                             <td>{{ $key += 1 }}</td>
+                            <td>{{ $item->distrito_nome }}</td>
+                            <td>{{ $item->igreja_nome }}</td>
                             <td>{{ $item->lider }}</td>
                             <td>{{ formatStr($item->telefone_preferencial, '## (##) #####-####') }}</td>
                             <td>{{ $item->funcao }}</td>
@@ -110,7 +132,7 @@
                     <tfoot>
                       <tr>
                           <td>{{ $key }}</td>
-                          <td colspan="7"></td>
+                          <td colspan="10"></td>
                         </tr>
                     </tfoot>
                     @endif
@@ -162,6 +184,8 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
+              pageSize: 'LETTER',
+              orientation: 'landscape',
               title: "{{ $titulo }}",
 
               customize: function (doc) {
