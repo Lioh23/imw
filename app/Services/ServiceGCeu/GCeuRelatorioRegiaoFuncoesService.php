@@ -10,7 +10,6 @@ class GCeuRelatorioRegiaoFuncoesService
 {
     public function getList($regiaoId, $distritoId, $igrejaId, $funcaoId, $gceuId)
     {
-        $regiaoId = 13;
         $dados = DB::table('instituicoes_instituicoes as igreja')
             ->select(
                 'distrito.id',
