@@ -92,6 +92,7 @@
                     <thead>
                         <tr>
                           <th>#</th>
+                          <th>DISTRITO</th>
                           <th>IGREJA</th>
                           <th>NOME</th>
                           <th>ANIVERSÁRIO</th>
@@ -105,6 +106,7 @@
                       @foreach ($dados as $key => $item)
                           <tr>
                             <td>{{ $key += 1 }}</td>
+                            <td>{{ $item->distrito_nome }}</td>
                             <td>{{ $item->igreja_nome }}</td>
                             <td>{{ $item->nome }}</td>
                             <td>{{ $item->aniversario }}</td>
