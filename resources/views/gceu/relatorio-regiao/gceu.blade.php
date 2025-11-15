@@ -170,6 +170,8 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
+              pageSize: 'LETTER',
+              orientation: 'landscape',
               title: "{{ $titulo }}",
 
               customize: function (doc) {

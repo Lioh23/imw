@@ -121,7 +121,7 @@
                     <tfoot>
                       <tr>
                           <td>{{ $key }}</td>
-                          <td colspan="7"></td>
+                          <td colspan="8"></td>
                         </tr>
                     </tfoot>
                     @endif
@@ -173,6 +173,8 @@
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
+              pageSize: 'LETTER',
+              orientation: 'landscape',
               title: "{{ $titulo }}",
 
               customize: function (doc) {
