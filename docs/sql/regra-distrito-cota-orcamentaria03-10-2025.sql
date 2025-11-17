@@ -1,7 +1,22 @@
-INSERT INTO `regras` (`id`, `nome`, `created_at`, `updated_at`, `deleted_at`) VALUES (NULL, 'distrito-cota-orcamentaria', '2025-10-03 17:10:04', '2025-10-03 17:10:04', NULL);
+INSERT INTO `regras` (`id`, `nome`, `created_at`, `updated_at`, `deleted_at`) VALUES (NULL, 'distrito-cota-orcamentaria', current_timestamp(), current_timestamp(), NULL);
 
-INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '1', '149', '2025-10-03 17:15:34', '2025-10-03 17:15:34');
-INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '2', '149', '2025-10-03 17:15:34', '2025-10-03 17:15:34');
-INSERT INTO `perfil_regra` (`id`, `perfil_id`, `regra_id`, `created_at`, `updated_at`) VALUES (NULL, '8', '149', '2025-10-03 17:15:34', '2025-10-03 17:15:34');
+INSERT INTO perfil_regra (id, perfil_id, regra_id, created_at, updated_at)
+SELECT NULL, '1', r.id, current_timestamp(), current_timestamp()
+FROM regras r
+WHERE r.nome = 'distrito-cota-orcamentaria'
+ORDER BY r.id DESC
+LIMIT 1;
 
-UPDATE `perfil_regra` SET `perfil_id` = '3' WHERE `perfil_regra`.`id` = 1143;
+INSERT INTO perfil_regra (id, perfil_id, regra_id, created_at, updated_at)
+SELECT NULL, '2', r.id, current_timestamp(), current_timestamp()
+FROM regras r
+WHERE r.nome = 'distrito-cota-orcamentaria'
+ORDER BY r.id DESC
+LIMIT 1;
+
+INSERT INTO perfil_regra (id, perfil_id, regra_id, created_at, updated_at)
+SELECT NULL, '6', r.id, current_timestamp(), current_timestamp()
+FROM regras r
+WHERE r.nome = 'distrito-cota-orcamentaria'
+ORDER BY r.id DESC
+LIMIT 1;
