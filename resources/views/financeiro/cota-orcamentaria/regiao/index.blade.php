@@ -47,10 +47,17 @@
             <div class="widget-content widget-content-area">
                 <form class="form-vertical" id="filter_form" method="GET">
                     <div class="form-group row mb-4" id="filtros_data">
-                        <div class="col-lg-2 text-right">
-                            <label class="control-label">* Ano/Mês:</label>
+                        <div class="col-lg-5">
+                            <label class="control-label">* Distritos:</label>  
+                            <select class="form-control " id="distrito_id" name="distrito_id">
+                                <option value="" selected>TODOS</option>
+                                @foreach($distritos as $distrito)
+                                    <option value="{{ $distrito->id }}" {{ request()->input('distrito_id') == $distrito->id ? 'selected' : '' }}>{{ $distrito->distrito_nome }}</option>
+                                @endforeach
+                            </select>
                         </div>
-                            <div class="col-lg-5 ano_mes">
+                        <div class="col-lg-5 ano_mes">
+                            <label class="control-label">* Ano/Mês:</label>                           
                                 <div class="input-group">
                                     @if(request()->input('ano'))
                                         <select class="form-control " id="ano" name="ano" required="">
@@ -91,13 +98,11 @@
                                     @endif
                                 </div>
                             </div>
-                        
-
-                            
-                            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg> Buscar
-                                </button>
-
+                        <div class="col-lg-2" style="margin-top: 30px;">
+                            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary ">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" stroke="none" viewBox="0 0 24 24"><path d="M10 18a7.952 7.952 0 0 0 4.897-1.688l4.396 4.396 1.414-1.414-4.396-4.396A7.952 7.952 0 0 0 18 10c0-4.411-3.589-8-8-8s-8 3.589-8 8 3.589 8 8 8zm0-14c3.309 0 6 2.691 6 6s-2.691 6-6 6-6-2.691-6-6 2.691-6 6-6z"></path></svg> Buscar
+                            </button>
+                        </div>
 
                     </div>
                 </form>

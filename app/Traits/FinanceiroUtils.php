@@ -197,7 +197,13 @@ trait FinanceiroUtils
             return $cotasTotal;
         }else if($tipo == 'regiao'){
             $regiaoId = $dados['instituicao_id'] ? $dados['instituicao_id'] : '';
-            $instituicoesDistritos = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')->where(['instituicao_pai_id' => $regiaoId, 'tipo_instituicao_id' => 2])->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')->get();
+            $instituicoesDistritos = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')
+                ->where(['instituicao_pai_id' => $regiaoId, 'tipo_instituicao_id' => 2])
+                ->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')
+                ->when(request()->input('distrito_id'), function ($query) {
+                    $query->where('instituicoes_instituicoes.id',request()->input('distrito_id'));
+                }) 
+                ->get();
             foreach($instituicoesDistritos as $distrito){
                 $instituicoes = InstituicoesInstituicao::select('instituicoes_instituicoes.*','instituicoes_tiposinstituicao.nome as tipo_instituicao')->where('instituicao_pai_id', $distrito->id)->join('instituicoes_tiposinstituicao','instituicoes_tiposinstituicao.id', 'instituicoes_instituicoes.tipo_instituicao_id')->get();
                 foreach($instituicoes as $instituicao){
