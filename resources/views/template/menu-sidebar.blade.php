@@ -651,6 +651,11 @@
                                     <a href="{{ route('regiao.relatorio.gceu') }}">Lista GCEU</a>
                                 @endif
                             </li>
+                            <li {!! Request::is('regiao/relatorio/relatorio-carta-pastoral-gceu') ? 'class="active"' : '' !!}>
+                                @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-regiao-relatorio-carta-pastoral'))
+                                    <a href="{{ route('regiao.relatorio.carta-pastoral-regiao') }}">Carta Pastoral</a>
+                                @endif
+                            </li>
                             <li {!! Request::is('regiao/relatorio/relatorio-funcoes-gceu') ? 'class="active"' : '' !!}>
                                 @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-regiao-lista-funcoes'))
                                     <a href="{{ route('regiao.relatorio.funcoes.gceu') }}">Lista Função</a>

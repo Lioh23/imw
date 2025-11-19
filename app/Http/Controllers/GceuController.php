@@ -9,6 +9,7 @@ use App\Http\Requests\UpdateGCeuCartaPastoralRequest;
 use App\Http\Requests\UpdateGCeuRequest;
 use App\Models\GCeu;
 use App\Services\ServiceGCeu\CartaPastoralGCeuDistritoService;
+use App\Services\ServiceGCeu\CartaPastoralGCeuRegiaoService;
 use App\Services\ServiceGCeu\CartaPastoralGCeuService;
 use App\Services\ServiceGCeu\DeletarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\DeletarGCeuService;
@@ -376,6 +377,38 @@ class GceuController extends Controller
             return redirect()->route('gceu.index')->with('error', 'Relatório de GCEU não encontrado.');
         }
         return view('gceu.relatorio-regiao.gceu', $data);
+    }
+
+    public function cartaPastoralRegiao()
+    {
+        $regiaoId = Identifiable::fetchtSessionRegiao()->id;
+        $data = app(CartaPastoralGCeuRegiaoService::class)->getList($regiaoId);
+        if (!$data) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        return view('gceu.carta-pastoral-regiao.relatorio', $data);
+    }
+
+
+    public function cartaPastoralVisualizarHtmlRegiao($id)
+    {
+        $cartaPastoral = app(VisualizarGCeuCartaPastoralService::class)->findOne($id);
+        if (!$cartaPastoral) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        return view('gceu.carta-pastoral-regiao.visualizar', ['cartaPastoral' =>  $cartaPastoral]);
+    }
+
+    public function cartaPastoralPdfRegiao($id)
+    {
+        $cartaPastoral = app(VisualizarGCeuCartaPastoralService::class)->findOne($id);
+        if (!$cartaPastoral) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        //return view('gceu.carta-pastoral.visualizar', ['cartaPastoral' =>  $cartaPastoral]);
+
+        $pdf = FacadePdf::loadView('gceu.carta-pastoral-regiao.pdf', ['cartaPastoral' =>  $cartaPastoral]);
+        return $pdf->stream('carta-pastoral-'.$cartaPastoral->titulo.'.pdf');
     }
 
     public function gceuRelatorioRegiaoFuncoes(Request $request)

@@ -298,6 +298,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/gceu', [GceuController::class, 'gceuRelatorioRegiaoGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-regiao-lista-gceu']);
             Route::get('/relatorio-funcoes-gceu', [GceuController::class, 'gceuRelatorioRegiaoFuncoes'])->name('relatorio.funcoes.gceu')->middleware(['seguranca:gceu-regiao-lista-funcoes']);
             Route::get('/relatorio-aniversariantes-gceu', [GceuController::class, 'gceuRelatorioRegiaoAniversariantes'])->name('relatorio.aniversariantes.gceu')->middleware(['seguranca:gceu-regiao-lista-aniversariantes']);
+            Route::get('/relatorio-carta-pastoral-gceu', [GceuController::class, 'cartaPastoralRegiao'])->name('relatorio.carta-pastoral-regiao')->middleware(['seguranca:gceu-regiao-relatorio-carta-pastoral']);
+
+            Route::get('/carta-pastoral/visualizar-html/{id}', [GceuController::class, 'cartaPastoralVisualizarHtmlRegiao'])->name('carta-pastoral-visualizar-html');
+            Route::get('/carta-pastoral/visualizar-pdf/{id}', [GceuController::class, 'cartaPastoralPdfRegiao'])->name('carta-pastoral.pdf');
         });
 
         // Relatórios Região Clérigos
