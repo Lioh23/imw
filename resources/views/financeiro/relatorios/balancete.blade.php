@@ -168,7 +168,7 @@
                                     </tr>
                                 </tbody>
                                 <tr>
-                                    <td colspan="7">dgsdgs</td>
+                                    <td colspan="7"></td>
                                 </tr>
                                 <tr>
                                     <td  colspan="7">
@@ -227,14 +227,14 @@
                                                     <td style="text-align: right;">R$ {{ number_format($lancamento->total, 2, ',', '.') }}</td>
                                                 </tr>
                                                 @endforeach
-                                                <tr>
+                                                <!-- <tr>
                                                     <th></th>   
                                                     <th  colspan="5" style="text-align: left;">Total Conta</th>
                                                     @php
                                                         $total = isset($total) ? $total : [];
                                                     @endphp
                                                     <th style="text-align: right;">R$ {{ number_format(array_sum($total), 2, ',', '.') }}</th>
-                                                </tr>
+                                                </tr> -->
                                             </tbody>
                                         </table>                                        
                                     </td>
