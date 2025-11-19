@@ -436,9 +436,16 @@
                             <li class="submenu-fixo mt-3 mb-3">
                                 <span>GCEU</span>                                
                             </li>
+
                             <li {!! Request::is('distrito/relatorio-gceu') ? 'class="active"' : '' !!}>
                                 @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-lista-gceu'))
                                     <a href="{{ route('distrito.relatorio.gceu') }}">Lista GCEU</a>
+                                @endif
+                            </li>
+
+                            <li {!! Request::is('distrito/relatorio-carta-pastoral-gceu') ? 'class="active"' : '' !!}>
+                                @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-distrito-relatorio-carta-pastoral'))
+                                    <a href="{{ route('distrito.relatorio.carta-pastoral-distrito') }}">Carta Pastoral</a>
                                 @endif
                             </li>
 
@@ -985,6 +992,11 @@
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-gceu'))
                                 <a href="{{ route('gceu.relatorio.gceu') }}">Lista de GCEU</a>
                             @endif
+                         </li>
+                         <li {!! Request::is('gceu/relatorio-carta-pastoral*') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-carta-pastoral-relatorio'))
+                                 <a href="{{ route('gceu.carta-pastoral-relatorio') }}">Carta Pastoral</a>
+                             @endif
                          </li>
                          <li {!! Request::is('gceu/relatorio-funcoes*') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-funcoes'))

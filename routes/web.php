@@ -251,6 +251,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio-gceu', [GceuController::class, 'gceuRelatorioDistritoGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-distrito-lista-gceu']);
             Route::get('/relatorio-funcoes-gceu', [GceuController::class, 'gceuRelatorioDistritoFuncoes'])->name('relatorio.funcoes.gceu')->middleware(['seguranca:gceu-distrito-lista-funcoes']);
             Route::get('/relatorio-aniversariantes-gceu', [GceuController::class, 'gceuRelatorioDistritoAniversariantes'])->name('relatorio.aniversariantes.gceu')->middleware(['seguranca:gceu-distrito-lista-aniversariantes']);
+            Route::get('/relatorio-carta-pastoral-gceu', [GceuController::class, 'cartaPastoralDistrito'])->name('relatorio.carta-pastoral-distrito')->middleware(['seguranca:gceu-distrito-relatorio-carta-pastoral']);
+
+            Route::get('/carta-pastoral/visualizar-html/{id}', [GceuController::class, 'cartaPastoralVisualizarHtmlDistrito'])->name('carta-pastoral-visualizar-html');
+            Route::get('/carta-pastoral/visualizar-pdf/{id}', [GceuController::class, 'cartaPastoralPdfDistrito'])->name('carta-pastoral.pdf');
         });
 
         Route::prefix('regiao/relatorio')->name('regiao.')->group(function () {
@@ -417,6 +421,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio-gceu', [GceuController::class, 'gceuRelatorioGceu'])->name('relatorio.gceu')->middleware(['seguranca:gceu-igreja-lista-gceu']);
             Route::get('/relatorio-funcoes', [GceuController::class, 'gceuRelatorioFuncoes'])->name('relatorio.funcoes')->middleware(['seguranca:gceu-igreja-lista-funcoes']);
             Route::get('/relatorio-aniversariantes', [GceuController::class, 'gceuRelatorioAniversariantes'])->name('relatorio.aniversariantes')->middleware(['seguranca:gceu-igreja-lista-aniversariantes']);
+            Route::get('/relatorio-carta-pastoral', [GceuController::class, 'cartaPastoralRelatorio'])->name('carta-pastoral-relatorio')->middleware(['seguranca:gceu-carta-pastoral-relatorio']);
             
         });
 

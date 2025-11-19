@@ -8,6 +8,7 @@ use App\Http\Requests\StoreGCeuRequest;
 use App\Http\Requests\UpdateGCeuCartaPastoralRequest;
 use App\Http\Requests\UpdateGCeuRequest;
 use App\Models\GCeu;
+use App\Services\ServiceGCeu\CartaPastoralGCeuDistritoService;
 use App\Services\ServiceGCeu\CartaPastoralGCeuService;
 use App\Services\ServiceGCeu\DeletarGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\DeletarGCeuService;
@@ -38,7 +39,7 @@ use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 class GceuController extends Controller
 {
     use Identifiable;
-
+    ////////////////////////////GCEU IGREJA/////////////////////////////
     public function index(Request $request)
     {
         $data = app(IdentificaDadosIndexService::class)->execute($request->all());
@@ -134,6 +135,16 @@ class GceuController extends Controller
             return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
         }
         return view('gceu.carta-pastoral.index', $data);
+    }
+
+    public function cartaPastoralRelatorio()
+    {
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $data = app(CartaPastoralGCeuService::class)->getList($igrejaId);
+        if (!$data) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        return view('gceu.carta-pastoral.relatorio', $data);
     }
     
     public function cartaPastoralEditar($id)
@@ -277,6 +288,7 @@ class GceuController extends Controller
         return view('gceu.relatorio-igreja.aniversariantes', $data);
     }
 
+    ////////////////////////////GCEU DISTRITO/////////////////////////////
     public function gceuRelatorioDistritoGceu()
     {
         $distritoId = Identifiable::fetchtSessionDistrito()->id;    
@@ -287,6 +299,38 @@ class GceuController extends Controller
             return redirect()->route('gceu.index')->with('error', 'Relatório de GCEU não encontrado.');
         }
         return view('gceu.relatorio-distrito.gceu', $data);
+    }
+
+    public function cartaPastoralDistrito()
+    {
+        $distritoId = Identifiable::fetchtSessionDistrito()->id;
+        $data = app(CartaPastoralGCeuDistritoService::class)->getList($distritoId);
+        if (!$data) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        return view('gceu.carta-pastoral-distrito.relatorio', $data);
+    }
+
+
+    public function cartaPastoralVisualizarHtmlDistrito($id)
+    {
+        $cartaPastoral = app(VisualizarGCeuCartaPastoralService::class)->findOne($id);
+        if (!$cartaPastoral) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        return view('gceu.carta-pastoral-distrito.visualizar', ['cartaPastoral' =>  $cartaPastoral]);
+    }
+
+    public function cartaPastoralPdfDistrito($id)
+    {
+        $cartaPastoral = app(VisualizarGCeuCartaPastoralService::class)->findOne($id);
+        if (!$cartaPastoral) {
+            return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta pastoral não encontrada.');
+        }
+        //return view('gceu.carta-pastoral.visualizar', ['cartaPastoral' =>  $cartaPastoral]);
+
+        $pdf = FacadePdf::loadView('gceu.carta-pastoral-distrito.pdf', ['cartaPastoral' =>  $cartaPastoral]);
+        return $pdf->stream('carta-pastoral-'.$cartaPastoral->titulo.'.pdf');
     }
 
     public function gceuRelatorioDistritoFuncoes(Request $request)
@@ -321,6 +365,7 @@ class GceuController extends Controller
         return view('gceu.relatorio-distrito.aniversariantes', $data);
     }
     
+     ////////////////////////////GCEU REGIAO/////////////////////////////
     public function gceuRelatorioRegiaoGceu()
     {
         $regiaoId = Identifiable::fetchtSessionRegiao()->id;  

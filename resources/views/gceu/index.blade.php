@@ -77,7 +77,7 @@
                             </div>
                         </div>
                     </div> -->
-                    <div class="row mb-4">
+                    <!-- <div class="row mb-4">
                         <div class="col-4">
                             <input type="text" name="search" id="searchInput" class="form-control form-control-sm"
                                 placeholder="Pesquisar...">
@@ -85,7 +85,7 @@
                         <div class="col-auto" style="margin-left: -19px;">
                             <button type="submit" class="btn btn-primary btn-rounded"><x-bx-search /> Pesquisar</button>
                         </div>
-                    </div>
+                    </div> -->
                 </form>
 
                 <div class="table-responsive">
