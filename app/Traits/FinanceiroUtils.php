@@ -186,6 +186,7 @@ trait FinanceiroUtils
                                 $impostoCalculado = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
                                 $somaImposto += $impostoCalculado->valorImposto;
                             }
+                            unset($impostoCalculado);
                         }
                 $cotas['instituicao_nome'] = $instituicao->nome;
                 $cotas['tipo_instituicao'] = $instituicao->tipo_instituicao;
@@ -228,6 +229,7 @@ trait FinanceiroUtils
                                     $impostoCalculado = (new CalculaImpostoDeRendaService($irCalculator))->execute($prebenda);
                                     $somaImposto += $impostoCalculado->valorImposto;
                                 }
+                               unset($impostoCalculado);
                             }
                     $cotas['distrito_nome'] = $distrito->nome;
                     $cotas['instituicao_nome'] = $instituicao->nome;
