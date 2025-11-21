@@ -40,7 +40,7 @@ class EditarMembroService
         $cursos = MembresiaCurso::orderBy('nome', 'asc')->get();
         $formacoes = MembresiaFormacao::orderBy('id', 'asc')->get();
         $funcoesEclesiasticas = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();
-        $gceus = GCeu::orderBy('nome', 'asc')->get();
+        $gceus = GCeu::where('status', 'A')->orderBy('nome', 'asc')->get();
         $gceuFuncoes = GCeuFuncoes::orderBy('funcao', 'asc')->get();
         $gceuMembros = GCeuMembros::where(['membro_id' => $id])->get();
         return [

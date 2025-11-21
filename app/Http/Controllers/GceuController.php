@@ -237,6 +237,18 @@ class GceuController extends Controller
         return view('gceu.diario.index', $data);
     }
 
+     public function diarioRelatorio(Request $request)
+    {
+        $data = $request->all();
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $data = app(GCeuDiarioService::class)->getListRelatorio($igrejaId, $data);
+        if (!$data) {
+            return redirect()->route('gceu.index')->with('error', 'Diário não encontrada.');
+        }
+        return view('gceu.diario.relatorio', $data);
+    }
+    
+
     public function diarioPresencaFalta(Request $request)
     {
         $data = $request->all();

@@ -1003,6 +1003,11 @@
                                  <a href="{{ route('gceu.carta-pastoral-relatorio') }}">Carta Pastoral</a>
                              @endif
                          </li>
+                         <li {!! Request::is('gceu/relatorio-diario*') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-relatorio-diario'))
+                                <a href="{{ route('gceu.diario-relatorio') }}">Diário</a>
+                            @endif
+                         </li>
                          <li {!! Request::is('gceu/relatorio-funcoes*') ? 'class="active"' : '' !!}>
                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-igreja-lista-funcoes'))
                                 <a href="{{ route('gceu.relatorio.funcoes') }}">Lista de Funções</a>
