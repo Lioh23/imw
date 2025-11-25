@@ -11,8 +11,10 @@ class DetalhesClerigoService
     public function execute($id)
     {
         // Busca o clerigo pelo ID
-        $clerigo = PessoasPessoa::findOrFail($id);
-        //dd($clerigo);
+        $clerigo = PessoasPessoa::select('pessoas_pessoas.*', 'pessoas_status.descricao as situacao', 'formacoes.nivel as formacao')
+            ->Leftjoin('pessoas_status', 'pessoas_status.id','pessoas_pessoas.situacao_id')
+            ->Leftjoin('formacoes', 'formacoes.id','pessoas_pessoas.formacao_id')
+            ->findOrFail($id);
         if ($clerigo->foto) {
             $disk = Storage::disk('s3');
             $clerigo->foto = $disk->temporaryUrl($clerigo->foto, Carbon::now()->addMinutes(15));

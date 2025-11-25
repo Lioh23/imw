@@ -267,6 +267,10 @@
             });
         });
 
+        function capitalizarPrimeiraLetra(str) {
+            return str.charAt(0).toUpperCase() + str.slice(1);
+        }
+
         $('.btn-view-details').on('click', function() {
             var clerigoId = $(this).data('clerigo-id');
             var modalId = '#viewDetailsModal_' + clerigoId;
@@ -302,6 +306,16 @@
                         var foto = `{{ asset('theme/images/sem-foto.jpg') }}`;
                     }
                     // Preenche o modal com as informações do clerigo e as nomeações, ambos em formato de card
+                    if(data.categoria){
+                        var categoria = capitalizarPrimeiraLetra(data.categoria);
+                    }else{
+                        var categoria ='-';
+                    }
+                    if(data.formacao == null){
+                        var formacao ='-';
+                    }else{
+                        var formacao = data.formacao;
+                    }
                     $(modalId).find('.modal-body').html(`
                 <div class="card mb-3">
                     <div class="card-header bg-secondary text-white">
@@ -313,6 +327,9 @@
                         <img id="showImage" src="${data.foto}" alt="Admin" width="210" height="280">
                         </p>
                         <p><strong>Nome:</strong> ${data.nome}</p>
+                        <p><strong>Categoria:</strong> ${categoria}</p>
+                        <p><strong>Situação:</strong> ${data.situacao}</p>
+                        <p><strong>Formação:</strong> ${formacao}</p>
                         <p><strong>CEP:</strong> ${data.cep || '-'}</p>
                         <p><strong>Endereço:</strong> ${data.endereco || '-'}, ${data.numero || '-'}</p>
                         <p><strong>Complemento:</strong> ${data.complemento || '-'}</p>
