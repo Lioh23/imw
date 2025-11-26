@@ -8,6 +8,7 @@ use App\Http\Requests\StoreGCeuRequest;
 use App\Http\Requests\UpdateGCeuCartaPastoralRequest;
 use App\Http\Requests\UpdateGCeuRequest;
 use App\Models\GCeu;
+use App\Models\PessoasPessoa;
 use App\Services\ServiceGCeu\CartaPastoralGCeuDistritoService;
 use App\Services\ServiceGCeu\CartaPastoralGCeuRegiaoService;
 use App\Services\ServiceGCeu\CartaPastoralGCeuService;
@@ -150,11 +151,16 @@ class GceuController extends Controller
     
     public function cartaPastoralEditar($id)
     {
-        $cartaPastoral = app(EditarGCeuCartaPastoralService::class)->findOne($id);
-        if (!$cartaPastoral) {
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+        $data['pastores'] = PessoasPessoa::select('pessoas_pessoas.id', 'pessoas_pessoas.nome')
+                ->join('pessoas_nomeacoes', 'pessoas_nomeacoes.pessoa_id', 'pessoas_pessoas.id')
+                ->join('pessoas_funcaoministerial', 'pessoas_funcaoministerial.id', 'pessoas_nomeacoes.funcao_ministerial_id')
+                ->where(['pessoas_pessoas.igreja_id' => $igrejaId])->whereIn('pessoas_funcaoministerial.ordem', [3,4,5])->whereNull('pessoas_nomeacoes.data_termino')->get();
+        $data['cartaPastoral'] = app(EditarGCeuCartaPastoralService::class)->findOne($id);
+        if (!$data['cartaPastoral']) {
             return redirect()->route('gceu.carta-pastoral')->with('error', 'Carta Pastoral não encontrada.');
         }
-        return view('gceu.carta-pastoral.editar', compact('cartaPastoral'));
+        return view('gceu.carta-pastoral.editar', $data);
     }
 
     public function cartaPastoralUpdate(UpdateGCeuCartaPastoralRequest $request, $id)
@@ -184,7 +190,12 @@ class GceuController extends Controller
     public function cartaPastoralNovo()
     {
         try {
-            $data['instituicao_id'] = Identifiable::fetchSessionIgrejaLocal()->id;
+            $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+            $data['pastores'] = PessoasPessoa::select('pessoas_pessoas.id', 'pessoas_pessoas.nome')
+                    ->join('pessoas_nomeacoes', 'pessoas_nomeacoes.pessoa_id', 'pessoas_pessoas.id')
+                    ->join('pessoas_funcaoministerial', 'pessoas_funcaoministerial.id', 'pessoas_nomeacoes.funcao_ministerial_id')
+                    ->where(['pessoas_pessoas.igreja_id' => $igrejaId])->whereIn('pessoas_funcaoministerial.ordem', [3,4,5])->whereNull('pessoas_nomeacoes.data_termino')->get();
+            $data['instituicao_id'] = $igrejaId;
             $data['instituicao'] = Identifiable::fetchSessionIgrejaLocal()->nome;
             return view('gceu.carta-pastoral.create', $data);
         } catch (\Exception $e) {

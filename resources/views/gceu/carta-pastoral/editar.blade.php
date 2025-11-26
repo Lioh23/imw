@@ -26,6 +26,18 @@
                 @csrf
                 <div class="row">
                     <div class="form-group mb-4 col-12">
+                        <label class="control-label" for="pessoa_id">* Pastor</label>
+                        <select id="pessoa_id" name="pessoa_id" class="form-control " required=""  class="form-control @error('pessoa_id') is-invalid @enderror" id="pessoa_id" required placeholder="pessoa_id" value="{{ old('pessoa_id') }}">
+                            <option value="" selected="">Selecione</option>
+                                @foreach($pastores as $pastor)
+                                <option value="{{ $pastor->id }}" @if($cartaPastoral->pessoa_id == $pastor->id) selected @endif>{{ $pastor->nome }}</option>
+                                @endforeach
+                        </select>
+                        @error('titulo')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
+                    <div class="form-group mb-4 col-12">
                         <label class="control-label" for="titulo">* Título</label>
                         <input type="text" name="titulo" class="form-control @error('titulo') is-invalid @enderror" id="titulo" required placeholder="Título" minlength="4" value="{{ $cartaPastoral->titulo }}" maxlength="150">
                         @error('titulo')

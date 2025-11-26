@@ -46,7 +46,7 @@
 
                     <div class="form-group mb-4 col-md-3">
                         <label class="control-label" for="contato">* Contato</label>
-                        <input id="contato" name="contato" type="text" class="form-control @error('contato') is-invalid @enderror" required placeholder="(00) 0000-0000" value="{{ old('contato') }}">
+                        <input id="contato" name="contato" type="text" maxlength="15" class="form-control @error('contato') is-invalid @enderror" required placeholder="(00) 0000-0000" value="{{ old('contato') }}">
                         @error('contato')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -72,42 +72,42 @@
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">* CEP</label>
-                        <input id="cep" name="cep" type="text" class="form-control @error('cep') is-invalid @enderror" placeholder="00000-000" value="{{ old('cep') }}" required>
+                        <input id="cep" name="cep" type="text" maxlength="10" class="form-control @error('cep') is-invalid @enderror" placeholder="00000-000" value="{{ old('cep') }}" required>
                         @error('cep')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-6 col-md-6">
                         <label class="control-label">Endereco</label>
-                        <input id="endereco" name="endereco" type="text" class="form-control @error('rua') is-invalid @enderror" placeholder="Endereco" value="{{ old('endereco') }}">
+                        <input id="endereco" name="endereco" type="text" maxlength="120" class="form-control @error('rua') is-invalid @enderror" placeholder="Endereco" value="{{ old('endereco') }}">
                         @error('endereco')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-2 col-md-2">
                         <label class="control-label">Número</label>
-                        <input id="numero" name="numero" type="text" class="form-control @error('numero') is-invalid @enderror" placeholder="Nº" value="{{ old('numero') }}">
+                        <input id="numero" name="numero" type="text" maxlength="11" class="form-control @error('numero') is-invalid @enderror" placeholder="Nº" value="{{ old('numero') }}">
                         @error('numero')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Bairro</label>
-                        <input id="bairro" name="bairro" type="text" class="form-control @error('bairro') is-invalid @enderror" placeholder="Bairro" value="{{ old('bairro') }}">
+                        <input id="bairro" name="bairro" type="text" maxlength="50" class="form-control @error('bairro') is-invalid @enderror" placeholder="Bairro" value="{{ old('bairro') }}">
                         @error('bairro')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Cidade</label>
-                        <input id="cidade" name="cidade" type="text" class="form-control @error('cidade') is-invalid @enderror" placeholder="Cidade" value="{{ old('cidade') }}">
+                        <input id="cidade" name="cidade" type="text" maxlength="50" class="form-control @error('cidade') is-invalid @enderror" placeholder="Cidade" value="{{ old('cidade') }}">
                         @error('cidade')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Estado</label>
-                        <input id="estado" name="estado" type="text" class="form-control @error('estado') is-invalid @enderror" placeholder="Estado" value="{{ old('estado') }}">
+                        <input id="estado" name="estado" type="text" maxlength="30" class="form-control @error('estado') is-invalid @enderror" placeholder="Estado" value="{{ old('estado') }}">
                         @error('estado')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror

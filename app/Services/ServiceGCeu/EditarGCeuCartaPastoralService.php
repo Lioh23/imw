@@ -13,7 +13,7 @@ class EditarGCeuCartaPastoralService
         $cartaPastoral = GCeuCartaPastoral::findOrFail($id);
         $cartaPastoral->update([
             'instituicao_id' => Identifiable::fetchSessionIgrejaLocal()->id,
-            'pessoa_id' => auth()->user()->pessoa_id,
+            'pessoa_id' =>$data['pessoa_id'],
             'titulo' => $data['titulo'],
             'introducao' => $data['titulo'],
             'conteudo' => $data['conteudo']

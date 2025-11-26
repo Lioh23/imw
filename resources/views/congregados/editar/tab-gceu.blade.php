@@ -24,12 +24,21 @@
                             </select>
                         </td>
                         <td>
+                    
                             <select class="form-control gceu-funcao" name="gceu-funcao[]">
                                 <option value="">Selecione</option>
                                 @foreach ($gceuFuncoes as $funcao)
-                                <option value="{{ $funcao->id }}" {{ $gceuMembro->gceu_funcao_id == $funcao->id ? 'selected' : '' }}>
-                                    {{ $funcao->funcao }}
-                                </option>
+                                    @if($pessoa->novo_convertido == 'S' || $pessoa->vinculo == 'C')
+                                        @if($funcao->id == 5)
+                                        <option value="{{ $funcao->id }}" {{ $gceuMembro->gceu_funcao_id == $funcao->id ? 'selected' : '' }}>
+                                            {{ $funcao->funcao }}
+                                        </option>
+                                        @endif
+                                    @else
+                                        <option value="{{ $funcao->id }}" {{ $gceuMembro->gceu_funcao_id == $funcao->id ? 'selected' : '' }}>
+                                            {{ $funcao->funcao }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>
@@ -70,7 +79,17 @@
                             <select class="form-control gceu-funcao" name="gceu-funcao[]">
                                 <option value="">Selecione</option>
                                 @foreach ($gceuFuncoes as $funcao)
-                                <option value="{{ $funcao->id }}">{{ $funcao->funcao }}</option>
+                                    @if($pessoa->novo_convertido == 'S' || $pessoa->vinculo == 'C')
+                                        @if($funcao->id == 5)
+                                        <option value="{{ $funcao->id }}">
+                                            {{ $funcao->funcao }}
+                                        </option>
+                                        @endif
+                                    @else
+                                        <option value="{{ $funcao->id }}">
+                                            {{ $funcao->funcao }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>

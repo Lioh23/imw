@@ -27,9 +27,11 @@
                             <select class="form-control gceu-funcao" name="gceu-funcao[]">
                                 <option value="">Selecione</option>
                                 @foreach ($gceuFuncoes as $funcao)
-                                <option value="{{ $funcao->id }}" {{ $gceuMembro->gceu_funcao_id == $funcao->id ? 'selected' : '' }}>
-                                    {{ $funcao->funcao }}
-                                </option>
+                                    @if($funcao->id != 6)
+                                        <option value="{{ $funcao->id }}" {{ $gceuMembro->gceu_funcao_id == $funcao->id ? 'selected' : '' }}>
+                                            {{ $funcao->funcao }}
+                                        </option>
+                                    @endif
                                 @endforeach
                             </select>
                         </td>

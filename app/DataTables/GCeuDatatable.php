@@ -43,6 +43,9 @@ class GCeuDatatable extends AbstractDatatable
             ->editColumn('created_at', function (GCeu $gceu) {
                 return $gceu->created_at->format('d/m/Y H:i:s');
             })
+            ->editColumn('contato', function (GCeu $gceu) {
+                return formatarTelefone($gceu->contato);
+            })
             ->addColumn('actions', function (GCeu $gceu) {
                 return view('gceu.slice-actions', ['gceu' => $gceu]);
             })

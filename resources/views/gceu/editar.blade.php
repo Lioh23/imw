@@ -50,7 +50,7 @@
 
                     <div class="form-group mb-4 col-md-3">
                         <label class="control-label" for="contato">* Contato</label>
-                        <input id="contato" name="contato" type="text" class="form-control @error('contato') is-invalid @enderror" required placeholder="(00) 0000-0000" value="{{ $gceu->contato }}">
+                        <input id="contato" name="contato" type="text" class="form-control @error('contato') is-invalid @enderror" required placeholder="(00) 0000-0000" value="{{ $gceu->contato }}" maxlength="15">
                         @error('contato')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -75,42 +75,42 @@
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">* CEP</label>
-                        <input id="cep" name="cep" type="text" class="form-control @error('cep') is-invalid @enderror" placeholder="00000-000" value="{{ $gceu->cep }}" required>
+                        <input id="cep" name="cep" type="text" maxlength="10" class="form-control @error('cep') is-invalid @enderror" placeholder="00000-000" value="{{ $gceu->cep }}" required>
                         @error('cep')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-6 col-md-6">
                         <label class="control-label">Endereco</label>
-                        <input id="endereco" name="endereco" type="text" class="form-control @error('rua') is-invalid @enderror" placeholder="Endereco" value="{{ $gceu->endereco }}">
+                        <input id="endereco" name="endereco" type="text" class="form-control @error('rua') is-invalid @enderror" placeholder="Endereco" maxlength="120" value="{{ $gceu->endereco }}">
                         @error('endereco')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-2 col-md-2">
                         <label class="control-label">Número</label>
-                        <input id="numero" name="numero" type="text" class="form-control @error('numero') is-invalid @enderror" placeholder="Nº" value="{{ $gceu->numero }}">
+                        <input id="numero" name="numero" type="text" maxlength="11" class="form-control @error('numero') is-invalid @enderror" placeholder="Nº" value="{{ $gceu->numero }}">
                         @error('numero')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Bairro</label>
-                        <input id="bairro" name="bairro" type="text" class="form-control @error('bairro') is-invalid @enderror" placeholder="Bairro" value="{{ $gceu->bairro }}">
+                        <input id="bairro" name="bairro" type="text" maxlength="50" class="form-control @error('bairro') is-invalid @enderror" placeholder="Bairro" value="{{ $gceu->bairro }}">
                         @error('bairro')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Cidade</label>
-                        <input id="cidade" name="cidade" type="text" class="form-control @error('cidade') is-invalid @enderror" placeholder="Cidade" value="{{ $gceu->cidade }}">
+                        <input id="cidade" name="cidade" type="text" maxlength="50" class="form-control @error('cidade') is-invalid @enderror" placeholder="Cidade" value="{{ $gceu->cidade }}">
                         @error('cidade')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
                     <div class="form-group mb-4 col-md-4">
                         <label class="control-label">Estado</label>
-                        <input id="estado" name="estado" type="text" class="form-control @error('estado') is-invalid @enderror" placeholder="Estado" value="{{ $gceu->uf }}">
+                        <input id="estado" name="estado" type="text" maxlength="30" class="form-control @error('estado') is-invalid @enderror" placeholder="Estado" value="{{ $gceu->uf }}">
                         @error('estado')
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -131,4 +131,36 @@
 
 @section('extras-scripts')
 <script src="{{ asset('visitantes/js/editar.js') }}"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#contato').mask('(00) 00000-0000');
+        $('#cep').mask('000000-00');
+    });
+    $('#cep').blur(function() {
+        var cep = $(this).val().replace(/\D/g, '');
+        if (cep.length != 8) {
+            return;
+        }
+        $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(data) {
+            if (!("erro" in data)) {
+                $('#endereco').val(data.logradouro);
+                $('#bairro').val(data.bairro);
+                $('#cidade').val(data.localidade);
+                $('#estado').val(data.uf);
+            } else {
+                toastr.warning('CEP não encontrado.');
+            }
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        Inputmask("999.999.999-99").mask(document.getElementById("cpf"));
+        Inputmask("99999-999").mask(document.getElementById("cep"));
+        Inputmask("(99) 99999-9999").mask(document.getElementById("contato"));
+        Inputmask("(99) 99999-9999").mask(document.getElementById("telefone_alternativo"));
+        Inputmask("9999 9999 9999").mask(document.getElementById("titulo_eleitor"));
+        Inputmask("99.999.999-9").mask(document.getElementById("identidade"));
+    });
+</script>
 @endsection
