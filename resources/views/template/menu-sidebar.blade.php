@@ -973,7 +973,7 @@
                          </div>
                      </a>
                      <ul class="collapse submenu list-unstyled {{ Request::is('gceu/*') ? 'collapse show' : '' }}" id="gceu" data-parent="#gceu">
-                         <li {!! Request::is('gceu/lista') ? 'class="active"' : '' !!}>
+                         <li {!! Request::is('gceu/lista') || Request::is('gceu/editar*') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-lista'))
                                  <a href="{{ route('gceu.index') }}">Cadastro</a>
                              @endif
@@ -1042,6 +1042,7 @@
                      </a>
                  </li>
              @endif --}}
+             
              <li class="menu menu-heading">
                  <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                          viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"

@@ -1,0 +1,1 @@
+INSERT INTO `perfils` (`id`, `nome`, `nivel`, `created_at`, `updated_at`, `deleted_at`) VALUES (NULL, 'Lider GCEU', 'I', NULL, NULL, NULL), (NULL, 'Secretário GCEU', 'I', NULL, NULL, NULL);
