@@ -32,11 +32,11 @@ class BalanceteRegiaoService
         $tdInicial = $dataIni[1].$dataIni[0];        
         $dataFin = explode('/',$dataFinal); 
         $tdFinal  = $dataFin[1].$dataFin[0];
-        $sql = "
-            SELECT  *
-                FROM financeiro_saldo_consolidado_mensal fscm
-                WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
-        $existeSaldoConsolidado = DB::select($sql);
+        // $sql = "
+        //     SELECT  *
+        //         FROM financeiro_saldo_consolidado_mensal fscm
+        //         WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+        // $existeSaldoConsolidado = DB::select($sql);
         //if(count($existeSaldoConsolidado)){ //fscm.instituicao_id = '$instituicaoId' AND
             return [
                 'instituicao'   => $instituicaoId,
