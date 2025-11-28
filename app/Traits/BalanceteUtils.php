@@ -24,8 +24,8 @@ trait BalanceteUtils
         $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
         $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
 
-        $tipoInstituicao = session()->get('session_perfil')->perfil_id;
-
+        $tipoInstituicao = InstituicoesInstituicao::where('id', $instituicaoId)->first();
+        
         $sql = "SELECT 
                     fpc.numeracao,
                     MAX(fpc.nome) AS nome,
@@ -38,7 +38,7 @@ trait BalanceteUtils
                 JOIN 
                     financeiro_caixas fc ON fc.id = fl.caixa_id
                 JOIN
-                    instituicoes_instituicoes ii on ii.id = fl.instituicao_id AND ii.tipo_instituicao_id = $tipoInstituicao
+                    instituicoes_instituicoes ii on ii.id = fl.instituicao_id AND ii.tipo_instituicao_id = $$tipoInstituicao->tipo_instituicao_id
                 WHERE 
                     fl.instituicao_id = '$instituicaoId' ";
         if ($caixaID !== 'all') {
