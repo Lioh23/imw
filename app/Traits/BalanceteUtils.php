@@ -38,7 +38,7 @@ trait BalanceteUtils
                 JOIN 
                     financeiro_caixas fc ON fc.id = fl.caixa_id
                 JOIN
-                    instituicoes_instituicoes ii on ii.id = fl.instituicao_id AND ii.tipo_instituicao_id = $$tipoInstituicao->tipo_instituicao_id
+                    instituicoes_instituicoes ii on ii.id = fl.instituicao_id AND ii.tipo_instituicao_id = $tipoInstituicao->tipo_instituicao_id
                 WHERE 
                     fl.instituicao_id = '$instituicaoId' ";
         if ($caixaID !== 'all') {
