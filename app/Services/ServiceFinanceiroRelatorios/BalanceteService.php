@@ -25,26 +25,26 @@ class BalanceteService
         $tdInicial = $dataIni[1].$dataIni[0];        
         $dataFin = explode('/',$dataFinal); 
         $tdFinal  = $dataFin[1].$dataFin[0];
-        $sql = "
-            SELECT  *
-                FROM financeiro_saldo_consolidado_mensal fscm
-                WHERE fscm.instituicao_id = '$instituicaoId' AND (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
-        $existeSaldoConsolidado = DB::select($sql);
-        if(!count($existeSaldoConsolidado)){
+        // $sql = "
+        //     SELECT  *
+        //         FROM financeiro_saldo_consolidado_mensal fscm
+        //         WHERE fscm.instituicao_id = '$instituicaoId' AND (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
+        // $existeSaldoConsolidado = DB::select($sql);
+        // if(!count($existeSaldoConsolidado)){
             return [
                 'instituicao'  => $instituicaoId,
                 'caixas'       => BalanceteUtils::handleCaixas($dataInicial, $dataFinal, $caixaId, $instituicaoId),
                 'caixasSelect' => BalanceteUtils::handleListaCaixas($instituicaoId),
                 'lancamentos'  => BalanceteUtils::handleLancamentos($dataInicial, $dataFinal, $caixaId, $instituicaoId)
             ];
-        }else{
-            return [
-                'instituicao'  => 'NaoExiste',
-                'caixas'       => [],
-                'caixasSelect' => [],
-                'lancamentos'  => []
-            ];
-        }
+        // }else{
+        //     return [
+        //         'instituicao'  => 'NaoExiste',
+        //         'caixas'       => [],
+        //         'caixasSelect' => [],
+        //         'lancamentos'  => []
+        //     ];
+        // }
     }
 }
 // class BalanceteService
