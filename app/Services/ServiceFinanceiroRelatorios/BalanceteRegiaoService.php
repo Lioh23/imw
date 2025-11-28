@@ -37,7 +37,7 @@ class BalanceteRegiaoService
                 FROM financeiro_saldo_consolidado_mensal fscm
                 WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
         $existeSaldoConsolidado = DB::select($sql);
-        if(count($existeSaldoConsolidado)){ //fscm.instituicao_id = '$instituicaoId' AND
+        //if(count($existeSaldoConsolidado)){ //fscm.instituicao_id = '$instituicaoId' AND
             return [
                 'instituicao'   => $instituicaoId,
                 'caixas'        => BalanceteUtils::handleCaixasRegiao($dataInicial, $dataFinal, $caixaId, $instituicaoId),
@@ -46,16 +46,16 @@ class BalanceteRegiaoService
                 'igrejas'       => BalanceteUtils::handleListaIgrejasByRegiao($regiao->id),
                 'titulo'        => isset($igreja->nome) ? $tituloNome.$igreja->nome.$periodo : $tituloNome.'Todas Igrejas'.$periodo,
             ];
-        }else{
-            return [
-                'instituicao'   => 'NaoExiste',
-                'caixas'        => [],
-                'caixasSelect'  => [],
-                'lancamentos'   => [],
-                'igrejas'       => [],
-                'titulo'        => '',
-            ];
-        }
+        // }else{
+        //     return [
+        //         'instituicao'   => 'NaoExiste',
+        //         'caixas'        => [],
+        //         'caixasSelect'  => [],
+        //         'lancamentos'   => [],
+        //         'igrejas'       => [],
+        //         'titulo'        => '',
+        //     ];
+        // }
         /*}else{
             $totasIgrejas = BalanceteUtils::handleListaIgrejasByRegiao($regiao->id);
             foreach($totasIgrejas as $igreja){
