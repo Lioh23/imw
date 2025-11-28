@@ -30,7 +30,7 @@ class BalanceteService
                 FROM financeiro_saldo_consolidado_mensal fscm
                 WHERE fscm.instituicao_id = '$instituicaoId' AND (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
         $existeSaldoConsolidado = DB::select($sql);
-        if(count($existeSaldoConsolidado)){
+        if(!count($existeSaldoConsolidado)){
             return [
                 'instituicao'  => $instituicaoId,
                 'caixas'       => BalanceteUtils::handleCaixas($dataInicial, $dataFinal, $caixaId, $instituicaoId),
@@ -47,3 +47,25 @@ class BalanceteService
         }
     }
 }
+// class BalanceteService
+// {
+//     use BalanceteUtils, Identifiable;
+
+//     public function execute($dataInicial, $dataFinal, $caixaId)
+//     {
+//         $instituicaoId = session()->get('session_perfil')->instituicao_id;
+//         if (empty($dataInicial)) {
+//             $dataInicial = Carbon::now()->format('m/Y');
+//         }
+
+//         if (empty($dataFinal)) {
+//             $dataFinal = Carbon::now()->format('m/Y');
+//         }
+//         return [
+//             'instituicao'  => $instituicaoId,
+//             'caixas'       => BalanceteUtils::handleCaixas($dataInicial, $dataFinal, $caixaId, $instituicaoId),
+//             'caixasSelect' => BalanceteUtils::handleListaCaixas($instituicaoId),
+//             'lancamentos'  => BalanceteUtils::handleLancamentos($dataInicial, $dataFinal, $caixaId, $instituicaoId)
+//         ];
+//     }
+// }

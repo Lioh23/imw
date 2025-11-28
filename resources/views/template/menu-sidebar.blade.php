@@ -299,11 +299,13 @@
                              <a href="{{ route('financeiro.relatorio-livrocaixa') }}">Livro Caixa</a>
                          @endif
                      </li>
-                     <li {!! Request::is('financeiro/relatorio/balancete') ? 'class="active"' : '' !!}>
-                         @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
-                             <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
-                         @endif
-                     </li>
+                     @if(session()->get('session_perfil')->perfil_id == 1 || session()->get('session_perfil')->perfil_id == 2)
+                        <li {!! Request::is('financeiro/relatorio/balancete') ? 'class="active"' : '' !!}>
+                            @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-balancete'))
+                                <a href="{{ route('financeiro.relatorio-balancete') }}">Balancete</a>
+                            @endif
+                        </li>
+                    @endif
                      <li {!! Request::is('financeiro/relatorio/livrograde') ? 'class="active"' : '' !!}>
                          @if (auth()->check() && auth()->user()->hasPerfilRegra('financeiro-relatorio-livrograde'))
                              <a href="{{ route('financeiro.relatorio-livrograde') }}">Livro Grade</a>

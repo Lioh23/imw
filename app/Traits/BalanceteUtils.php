@@ -20,10 +20,11 @@ trait BalanceteUtils
 
     public static function handleLancamentos($dt_inicial, $dt_final, $caixaID, $instituicaoId)
     {
-        
         // Usando Carbon para manipulação de datas
         $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
         $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
+
+        $tipoInstituicao = session()->get('session_perfil')->perfil_id;
 
         $sql = "SELECT 
                     fpc.numeracao,
@@ -37,7 +38,7 @@ trait BalanceteUtils
                 JOIN 
                     financeiro_caixas fc ON fc.id = fl.caixa_id
                 JOIN
-                    instituicoes_instituicoes ii on ii.id = fl.instituicao_id AND ii.tipo_instituicao_id = 1
+                    instituicoes_instituicoes ii on ii.id = fl.instituicao_id AND ii.tipo_instituicao_id = $tipoInstituicao
                 WHERE 
                     fl.instituicao_id = '$instituicaoId' ";
         if ($caixaID !== 'all') {
@@ -64,6 +65,48 @@ trait BalanceteUtils
         }
 
         return $lancamentos;
+
+        // Usando Carbon para manipulação de datas
+        // $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
+        // $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
+
+        // $sql = "SELECT 
+        //             fpc.numeracao,
+        //             MAX(fpc.nome) AS nome,
+        //             fc.descricao AS caixa,
+        //             SUM(fl.valor) AS total
+        //         FROM 
+        //             financeiro_lancamentos fl
+        //         JOIN 
+        //             financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+        //         JOIN 
+        //             financeiro_caixas fc ON fc.id = fl.caixa_id
+        //         WHERE 
+        //             fl.instituicao_id = '$instituicaoId' ";
+        // if ($caixaID !== 'all') {
+        //     $sql .= "AND fc.id = '$caixaID' ";
+        // }
+        // $sql .= "AND fl.deleted_at IS NULL 
+        //         AND fl.data_movimento BETWEEN '$dataInicial' AND '$dataFinal'
+        //         GROUP BY 
+        //             fc.descricao,
+        //             CAST(SUBSTRING_INDEX(fpc.numeracao, '.', 1) AS UNSIGNED),  
+        //             CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 2), '.', -1) AS UNSIGNED),   
+        //             CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 3), '.', -1) AS UNSIGNED),  
+        //             fpc.numeracao   
+        //         ORDER BY 
+        //             CAST(SUBSTRING_INDEX(fpc.numeracao, '.', 1) AS UNSIGNED),
+        //             CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 2), '.', -1) AS UNSIGNED),
+        //             CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 3), '.', -1) AS UNSIGNED),
+        //             fpc.numeracao";
+
+        // try {
+        //     $lancamentos = DB::select($sql);
+        // } catch (\Exception $e) {
+        //     throw $e;
+        // }
+
+        // return $lancamentos;
     }
 
     public static function handleLancamentosRegiao($dt_inicial, $dt_final, $caixaID, $instituicaoId)
@@ -197,44 +240,43 @@ trait BalanceteUtils
         // Construção da query com as variáveis diretamente
 
         $sql = "SELECT 'saldo_inicial', sum(fscm.saldo_anterior ) AS saldo
-                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
-                    WHERE ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 AND fscm.ano=$dataIni[1] AND fscm.mes=$dataIni[0]";
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE fscm.ano=$dataIni[1] AND fscm.mes=$dataIni[0]";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
-
         $sql .= " UNION 
                 SELECT 'total_entradas', sum(fscm.total_entradas )
-                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 ";
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal ";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
         $sql .= " UNION 
                 SELECT 'total_saidas', sum(fscm.total_saidas )
-                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 ";
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
         $sql .= " UNION 
                 SELECT 'total_tranf_entradas', sum(fscm.total_transf_entradas  )
-                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1 ";
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
         $sql .= " UNION 
                 SELECT 'total_transf_saidas', sum(fscm.total_transf_saidas  )
-                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
-                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1";
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE (fscm.ano * 100 + fscm.mes) between $tdInicial AND $tdFinal";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
         $sql .= " UNION 
                 SELECT 'saldo_atual', sum(fscm.saldo_final )
-                    FROM financeiro_saldo_consolidado_mensal fscm, instituicoes_instituicoes ii 
-                    WHERE fscm.ano=$dataFin[1] AND fscm.mes=$dataFin[0]  AND ii.id=fscm.instituicao_id AND ii.tipo_instituicao_id = 1";
+                    FROM financeiro_saldo_consolidado_mensal fscm
+                    WHERE fscm.ano=$dataFin[1] AND fscm.mes=$dataFin[0]";
                     if ($instituicaoId) {
                         $sql .= " AND fscm.instituicao_id = '$instituicaoId' ";
                     }
