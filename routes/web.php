@@ -409,6 +409,9 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/editar/{id}', [GceuController::class, 'update'])->name('update')->middleware(['seguranca:gceu-atualizar']);
             Route::post('/deletar/{id}', [GceuController::class, 'deletar'])->name('deletar')->middleware(['seguranca:gceu-excluir']);
             Route::get('/visualizar-html/{id}', [GceuController::class, 'visualizarHtml'])->name('visualizar-html');
+            //membros
+            Route::get('/membros', [GceuController::class, 'membros'])->name('membros')->middleware(['seguranca:gceu-membros']);
+            Route::post('/diario-presenca-falta', [GceuController::class, 'diarioPresencaFalta'])->name('diario.presenca.falta')->middleware(['seguranca:gceu-diario']);
             //Palavra pastoral
             Route::get('/carta-pastoral', [GceuController::class, 'cartaPastoral'])->name('carta-pastoral')->middleware(['seguranca:gceu-carta-pastoral']);
             Route::get('/carta-pastoral-novo', [GceuController::class, 'cartaPastoralNovo'])->name('carta-pastoral.novo')->middleware(['seguranca:gceu-carta-pastoral-cadastrar']);

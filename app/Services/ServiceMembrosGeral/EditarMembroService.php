@@ -28,19 +28,20 @@ class EditarMembroService
             ->firstOr(function () {
                 throw new MembroNotFoundException('Registro não encontrado', 404);
             });
-
         // Gerar URL temporária para a foto se estiver presente e o bucket for privado
         if ($pessoa->foto) {
             $disk = Storage::disk('s3');
             $pessoa->foto = $disk->temporaryUrl($pessoa->foto, Carbon::now()->addMinutes(15));
         }
         
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
+
         $ministerios = MembresiaSetor::orderBy('descricao', 'asc')->get();
         $funcoes = MembresiaTipoAtuacao::orderBy('descricao', 'asc')->get();
         $cursos = MembresiaCurso::orderBy('nome', 'asc')->get();
         $formacoes = MembresiaFormacao::orderBy('id', 'asc')->get();
         $funcoesEclesiasticas = MembresiaFuncaoEclesiastica::orderBy('descricao', 'asc')->get();
-        $gceus = GCeu::where('status', 'A')->orderBy('nome', 'asc')->get();
+        $gceus = GCeu::where(['status' => 'A', 'instituicao_id' => $igrejaId])->orderBy('nome', 'asc')->get();
         $gceuFuncoes = GCeuFuncoes::orderBy('funcao', 'asc')->get();
         $gceuMembros = GCeuMembros::where(['membro_id' => $id])->get();
         return [

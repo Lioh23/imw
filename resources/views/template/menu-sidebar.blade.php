@@ -978,6 +978,11 @@
                                  <a href="{{ route('gceu.index') }}">Cadastro</a>
                              @endif
                          </li>
+                         <li {!! Request::is('gceu/membros') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-membros'))
+                                 <a href="{{ route('gceu.membros') }}">Membros</a>
+                             @endif
+                         </li>
                          <li {!! Request::is('gceu/carta-pastoral*') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-carta-pastoral'))
                                  <a href="{{ route('gceu.carta-pastoral') }}">Carta Pastoral</a>
