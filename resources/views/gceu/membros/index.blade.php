@@ -52,7 +52,7 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="mb-3 col-lg-2 col-md-6 col-sm-12" style="margin-top: 30px;">
+                        <div class="mb-3 col-lg-3 col-md-6 col-sm-12" style="margin-top: 30px;">
                             <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar GCEU" class="btn btn-primary btn">
                                 <x-bx-plus /> Adicionar Membro ao GCEU
                             </button>
