@@ -21,7 +21,11 @@ class GCeuMembrosService
         $gceuId = isset($data['gceu_id']) ? $data['gceu_id'] : '';
         $data['gceus'] = GCeu::where(['status' => 'A', 'instituicao_id' => $igrejaId])->orderBy('nome', 'asc')->get();
         $data['gceuFuncoes'] = GCeuFuncoes::orderBy('funcao', 'asc')->get();
-        $data['gceuMembros'] = GCeuMembros::where(['membro_id' => $igrejaId])->get();
+        if(isset($data['membro_id'])) {
+            $data['gceuMembros'] = GCeuMembros::where(['membro_id' => $data['membro_id']])->get();
+        } else {
+            $data['gceuMembros'] = [];
+        }
         $data['membros'] = MembresiaMembro::where(['igreja_id' => $igrejaId])->get();
         return $data;
     }

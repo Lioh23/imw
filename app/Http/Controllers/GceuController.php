@@ -8,6 +8,7 @@ use App\Http\Requests\StoreGCeuRequest;
 use App\Http\Requests\UpdateGCeuCartaPastoralRequest;
 use App\Http\Requests\UpdateGCeuRequest;
 use App\Models\GCeu;
+use App\Models\MembresiaMembro;
 use App\Models\PessoasPessoa;
 use App\Services\ServiceGCeu\CartaPastoralGCeuDistritoService;
 use App\Services\ServiceGCeu\CartaPastoralGCeuRegiaoService;
@@ -29,6 +30,7 @@ use App\Services\ServiceGCeu\GCeuService;
 use App\Services\ServiceGCeu\GCeuRelatorioGceuService;
 use App\Services\ServiceGCeu\GCeuRelatorioRegiaoAniversariantesService;
 use App\Services\ServiceGCeu\GCeuRelatorioRegiaoGceuService;
+use App\Services\ServiceGCeu\GCeuUpdateMembroService;
 use App\Services\ServiceGCeu\StoreGCeuCartaPastoralService;
 use App\Services\ServiceGCeu\StoreGCeuService;
 use App\Services\ServiceGCeu\VisualizarGCeuCartaPastoralService;
@@ -46,7 +48,6 @@ class GceuController extends Controller
     public function index(Request $request)
     {
         $data = app(IdentificaDadosIndexService::class)->execute($request->all());
-
         return view('gceu.index', $data);
     }
 
@@ -132,6 +133,7 @@ class GceuController extends Controller
 
     public function membros(Request $request)
     {
+        //dd($request->all());
         $data = $request->all();
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
         $data = app(GCeuMembrosService::class)->getList($igrejaId, $data);
@@ -139,6 +141,15 @@ class GceuController extends Controller
             return redirect()->route('gceu.index')->with('error', 'Carta pastoral não encontrada.');
         }
         return view('gceu.membros.index', $data);
+    }
+
+    public function updateMembro(Request $request, $id)
+    {
+        DB::beginTransaction();
+        app(GCeuUpdateMembroService::class)->execute($request->all(), $id);
+        DB::commit();
+        return back()->with('success', 'Registro atualizado.');
+
     }
 
     public function cartaPastoral()

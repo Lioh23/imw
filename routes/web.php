@@ -402,6 +402,7 @@ Route::middleware(['auth'])->group(function () {
         // Crud GCEU
         Route::prefix('gceu')->name('gceu.')->group(function () {
             Route::get('/lista', [GceuController::class, 'index'])->name('index')->middleware(['seguranca:gceu-lista']);
+            Route::get('/lista/teste', [GceuController::class, 'index'])->name('index.teste')->middleware(['seguranca:gceu-lista-teste']);
             Route::get('list', [GceuController::class, 'list'])->name('list')->middleware(['seguranca:gceu-lista']);
             Route::get('/novo', [GceuController::class, 'novo'])->name('novo')->middleware(['seguranca:gceu-cadastrar']);
             Route::post('/store', [GceuController::class, 'store'])->name('store')->middleware(['seguranca:gceu-cadastrar']);
@@ -411,6 +412,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/visualizar-html/{id}', [GceuController::class, 'visualizarHtml'])->name('visualizar-html');
             //membros
             Route::get('/membros', [GceuController::class, 'membros'])->name('membros')->middleware(['seguranca:gceu-membros']);
+            Route::post('membro-atualizar/{id}', [GceuController::class, 'updateMembro'])->name('membro.update')->middleware(['seguranca:gceu-membros']);
             Route::post('/diario-presenca-falta', [GceuController::class, 'diarioPresencaFalta'])->name('diario.presenca.falta')->middleware(['seguranca:gceu-diario']);
             //Palavra pastoral
             Route::get('/carta-pastoral', [GceuController::class, 'cartaPastoral'])->name('carta-pastoral')->middleware(['seguranca:gceu-carta-pastoral']);
