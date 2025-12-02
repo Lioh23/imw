@@ -133,7 +133,7 @@ class GceuController extends Controller
 
     public function membros(Request $request)
     {
-        //dd($request->all());
+        ///dd($request->all());
         $data = $request->all();
         $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
         $data = app(GCeuMembrosService::class)->getList($igrejaId, $data);

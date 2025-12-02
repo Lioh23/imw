@@ -48,12 +48,13 @@ class VisitantesController extends Controller
 
     public function editar($id)
     {
-        $visitante = app(EditarVisitanteService::class)->findOne($id);
-        $congregacoes = Identifiable::fetchCongregacoes();
-        if (!$visitante) {
+        $data['visitante'] = app(EditarVisitanteService::class)->findOne($id);
+        $data['gceus']= Identifiable::fetchGceus();
+        $data['congregacoes'] = Identifiable::fetchCongregacoes();
+        if (!$data['visitante']) {
             return redirect()->route('visitante.index')->with('error', 'Visitante não encontrado.');
         }
-        return view('visitantes.editar', compact('visitante', 'congregacoes'));
+        return view('visitantes.editar', $data);
     }
 
     public function deletar($id)
@@ -69,7 +70,9 @@ class VisitantesController extends Controller
     public function novo()
     {
         try {
-            return view('visitantes.create', ['congregacoes' => Identifiable::fetchCongregacoes()]);
+            $data['gceus']= Identifiable::fetchGceus();
+            $data['congregacoes'] = Identifiable::fetchCongregacoes();
+            return view('visitantes.create', $data);
         } catch (\Exception $e) {
             return back()->with('error', 'Falha ao abrir a página de novo visitante');
         }

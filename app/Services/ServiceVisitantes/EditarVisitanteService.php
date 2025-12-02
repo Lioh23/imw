@@ -16,6 +16,7 @@ class EditarVisitanteService
             'sexo'            => $data['sexo'],
             'data_nascimento' => $data['data_nascimento'],
             'congregacao_id'  => $data['congregacao_id'],
+            'gceu_id'  => $data['gceu_id'],
             'data_conversao'  => $data['data_conversao']
         ]);
 

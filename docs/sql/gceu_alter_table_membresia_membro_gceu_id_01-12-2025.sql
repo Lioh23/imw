@@ -1,0 +1,1 @@
+ALTER TABLE `membresia_membros` ADD `gceu_id` BIGINT(20) NULL DEFAULT NULL AFTER `regiao_id`;

@@ -13,18 +13,14 @@ class GCeuMembrosService
 {
     public function getList($igrejaId, $data): array
     {
-        $date = isset($data['dt_gceu']) ? $data['dt_gceu'] :  '';
-        $Gceus = GCeu::where(['instituicao_id' => $igrejaId])->get();
-        $data['Gceus'] = $Gceus;
         $data['instituicao'] = Identifiable::fetchSessionIgrejaLocal()->nome;
         $data['instituicao_id'] = Identifiable::fetchSessionIgrejaLocal()->id;
-        $gceuId = isset($data['gceu_id']) ? $data['gceu_id'] : '';
         $data['gceus'] = GCeu::where(['status' => 'A', 'instituicao_id' => $igrejaId])->orderBy('nome', 'asc')->get();
         $data['gceuFuncoes'] = GCeuFuncoes::orderBy('funcao', 'asc')->get();
         if(isset($data['membro_id'])) {
             $gceuMembros = GCeuMembros::select('gceu_membros.gceu_cadastro_id', 'gceu_membros.membro_id', 'gceu_membros.gceu_funcao_id','gceu_funcoes.funcao')->Join('gceu_funcoes', 'gceu_funcoes.id', 'gceu_membros.gceu_funcao_id' )->where(['membro_id' => $data['membro_id']])->get();
             $data['gceuMembros'] = $gceuMembros;
-            $data['totalFuncao'] = DB::select("SELECT COUNT(gceu_cadastro_id) as total, gceu_funcoes.funcao from gceu_membros inner join gceu_funcoes on gceu_funcoes.id = gceu_membros.gceu_funcao_id where membro_id = '9c4d8a98-a0eb-4a30-9a4d-62b80e47449c' GROUP BY gceu_funcao_id, gceu_funcoes.funcao");
+            $data['totalFuncao'] = DB::select("SELECT COUNT(gceu_cadastro_id) as total, gceu_funcoes.funcao from gceu_membros inner join gceu_funcoes on gceu_funcoes.id = gceu_membros.gceu_funcao_id where membro_id = '{$data['membro_id']}' GROUP BY gceu_funcao_id, gceu_funcoes.funcao");
         } else {
             $data['gceuMembros'] = [];
             $data['totalFuncao'] = [];

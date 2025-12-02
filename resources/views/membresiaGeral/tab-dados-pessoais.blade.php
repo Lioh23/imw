@@ -149,6 +149,13 @@
                         style="font-weight: bold">{{ $membro->congregacao->nome ?? 'Sem informações' }}</span>
                     <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">Congregação</span>
                 </p>
+                @if ($membro->vinculo == 'V')
+                <p class="card-text">
+                    <span class="text-center d-block"
+                        style="font-weight: bold">{{ $membro->gceu->nome ?? 'Sem informações' }}</span>
+                    <span class="text-center d-block" style="font-size: .8rem; color: #6c757d">GCEU</span>
+                </p>
+                @endif
             @else
                 <span class="card-text">Sem informações</span>
             @endif

@@ -62,15 +62,15 @@
                     <div class="row" style="display: flex;flex-direction: row;align-items: baseline;align-content: space-around;flex-wrap: wrap;justify-content: center;">
                     @foreach ($totalFuncao as $total)
                         @if($total->total > 1)
-                                <div class="card bg-warning col-lg-3" style="float: left; margin: 3px;">
-                                    <div class="card-body">
-                                        
-                                        <p>
-                                            <b>ATENÇÃO:</b>
-                                         </p>
-                                        A função <b><u>{{$total->funcao}}</u></b> aparece em mais de um GCEU.
-                                    </div>
+                            <div class="card bg-warning col-lg-3" style="float: left; margin: 3px;">
+                                <div class="card-body">
+                                    
+                                    <p>
+                                        <b>ATENÇÃO:</b>
+                                        </p>
+                                    A função <b><u>{{$total->funcao}}</u></b> aparece em mais de um GCEU.
                                 </div>
+                            </div>
                         @endif
                     @endforeach
                     </div>

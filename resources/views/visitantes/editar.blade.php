@@ -110,6 +110,18 @@
                             <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
                     </div>
+                    <div class="form-group mb-4 col-md-6">
+                        <label class="control-label">GCEU</label>
+                        <select id="gceu_id" name="gceu_id" class="form-control @error('gceu_id') is-invalid @enderror" >
+                            <option value="" {{ old('gceu_id') == '' ? 'selected' : '' }}>Selecione</option>
+                            @foreach ($gceus as $gceu)
+                                <option value="{{ $gceu->id }}" {{$visitante->gceu_id == $gceu->id ? 'selected' : '' }}>{{ $gceu->nome }}</option>
+                            @endforeach
+                        </select>
+                        @error('gceu_id')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                        @enderror
+                    </div>
                 </div>
 
                 <input type="submit" value="Atualizar" class="btn btn-primary ml-3 mt-3">

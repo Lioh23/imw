@@ -19,6 +19,7 @@ class StoreVisitanteService
             'data_nascimento' => $data['data_nascimento'],
             'data_conversao'  => $data['data_conversao'],
             'congregacao_id'  => $data['congregacao_id'],
+            'gceu_id'  => $data['gceu_id'],
             'vinculo'         => MembresiaMembro::VINCULO_VISITANTE,
             'status'          => MembresiaMembro::STATUS_ATIVO,
             ...Identifiable::fetchSessionInstituicoesStoreMembresia()

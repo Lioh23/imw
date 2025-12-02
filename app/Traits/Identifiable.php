@@ -10,6 +10,7 @@ use App\Exceptions\MissingSessionIgrejaLocalException;
 use App\Exceptions\MissingSessionRegiaoException;
 use App\Exceptions\VisitanteNotFoundException;
 use App\Models\CongregacoesCongregacao;
+use App\Models\GCeu;
 use App\Models\InstituicoesInstituicao;
 use App\Models\InstituicoesTipoInstituicao;
 use App\Models\MembresiaFuncaoEclesiastica;
@@ -113,6 +114,14 @@ trait Identifiable
             $query->where('id', '<>', $unlessCongregacaoId);
         })
         ->get();
+    }
+
+    public static function fetchGceus()
+    {
+        $igrejaId = optional(session()->get('session_perfil')->instituicoes->igrejaLocal)->id;
+        return GCeu::when((bool) $igrejaId, function ($query) use ($igrejaId) {
+            $query->where('instituicao_id', $igrejaId);
+        })->get();
     }
 
     public static function fetchSessionInstituicoesStoreMembresia(): array

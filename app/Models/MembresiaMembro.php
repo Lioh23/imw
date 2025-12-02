@@ -39,6 +39,7 @@ class MembresiaMembro extends Model
         'distrito_id',
         'igreja_id',
         'regiao_id',
+        'gceu_id',
         'escolaridade_id',
         'novo_convertido',
         'profissao',
@@ -85,6 +86,11 @@ class MembresiaMembro extends Model
     public function congregacao()
     {
         return $this->belongsTo(CongregacoesCongregacao::class, 'congregacao_id');
+    }
+
+    public function gceu()
+    {
+        return $this->belongsTo(GCeu::class, 'gceu_id');
     }
 
     public function rolPermanente()
