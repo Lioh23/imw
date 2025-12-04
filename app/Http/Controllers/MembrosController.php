@@ -113,11 +113,10 @@ class MembrosController extends Controller
             $data = app(IdentificaDadosReceberNovoMembroService::class)->execute($id);
 
             $pessoa       = $data['pessoa'];
-            $sugestaoRol  = $data['sugestao_rol'];
+            $sugestaoRol  = $pessoa['rol_atual'] ? $pessoa['rol_atual'] : $data['sugestao_rol'];
             $pastores     = $data['pastores'];
             $modos        = $data['modos'];
             $congregacoes = $data['congregacoes'];
-
             return view('membros.receber_novo', compact('pessoa', 'sugestaoRol', 'pastores', 'modos', 'congregacoes'));
         } catch(ReceberNovoMembroException $e) {
             return redirect()->back()->with('error', 'Esta pessoa não existe na base de dados ou não pode ser recebida como Membro');
@@ -129,9 +128,14 @@ class MembrosController extends Controller
     public function storeReceberNovo(StoreReceberNovoMembroRequest $request, $id)
     {
         try {   
-            app(StoreReceberNovoMembroService::class)->execute($request->all(), $id);
-
-            return redirect()->route('membro.editar', ['id' => $id])->with('success', 'Novo membro recebido com sucesso!');
+            $data = app(StoreReceberNovoMembroService::class)->execute($request->all(), $id);
+            if($data == 'idade'){
+                return redirect()->back()->with('error', 'Não pode ser membro, pois a idade desse congregado é menor que 11 anos');
+            }elseif($data == 'batismo'){
+                return redirect()->back()->with('error', 'Para prosseguir com o recebimento de novo membro, edite a data do batismo no cadastro desse congregado');
+            }else{
+                return redirect()->route('membro.editar', ['id' => $id])->with('success', 'Novo membro recebido com sucesso!');
+            }
         } catch(\Exception $e) {
             return redirect()->back()->with('error', 'Erro ao tentar receber novo membro');
         }

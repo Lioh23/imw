@@ -94,17 +94,17 @@
                          </div>
                      </a>
                      <ul class="collapse submenu list-unstyled {{ Request::is('secretaria/*') ? 'collapse show' : '' }}" id="secretaria" data-parent="#secretaria">
-                         <li {!! Request::is('secretaria/membro') ? 'class="active"' : '' !!}>
+                         <li {!! Request::is('secretaria/membro*') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('membros-index'))
                                  <a href="{{ route('membro.index') }}">Membros</a>
                              @endif
                          </li>
-                         <li {!! Request::is('secretaria/congregado') ? 'class="active"' : '' !!}>
+                         <li {!! Request::is('secretaria/congregado*') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('congregados-index'))
                                  <a href="{{ route('congregado.index') }}">Congregados</a>
                              @endif
                          </li>
-                         <li {!! Request::is('secretaria/visitante') ? 'class="active"' : '' !!}>
+                         <li {!! Request::is('secretaria/visitante*') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('visitantes-index'))
                                  <a href="{{ route('visitante.index') }}">Visitantes</a>
                              @endif
