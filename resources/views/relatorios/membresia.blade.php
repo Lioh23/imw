@@ -214,6 +214,7 @@
                             <th>TELEFONE</th>
                             <th>SITUAÇÃO</th>
                             <th>VÍNCULO</th>
+                            <th>MODO</th>
                             <th>NASCIMENTO</th>
                             <th>RECEPÇÃO</th>
                             <th>EXCLUSÃO</th>
@@ -234,6 +235,7 @@
                               @endif
                             </td>
                             <td>{{ $membro->vinculoText }}</td>
+                            <td>{{ $membro->modo ?  $membro->modo : '-'}}</td>
                             <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
                             <td>
                               @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)

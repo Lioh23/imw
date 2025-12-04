@@ -31,25 +31,27 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchMembrosRelatorio($params)
     {
-        return MembresiaMembro::select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+        return MembresiaMembro::select('imwpgahml.membresia_membros.*','membresia_situacoes.nome as modo', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
+            ->join('membresia_rolpermanente', 'membresia_rolpermanente.id', 'membresia_membros.id')
+            ->join('membresia_situacoes', 'membresia_situacoes.id', 'membresia_rolpermanente.modo_recepcao_id')
             ->with('rolAtualSessionIgreja')
-            ->where('vinculo', $params['vinculo'])
-            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
+            ->where('membresia_membros.vinculo', $params['vinculo'])
+            ->where('membresia_membros.igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
             ->withTrashed()
             ->when($params['situacao'] == 'ativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
-                    $query->orWhereRelation('rolAtualSessionIgreja', 'status', 'A');
-                    $query->orWhere('status', 'A');
+                    $query->orWhereRelation('rolAtualSessionIgreja', 'membresia_membros.status', 'A');
+                    $query->orWhere('membresia_membros.status', 'A');
                 });
             })
             ->when($params['situacao'] == 'inativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
-                    $query->orWhereRelation('rolAtualSessionIgreja', 'status', 'I');
-                    $query->orWhere('status', 'I');
+                    $query->orWhereRelation('rolAtualSessionIgreja', 'membresia_membros.status', 'I');
+                    $query->orWhere('membresia_membros.status', 'I');
                 });
             })
             ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
