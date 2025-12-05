@@ -63,6 +63,42 @@ class IdentificaDadosRelatorioMembresiaService
                 }
             })->orderBy('nome')
             ->get();
+
+
+            // return MembresiaMembro::select('imwpgahml.membresia_membros.*','membresia_situacoes.nome as modo', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+        //                       WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
+        //                       ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
+        //     ->join('membresia_rolpermanente', 'membresia_rolpermanente.id', 'membresia_membros.id')
+        //     ->leftJoin('membresia_situacoes', 'membresia_situacoes.id', 'membresia_rolpermanente.modo_recepcao_id')
+        //     ->with('rolAtualSessionIgreja')
+        //     ->where('membresia_membros.vinculo', $params['vinculo'])
+        //     ->where('membresia_membros.igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
+        //     ->withTrashed()
+        //     ->when($params['situacao'] == 'ativos', function ($query) {
+        //         $query->where(function ($query) {
+        //             $query->withoutGlobalScopes();
+        //             $query->orWhereRelation('rolAtualSessionIgreja', 'membresia_membros.status', 'A');
+        //             $query->orWhere('membresia_membros.status', 'A');
+        //         });
+        //     })
+        //     ->when($params['situacao'] == 'inativos', function ($query) {
+        //         $query->where(function ($query) {
+        //             $query->withoutGlobalScopes();
+        //             $query->orWhereRelation('rolAtualSessionIgreja', 'membresia_membros.status', 'I');
+        //             $query->orWhere('membresia_membros.status', 'I');
+        //         });
+        //     })
+        //     ->when($params['dt_filtro'] == 'dt_recepcao', fn ($query) => $query->where('membresia_membros.status', 'A')) 
+        //     ->when($params['dt_filtro'] == 'dt_exclusao', fn ($query) => $query->where('membresia_membros.status', 'I'))
+        //     ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
+        //     ->when($params['dt_filtro'], function ($query) use ($params) {
+        //         if ($params['dt_filtro'] == 'data_nascimento') {
+        //             return $this->handleFilterDtNascimento($query, $params['dt_inicial'], $params['dt_final']);
+        //         } else {   
+        //              return $this->handleRolDates($query, $params['dt_filtro'], $params['dt_inicial'], $params['dt_final']);
+        //         }
+        //     })->orderBy('nome')
+        //     ->get();
     }
 
     private function fetchCongregadosVisitantesRelatorio($params)
