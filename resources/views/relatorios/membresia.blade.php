@@ -223,19 +223,21 @@
                     </thead>
                     <tbody>
                       @foreach ($membros as $membro)
+                      
                           <tr>
                             <td>{{ $membro->rol_atual ?? 0 }}</td>
                             <td>{{ $membro->nome }}</td>
                             <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
                             <td>
                               @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
-                                {{ $membro->rolAtualSessionIgreja->statusText }}
+                                {{-- $membro->rolAtualSessionIgreja->statusText --}}
+                                {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
                               @else
                                 {{ $membro->statusText }}
                               @endif
                             </td>
                             <td>{{ $membro->vinculoText }}</td>
-                            <td>{{ $membro->modo ?  $membro->modo : '-'}}</td>
+                            <td>{{ $membro->recepcao_modo ?  $membro->recepcao_modo : ($membro->exclusao_modo ? $membro->exclusao_modo : '-' )}}</td>
                             <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
                             <td>
                               @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)

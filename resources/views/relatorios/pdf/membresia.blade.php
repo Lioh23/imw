@@ -75,11 +75,13 @@
                     <td>{{ $membro->nome }}</td>
                     <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
                     <td>
+                        {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
                         @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
-                            {{ $membro->rolAtualSessionIgreja->statusText }}
+                            {{-- $membro->rolAtualSessionIgreja->statusText --}}
+                            {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
                         @else
                             {{ $membro->statusText }}
-                        @endif
+                        @endif 
                     </td>
                     <td>{{ $membro->vinculoText }}</td>
                     <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
