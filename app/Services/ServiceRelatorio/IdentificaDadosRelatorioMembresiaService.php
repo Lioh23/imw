@@ -31,7 +31,7 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchMembrosRelatorio($params)
     {
-
+        $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
         if($params['vinculo'] == 'M') {
             $dtInicial = $params['dt_inicial'];
             $dtFinal = $params['dt_final'];
@@ -84,25 +84,56 @@ class IdentificaDadosRelatorioMembresiaService
                 }
             })
             ->where('membresia_membros.vinculo', $params['vinculo'])
-            ->where('membresia_membros.igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
-            ->where('membresia_rolpermanente.igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
+            ->where('membresia_membros.igreja_id', $igrejaId)
+            ->where('membresia_rolpermanente.igreja_id', $igrejaId)
             ->orderBy('nome')
             ->get();
             
         } else {
+            $dtInicial = $params['dt_inicial'];
+            $dtFinal = $params['dt_final'];
+            $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
             $membresiaMembro =  MembresiaMembro::select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
-
-            ->where('vinculo', $params['vinculo'])
-            ->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id)
 
             ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
             ->when($params['dt_filtro'], function ($query) use ($params) {
                 if ($params['dt_filtro'] == 'data_nascimento') {
                     return $this->handleFilterDtNascimento($query, $params['dt_inicial'], $params['dt_final']);
                 } 
-            })->orderBy('nome')
+            })
+            ->when($params['situacao'] == 'ativos', function ($query) {
+                $query->where(function ($query) {
+                    $query->withoutGlobalScopes();
+                    $query->where('membresia_membros.status', 'A');
+                });
+            })
+            ->when($params['situacao'] == 'inativos', function ($query) {
+                $query->where(function ($query) {
+                    $query->withoutGlobalScopes();
+                    $query->where('membresia_membros.status', 'I');
+                });
+            })
+            ->when($params['dt_filtro'] == 'dt_recepcao', function  ($query) use( $dtInicial, $dtFinal) {
+                $query->where(function ($query) {
+                    $query->withoutGlobalScopes();
+                    $query->where('membresia_membros.status', 'A');
+                });
+                $query->when($dtInicial, fn ($query) => $query->where('membresia_membros.created_at', '>=' , $dtInicial));
+                $query->when($dtFinal, fn ($query) => $query->where('membresia_membros.created_at', '<=' , $dtFinal));
+            })
+            ->when($params['dt_filtro'] == 'dt_exclusao', function ($query) use( $dtInicial, $dtFinal) {
+                $query->where(function ($query) {
+                    $query->withoutGlobalScopes();
+                    $query->where('membresia_membros.status', 'I');
+                });
+                $query->when($dtInicial, fn ($query) => $query->where('membresia_membros.deleted_at', '>=' , $dtInicial));
+                $query->when($dtFinal, fn ($query) => $query->where('membresia_membros.deleted_at', '<=' , $dtFinal));
+            })
+            ->where('vinculo', $params['vinculo'])
+            ->where('igreja_id', $igrejaId)
+            ->orderBy('nome')
             ->get();
 
         }
