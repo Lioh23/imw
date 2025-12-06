@@ -96,13 +96,6 @@ class IdentificaDadosRelatorioMembresiaService
             $membresiaMembro =  MembresiaMembro::select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
-
-            ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
-            ->when($params['dt_filtro'], function ($query) use ($params) {
-                if ($params['dt_filtro'] == 'data_nascimento') {
-                    return $this->handleFilterDtNascimento($query, $params['dt_inicial'], $params['dt_final']);
-                } 
-            })
             ->when($params['situacao'] == 'ativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
@@ -130,6 +123,12 @@ class IdentificaDadosRelatorioMembresiaService
                 });
                 $query->when($dtInicial, fn ($query) => $query->where('membresia_membros.deleted_at', '>=' , $dtInicial));
                 $query->when($dtFinal, fn ($query) => $query->where('membresia_membros.deleted_at', '<=' , $dtFinal));
+            })
+            ->when($params['congregacao_id'], fn ($query) => $query->where('congregacao_id', $params['congregacao_id']))
+            ->when($params['dt_filtro'], function ($query) use ($params) {
+                if ($params['dt_filtro'] == 'data_nascimento') {
+                    return $this->handleFilterDtNascimento($query, $params['dt_inicial'], $params['dt_final']);
+                } 
             })
             ->where('vinculo', $params['vinculo'])
             ->where('igreja_id', $igrejaId)
