@@ -11,6 +11,10 @@
 @section('extras-css')
   <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
+  <link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
 @endsection
 
 @include('extras.alerts')
@@ -178,9 +182,9 @@
             <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
               <x-bx-search /> Buscar 
             </button>
-            <button id="btn_relatorio" type="submit" name="action" value="relatorio" title="Gerar Relatório PDF" class="btn btn-secondary btn ml-4">
+            <!-- <button id="btn_relatorio" type="submit" name="action" value="relatorio" title="Gerar Relatório PDF" class="btn btn-secondary btn ml-4">
               <x-bx-file /> Relatório
-            </button>
+            </button> -->
           </div>
         </div>
       </form>
@@ -206,7 +210,7 @@
         <div class="widget-content widget-content-area">
           
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover mb-4">
+                <table class="table table-bordered table-striped table-hover mb-4"  id="aniversariantes">
                     <thead>
                         <tr>
                             <th>ROL</th>
@@ -229,26 +233,25 @@
                             <td>{{ $membro->nome }}</td>
                             <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
                             <td>
-                              @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
-                                {{-- $membro->rolAtualSessionIgreja->statusText --}}
+                              @if($membro->vinculo == 'M')
                                 {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
                               @else
                                 {{ $membro->statusText }}
                               @endif
                             </td>
                             <td>{{ $membro->vinculoText }}</td>
-                            <td>{{ $membro->recepcao_modo ?  $membro->recepcao_modo : ($membro->exclusao_modo ? $membro->exclusao_modo : '-' )}}</td>
+                            <td>{{ $membro->modo ? $membro->modo : '-' }}</td>
                             <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
                             <td>
-                              @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
-                                 {{ optional($membro->rolAtualSessionIgreja->dt_recepcao)->format('d/m/Y') }}
+                              @if($membro->vinculo == 'M')
+                                 {{ $membro->dt_recepcao }}
                               @else
-                                {{ $membro->created_at->format('d/m/Y') }}
+                                {{ optional($membro->created_at)->format('d/m/Y') }}
                               @endif
                             </td>
                             <td>
-                              @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
-                                {{ optional($membro->rolAtualSessionIgreja->dt_exclusao)->format('d/m/Y') }}
+                              @if($membro->vinculo == 'M')
+                                {{ $membro->dt_exclusao }}
                               @else
                                 {{ optional($membro->deleted_at)->format('d/m/Y') }}
                               @endif
@@ -267,6 +270,20 @@
 @endsection
 
 @section('extras-scripts')
+
+<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
+<script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
+<script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
+<script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.dataTables.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
+
 <script>
   // exibe o campo de "datas" caso seja selecionada uma data para filtro
   $('[name="dt_filtro"]').change(function () {
@@ -292,5 +309,102 @@
     $('#dt_final').val('')
   }
  
+
+new DataTable('#aniversariantes', {
+    layout: {
+        //top1: 'searchBuilder',
+        topStart: {
+          buttons: [
+            'pageLength',
+            {
+              extend: 'excel',
+              className: 'btn btn-primary btn-rounded',
+              text: '<i class="fas fa-file-excel"></i> Excel',
+              titleAttr: 'Excel',
+              title: "RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+            },
+            {
+              extend: 'pdfHtml5',
+              orientation: 'landscape',
+              pageSize: 'LEGAL',
+              className: 'btn btn-primary btn-rounded',
+              text: '<i class="fas fa-file-pdf"></i> PDF',
+              titleAttr: 'PDF',
+              title: "RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
+
+              customize: function (doc) {
+                        doc.content.splice(0,1);
+                        var now = new Date();
+                        var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
+                        //doc.pageMargins = [20,50,20,30];
+                        doc.defaultStyle.fontSize = 9;
+                        doc.styles.tableHeader.fontSize = 9;
+                        
+
+                        const hoje = new Date();
+                        const dataFormatada = hoje.toLocaleDateString('pt-BR');
+                        const horaFormatada = hoje.toLocaleTimeString('pt-BR');
+                        const dataHoraFormatada = `${dataFormatada} ${horaFormatada}`;
+                        doc['header']=(function() {
+                            return {
+                                columns: [
+
+                                    {
+                                        alignment: 'left',
+                                        italics: false,
+                                        text: `RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}`,
+                                        fontSize: 14,
+                                        margin: [10,0]
+                                    },
+                                    // {
+                                    //     alignment: 'right',
+                                    //     fontSize: 14,
+                                    //     text: ``
+                                    // }
+                                ],
+                                margin: [20,20,0,0]
+                            }
+                        });
+
+                        var numColumns = doc.content[0].table.body[0].length; 
+                        doc.content[0].table.widths = Array(numColumns).fill('*');
+
+
+                        doc['footer']=(function(page, pages) {
+                            return {
+                                columns: [
+                                    {
+                                        alignment: 'left',
+                                        text: ['Criado em: ', { text: dataHoraFormatada }]
+                                    },
+                                    {
+                                        alignment: 'right',
+                                        text: ['Página ', { text: page.toString() },  ' de ', { text: pages.toString() }]
+                                    }
+                                ],
+                                margin: 20
+                            }
+                        });
+
+                        var objLayout = {};
+                        objLayout['hLineWidth'] = function(i) { return .5; };
+                        objLayout['vLineWidth'] = function(i) { return .5; };
+                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
+                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
+                        objLayout['paddingLeft'] = function(i) { return 4; };
+                        objLayout['paddingRight'] = function(i) { return 4; };
+                        doc.content[0].layout = objLayout;
+                    },
+            }
+            ]
+        },
+        topEnd: 'search',
+        bottomStart: 'info',
+       bottomEnd: 'paging'
+    },
+    language: {
+      url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+    }
+  });
 </script>
 @endsection
