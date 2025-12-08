@@ -48,9 +48,9 @@
         </div>
     </header>
 
-    <h2>RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h2>
+    <h2>RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : ''}} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h2>
     <h4>Registros Encontrados: {{ $membros->count() }}</h4>
-    <h4>Vínculo: {{ $vinculos }}</h4>
+    <h4>Vínculo: {{ isset($vinculos) ? $vinculos : '' }}</h4>
     <h4>Situação: {{ $situacao }}</h4>
     <h4>Onde Congrega: {{ $ondeCongrega }}</h4>
 

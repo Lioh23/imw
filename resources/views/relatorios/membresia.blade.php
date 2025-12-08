@@ -199,9 +199,9 @@
         <div class="widget-header">
           <div class="row">
               <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
+                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
                   <p class="pl-3">Registros Encontrados: {{ $membros->count() }}</p>
-                  <p class="pl-3">Vínculo: {{ $vinculos }}</p>
+                  <p class="pl-3">Vínculo: {{ isset($vinculos) ? $vinculos : '' }}</p>
                   <p class="pl-3">Situação: {{ $situacao }}</p>
                   <p class="pl-3">Onde Congrega: {{ $ondeCongrega }}</p>
               </div>
@@ -321,7 +321,7 @@ new DataTable('#aniversariantes', {
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-excel"></i> Excel',
               titleAttr: 'Excel',
-              title: "RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
+              title: "RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
             },
             {
               extend: 'pdfHtml5',
@@ -330,7 +330,7 @@ new DataTable('#aniversariantes', {
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
-              title: "RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
+              title: "RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
 
               customize: function (doc) {
                         doc.content.splice(0,1);
@@ -352,7 +352,7 @@ new DataTable('#aniversariantes', {
                                     {
                                         alignment: 'left',
                                         italics: false,
-                                        text: `RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}`,
+                                        text: `RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}`,
                                         fontSize: 14,
                                         margin: [10,0]
                                     },
