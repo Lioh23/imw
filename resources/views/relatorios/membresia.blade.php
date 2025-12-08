@@ -218,46 +218,47 @@
                             <th>TELEFONE</th>
                             <th>SITUAÇÃO</th>
                             <th>VÍNCULO</th>
-                            <th>MODO</th>
                             <th>NASCIMENTO</th>
                             <th>RECEPÇÃO</th>
+                            <th>MODO</th>
                             <th>EXCLUSÃO</th>
+                            <th>MODO</th>
                             <th>LOCAL</th>
                         </tr>
                     </thead>
                     <tbody>
                       @foreach ($membros as $membro)
-                      
-                          <tr>
-                            <td>{{ $membro->rol_atual ?? 0 }}</td>
-                            <td>{{ $membro->nome }}</td>
-                            <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
-                              @else
-                                {{ $membro->statusText }}
-                              @endif
-                            </td>
-                            <td>{{ $membro->vinculoText }}</td>
-                            <td>{{ $membro->modo ? $membro->modo : '-' }}</td>
-                            <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                 {{ $membro->dt_recepcao }}
-                              @else
-                                {{ optional($membro->created_at)->format('d/m/Y') }}
-                              @endif
-                            </td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                {{ $membro->dt_exclusao }}
-                              @else
-                                {{ optional($membro->deleted_at)->format('d/m/Y') }}
-                              @endif
-                            </td>
-                            <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
-                          </tr>
+                        <tr>
+                          <td>{{ $membro->rol_atual ?? 0 }}</td>
+                          <td>{{ $membro->nome }}</td>
+                          <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
+                          <td>
+                            @if($membro->vinculo == 'M')
+                              {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
+                            @else
+                              {{ $membro->statusText }}
+                            @endif
+                          </td>
+                          <td>{{ $membro->vinculoText }}</td>
+                          <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
+                          <td>
+                            @if($membro->vinculo == 'M')
+                                {{ $membro->dt_recepcao }}
+                            @else
+                              {{ optional($membro->created_at)->format('d/m/Y') }}
+                            @endif
+                          </td>
+                          <td>{{ $membro->recepcao_modo ? $membro->recepcao_modo : '-' }}</td>
+                          <td>
+                            @if($membro->vinculo == 'M')
+                              {{ $membro->dt_exclusao }}
+                            @else
+                              {{ optional($membro->deleted_at)->format('d/m/Y') }}
+                            @endif
+                          </td>
+                          <td>{{ $membro->exclusao_modo ? $membro->exclusao_modo : '-' }}</td>
+                          <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
+                        </tr>
                       @endforeach
                     </tbody>
                 </table>

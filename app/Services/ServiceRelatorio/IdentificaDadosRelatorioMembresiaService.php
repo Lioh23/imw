@@ -36,15 +36,16 @@ class IdentificaDadosRelatorioMembresiaService
             $dtInicial = $params['dt_inicial'];
             $dtFinal = $params['dt_final'];
 
-            $membresiaMembro =  MembresiaMembro::select('imwpgahml.membresia_membros.*', 'membresia_situacoes.nome as modo',
+            $membresiaMembro =  MembresiaMembro::select('imwpgahml.membresia_membros.*', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo',
                 DB::raw("DATE_FORMAT(membresia_rolpermanente.dt_recepcao, '%d/%m/%Y') dt_recepcao"),
                 DB::raw("DATE_FORMAT(membresia_rolpermanente.dt_exclusao, '%d/%m/%Y') dt_exclusao"),
                 DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
 
-            ->Join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')
-            ->join('membresia_situacoes', 'membresia_situacoes.id', 'membresia_rolpermanente.modo_recepcao_id')
+            ->join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')
+            ->leftJoin('membresia_situacoes as recepcao_modo', 'recepcao_modo.id', 'membresia_rolpermanente.modo_recepcao_id')
+            ->leftJoin('membresia_situacoes as exclusao_modo', 'exclusao_modo.id', 'membresia_rolpermanente.modo_exclusao_id')
             ->when($params['situacao'] == 'ativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
