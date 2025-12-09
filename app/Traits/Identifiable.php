@@ -34,7 +34,7 @@ trait Identifiable
     {
         //dd($id, $vinculo, $trashed);
         $membro = MembresiaMembro::where('id', $id)
-            ->select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+            ->select('membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = '$id') AS telefone") )
             ->when($trashed, fn($query) => $query->onlyTrashed())
@@ -58,7 +58,7 @@ trait Identifiable
     public static function fetchPessoaDisciplina($id, $vinculo, $trashed = false)
     {
         $membro = MembresiaMembro::where('membresia_membros.id', $id)
-            ->select('imwpgahml.membresia_membros.*', 'imwpgahml.md.dt_inicio', 'imwpgahml.md.dt_termino', 'imwpgahml.md.observacao', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+            ->select('membresia_membros.*', 'md.dt_inicio', 'md.dt_termino', 'md.observacao', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = '$id') AS telefone") )
             ->Join('membresia_disciplinas as md', 'md.membro_id', 'membresia_membros.id')
@@ -83,7 +83,7 @@ trait Identifiable
     public static function fetchPessoaFuncaoEclesiastica($funcao_eclesiastica_id)
     {
         $funcao_eclesiastica_id = $funcao_eclesiastica_id != 'todos' ? intval($funcao_eclesiastica_id) : '';
-        $membro = MembresiaMembro::with('congregacao')->select('imwpgahml.membresia_membros.*', 'imwpgahml.mf.descricao as funcao_eclesiastica','imwpgahml.ii.nome as igreja',  DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+        $membro = MembresiaMembro::with('congregacao')->select('membresia_membros.*', 'mf.descricao as funcao_eclesiastica','ii.nome as igreja',  DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
             ->Join('membresia_funcoeseclesiasticas as mf', 'mf.id', 'membresia_membros.funcao_eclesiastica_id')

@@ -17,7 +17,6 @@ class IdentificaDadosRelatorioMembresiaService
             'congregacoes' => Identifiable::fetchCongregacoes(),
             'render'       => isset($params['action']) && $params['action'] == 'relatorio' ? 'pdf' : 'view'
         ];
-
         if(isset($params['action'])) {
             $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
             $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
@@ -36,14 +35,14 @@ class IdentificaDadosRelatorioMembresiaService
             $dtInicial = $params['dt_inicial'];
             $dtFinal = $params['dt_final'];
 
-            $membresiaMembro =  MembresiaMembro::select('imwpgahml.membresia_membros.*', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo',
-                DB::raw("DATE_FORMAT(membresia_rolpermanente.dt_recepcao, '%d/%m/%Y') dt_recepcao"),
-                DB::raw("DATE_FORMAT(membresia_rolpermanente.dt_exclusao, '%d/%m/%Y') dt_exclusao"),
+            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'recepcao_modo.nome as modo_recepcao', 'exclusao_modo.nome as modo_exclusao', 'membresia_rolpermanente.lastrec',
+                DB::raw("membresia_rolpermanente.dt_recepcao"),
+                DB::raw("membresia_rolpermanente.dt_exclusao"),
                 DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
 
-            ->join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')
+            ->join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')->where('lastrec',1)
             ->leftJoin('membresia_situacoes as recepcao_modo', 'recepcao_modo.id', 'membresia_rolpermanente.modo_recepcao_id')
             ->leftJoin('membresia_situacoes as exclusao_modo', 'exclusao_modo.id', 'membresia_rolpermanente.modo_exclusao_id')
             ->when($params['situacao'] == 'ativos', function ($query) {
@@ -56,8 +55,8 @@ class IdentificaDadosRelatorioMembresiaService
             ->when($params['situacao'] == 'inativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
-                    $query->where('membresia_rolpermanente.status', 'I');
-                    $query->where('membresia_membros.status', 'I');
+                    $query->orWhere('membresia_rolpermanente.status', 'I');
+                    $query->orWhere('membresia_membros.status', 'I');
                 });
             })
             ->when($params['dt_filtro'] == 'dt_recepcao', function  ($query) use( $dtInicial, $dtFinal) {
@@ -87,14 +86,14 @@ class IdentificaDadosRelatorioMembresiaService
             ->where('membresia_membros.vinculo', $params['vinculo'])
             ->where('membresia_membros.igreja_id', $igrejaId)
             ->where('membresia_rolpermanente.igreja_id', $igrejaId)
+            ->where('membresia_rolpermanente.lastrec', 1)
             ->orderBy('nome')
-            ->get();
-            
+            ->get(); 
         } else {
             $dtInicial = $params['dt_inicial'];
             $dtFinal = $params['dt_final'];
             $igrejaId = Identifiable::fetchSessionIgrejaLocal()->id;
-            $membresiaMembro =  MembresiaMembro::select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
             ->when($params['situacao'] == 'ativos', function ($query) {
@@ -140,7 +139,7 @@ class IdentificaDadosRelatorioMembresiaService
         
             return $membresiaMembro;
 
-        // return MembresiaMembro::select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+        // return MembresiaMembro::select('membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
         //                       WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
         //                       ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
         //     ->with('rolAtualSessionIgreja')
@@ -175,7 +174,7 @@ class IdentificaDadosRelatorioMembresiaService
 
     private function fetchCongregadosVisitantesRelatorio($params)
     {
-        return MembresiaMembro::select('imwpgahml.membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+        return MembresiaMembro::select('membresia_membros.*', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
             ->where('vinculo', $params['vinculo'])

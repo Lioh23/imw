@@ -248,7 +248,7 @@
                               {{ optional($membro->created_at)->format('d/m/Y') }}
                             @endif
                           </td>
-                          <td>{{ $membro->recepcao_modo ? $membro->recepcao_modo : '-' }}</td>
+                          <td>{{ $membro->modo_recepcao ? $membro->modo_recepcao : '-' }}</td>
                           <td>
                             @if($membro->vinculo == 'M')
                               {{ $membro->dt_exclusao }}
@@ -256,7 +256,7 @@
                               {{ optional($membro->deleted_at)->format('d/m/Y') }}
                             @endif
                           </td>
-                          <td>{{ $membro->exclusao_modo ? $membro->exclusao_modo : '-' }}</td>
+                          <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
                           <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
                         </tr>
                       @endforeach
