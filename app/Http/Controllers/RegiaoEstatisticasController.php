@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Services\EstatisticaClerigosService\HistoricoNomeacoes;
 use App\Services\EstatisticaClerigosService\TotalTicketMedio;
 use App\Services\ServiceEstatisticas\TotalMembresiaServices;
+use App\Services\ServiceRegiaoRelatorios\IdentificaDadosRegiaoRelatorioMembresiaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
@@ -141,5 +142,18 @@ class RegiaoEstatisticasController extends Controller
             ->setPaper('a4', 'landscape');
 
         return $pdf->stream('relatorio_estatisticaticketmedio.pdf' . date('YmdHis'));
+    }
+
+    public function membresia(Request $request)
+    {
+        try {
+            $data = app(IdentificaDadosRegiaoRelatorioMembresiaService::class)->execute($request->all());
+
+            return view('regiao.membresia', $data);
+
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
+        }
     }
 }

@@ -646,6 +646,11 @@
                                  <span>Membros</span>
                              @endif
                          </li>
+                         <li {!! Request::is('regiao/estatistica/relatorio/membresia*') ? 'class="active"' : '' !!}>
+                             @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-relatorio-membresia'))
+                                 <a href="{{ route('regiao.membresia') }}">Membresia</a>
+                             @endif
+                         </li>
                          <li {!! Request::is('regiao/estatistica/relatorio/estatistica-membros-evolucao') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('regiao-estatistica-membros-evolucao'))
                                  <a href="{{ route('regiao.estatistica.evolucao') }}">Evolução</a>
