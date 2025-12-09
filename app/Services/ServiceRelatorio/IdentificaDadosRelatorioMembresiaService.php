@@ -42,7 +42,8 @@ class IdentificaDadosRelatorioMembresiaService
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
 
-            ->join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')->where('lastrec',1)
+            //->join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')->where('lastrec',1)
+            ->join('membresia_rolpermanente', 'membresia_rolpermanente.igreja_id', 'membresia_membros.igreja_id')->where('lastrec',1)
             ->leftJoin('membresia_situacoes as recepcao_modo', 'recepcao_modo.id', 'membresia_rolpermanente.modo_recepcao_id')
             ->leftJoin('membresia_situacoes as exclusao_modo', 'exclusao_modo.id', 'membresia_rolpermanente.modo_exclusao_id')
             ->when($params['situacao'] == 'ativos', function ($query) {
@@ -55,8 +56,8 @@ class IdentificaDadosRelatorioMembresiaService
             ->when($params['situacao'] == 'inativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
-                    $query->orWhere('membresia_rolpermanente.status', 'I');
-                    $query->orWhere('membresia_membros.status', 'I');
+                    $query->where('membresia_rolpermanente.status', 'I');
+                    $query->where('membresia_membros.status', 'I');
                 });
             })
             ->when($params['dt_filtro'] == 'dt_recepcao', function  ($query) use( $dtInicial, $dtFinal) {
