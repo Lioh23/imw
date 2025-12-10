@@ -27,7 +27,7 @@ class DeletarMembroService
             ]);
 
             $membro->update(['status' => MembresiaMembro::STATUS_INATIVO]);
-            $membro->delete();
+            //$membro->delete();
             
             DB::commit();
         } catch(\Exception $e) {
