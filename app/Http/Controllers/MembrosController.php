@@ -18,9 +18,11 @@ use App\Http\Requests\UpdateMembroRequest;
 use App\Models\MembresiaMembro;
 use App\Models\NotificacaoTransferencia;
 use App\DataTables\RolMembroDatatable;
+use App\DataTables\RolMembroRecadastramentoDatatable;
 use App\Services\ServiceMembros\DeletarMembroService;
 use App\Services\ServiceMembros\IdentificaDadosDisciplinaService;
 use App\Services\ServiceMembros\IdentificaDadosExcluirMembroService;
+use App\Services\ServiceMembros\IdentificaDadosIndexRecadastramentoService;
 use App\Services\ServiceMembros\IdentificaDadosIndexService;
 use App\Services\ServiceMembros\IdentificaDadosReceberMembroExternoService;
 use App\Services\ServiceMembros\IdentificaDadosReceberNovoMembroService;
@@ -35,7 +37,9 @@ use App\Services\ServiceMembros\StoreReceberNovoMembroService;
 use App\Services\ServiceMembros\StoreReintegracaoService;
 use App\Services\ServiceMembros\StoreTransferenciaInternaService;
 use App\Services\ServiceMembros\UpdateDisciplinarService;
+use App\Services\ServiceMembrosGeral\EditarMembroRecadastramentoService;
 use App\Services\ServiceMembrosGeral\EditarMembroService;
+use App\Services\ServiceMembrosGeral\UpdateMembroRecadastramentoService;
 use App\Services\ServiceMembrosGeral\UpdateMembroService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -46,6 +50,21 @@ class MembrosController extends Controller
     {
         $data = app(IdentificaDadosIndexService::class)->execute();
         return view('membros.index', $data);
+    }
+
+    public function indexRecadastramento()
+    {
+        $data = app(IdentificaDadosIndexRecadastramentoService::class)->execute();
+        return view('membros.index_recadastramento', $data);
+    }
+
+    public function listRecadastramento(Request $request)
+    {
+        try {
+            return app(RolMembroRecadastramentoDatatable::class)->execute($request->all());
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'erro ao carregar os dados dos membros'], 500);
+        }
     }
 
     public function list(Request $request)
@@ -79,8 +98,31 @@ class MembrosController extends Controller
         } catch(MembroNotFoundException $e) {
             return redirect()->route('membro.index')->with('error', 'Registro não encontrado.');
         } catch(\Exception $e) {
-            dd($e);
             return redirect()->route('membro.index')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
+        }
+    }
+    public function editarRecadastramento($id)
+    {
+        try {
+            $pessoa = app(EditarMembroRecadastramentoService::class)->findOne($id);
+            $disciplinas = app(ListDisciplinasMembroService::class)->execute($id);
+            return view('membros.editar.indexRecadastramento', [
+                'pessoa'               => $pessoa['pessoa'],
+                'ministerios'          => $pessoa['ministerios'],
+                'funcoes'              => $pessoa['funcoes'],
+                'cursos'               => $pessoa['cursos'],
+                'formacoes'            => $pessoa['formacoes'],
+                'funcoesEclesiasticas' => $pessoa['funcoesEclesiasticas'],
+                'congregacoes'         => $pessoa['congregacoes'],
+                'disciplinas'          => $disciplinas,
+                'gceus'                => $pessoa['gceus'],
+                'gceuFuncoes'          => $pessoa['gceuFuncoes'],
+                'gceuMembros'          => $pessoa['gceuMembros']
+            ]);
+        } catch(MembroNotFoundException $e) {
+            return redirect()->route('recadastramento-membro.indexRecadastramento')->with('error', 'Registro não encontrado.');
+        } catch(\Exception $e) {
+            return redirect()->route('recadastramento-membro.indexRecadastramento')->with('error', 'Erro ao abrir a página, por favor, tente mais tarde!');
         }
     }
 
@@ -100,6 +142,20 @@ class MembrosController extends Controller
             app(UpdateMembroService::class)->execute($request->all(), MembresiaMembro::VINCULO_MEMBRO);
             DB::commit();
             return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
+       /*  } catch(\Exception $e) {
+            DB::rollback();
+            dd($e);
+            return redirect()->action([MembrosController::class, 'editar'], ['id' => $request->input('membro_id')])->with('error', 'Falha na atualização do registro.');
+        } */
+    }
+
+    public function updateRecadastramento(UpdateMembroRequest $request, $id)
+    {
+        /* try { */
+            DB::beginTransaction();
+            app(UpdateMembroRecadastramentoService::class)->execute($request->all(), MembresiaMembro::VINCULO_MEMBRO);
+            DB::commit();
+            return redirect()->action([MembrosController::class, 'editarRecadastramento'], ['id' => $request->input('membro_id')])->with('success', 'Registro atualizado.');
        /*  } catch(\Exception $e) {
             DB::rollback();
             dd($e);

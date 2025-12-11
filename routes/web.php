@@ -104,6 +104,14 @@ Route::middleware(['auth'])->group(function () {
             Route::put('disciplinar/update/{id}', [MembrosController::class, 'updateDisciplinar'])->name('disciplinar.update')->middleware(['seguranca:membros-disciplinar']);
         });
 
+        // Grupo de rotas para 'membresia recadastramento'
+        Route::prefix('secretaria/recadastramento-membro')->name('recadastramento-membro.')->group(function () {
+            Route::get('', [MembrosController::class, 'indexRecadastramento'])->name('indexRecadastramento')->middleware(['seguranca:membros-index']);
+            Route::get('list-recadastramento', [MembrosController::class, 'listRecadastramento'])->name('listRecadastramento')->middleware(['seguranca:membros-index']);
+            Route::get('editar/{id}', [MembrosController::class, 'editarRecadastramento'])->name('editar')->middleware(['seguranca:membros-editar']);
+            Route::post('atualizar/{id}', [MembrosController::class, 'updateRecadastramento'])->name('update')->middleware(['seguranca:membros-atualizar']);
+        });
+
         Route::controller(HomeController::class)->group(function () {
             Route::get('/', 'dashboard')->name('dashboard');
             Route::get('perfil', 'perfil')->name('perfil');
