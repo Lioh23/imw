@@ -14,25 +14,38 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
     public function execute(array $params = [])
     {
         $regiao = Identifiable::fetchtSessionRegiao();
+        $distritos = Identifiable::fetchDistritosByRegiao($regiao->id);
         $data = [
-            'distritos' => Identifiable::fetchDistritosByRegiao($regiao->id),
+            'distritos' => $distritos,
             'render'       => isset($params['action']) && $params['action'] == 'relatorio' ? 'pdf' : 'view',
             'regiao_nome' => $regiao->nome,
         ];
+        
         if(isset($params['action'])) {
-            $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
-            $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
-            $data['ondeCongrega'] = $this->fetchTextCongregacao($params['congregacao_id']);
-            $data['membros']      = $params['vinculo'] == 'M' 
-                ? $this->fetchMembrosRelatorio($params, $data)
-                : $this->fetchCongregadosVisitantesRelatorio($params);
+
+            foreach($distritos as $distrito){
+                $igrejas = Identifiable::fetchIgrejasByDistrito($distrito->id);
+                foreach($igrejas as $igreja){
+                    $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
+                    $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
+                    $data['ondeCongrega'] = $this->fetchTextCongregacao($params['congregacao_id']);
+                    $params['igreja_id'] = $igreja;
+                    $data['membros']      = $params['vinculo'] == 'M' 
+                        ? $this->fetchMembrosRelatorio($params, $data)
+                        : $this->fetchCongregadosVisitantesRelatorio($params);
+                }
+            }
+
+           
+
+            
         }
         return $data;
     }
 
     private function fetchMembrosRelatorio($params, $data)
     {
-        
+        dd($params);
         $igrejaId = Identifiable::fetchIgrejasByDistrito($data['distritos'][0]->id);
         $igrejaId = $igrejaId[0]->id;
         if($params['vinculo'] == 'M') {
