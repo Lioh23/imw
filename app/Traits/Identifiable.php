@@ -115,6 +115,18 @@ trait Identifiable
         ->get();
     }
 
+    public static function fetchCongregacoesPorIgreja($igrejaId)
+    {
+        //$igrejaId = optional(session()->get('session_perfil')->instituicoes->igrejaLocal)->id;
+        return CongregacoesCongregacao::when((bool) $igrejaId, function ($query) use ($igrejaId) {
+            $query->where('instituicao_id', $igrejaId);
+        })
+        // ->when((bool) $unlessCongregacaoId, function ($query) use ($unlessCongregacaoId) {
+        //     $query->where('id', '<>', $unlessCongregacaoId);
+        // })
+        ->get();
+    }
+
     public static function fetchSessionInstituicoesStoreMembresia(): array
     {
         /** @var SessionInstituicoesDto $sessionInstituicoes */
@@ -144,6 +156,15 @@ trait Identifiable
         $distrito = session('session_perfil')->instituicoes->distrito;
 
         if (!$distrito) throw new MissingSessionDistritoException();
+
+        return $distrito;
+    }
+
+    public static function fetchtDistrito($distritoId): InstituicoesInstituicao
+    {
+        $distrito = InstituicoesInstituicao::where('id', $distritoId)
+            ->where('tipo_instituicao_id', InstituicoesTipoInstituicao::DISTRITO)
+            ->first();
 
         return $distrito;
     }

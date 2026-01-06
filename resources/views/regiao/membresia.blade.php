@@ -200,10 +200,10 @@
           <div class="row">
               <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                   <h4 style="text-transform: uppercase">RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}</h4>
-                  <p class="pl-3">Registros Encontrados: {{ $membros->count() }}</p>
+                  <p class="pl-3">Registros Encontrados: {{ $membros_total }}</p>
                   <p class="pl-3">Vínculo: {{ isset($vinculos) ? $vinculos : '' }}</p>
                   <p class="pl-3">Situação: {{ $situacao }}</p>
-                  <p class="pl-3">Onde Congrega: {{ $ondeCongrega }}</p>
+                  <p class="pl-3">Local: {{ $ondeCongrega }}</p>
               </div>
           </div>
         </div>
@@ -213,6 +213,8 @@
                 <table class="table table-bordered table-striped table-hover mb-4"  id="aniversariantes">
                     <thead>
                         <tr>
+                            <th>DISTRITO</th>
+                            <th>IGREJA</th>
                             <th>ROL</th>
                             <th>NOME</th>
                             <th>TELEFONE</th>
@@ -227,38 +229,42 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($membros as $membro)
-                        <tr>
-                          <td>{{ $membro->rol_atual ?? 0 }}</td>
-                          <td>{{ $membro->nome }}</td>
-                          <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
-                          <td>
-                            @if($membro->vinculo == 'M')
-                              {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
-                            @else
-                              {{ $membro->statusText }}
-                            @endif
-                          </td>
-                          <td>{{ $membro->vinculoText }}</td>
-                          <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
-                          <td>
-                            @if($membro->vinculo == 'M')
-                                {{ $membro->dt_recepcao }}
-                            @else
-                              {{ optional($membro->created_at)->format('d/m/Y') }}
-                            @endif
-                          </td>
-                          <td>{{ $membro->modo_recepcao ? $membro->modo_recepcao : '-' }}</td>
-                          <td>
-                            @if($membro->vinculo == 'M')
-                              {{ $membro->dt_exclusao }}
-                            @else
-                              {{ optional($membro->deleted_at)->format('d/m/Y') }}
-                            @endif
-                          </td>
-                          <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
-                          <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
-                        </tr>
+                      @foreach ($membros as $membroIgrejas)
+                        @foreach ($membroIgrejas as $membro)
+                          <tr>
+                            <td>{{ $membro->distrito_nome }}</td>
+                            <td>{{ $membro->igreja_nome }}</td>
+                            <td>{{ $membro->rol_atual ?? 0 }}</td>
+                            <td>{{ $membro->nome }}</td>
+                            <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
+                            <td>
+                              @if($membro->vinculo == 'M')
+                                {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
+                              @else
+                                {{ $membro->statusText }}
+                              @endif
+                            </td>
+                            <td>{{ $membro->vinculoText }}</td>
+                            <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
+                            <td>
+                              @if($membro->vinculo == 'M')
+                                  {{ $membro->dt_recepcao }}
+                              @else
+                                {{ optional($membro->created_at)->format('d/m/Y') }}
+                              @endif
+                            </td>
+                            <td>{{ $membro->modo_recepcao ? $membro->modo_recepcao : '-' }}</td>
+                            <td>
+                              @if($membro->vinculo == 'M')
+                                {{ $membro->dt_exclusao }}
+                              @else
+                                {{ optional($membro->deleted_at)->format('d/m/Y') }}
+                              @endif
+                            </td>
+                            <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
+                            <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
+                          </tr>
+                        @endforeach
                       @endforeach
                     </tbody>
                 </table>
@@ -322,7 +328,7 @@ new DataTable('#aniversariantes', {
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-excel"></i> Excel',
               titleAttr: 'Excel',
-              title: "RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - "
+              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao }}"
             },
             {
               extend: 'pdfHtml5',
@@ -331,7 +337,7 @@ new DataTable('#aniversariantes', {
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
-              title: "RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - ",
+              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao }}",
 
               customize: function (doc) {
                         doc.content.splice(0,1);
@@ -353,7 +359,7 @@ new DataTable('#aniversariantes', {
                                     {
                                         alignment: 'left',
                                         italics: false,
-                                        text: `RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - `,
+                                        text: `RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao }}`,
                                         fontSize: 14,
                                         margin: [10,0]
                                     },
