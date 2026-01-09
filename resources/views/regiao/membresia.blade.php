@@ -318,6 +318,7 @@
  
 
 new DataTable('#aniversariantes', {
+   order: [[8, 'asc']],
     layout: {
         //top1: 'searchBuilder',
         topStart: {
@@ -405,9 +406,10 @@ new DataTable('#aniversariantes', {
             }
             ]
         },
+       
         topEnd: 'search',
         bottomStart: 'info',
-       bottomEnd: 'paging'
+        bottomEnd: 'paging'
     },
     language: {
       url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"

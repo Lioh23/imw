@@ -68,6 +68,7 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
                     }
                 }
             }
+            //dd($dados);
             $data['regiao_nome'] = $regiao->nome;
             $data['membros_total'] = array_sum($total);
             $data['membros'] =  isset($dados) ? $dados : [];           
@@ -128,7 +129,7 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
                 $query->when($dtInicial, fn ($query) => $query->where('membresia_rolpermanente.dt_exclusao', '>=' , $dtInicial));
                 $query->when($dtFinal, fn ($query) => $query->where('membresia_rolpermanente.dt_exclusao', '<=' , $dtFinal));
             })
-            ->when($params['congregacao_id'], fn ($query) => $query->where('membresia_membros.congregacao_id', $params['congregacao_id']))
+            //->when($params['congregacao_id'], fn ($query) => $query->where('membresia_membros.congregacao_id', $params['congregacao_id']))
             ->when($params['dt_filtro'], function ($query) use ($params) {
                 if ($params['dt_filtro'] == 'data_nascimento') {
                     return $this->handleFilterDtNascimento($query, $params['dt_inicial'], $params['dt_final']);
