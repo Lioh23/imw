@@ -68,7 +68,7 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
                     }
                 }
             }
-            $data['regiao'] = $regiao->nome;
+            $data['regiao_nome'] = $regiao->nome;
             $data['membros_total'] = array_sum($total);
             $data['membros'] =  isset($dados) ? $dados : [];           
         }

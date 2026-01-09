@@ -148,11 +148,10 @@ class RegiaoEstatisticasController extends Controller
     {
         try {
             $data = app(IdentificaDadosRegiaoRelatorioMembresiaService::class)->execute($request->all());
-
             return view('regiao.membresia', $data);
 
         } catch (\Exception $e) {
-            dd($e);
+            //dd($e);
             return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
         }
     }

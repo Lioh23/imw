@@ -328,7 +328,7 @@ new DataTable('#aniversariantes', {
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-excel"></i> Excel',
               titleAttr: 'Excel',
-              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao }}"
+              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}"
             },
             {
               extend: 'pdfHtml5',
@@ -337,7 +337,7 @@ new DataTable('#aniversariantes', {
               className: 'btn btn-primary btn-rounded',
               text: '<i class="fas fa-file-pdf"></i> PDF',
               titleAttr: 'PDF',
-              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao }}",
+              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}",
 
               customize: function (doc) {
                         doc.content.splice(0,1);
@@ -359,7 +359,7 @@ new DataTable('#aniversariantes', {
                                     {
                                         alignment: 'left',
                                         italics: false,
-                                        text: `RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao }}`,
+                                        text: `RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}`,
                                         fontSize: 14,
                                         margin: [10,0]
                                     },

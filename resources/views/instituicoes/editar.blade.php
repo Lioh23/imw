@@ -145,7 +145,7 @@
 
                     <div class="col-md-6 form-group">
                         <label for="complemento">Complemento</label>
-                        <input class="form-control @error('complemento') is-invalid @enderror" type="text"
+                        <input class="form-control @error('complemento') is-invalid @enderror" type="text" maxlength="30"
                             id="complemento" name="complemento"
                             value="{{ old('complemento', $instituicao['complemento']) }}">
                         @error('complemento')

@@ -152,7 +152,7 @@
 
                 <div class="col-md-6 form-group">
                     <label for="complemento">Complemento</label>
-                    <input type="text" class="form-control @error('complemento') is-invalid @enderror"
+                    <input type="text" class="form-control @error('complemento') is-invalid @enderror" maxlength="30"
                         id="complemento" name="complemento" value="{{ old('complemento') }}">
                     @error('complemento')
                         <div class="invalid-feedback">{{ $message }}</div>
