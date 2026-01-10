@@ -23,73 +23,64 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
         ];
         
         if(isset($params['action'])) {
-            if($params['distrito_id']){
-                $igrejas = Identifiable::fetchIgrejasByDistrito($params['distrito_id']);
-                foreach($igrejas as $igreja){
+            // if($params['distrito_id']){
+            //     $igrejas = Identifiable::fetchIgrejasByDistrito($params['distrito_id']);
+            //     foreach($igrejas as $igreja){
 
-                    $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
-                    $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
-                    $congregacoes = $this->fetchCongregacoesPorIgreja($igreja->id);
-                    foreach($congregacoes as $congrecao){
-                        //dd($congrecao);
-                        $data['ondeCongrega'] = $this->fetchtDistrito($params['distrito_id'])->nome;
-                        $params['igreja_id'] = $igreja->id;
-                        $params['congregacao_id'] = $congrecao->id;
-                        $membros     = $params['vinculo'] == 'M' 
-                            ? $this->fetchMembrosRelatorio($params, $data)
-                            : $this->fetchCongregadosVisitantesRelatorio($params);
-                            $total[] = count($membros);
+            //         $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
+            //         $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
+            //         $congregacoes = $this->fetchCongregacoesPorIgreja($igreja->id);
+            //         foreach($congregacoes as $congrecao){
+            //             //dd($congrecao);
+            //             $data['ondeCongrega'] = $this->fetchtDistrito($params['distrito_id'])->nome;
+            //             $params['igreja_id'] = $igreja->id;
+            //             $params['congregacao_id'] = $congrecao->id;
+            //             $membros     = $params['vinculo'] == 'M' 
+            //                 ? $this->fetchMembrosRelatorio($params, $data)
+            //                 : $this->fetchCongregadosVisitantesRelatorio($params);
+            //                 $total[] = count($membros);
 
-                        if(count($membros) > 0){
-                            $dados[] = $membros;
-                        }
-                    }
-                }
-            }else{
-                foreach($distritos as $distrito){
-                    $igrejas = Identifiable::fetchIgrejasByDistrito($distrito->id);
-                    foreach($igrejas as $igreja){
+            //             if(count($membros) > 0){
+            //                 $dados[] = $membros;
+            //             }
+            //         }
+            //     }
+            // }else{
 
-                        $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
-                        $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
-                        $congregacoes = $this->fetchCongregacoesPorIgreja($igreja->id);
-                        foreach($congregacoes as $congrecao){
-                            $data['ondeCongrega'] = 'Todos Distritos';
-                            $params['igreja_id'] = $igreja->id;
-                            $params['congregacao_id'] = $congrecao->id;
-                            $membros      = $params['vinculo'] == 'M' 
-                                ? $this->fetchMembrosRelatorio($params, $data)
-                                : $this->fetchCongregadosVisitantesRelatorio($params);
-                            if(count($membros) > 0){
-                                $dados[] =  $membros;
-                            }
-                            $total[] = count($membros);
-                        }
-                    }
-                }
+                $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
+                $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
+                $data['ondeCongrega'] = 'Todos Distritos';
+                $params['igreja_id'] = 0;
+                $params['congregacao_id'] = 0;
+                $params['regiao_id'] = $regiao->id;
+                
+                $membros      = $params['vinculo'] == 'M' 
+                    ? $this->fetchMembrosRelatorio($params, $data)
+                    : $this->fetchCongregadosVisitantesRelatorio($params);
+
+                $dados[] =  $membros;
+                $total[] = count($membros);
             }
             //dd($dados);
             $data['regiao_nome'] = $regiao->nome;
             $data['membros_total'] = array_sum($total);
             $data['membros'] =  isset($dados) ? $dados : [];           
-        }
+        // }
         return $data;
     }
 
     private function fetchMembrosRelatorio($params, $data)
     {
-        //dd($params);
         //$igrejaId = Identifiable::fetchIgrejasByDistrito($data['distritos'][0]->id);
        //dd($igrejaId);
         $igrejaId = $params['igreja_id'];
+        $regiaoId = $params['regiao_id'];
         request()->merge(['igreja_id' => $igrejaId])->all();
         if($params['vinculo'] == 'M') {
             $dtInicial = $params['dt_inicial'];
             $dtFinal = $params['dt_final'];
 
-            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo',
-                DB::raw("DATE_FORMAT(membresia_rolpermanente.dt_recepcao, '%d/%m/%Y') dt_recepcao"),
-                DB::raw("DATE_FORMAT(membresia_rolpermanente.dt_exclusao, '%d/%m/%Y') dt_exclusao"),
+            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo', 'membresia_rolpermanente.dt_recepcao','membresia_rolpermanente.dt_exclusao',
                 DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
@@ -137,12 +128,16 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
                     return $this->handleRolDates($query, $params['dt_filtro'], $params['dt_inicial'], $params['dt_final']);
                 }
             })
+            ->when($params['distrito_id'], fn ($query) => $query->where('distrito.id', $params['distrito_id']))
             ->where('membresia_membros.vinculo', $params['vinculo'])
-            ->where('membresia_membros.igreja_id', $igrejaId)
-            ->where('membresia_rolpermanente.igreja_id', $igrejaId)
-            ->orderBy('nome')
+            // ->where('membresia_membros.igreja_id', $igrejaId)
+            // ->where('membresia_rolpermanente.igreja_id', $igrejaId)
+            ->where('distrito.instituicao_pai_id', $regiaoId)
+            ->orderBy('membresia_rolpermanente.dt_recepcao', 'DESC')
+            //->limit(10)
             ->get();
         } else {
+            dd('Em desenvolvimento');
             $dtInicial = $params['dt_inicial'];
             $dtFinal = $params['dt_final'];
             $igrejaId = $params['igreja_id'];

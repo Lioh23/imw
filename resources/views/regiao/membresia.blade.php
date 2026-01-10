@@ -248,7 +248,7 @@
                             <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
                             <td>
                               @if($membro->vinculo == 'M')
-                                  {{ $membro->dt_recepcao }}
+                                  {{ $membro->dt_recepcao ? formatDate($membro->dt_recepcao) : '-' }}
                               @else
                                 {{ optional($membro->created_at)->format('d/m/Y') }}
                               @endif
@@ -256,7 +256,7 @@
                             <td>{{ $membro->modo_recepcao ? $membro->modo_recepcao : '-' }}</td>
                             <td>
                               @if($membro->vinculo == 'M')
-                                {{ $membro->dt_exclusao }}
+                                {{ $membro->dt_exclusao ? formatDate($membro->dt_exclusao) : '-'}}
                               @else
                                 {{ optional($membro->deleted_at)->format('d/m/Y') }}
                               @endif
