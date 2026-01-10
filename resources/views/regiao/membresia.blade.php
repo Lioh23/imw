@@ -56,8 +56,8 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox checkbox-outline-success">
-                  <input {{ !request()->get('vinculo') || request()->get('vinculo') == 'M' ? 'checked' : '' }} 
-                         type="radio" name="vinculo" id="vinculo_membro" value="M" class="new-control-input">
+                  <input {{ request()->get('vinculo') == 'M' ? 'checked' : '' }} 
+                         type="radio" name="vinculo" value="M" class="new-control-input">
                   <span class="new-control-indicator"></span>Membro
                 </label>
               </div>
@@ -193,7 +193,7 @@
 </div>
 
 <!-- TABELA -->
-@isset($membros)
+@if(count($membros) > 0)
   <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
@@ -229,8 +229,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($membros as $membroIgrejas)
-                        @foreach ($membroIgrejas as $membro)
+                      @foreach ($membros as $membro)
                           <tr>
                             <td>{{ $membro->distrito_nome }}</td>
                             <td>{{ $membro->igreja_nome }}</td>
@@ -264,7 +263,6 @@
                             <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
                             <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
                           </tr>
-                        @endforeach
                       @endforeach
                     </tbody>
                 </table>

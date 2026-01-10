@@ -13,7 +13,6 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
 
     public function execute(array $params = [])
     {
-        //dd( $params);
         $regiao = Identifiable::fetchtSessionRegiao();
         $distritos = Identifiable::fetchDistritosByRegiao($regiao->id);
         $data = [
@@ -58,12 +57,18 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
                     ? $this->fetchMembrosRelatorio($params, $data)
                     : $this->fetchCongregadosVisitantesRelatorio($params);
 
-                $dados[] =  $membros;
-                $total[] = count($membros);
+                $dados =  $membros;
+                //$total[] = count($membros);
+                $data['membros_total'] = count($membros);
+            }else{
+                $data['membros_total'] = 0;
+                $data['situacao'] = '-';
+                $data['ondeCongrega'] = '-';
+                $dados = [] ;
             }
             //dd($dados);
             $data['regiao_nome'] = $regiao->nome;
-            $data['membros_total'] = array_sum($total);
+            
             $data['membros'] =  isset($dados) ? $dados : [];           
         // }
         return $data;
