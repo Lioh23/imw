@@ -193,14 +193,14 @@
 </div>
 
 <!-- TABELA -->
-@if($membros_total > 0)
+
   <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
           <div class="row">
               <div class="col-xl-12 col-md-12 col-sm-12 col-12">
                   <h4 style="text-transform: uppercase">RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}</h4>
-                  <p class="pl-3">Registros Encontrados: {{ $membros_total }}</p>
+                  <p class="pl-3">Registros Encontrados: </p>
                   <p class="pl-3">Vínculo: {{ isset($vinculos) ? $vinculos : '' }}</p>
                   <p class="pl-3">Situação: {{ $situacao }}</p>
                   <p class="pl-3">Local: {{ $ondeCongrega }}</p>
@@ -210,7 +210,7 @@
         <div class="widget-content widget-content-area">
           
             <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover mb-4"  id="aniverriantes">
+                <table class="table table-bordered table-striped table-hover mb-4"  id="aniversariantes">
                     <thead>
                         <tr>
                             <th>DISTRITO</th>
@@ -229,7 +229,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($membros as $membro)
+                      <!-- @foreach ($membros as $membro)
                           <tr>
                             <td>{{ $membro->distrito_nome }}</td>
                             <td>{{ $membro->igreja_nome }}</td>
@@ -263,17 +263,14 @@
                             <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
                             <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
                           </tr>
-                      @endforeach
+                      @endforeach -->
                     </tbody>
                 </table>
             </div>
-            @if($links)
-                {{ $links->links('vendor.pagination.index') }}
-            @endif
         </div>
     </div>
   </div>
-@endisset
+
 
 @endsection
 
@@ -317,104 +314,73 @@
     $('#dt_final').val('')
   }
  
+  $(document).ready( function() {
 
-new DataTable('#aniversariantes', {
-   order: [[8, 'asc']],
-    layout: {
-        //top1: 'searchBuilder',
-        topStart: {
-          buttons: [
-            'pageLength',
-            {
-              extend: 'excel',
-              className: 'btn btn-primary btn-rounded',
-              text: '<i class="fas fa-file-excel"></i> Excel',
-              titleAttr: 'Excel',
-              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}"
-            },
-            {
-              extend: 'pdfHtml5',
-              orientation: 'landscape',
-              pageSize: 'LEGAL',
-              className: 'btn btn-primary btn-rounded',
-              text: '<i class="fas fa-file-pdf"></i> PDF',
-              titleAttr: 'PDF',
-              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}",
-
-              customize: function (doc) {
-                        doc.content.splice(0,1);
-                        var now = new Date();
-                        var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
-                        //doc.pageMargins = [20,50,20,30];
-                        doc.defaultStyle.fontSize = 9;
-                        doc.styles.tableHeader.fontSize = 9;
-                        
-
-                        const hoje = new Date();
-                        const dataFormatada = hoje.toLocaleDateString('pt-BR');
-                        const horaFormatada = hoje.toLocaleTimeString('pt-BR');
-                        const dataHoraFormatada = `${dataFormatada} ${horaFormatada}`;
-                        doc['header']=(function() {
-                            return {
-                                columns: [
-
-                                    {
-                                        alignment: 'left',
-                                        italics: false,
-                                        text: `RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}`,
-                                        fontSize: 14,
-                                        margin: [10,0]
-                                    },
-                                    // {
-                                    //     alignment: 'right',
-                                    //     fontSize: 14,
-                                    //     text: ``
-                                    // }
-                                ],
-                                margin: [20,20,0,0]
-                            }
-                        });
-
-                        var numColumns = doc.content[0].table.body[0].length; 
-                        doc.content[0].table.widths = Array(numColumns).fill('*');
-
-
-                        doc['footer']=(function(page, pages) {
-                            return {
-                                columns: [
-                                    {
-                                        alignment: 'left',
-                                        text: ['Criado em: ', { text: dataHoraFormatada }]
-                                    },
-                                    {
-                                        alignment: 'right',
-                                        text: ['Página ', { text: page.toString() },  ' de ', { text: pages.toString() }]
-                                    }
-                                ],
-                                margin: 20
-                            }
-                        });
-
-                        var objLayout = {};
-                        objLayout['hLineWidth'] = function(i) { return .5; };
-                        objLayout['vLineWidth'] = function(i) { return .5; };
-                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
-                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
-                        objLayout['paddingLeft'] = function(i) { return 4; };
-                        objLayout['paddingRight'] = function(i) { return 4; };
-                        doc.content[0].layout = objLayout;
-                    },
-            }
-            ]
-        },
-       
-        topEnd: 'search',
-        bottomStart: 'info',
-        bottomEnd: 'paging'
+    $('#aniversariantes').DataTable({
+  
+    serverSide: true,
+    processing: true,
+    ajax: {
+      url: '{{ route("regiao.membresia") }}'
     },
-    language: {
-      url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
-    }
-  });
+    columns: [
+      { data: 'distrito_nome',  name: 'distrito_nome' },
+      { data: 'igreja_nome',  name: 'igreja_nome' },
+      { data: 'rol_atual',  name: 'rol_atual' },
+      { data: 'nome',  name: 'nome' },
+      { data: 'telefone',  name: 'telefone'},
+      { data: 'status',  name: 'status' },
+      { data: 'vinculo',  name: 'vinculo' },
+      { data: 'data_nascimento',  name: 'data_nascimento' },
+      { data: 'dt_recepcao',  name: 'dt_recepcao' },
+      { data: 'recepcao_modo',  name: 'recepcao_modo' },
+      { data: 'dt_exclusao',  name: 'dt_exclusao' },
+      { data: 'exclusao_modo',  name: 'exclusao_modo' },
+      { data: 'congregacao_nome',  name: 'congregacao_nome' },
+    ],
+    columnDefs: [ {
+        targets: 5,
+        render: function(data, type, row, meta) {
+                // Check if the data is for display purposes
+               
+                    // Remove any existing non-digit characters to ensure consistent formatting
+                    var cleaned = ('' + data).replace(/\D/g, '');
+                    
+                    // Apply the formatting if the number has 10 digits
+                    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+                    if (match) {
+                        return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+                    }
+               
+                // For other data types (filter, sort, etc.), return the original data
+                return data;
+            },
+      }, {
+        targets: [7,8,10],
+        render: function (data, type, row, meta) {
+            return new Date(data).toLocaleDateString('pt-BR');
+        },
+      }
+    ],
+      layout: {
+          //top1: 'searchBuilder',
+          topStart: {
+            buttons: [
+              'pageLength',
+              ]
+          },
+        
+          topEnd: 'search',
+          bottomStart: 'info',
+          bottomEnd: 'paging'
+      },
+      language: {
+        url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+      }
+    });
+  })
+
+
+
 </script>
 @endsection

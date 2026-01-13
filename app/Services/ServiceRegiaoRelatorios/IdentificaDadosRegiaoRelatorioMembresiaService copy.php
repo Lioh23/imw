@@ -83,8 +83,8 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
         $regiaoId = $params['regiao_id'];
         request()->merge(['igreja_id' => $igrejaId])->all();
         if($params['vinculo'] == 'M') {
-            $dtInicial = isset($params['dt_inicial']) ? $params['dt_inicial'] : '';
-            $dtFinal = isset($params['dt_final']) ? $params['dt_final'] : '';
+            $dtInicial = $params['dt_inicial'];
+            $dtFinal = $params['dt_final'];
             //dd($params);
             $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo', 'membresia_rolpermanente.dt_recepcao','membresia_rolpermanente.dt_exclusao',
                 DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
@@ -140,15 +140,15 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
             // ->where('membresia_rolpermanente.igreja_id', $igrejaId)
             ->where('distrito.instituicao_pai_id', $regiaoId)
             ->orderBy('membresia_rolpermanente.dt_recepcao', 'DESC')
-            //->limit(5)
-            ->paginate(5)->appends([
+            //->limit(10)
+            ->paginate(10)->appends([
                 'distrito_id' => $params['distrito_id'],
                 'vinculo' => $params['vinculo'],
                 'situacao' => $params['situacao'],
                 'dt_filtro' => $params['dt_filtro'],
                 'dt_inicial' => $params['dt_inicial'],
                 'dt_final' => $params['dt_final'],
-                'action' => 'buscar',
+                'action' => $params['action'],
             ]);
         } else {
             dd('Em desenvolvimento');
