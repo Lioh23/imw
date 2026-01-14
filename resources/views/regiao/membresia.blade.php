@@ -11,10 +11,64 @@
 @section('extras-css')
   <link href="{{ asset('theme/assets/css/elements/alert.css') }}" rel="stylesheet" type="text/css" />
   <link href="{{ asset('theme/assets/css/forms/theme-checkbox-radio.css') }}" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.datatables.net/searchbuilder/1.8.2/css/searchBuilder.dataTables.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.datatables.net/datetime/1.5.5/css/dataTables.dateTime.min.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.datatables.net/buttons/3.2.3/css/buttons.dataTables.css" rel="stylesheet" type="text/css" />
+  <style>
+    table{
+            font-size: 12px;
+            font-style: normal !important;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            text-align: start;
+            border-spacing: 0;
+            border-collapse: separate;
+        }
+
+        .table>thead>tr>th {
+            vertical-align: middle;
+            background-color: #e8eaea;
+            color:#777;
+        }
+
+        .table>tbody>tr>td {
+            vertical-align: middle;
+            color:#777;
+        }
+
+        .table-center{
+            padding-top: 6px !important;
+        }
+        .table-responsive {
+            margin-bottom: 5px;
+        }
+
+        .table_fixed_box{
+            overflow: auto; 
+            height: 53vh;
+        }
+
+        .table_fixed_box thead {
+            position: -webkit-sticky;
+            position: sticky !important; 
+            top: 0 !important; 
+            z-index: 1;
+            background: #e8eaea;
+            color:#777;
+        }
+        .table td, .table th {
+            padding: .25rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd)>* {
+            --bs-table-color-type: var(--bs-table-striped-color);
+            --bs-table-bg-type: rgb(215 215 215 / 17%);
+        }
+        .table-bordered thead td, .table-bordered thead th {
+            border-bottom-width: 0;
+        }
+        .table-bordered td, .table-bordered th {
+            border: 1px solid #e8eaea;
+        }
+  </style>
 @endsection
 
 @include('extras.alerts')
@@ -38,7 +92,7 @@
             <label class="control-label">Distrito:</label>
           </div>
           <div class="col-lg-6">
-            <select id="distrito_id" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror" >
+            <select id="distritoId" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror" >
               <option value="" {{ !request()->get('distrito_id') ? 'selected' : '' }}>TODOS</option>
               @foreach ($distritos as $distrito)
                 <option value="{{ $distrito->id }}" {{ request()->get('distrito_id') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
@@ -53,20 +107,22 @@
             <label class="control-label">Vínculo:</label>
           </div>
           <div class="col-lg-6">
+            <input type="hidden" id="vinculoEscolhido">
             <div class="form-check form-check-inline">
               <div class="n-chk">
-                <label class="new-control new-checkbox checkbox-outline-success">
-                  <input {{ request()->get('vinculo') == 'M' ? 'checked' : '' }} 
-                         type="radio" name="vinculo" value="M" class="new-control-input">
+                 <label class="new-control new-checkbox checkbox-outline-success">
+                  <input {{ request()->get('vinculo') == 'M' ? 'checked' : '' }}
+                         type="radio" name="vinculo" value="M" class="new-control-input vinculoMembro vinculo">
                   <span class="new-control-indicator"></span>Membro
                 </label>
+               
               </div>
             </div>
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox checkbox-outline-success">
-                  <input {{ request()->get('vinculo') == 'C' ? 'checked' : '' }}
-                         type="radio" name="vinculo" value="C" class="new-control-input">
+                   <input {{ request()->get('vinculo') == 'C' ? 'checked' : '' }}
+                         type="radio" name="vinculo" value="C" class="new-control-input vinculo">
                   <span class="new-control-indicator"></span>Congregado
                 </label>
               </div>
@@ -74,7 +130,8 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox checkbox-outline-success">
-                  <input {{ request()->get('vinculo') == 'V' ? 'checked' : '' }} type="radio" name="vinculo" value="V" class="new-control-input">
+                  <input {{ request()->get('vinculo') == 'V' ? 'checked' : '' }}
+                         type="radio" name="vinculo" value="V" class="new-control-input vinculo">
                   <span class="new-control-indicator"></span>Visitante
                 </label>
               </div>
@@ -88,11 +145,12 @@
             <label class="control-label">Situação:</label>
           </div>
           <div class="col-lg-6">
+            <input type="hidden" id="situacaoEscolhida">
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                   <input {{ request()->get('situacao') == 'ativos' ? 'checked' : '' }}
-                         type="radio" name="situacao" value="ativos" class="new-control-input">
+                         type="radio" name="situacao" value="ativos" class="new-control-input situacao">
                   <span class="new-control-indicator"></span>Ativos
                 </label>
               </div>
@@ -101,7 +159,7 @@
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                   <input {{ request()->get('situacao') == 'inativos' ? 'checked' : '' }}
-                         type="radio" name="situacao" value="inativos" class="new-control-input">
+                         type="radio" name="situacao" value="inativos" class="new-control-input situacao">
                   <span class="new-control-indicator"></span>Inativos
                 </label>
               </div>
@@ -110,7 +168,7 @@
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                   <input {{ request()->get('situacao') == 'todos' || !request()->get('situacao') ? 'checked' : '' }} 
-                         type="radio" name="situacao" value="todos" class="new-control-input">
+                         type="radio" name="situacao" value="todos" class="new-control-input situacao">
                   <span class="new-control-indicator"></span>Todos
                 </label>
               </div>
@@ -124,11 +182,12 @@
             <label class="control-label">Filtro:</label>
           </div>
           <div class="col-lg-6">
+            <input type="hidden" id="filtroEscolhido">
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                   <input {{ !request()->get('dt_filtro') ? 'checked' : '' }}
-                         type="radio" name="dt_filtro" value="" class="new-control-input">
+                         type="radio" name="dt_filtro" value="" class="new-control-input filtro" >
                   <span class="new-control-indicator"></span>Nenhuma
                 </label>
               </div>
@@ -136,8 +195,8 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('dt_filtro') == 'data_nascimento' ? 'checked' : '' }}
-                         type="radio" name="dt_filtro" value="data_nascimento" class="new-control-input">
+                  <input {{ request()->get('dt_filtro') == 'data_nascimento' ? 'checked' : '' }} disabled
+                         type="radio" name="dt_filtro" value="data_nascimento" class="new-control-input filtro">
                   <span class="new-control-indicator"></span>Nascimento
                 </label>
               </div>
@@ -145,8 +204,8 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('dt_filtro') == 'dt_recepcao' ? 'checked' : '' }}
-                         type="radio" name="dt_filtro" value="dt_recepcao" class="new-control-input">
+                  <input {{ request()->get('dt_filtro') == 'dt_recepcao' ? 'checked' : '' }} disabled
+                         type="radio" name="dt_filtro" value="dt_recepcao" class="new-control-input filtro">
                   <span class="new-control-indicator"></span>Recepção
                 </label>
               </div>
@@ -154,8 +213,8 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('dt_filtro') == 'dt_exclusao' ? 'checked' : '' }}
-                         type="radio" name="dt_filtro" value="dt_exclusao" class="new-control-input">
+                  <input {{ request()->get('dt_filtro') == 'dt_exclusao' ? 'checked' : '' }} disabled
+                         type="radio" name="dt_filtro" value="dt_exclusao" class="new-control-input filtro">
                   <span class="new-control-indicator"></span>Exclusão
                 </label>
               </div>
@@ -175,125 +234,23 @@
             <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->get('dt_final') }}" placeholder="ex: 31/12/2000">
           </div>
         </div>
-
-        <div class="form-group row mb-4">
-          <div class="col-lg-2"></div>
-          <div class="col-lg-6">
-            <button id="btn_buscar" type="submit" name="action" value="buscar" title="Buscar dados do Relatório" class="btn btn-primary btn">
-              <x-bx-search /> Buscar 
-            </button>
-            <!-- <button id="btn_relatorio" type="submit" name="action" value="relatorio" title="Gerar Relatório PDF" class="btn btn-secondary btn ml-4">
-              <x-bx-file /> Relatório
-            </button> -->
-          </div>
-        </div>
       </form>
     </div>
   </div>
 </div>
 
-<!-- TABELA -->
-@if($membros_total > 0)
-  <div class="col-lg-12 col-12 layout-spacing">
-    <div class="statbox widget box box-shadow">
-        <div class="widget-header">
-          <div class="row">
-              <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                  <h4 style="text-transform: uppercase">RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}</h4>
-                  <p class="pl-3">Registros Encontrados: {{ $membros_total }}</p>
-                  <p class="pl-3">Vínculo: {{ isset($vinculos) ? $vinculos : '' }}</p>
-                  <p class="pl-3">Situação: {{ $situacao }}</p>
-                  <p class="pl-3">Local: {{ $ondeCongrega }}</p>
-              </div>
-          </div>
-        </div>
-        <div class="widget-content widget-content-area">
-          
-            <div class="table-responsive">
-                <table class="table table-bordered table-striped table-hover mb-4"  id="aniverriantes">
-                    <thead>
-                        <tr>
-                            <th>DISTRITO</th>
-                            <th>IGREJA</th>
-                            <th>ROL</th>
-                            <th>NOME</th>
-                            <th>TELEFONE</th>
-                            <th>SITUAÇÃO</th>
-                            <th>VÍNCULO</th>
-                            <th>NASCIMENTO</th>
-                            <th>RECEPÇÃO</th>
-                            <th>MODO</th>
-                            <th>EXCLUSÃO</th>
-                            <th>MODO</th>
-                            <th>LOCAL</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                      @foreach ($membros as $membro)
-                          <tr>
-                            <td>{{ $membro->distrito_nome }}</td>
-                            <td>{{ $membro->igreja_nome }}</td>
-                            <td>{{ $membro->rol_atual ?? 0 }}</td>
-                            <td>{{ $membro->nome }}</td>
-                            <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
-                              @else
-                                {{ $membro->statusText }}
-                              @endif
-                            </td>
-                            <td>{{ $membro->vinculoText }}</td>
-                            <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                  {{ $membro->dt_recepcao ? formatDate($membro->dt_recepcao) : '-' }}
-                              @else
-                                {{ optional($membro->created_at)->format('d/m/Y') }}
-                              @endif
-                            </td>
-                            <td>{{ $membro->modo_recepcao ? $membro->modo_recepcao : '-' }}</td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                {{ $membro->dt_exclusao ? formatDate($membro->dt_exclusao) : '-'}}
-                              @else
-                                {{ optional($membro->deleted_at)->format('d/m/Y') }}
-                              @endif
-                            </td>
-                            <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
-                            <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
-                          </tr>
-                      @endforeach
-                    </tbody>
-                </table>
-            </div>
-            @if($links)
-                {{ $links->links('vendor.pagination.index') }}
-            @endif
-        </div>
-    </div>
-  </div>
-@endisset
+@include('regiao.ajax.membresia')
 
 @endsection
 
 @section('extras-scripts')
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-<script src="https://cdn.datatables.net/2.3.2/js/dataTables.js"></script>
-<script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/dataTables.searchBuilder.js"></script>
-<script src="https://cdn.datatables.net/searchbuilder/1.8.2/js/searchBuilder.dataTables.js"></script>
-<script src="https://cdn.datatables.net/datetime/1.5.5/js/dataTables.dateTime.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/3.2.3/js/dataTables.buttons.js"></script>
-<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.dataTables.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/3.2.3/js/buttons.print.min.js"></script>
 
 <script>
-  // exibe o campo de "datas" caso seja selecionada uma data para filtro
+  $(document).ready(function() {
+    $('.vinculoMembro').click();
+  })
   $('[name="dt_filtro"]').change(function () {
     if ($(this).val()) {
       $('#filtros_data').removeClass('d-none');
@@ -316,105 +273,93 @@
     $('#dt_inicial').val('')
     $('#dt_final').val('')
   }
- 
-
-new DataTable('#aniversariantes', {
-   order: [[8, 'asc']],
-    layout: {
-        //top1: 'searchBuilder',
-        topStart: {
-          buttons: [
-            'pageLength',
-            {
-              extend: 'excel',
-              className: 'btn btn-primary btn-rounded',
-              text: '<i class="fas fa-file-excel"></i> Excel',
-              titleAttr: 'Excel',
-              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}"
-            },
-            {
-              extend: 'pdfHtml5',
-              orientation: 'landscape',
-              pageSize: 'LEGAL',
-              className: 'btn btn-primary btn-rounded',
-              text: '<i class="fas fa-file-pdf"></i> PDF',
-              titleAttr: 'PDF',
-              title: "RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}",
-
-              customize: function (doc) {
-                        doc.content.splice(0,1);
-                        var now = new Date();
-                        var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
-                        //doc.pageMargins = [20,50,20,30];
-                        doc.defaultStyle.fontSize = 9;
-                        doc.styles.tableHeader.fontSize = 9;
-                        
-
-                        const hoje = new Date();
-                        const dataFormatada = hoje.toLocaleDateString('pt-BR');
-                        const horaFormatada = hoje.toLocaleTimeString('pt-BR');
-                        const dataHoraFormatada = `${dataFormatada} ${horaFormatada}`;
-                        doc['header']=(function() {
-                            return {
-                                columns: [
-
-                                    {
-                                        alignment: 'left',
-                                        italics: false,
-                                        text: `RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}`,
-                                        fontSize: 14,
-                                        margin: [10,0]
-                                    },
-                                    // {
-                                    //     alignment: 'right',
-                                    //     fontSize: 14,
-                                    //     text: ``
-                                    // }
-                                ],
-                                margin: [20,20,0,0]
-                            }
-                        });
-
-                        var numColumns = doc.content[0].table.body[0].length; 
-                        doc.content[0].table.widths = Array(numColumns).fill('*');
 
 
-                        doc['footer']=(function(page, pages) {
-                            return {
-                                columns: [
-                                    {
-                                        alignment: 'left',
-                                        text: ['Criado em: ', { text: dataHoraFormatada }]
-                                    },
-                                    {
-                                        alignment: 'right',
-                                        text: ['Página ', { text: page.toString() },  ' de ', { text: pages.toString() }]
-                                    }
-                                ],
-                                margin: 20
-                            }
-                        });
+  //////////////////////PAGINAÇÃO AJAX///////////////////////////
+  $(document).on('click', '.pagination a', function (e) {
+      e.preventDefault();
+      var url = $(this).attr("href");
+      fetchData(url);
+  })
 
-                        var objLayout = {};
-                        objLayout['hLineWidth'] = function(i) { return .5; };
-                        objLayout['vLineWidth'] = function(i) { return .5; };
-                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
-                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
-                        objLayout['paddingLeft'] = function(i) { return 4; };
-                        objLayout['paddingRight'] = function(i) { return 4; };
-                        doc.content[0].layout = objLayout;
-                    },
-            }
-            ]
+  function fetchData(url) {
+      $.ajaxSetup({
+          headers: {
+              'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+          }
+      });
+
+      $.ajax({
+        type: "GET",
+        url: url,
+        dataType: "html",
+        success: function (response) {
+          $('#conteudo-lista').html(response)                
         },
-       
-        topEnd: 'search',
-        bottomStart: 'info',
-        bottomEnd: 'paging'
-    },
-    language: {
-      url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
-    }
-  });
+        error: function (request, status, error) {
+          location.reload();
+        }
+    });
+
+  }
+ //////////////////////FILTROS///////////////////////////
+  $(document).on('click', '.vinculo', function (e) {
+    //e.preventDefault();
+    let vinculo = $(this).val();
+    $('#vinculoEscolhido').val(vinculo);
+    getUrlAll();
+	})
+
+  $(document).on('click', '.situacao', function (e) {
+    //e.preventDefault();
+    $('#situacaoEscolhida').val($(this).val());
+    getUrlAll();
+	})
+
+  $(document).on('change', '.filtro', function (e) {
+    //e.preventDefault();
+    $('#filtroEscolhido').val($(this).val());
+    getUrlAll();
+	})
+
+  $(document).on('change', '#distritoId', function (e) {
+    e.preventDefault();
+    getUrlAll();
+	})
+
+  $(document).on('change', '#dt_inicial', function (e) {
+    e.preventDefault();
+    getUrlAll();
+	})
+
+  $(document).on('change', '#dt_final', function (e) {
+    e.preventDefault();
+    getUrlAll();
+	})
+
+  $(document).on('change', '#totalPorPagina', function (e) {
+    e.preventDefault();
+    getUrlAll();
+	})
+
+  //////////////////////URL DA LISTA///////////////////////////
+  function getUrlAll(){
+      let vinculo = $('#vinculoEscolhido').val();
+      if(vinculo == 'M'){
+        $('.situacao').prop('disabled', false)
+      }else{
+        $('.situacao').prop('disabled', true)
+      }
+      let situacao = $('#situacaoEscolhida').val();
+      let filtro = $('#filtroEscolhido').val();
+      let distritoId = $('#distritoId').val();
+      let dtInicial = $('#dt_inicial').val();
+      let dtFinal = $('#dt_final').val();
+      let totalPorPagina = $('#totalPorPagina').val();
+      let urlAtual = `{{ route('regiao.membresia') }}`;
+      let ordem = $('#input-ordenar').val();
+      url = `${urlAtual}?distritoId=${distritoId}&vinculo=${vinculo}&situacao=${situacao}&filtro=${filtro}&dtInicial=${dtInicial}&dtFinal=${dtFinal}&totalPorPagina=${totalPorPagina}`;
+      fetchData(url)
+  }
 </script>
 @endsection

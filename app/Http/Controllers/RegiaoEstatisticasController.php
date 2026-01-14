@@ -146,8 +146,14 @@ class RegiaoEstatisticasController extends Controller
 
     public function membresia(Request $request)
     {
+        //dd($request->all());
+
         try {
             $data = app(IdentificaDadosRegiaoRelatorioMembresiaService::class)->execute($request->all());
+            //dd($data);
+            if ($request->ajax()) {
+                return view('regiao.ajax.membresia', $data);
+            }
             return view('regiao.membresia', $data);
 
         } catch (\Exception $e) {
