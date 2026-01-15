@@ -147,7 +147,7 @@
                     <div class="n-chk">
                       <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                         <input {{ request()->get('situacao') == 'ativos' ? 'checked' : '' }}
-                              type="radio" name="situacao" value="ativos" class="new-control-input situacao">
+                              type="radio" name="situacao" value="ativos" class="new-control-input situacaoAtivo situacao">
                         <span class="new-control-indicator"></span>Ativos
                       </label>
                     </div>
@@ -247,6 +247,7 @@
 <script>
   $(document).ready(function() {
     $('.vinculoMembro').click();
+    $('.situacaoAtivo').click();
   })
   $('[name="dt_filtro"]').change(function () {
     if ($(this).val()) {
