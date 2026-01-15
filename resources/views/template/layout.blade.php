@@ -121,6 +121,9 @@
     .table-responsive {
         position: relative;
     }
+    .ordenar{
+        cursor: pointer;
+    }
     </style>
 </head>
 

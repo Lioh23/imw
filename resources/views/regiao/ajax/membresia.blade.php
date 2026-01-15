@@ -1,18 +1,8 @@
 <!-- TABELA -->
-@if($membros_total > 0)
-  <div class="col-lg-12 col-12 layout-spacing" id="conteudo-lista">
-    <div class="statbox widget box box-shadow">
-        <div class="widget-header">
-          <div class="row">
-              <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                  <h4 style="text-transform: uppercase">RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}</h4>
-                  <!-- <p class="pl-3">Registros Encontrados: {{ $membros_total }}</p>
-                  <p class="pl-3">Vínculo: {{ isset($vinculos) ? $vinculos : '' }}</p>
-                  <p class="pl-3">Situação: {{ $situacao }}</p>
-                  <p class="pl-3">Local: {{ $ondeCongrega }}</p> -->
-              </div>
-          </div>
-        </div>
+
+  
+
+      <div id="conteudo-lista">
         <div class="widget-content widget-content-area">
            <div id="conteudo">
             <div class="table-responsive">
@@ -64,57 +54,81 @@
                             </th>
                             <th width=120px>
                               NASCIMENTO
-                              <span id="vinculo-order">
-                                  <i class="fa-solid fa-caret-right float-right cursor-pointer-ordem ordenar" data-ordem="vinculo-down"></i>
+                              <span id="nascimento-order">
+                                  <i class="fa-solid fa-caret-right float-right cursor-pointer-ordem ordenar" data-ordem="nascimento-down"></i>
                               </span>
                             </th>
                             <th width=110px>RECEPÇÃO
-                              <span id="vinculo-order">
-                                  <i class="fa-solid fa-caret-right float-right cursor-pointer-ordem ordenar" data-ordem="vinculo-down"></i>
+                              <span id="recepcao-order">
+                                  <i class="fa-solid fa-caret-right float-right cursor-pointer-ordem ordenar" data-ordem="recepcao-down"></i>
                               </span>
                             </th>
-                            <th>MODO</th>
-                            <th>EXCLUSÃO</th>
-                            <th>MODO</th>
-                            <th>LOCAL</th>
+                            <th width=100px>
+                              MODO
+                              <span id="modo-recepcao-order">
+                                  <i class="fa-solid fa-caret-right float-right cursor-pointer-ordem ordenar" data-ordem="modo-recepcao-down"></i>
+                              </span>
+                            </th>
+                            <th width=100px>
+                              EXCLUSÃO
+                              <span id="exclusao-order">
+                                  <i class="fa-solid fa-caret-right float-right cursor-pointer-ordem ordenar" data-ordem="exclusao-down"></i>
+                              </span>
+                            </th>
+                            <th width=100px>
+                              MODO
+                              <span id="modo-exclusao-order">
+                                  <i class="fa-solid fa-caret-right float-right cursor-pointer-ordem ordenar" data-ordem="modo-exclusao-down"></i>
+                              </span>
+                            </th>
+                            <th width=100px>
+                              LOCAL
+                              <span id="local-order">
+                                  <i class="fa-solid fa-caret-right float-right cursor-pointer-ordem ordenar" data-ordem="local-down"></i>
+                              </span>
+                            </th>
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($membros as $membro)
-                          <tr>
-                            <td>{{ $membro->distrito_nome }}</td>
-                            <td>{{ $membro->igreja_nome }}</td>
-                            <td>{{ $membro->rol_atual ?? 0 }}</td>
-                            <td>{{ $membro->nome }}</td>
-                            <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
-                              @else
-                                {{ $membro->statusText }}
-                              @endif
-                            </td>
-                            <td>{{ $membro->vinculoText }}</td>
-                            <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                  {{ $membro->dt_recepcao ? formatDate($membro->dt_recepcao) : '-' }}
-                              @else
-                                {{ optional($membro->created_at)->format('d/m/Y') }}
-                              @endif
-                            </td>
-                            <td>{{ $membro->modo_recepcao ? $membro->modo_recepcao : '-' }}</td>
-                            <td>
-                              @if($membro->vinculo == 'M')
-                                {{ $membro->dt_exclusao ? formatDate($membro->dt_exclusao) : '-'}}
-                              @else
-                                {{ optional($membro->deleted_at)->format('d/m/Y') }}
-                              @endif
-                            </td>
-                            <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
-                            <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
-                          </tr>
-                      @endforeach
+                      @forelse ($membros as $membro)
+                        <tr>
+                          <td>{{ $membro->distrito_nome }}</td>
+                          <td>{{ $membro->igreja_nome }}</td>
+                          <td>{{ $membro->rol_atual ?? 0 }}</td>
+                          <td>{{ $membro->nome }}</td>
+                          <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
+                          <td>
+                            @if($membro->vinculo == 'M')
+                              {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
+                            @else
+                              {{ $membro->statusText }}
+                            @endif
+                          </td>
+                          <td>{{ $membro->vinculoText }}</td>
+                          <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
+                          <td>
+                            @if($membro->vinculo == 'M')
+                                {{ $membro->dt_recepcao ? formatDate($membro->dt_recepcao) : '-' }}
+                            @else
+                              {{ optional($membro->created_at)->format('d/m/Y') }}
+                            @endif
+                          </td>
+                          <td>{{ $membro->recepcao_modo ? $membro->recepcao_modo : '-' }}</td>
+                          <td>
+                            @if($membro->vinculo == 'M')
+                              {{ $membro->dt_exclusao ? formatDate($membro->dt_exclusao) : '-'}}
+                            @else
+                              {{ optional($membro->deleted_at)->format('d/m/Y') }}
+                            @endif
+                          </td>
+                          <td>{{ $membro->exclusao_modo ? $membro->exclusao_modo : '-' }}</td>
+                          <td>{{ $membro->congregacao_nome ?? 'SEDE' }}</td>
+                        </tr>
+                      @empty
+                      <tr>
+                          <td colspan="13">Nenhum dado encontrado.</td>
+                      </tr>
+                      @endforelse
                     </tbody>
                 </table>
             </div>
@@ -139,4 +153,63 @@
         </div>
     </div>
   </div>
-@endisset
+
+
+<script>
+  $(document).ready(function(){
+    let ordem = $('#ordem').val()
+    if(ordem == 'distrito-down'){
+        $('#distrito-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="distrito-down"></i>`)
+    }else if(ordem == 'distrito-up'){
+        $('#distrito-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="distrito-up"></i>`)
+    }else if(ordem == 'igreja-down'){
+        $('#igreja-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="igreja-down"></i>`)
+    }else if(ordem == 'igreja-up'){
+        $('#igreja-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="igreja-up"></i>`)
+    }else if(ordem == 'rol-down'){
+        $('#rol-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="rol-down"></i>`)
+    }else if(ordem == 'rol-up'){
+        $('#rol-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="rol-up"></i>`)
+    }else if(ordem == 'nome-down'){
+        $('#nome-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="nome-down"></i>`)
+    }else if(ordem == 'nome-up'){
+        $('#nome-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="telefone-up"></i>`)
+    }else if(ordem == 'telefone-down'){
+        $('#telefone-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="telefone-down"></i>`)
+    }else if(ordem == 'telefone-up'){
+        $('#telefone-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="telefone-up"></i>`)
+    }else if(ordem == 'situacao-down'){
+        $('#situacao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="situacao-down"></i>`)
+    }else if(ordem == 'situacao-up'){
+        $('#situacao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="situacao-up"></i>`)
+    }else if(ordem == 'vinculo-down'){
+        $('#vinculo-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="vinculo-down"></i>`)
+    }else if(ordem == 'vinculo-up'){
+        $('#vinculo-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="vinculo-up"></i>`)
+    }else if(ordem == 'nascimento-down'){
+        $('#nascimento-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="nascimento-down"></i>`)
+    }else if(ordem == 'nascimento-up'){
+        $('#nascimento-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="nascimento-up"></i>`)
+    }else if(ordem == 'recepcao-down'){
+        $('#recepcao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="recepcao-down"></i>`)
+    }else if(ordem == 'recepcao-up'){
+        $('#recepcao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="recepcao-up"></i>`)
+    }else if(ordem == 'modo-recepcao-down'){
+        $('#modo-recepcao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="modo-recepcao-down"></i>`)
+    }else if(ordem == 'modo-recepcao-up'){
+        $('#modo-recepcao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="modo-recepcao-up"></i>`)
+    }else if(ordem == 'exclusao-down'){
+        $('#exclusao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="exclusao-down"></i>`)
+    }else if(ordem == 'exclusao-up'){
+        $('#exclusao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="exclusao-up"></i>`)
+    }else if(ordem == 'modo-exclusao-down'){
+        $('#modo-exclusao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="modo-exclusao-down"></i>`)
+    }else if(ordem == 'modo-exclusao-up'){
+        $('#modo-exclusao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="modo-exclusao-up"></i>`)
+    }else if(ordem == 'local-down'){
+        $('#local-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="local-down"></i>`)
+    }else if(ordem == 'local-up'){
+        $('#local-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="local-up"></i>`)
+    }
+  });
+</script>

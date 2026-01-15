@@ -74,170 +74,167 @@
 @include('extras.alerts')
 
 @section('content')
-<div class="col-lg-12 col-12 layout-spacing">
-  <div class="statbox widget box box-shadow">
-    <div class="widget-header">
-      <div class="row">
-          <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório de Membresia Região: {{ $regiao_nome }}</h4>
-          </div>
-      </div>
-  </div>
-    <div class="widget-content widget-content-area">
-      <form class="form-vertical" id="filter_form">
-        
-        {{-- Congregação --}}
-        <div class="form-group row mb-4">
-          <div class="col-lg-2 text-right">
-            <label class="control-label">Distrito:</label>
-          </div>
-          <div class="col-lg-6">
-            <select id="distritoId" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror" >
-              <option value="" {{ !request()->get('distrito_id') ? 'selected' : '' }}>TODOS</option>
-              @foreach ($distritos as $distrito)
-                <option value="{{ $distrito->id }}" {{ request()->get('distrito_id') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
-              @endforeach
-            </select>
+
+<div class="">
+    <div class="statbox widget box box-shadow">
+        <div class="widget-header">
+          <div class="row">
+              <div class="col-xl-12 col-md-12 col-sm-12 col-12">
+                  <h4 style="text-transform: uppercase">RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} REGIÃO - {{ $regiao_nome }}</h4>
+              </div>
           </div>
         </div>
 
-        {{-- Vínculo --}}
-        <div class="form-group row mb-4">
-          <div class="col-lg-2 text-right">
-            <label class="control-label">Vínculo:</label>
-          </div>
-          <div class="col-lg-6">
-            <input type="hidden" id="vinculoEscolhido">
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                 <label class="new-control new-checkbox checkbox-outline-success">
-                  <input {{ request()->get('vinculo') == 'M' ? 'checked' : '' }}
-                         type="radio" name="vinculo" value="M" class="new-control-input vinculoMembro vinculo">
-                  <span class="new-control-indicator"></span>Membro
-                </label>
-               
-              </div>
-            </div>
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox checkbox-outline-success">
-                   <input {{ request()->get('vinculo') == 'C' ? 'checked' : '' }}
-                         type="radio" name="vinculo" value="C" class="new-control-input vinculo">
-                  <span class="new-control-indicator"></span>Congregado
-                </label>
-              </div>
-            </div>
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox checkbox-outline-success">
-                  <input {{ request()->get('vinculo') == 'V' ? 'checked' : '' }}
-                         type="radio" name="vinculo" value="V" class="new-control-input vinculo">
-                  <span class="new-control-indicator"></span>Visitante
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {{-- Situação --}}
-        <div class="form-group row mb-4">
-          <div class="col-lg-2 text-right">
-            <label class="control-label">Situação:</label>
-          </div>
-          <div class="col-lg-6">
-            <input type="hidden" id="situacaoEscolhida">
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('situacao') == 'ativos' ? 'checked' : '' }}
-                         type="radio" name="situacao" value="ativos" class="new-control-input situacao">
-                  <span class="new-control-indicator"></span>Ativos
-                </label>
+        <div class="widget-content widget-content-area">
+          <input type="hidden" id="input-ordenar" value="">
+          <form class="form-vertical" id="filter_form">
+            
+            {{-- Congregação --}}
+            <div class="form-group row mb-4">              
+              <div class="col-lg-4">
+                <label class="control-label">Vínculo:</label>
+                <div>
+                  <input type="hidden" id="vinculoEscolhido">
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox checkbox-outline-success">
+                        <input {{ request()->get('vinculo') == 'M' ? 'checked' : '' }}
+                              type="radio" name="vinculo" value="M" class="new-control-input vinculoMembro vinculo">
+                        <span class="new-control-indicator"></span>Membro
+                      </label>
+                    
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox checkbox-outline-success">
+                        <input {{ request()->get('vinculo') == 'C' ? 'checked' : '' }}
+                              type="radio" name="vinculo" value="C" class="new-control-input vinculo">
+                        <span class="new-control-indicator"></span>Congregado
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox checkbox-outline-success">
+                        <input {{ request()->get('vinculo') == 'V' ? 'checked' : '' }}
+                              type="radio" name="vinculo" value="V" class="new-control-input vinculo">
+                        <span class="new-control-indicator"></span>Visitante
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-lg-6">
+                <label class="control-label">Distrito:</label>
+                <select id="distritoId" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror" >
+                  <option value="" {{ !request()->get('distrito_id') ? 'selected' : '' }}>TODOS</option>
+                  @foreach ($distritos as $distrito)
+                    <option value="{{ $distrito->id }}" {{ request()->get('distrito_id') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
+                  @endforeach
+                </select>
               </div>
             </div>
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('situacao') == 'inativos' ? 'checked' : '' }}
-                         type="radio" name="situacao" value="inativos" class="new-control-input situacao">
-                  <span class="new-control-indicator"></span>Inativos
-                </label>
-              </div>
-            </div>
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('situacao') == 'todos' || !request()->get('situacao') ? 'checked' : '' }} 
-                         type="radio" name="situacao" value="todos" class="new-control-input situacao">
-                  <span class="new-control-indicator"></span>Todos
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        {{-- Seletor do tipo de data --}}
-        <div class="form-group row mb-4">
-          <div class="col-lg-2 text-right">
-            <label class="control-label">Filtro:</label>
-          </div>
-          <div class="col-lg-6">
-            <input type="hidden" id="filtroEscolhido">
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ !request()->get('dt_filtro') ? 'checked' : '' }}
-                         type="radio" name="dt_filtro" value="" class="new-control-input filtro" >
-                  <span class="new-control-indicator"></span>Nenhuma
-                </label>
+            <div class="form-group row mb-4">
+              
+              <div class="col-lg-4"> 
+                <label class="control-label">Situação:</label>
+                <div>
+                  <input type="hidden" id="situacaoEscolhida">
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ request()->get('situacao') == 'ativos' ? 'checked' : '' }}
+                              type="radio" name="situacao" value="ativos" class="new-control-input situacao">
+                        <span class="new-control-indicator"></span>Ativos
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ request()->get('situacao') == 'inativos' ? 'checked' : '' }}
+                              type="radio" name="situacao" value="inativos" class="new-control-input situacao">
+                        <span class="new-control-indicator"></span>Inativos
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ request()->get('situacao') == 'todos' || !request()->get('situacao') ? 'checked' : '' }} 
+                              type="radio" name="situacao" value="todos" class="new-control-input situacao">
+                        <span class="new-control-indicator"></span>Todos
+                      </label>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('dt_filtro') == 'data_nascimento' ? 'checked' : '' }} disabled
-                         type="radio" name="dt_filtro" value="data_nascimento" class="new-control-input filtro">
-                  <span class="new-control-indicator"></span>Nascimento
-                </label>
-              </div>
-            </div>
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('dt_filtro') == 'dt_recepcao' ? 'checked' : '' }} disabled
-                         type="radio" name="dt_filtro" value="dt_recepcao" class="new-control-input filtro">
-                  <span class="new-control-indicator"></span>Recepção
-                </label>
-              </div>
-            </div>
-            <div class="form-check form-check-inline">
-              <div class="n-chk">
-                <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                  <input {{ request()->get('dt_filtro') == 'dt_exclusao' ? 'checked' : '' }} disabled
-                         type="radio" name="dt_filtro" value="dt_exclusao" class="new-control-input filtro">
-                  <span class="new-control-indicator"></span>Exclusão
-                </label>
-              </div>
-            </div>
-          </div>
-        </div>
+              
 
-        {{-- Inserção de data --}}
-        <div class="form-group row mb-4 {{ !request()->get('dt_filtro') ? 'd-none' : '' }}" id="filtros_data">
-          <div class="col-lg-2 text-right">
-            <label class="control-label">Período (Inicial e Final):</label>
-          </div>
-          <div class="col-lg-3">
-            <input type="date" class="form-control @error('dt_inical') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->get('dt_inicial') }}" placeholder="ex: 31/12/2000">
-          </div>
-          <div class="col-lg-3">
-            <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->get('dt_final') }}" placeholder="ex: 31/12/2000">
-          </div>
+              <div class="col-lg-6">
+                <label class="control-label">Filtro:</label>
+                <div>
+                  <input type="hidden" id="filtroEscolhido">
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ !request()->get('dt_filtro') ? 'checked' : '' }}
+                              type="radio" name="dt_filtro" value="" class="new-control-input filtro" >
+                        <span class="new-control-indicator"></span>Nenhuma
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ request()->get('dt_filtro') == 'data_nascimento' ? 'checked' : '' }} disabled
+                              type="radio" name="dt_filtro" value="data_nascimento" class="new-control-input filtro">
+                        <span class="new-control-indicator"></span>Nascimento
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ request()->get('dt_filtro') == 'dt_recepcao' ? 'checked' : '' }} disabled
+                              type="radio" name="dt_filtro" value="dt_recepcao" class="new-control-input filtro">
+                        <span class="new-control-indicator"></span>Recepção
+                      </label>
+                    </div>
+                  </div>
+                  <div class="form-check form-check-inline">
+                    <div class="n-chk">
+                      <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
+                        <input {{ request()->get('dt_filtro') == 'dt_exclusao' ? 'checked' : '' }} disabled
+                              type="radio" name="dt_filtro" value="dt_exclusao" class="new-control-input filtro">
+                        <span class="new-control-indicator"></span>Exclusão
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          
+
+            {{-- Inserção de data --}}
+            <div class="form-group row mb-4 {{ !request()->get('dt_filtro') ? 'd-none' : '' }}" id="filtros_data">
+              <div class="col-lg-2 text-right">
+                <label class="control-label">Período (Inicial e Final):</label>
+              </div>
+              <div class="col-lg-3">
+                <input type="date" class="form-control @error('dt_inical') is-invalid @enderror" id="dt_inicial" name="dt_inicial" value="{{ request()->get('dt_inicial') }}" placeholder="ex: 31/12/2000">
+              </div>
+              <div class="col-lg-3">
+                <input type="date" class="form-control @error('dt_final') is-invalid @enderror" id="dt_final" name="dt_final" value="{{ request()->get('dt_final') }}" placeholder="ex: 31/12/2000">
+              </div>
+            </div>
+          </form>
         </div>
-      </form>
-    </div>
-  </div>
-</div>
 
 @include('regiao.ajax.membresia')
 
@@ -297,7 +294,8 @@
           $('#conteudo-lista').html(response)                
         },
         error: function (request, status, error) {
-          location.reload();
+          toastr.warning('Não retornou dados em sua consulta');
+         // location.reload();
         }
     });
 
@@ -358,8 +356,96 @@
       let totalPorPagina = $('#totalPorPagina').val();
       let urlAtual = `{{ route('regiao.membresia') }}`;
       let ordem = $('#input-ordenar').val();
-      url = `${urlAtual}?distritoId=${distritoId}&vinculo=${vinculo}&situacao=${situacao}&filtro=${filtro}&dtInicial=${dtInicial}&dtFinal=${dtFinal}&totalPorPagina=${totalPorPagina}`;
+      url = `${urlAtual}?distritoId=${distritoId}&vinculo=${vinculo}&situacao=${situacao}&filtro=${filtro}&dtInicial=${dtInicial}&dtFinal=${dtFinal}&ordem=${ordem}&totalPorPagina=${totalPorPagina}`;
       fetchData(url)
   }
+
+  //////////////////////ORDENAÇÃO///////////////////////////
+  $(document).on('click', '.ordenar', function (e) {
+    e.preventDefault();
+    let tipoOrdem = $(this).data('ordem')
+    $('#input-ordenar').val(tipoOrdem)
+    let inputOrdenar = $('#input-ordenar').val()
+    if(inputOrdenar == 'distrito-down'){
+        $('#distrito-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="distrito-up"></i>`)
+        $('#input-ordenar').val('distrito-up')
+    }else if(inputOrdenar == 'distrito-up'){
+        $('#distrito-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="distrito-down"></i>`)
+        $('#input-ordenar').val('distrito-down')
+    }else if(inputOrdenar == 'igreja-down'){
+        $('#igreja-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="igreja-up"></i>`)
+        $('#input-ordenar').val('igreja-up')
+    }else if(inputOrdenar == 'igreja-up'){
+        $('#igreja-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="igreja-down"></i>`)
+        $('#input-ordenar').val('igreja-down')
+    }else if(inputOrdenar == 'rol-down'){
+        $('#rol-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="rol-up"></i>`)
+        $('#input-ordenar').val('rol-up')
+    }else if(inputOrdenar == 'rol-up'){
+        $('#rol-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="rol-down"></i>`)
+        $('#input-ordenar').val('rol-down')
+    }else if(inputOrdenar == 'nome-down'){
+        $('#nome-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="nome-up"></i>`)
+        $('#input-ordenar').val('nome-up')
+    }else if(inputOrdenar == 'nome-up'){
+        $('#nome-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="nome-down"></i>`)
+        $('#input-ordenar').val('nome-down')
+    }else if(inputOrdenar == 'telefone-down'){
+        $('#telefone-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="telefone-up"></i>`)
+        $('#input-ordenar').val('telefone-up')
+    }else if(inputOrdenar == 'telefone-up'){
+        $('#telefone-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="telefone-down"></i>`)
+        $('#input-ordenar').val('telefone-down')
+    }else if(inputOrdenar == 'situacao-down'){
+        $('#situacao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="situacao-up"></i>`)
+        $('#input-ordenar').val('situacao-up')
+    }else if(inputOrdenar == 'situacao-up'){
+        $('#situacao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="situacao-down"></i>`)
+        $('#input-ordenar').val('situacao-down')
+    }else if(inputOrdenar == 'vinculo-down'){
+        $('#vinculo-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="vinculo-up"></i>`)
+        $('#input-ordenar').val('vinculo-up')
+    }else if(inputOrdenar == 'vinculo-up'){
+        $('#vinculo-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="vinculo-down"></i>`)
+        $('#input-ordenar').val('vinculo-down')
+    }else if(inputOrdenar == 'nascimento-down'){
+        $('#nascimento-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="nascimento-up"></i>`)
+        $('#input-ordenar').val('nascimento-up')
+    }else if(inputOrdenar == 'nascimento-up'){
+        $('#nascimento-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="recepcao-down"></i>`)
+        $('#input-ordenar').val('nascimento-down')
+    }else if(inputOrdenar == 'recepcao-down'){
+        $('#recepcao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="recepcao-up"></i>`)
+        $('#input-ordenar').val('recepcao-up')
+    }else if(inputOrdenar == 'recepcao-up'){
+        $('#recepcao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="recepcao-down"></i>`)
+        $('#input-ordenar').val('recepcao-down')
+    }else if(inputOrdenar == 'modo-recepcao-down'){
+        $('#modo-recepcao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="modo-recepcao-up"></i>`)
+        $('#input-ordenar').val('modo-recepcao-up')
+    }else if(inputOrdenar == 'modo-recepcao-up'){
+        $('#modo-recepcao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="modo-recepcao-down"></i>`)
+        $('#input-ordenar').val('modo-recepcao-down')
+    }else if(inputOrdenar == 'exclusao-down'){
+        $('#exclusao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="exclusao-up"></i>`)
+        $('#input-ordenar').val('exclusao-up')
+    }else if(inputOrdenar == 'exclusao-up'){
+        $('#exclusao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="exclusao-down"></i>`)
+        $('#input-ordenar').val('exclusao-down')
+    }else if(inputOrdenar == 'modo-exclusao-down'){
+        $('#modo-exclusao-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="modo-exclusao-up"></i>`)
+        $('#input-ordenar').val('modo-exclusao-up')
+    }else if(inputOrdenar == 'modo-exclusao-up'){
+        $('#modo-exclusao-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="modo-exclusao-down"></i>`)
+        $('#input-ordenar').val('modo-exclusao-down')
+    }else if(inputOrdenar == 'local-down'){
+        $('#local-order').html(`<i class="fa-solid fa-caret-up cursor-pointer-ordem float-right ordenar" data-ordem="local-up"></i>`)
+        $('#input-ordenar').val('local-up')
+    }else if(inputOrdenar == 'local-up'){
+        $('#local-order').html(`<i class="fa-solid fa-caret-down float-right cursor-pointer-ordem ordenar" data-ordem="local-down"></i>`)
+        $('#input-ordenar').val('local-down')
+    }
+    getUrlAll();
+  })
 </script>
 @endsection

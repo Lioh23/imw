@@ -13,15 +13,18 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
 
     public function execute(array $params = [])
     {
+       
         $params["distritoId"] = isset($params["distritoId"]) ? $params["distritoId"] : null;
         $params["vinculo"] = isset($params["vinculo"]) ? $params["vinculo"] : 'M';
         $params["situacao"] = isset($params["situacao"]) ? $params["situacao"] : 'todos';
         $params["filtro"] = isset($params["filtro"]) ? $params["filtro"] : null;
         $params["dtInicial"] = isset($params["dtInicial"]) ? $params["dtInicial"] : null;
         $params["dtFinal"] = isset($params["dtFinal"]) ? $params["dtFinal"] : null;
+        $params["ordem"] = isset($params["ordem"]) ? $params["ordem"] : null;
         $params['totalPorPagina'] = isset($params['totalPorPagina']) ? $params['totalPorPagina'] : 10;
         $regiao = Identifiable::fetchtSessionRegiao();
         $distritos = Identifiable::fetchDistritosByRegiao($regiao->id);
+ 
         $data = [
             'distritos' => $distritos,
             'regiao_nome' => $regiao->nome,
@@ -52,22 +55,24 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
         $regiaoId = $params['regiao_id'];
         $totalPorPagina = $params['totalPorPagina'];
         $distritoId = $params['distritoId'];
+        //dd($params['distritoId']);
         $vinculo = $params['vinculo'];
         $situacao = $params['situacao'];
         $filtro = $params['filtro'];
         $dtInicial = $params['dtInicial'];
         $dtFinal = $params['dtFinal'];
-        request()->merge(['igreja_id' => $igrejaId])->all();
+        $ordem = $params['ordem'];
         if($params['vinculo'] == 'M') {
             $dtInicial = isset($params['dt_inicial']) ? $params['dt_inicial'] : '';
             $dtFinal = isset($params['dtFinal']) ? $params['dtFinal'] : '';
-            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo', 'membresia_rolpermanente.dt_recepcao','membresia_rolpermanente.dt_exclusao',
+            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'congregacao.nome as congregacao_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo', 'membresia_rolpermanente.dt_recepcao','membresia_rolpermanente.dt_exclusao',
                 DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
 
             ->join('instituicoes_instituicoes as distrito', 'distrito.id', 'membresia_membros.distrito_id')
             ->join('instituicoes_instituicoes as igreja', 'igreja.id', 'membresia_membros.igreja_id')
+            ->leftJoin('congregacoes_congregacoes as congregacao', 'congregacao.instituicao_id', 'igreja.id')
             ->join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')
             ->leftJoin('membresia_situacoes as recepcao_modo', 'recepcao_modo.id', 'membresia_rolpermanente.modo_recepcao_id')
             ->leftJoin('membresia_situacoes as exclusao_modo', 'exclusao_modo.id', 'membresia_rolpermanente.modo_exclusao_id')
@@ -110,8 +115,65 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
             })
             ->when($params['distritoId'], fn ($query) => $query->where('distrito.id', $params['distritoId']))
             ->where('membresia_membros.vinculo', $params['vinculo'])
-            ->where('distrito.instituicao_pai_id', $regiaoId)
-            ->orderBy('membresia_rolpermanente.dt_recepcao', 'DESC'); 
+            ->where('distrito.instituicao_pai_id', $regiaoId);
+
+            if($ordem == 'distrito-down'){
+                $membresiaMembro->orderBy('distrito.nome','DESC');
+            }elseif($ordem == 'distrito-up'){
+                $membresiaMembro->orderBy('distrito.nome','ASC');
+            }elseif($ordem == 'igreja-down'){
+                $membresiaMembro->orderBy('igreja.nome','DESC');
+            }elseif($ordem == 'igreja-up'){
+                $membresiaMembro->orderBy('igreja.nome','ASC');
+            }elseif($ordem == 'rol-down'){
+                $membresiaMembro->orderBy('membresia_membros.rol_atual','DESC');
+            }elseif($ordem == 'rol-up'){
+                $membresiaMembro->orderBy('membresia_membros.rol_atual','ASC');
+            }elseif($ordem == 'nome-down'){
+                $membresiaMembro->orderBy('membresia_membros.nome','DESC');
+            }elseif($ordem == 'nome-up'){
+                $membresiaMembro->orderBy('membresia_membros.nome','ASC');
+            }elseif($ordem == 'telefone-down'){
+                $membresiaMembro->orderBy('telefone','DESC');
+            }elseif($ordem == 'telefone-up'){
+               $membresiaMembro->orderBy('telefone','ASC');
+            }elseif($ordem == 'situacao-down'){
+                $membresiaMembro->orderBy('membresia_membros.status','DESC');
+            }elseif($ordem == 'situacao-up'){
+               $membresiaMembro->orderBy('membresia_membros.status','ASC');
+            }elseif($ordem == 'vinculo-down'){
+                $membresiaMembro->orderBy('membresia_membros.vinculo','DESC');
+            }elseif($ordem == 'vinculo-up'){
+               $membresiaMembro->orderBy('membresia_membros.vinculo','ASC');
+            }elseif($ordem == 'nascimento-down'){
+                $membresiaMembro->orderBy('membresia_membros.data_nascimento','DESC');
+            }elseif($ordem == 'nascimento-up'){
+               $membresiaMembro->orderBy('membresia_membros.data_nascimento','ASC');
+            }elseif($ordem == 'recepcao-down'){
+                $membresiaMembro->orderBy('membresia_rolpermanente.dt_recepcao','DESC');
+            }elseif($ordem == 'recepcao-up'){
+               $membresiaMembro->orderBy('membresia_rolpermanente.dt_recepcao','ASC');
+            }elseif($ordem == 'modo-recepcao-down'){
+                $membresiaMembro->orderBy('recepcao_modo','DESC');
+            }elseif($ordem == 'modo-recepcao-up'){
+               $membresiaMembro->orderBy('recepcao_modo','ASC');
+            }elseif($ordem == 'exclusao-down'){
+                $membresiaMembro->orderBy('membresia_rolpermanente.dt_exclusao','DESC');
+            }elseif($ordem == 'exclusao-up'){
+               $membresiaMembro->orderBy('membresia_rolpermanente.dt_exclusao','ASC');
+            }elseif($ordem == 'modo-exclusao-down'){
+                $membresiaMembro->orderBy('exclusao_modo','DESC');
+            }elseif($ordem == 'modo-exclusao-up'){
+               $membresiaMembro->orderBy('exclusao_modo','ASC');
+            }elseif($ordem == 'local-down'){
+                $membresiaMembro->orderBy('congregacao_nome','DESC');
+            }elseif($ordem == 'local-up'){
+               $membresiaMembro->orderBy('congregacao_nome','ASC');
+            }else{
+                $membresiaMembro->orderBy('membresia_rolpermanente.dt_recepcao', 'DESC');
+            }
+           // dd($membresiaMembro->get());
+           // dd($membrosTotal );
             $membrosTotal = $membresiaMembro->get()->count();
             $membros = $membresiaMembro->paginate($totalPorPagina)->appends([
                 'distritoId' => $distritoId,
@@ -120,6 +182,7 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
                 'filtro' => $filtro,
                 'dtInicial' => $dtInicial,
                 'dtFinal' => $dtFinal,
+                'ordem' => $ordem,
                 'totalPorPagina' => $totalPorPagina,
             ]);
             return ['membresiaMembro' =>  $membros, 'membresiaMembroTotal' => $membrosTotal];
@@ -127,11 +190,12 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
             $dtInicial = $params['dtInicial'];
             $dtFinal = $params['dtFinal'];
             $igrejaId = $params['igreja_id'];
-            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'congregacao.nome as congregacao_nome',  DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
             ->join('instituicoes_instituicoes as distrito', 'distrito.id', 'membresia_membros.distrito_id')
             ->join('instituicoes_instituicoes as igreja', 'igreja.id', 'membresia_membros.igreja_id')
+            ->leftJoin('congregacoes_congregacoes as congregacao', 'congregacao.instituicao_id', 'igreja.id')
             ->when($params['situacao'] == 'ativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
@@ -170,7 +234,66 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
             ->where('distrito.instituicao_pai_id', $regiaoId)
             ->orderBy('nome');
 
+            if($ordem == 'distrito-down'){
+                $membresiaMembro->orderBy('distrito.nome','DESC');
+            }elseif($ordem == 'distrito-up'){
+                $membresiaMembro->orderBy('distrito.nome','ASC');
+            }elseif($ordem == 'igreja-down'){
+                $membresiaMembro->orderBy('igreja.nome','DESC');
+            }elseif($ordem == 'igreja-up'){
+                $membresiaMembro->orderBy('igreja.nome','ASC');
+            }elseif($ordem == 'rol-down'){
+                $membresiaMembro->orderBy('membresia_membros.rol_atual','DESC');
+            }elseif($ordem == 'rol-up'){
+                $membresiaMembro->orderBy('membresia_membros.rol_atual','ASC');
+            }elseif($ordem == 'nome-down'){
+                $membresiaMembro->orderBy('membresia_membros.nome','DESC');
+            }elseif($ordem == 'nome-up'){
+                $membresiaMembro->orderBy('membresia_membros.nome','ASC');
+            }elseif($ordem == 'telefone-down'){
+                $membresiaMembro->orderBy('telefone','DESC');
+            }elseif($ordem == 'telefone-up'){
+               $membresiaMembro->orderBy('telefone','ASC');
+            }elseif($ordem == 'situacao-down'){
+                $membresiaMembro->orderBy('membresia_membros.status','DESC');
+            }elseif($ordem == 'situacao-up'){
+               $membresiaMembro->orderBy('membresia_membros.status','ASC');
+            }elseif($ordem == 'vinculo-down'){
+                $membresiaMembro->orderBy('membresia_membros.vinculo','DESC');
+            }elseif($ordem == 'vinculo-up'){
+               $membresiaMembro->orderBy('membresia_membros.vinculo','ASC');
+            }elseif($ordem == 'nascimento-down'){
+                $membresiaMembro->orderBy('membresia_membros.data_nascimento','DESC');
+            }elseif($ordem == 'nascimento-up'){
+               $membresiaMembro->orderBy('membresia_membros.data_nascimento','ASC');
+            }elseif($ordem == 'recepcao-down'){
+                $membresiaMembro->orderBy('membresia_membros.created_at','DESC');
+            }elseif($ordem == 'recepcao-up'){
+               $membresiaMembro->orderBy('membresia_membros.created_at','ASC');
+            }elseif($ordem == 'modo-recepcao-down'){
+                //$membresiaMembro->orderBy('recepcao_modo','DESC');
+            }elseif($ordem == 'modo-recepcao-up'){
+               //$membresiaMembro->orderBy('recepcao_modo','ASC');
+            }elseif($ordem == 'exclusao-down'){
+                $membresiaMembro->orderBy('membresia_membros.deleted_at','DESC');
+            }elseif($ordem == 'exclusao-up'){
+               $membresiaMembro->orderBy('membresia_membros.deleted_at','ASC');
+            }elseif($ordem == 'modo-exclusao-down'){
+                //$membresiaMembro->orderBy('exclusao_modo','DESC');
+            }elseif($ordem == 'modo-exclusao-up'){
+               //$membresiaMembro->orderBy('exclusao_modo','ASC');
+            }elseif($ordem == 'local-down'){
+                $membresiaMembro->orderBy('congregacao_nome','DESC');
+            }elseif($ordem == 'local-up'){
+               $membresiaMembro->orderBy('congregacao_nome','ASC');
+            }else{
+                $membresiaMembro->orderBy('membresia_membros.created_at', 'DESC');
+            }
+
+          ///  dd($membresiaMembro->get());
+
             $membrosTotal = $membresiaMembro->get()->count();
+            
             $membros = $membresiaMembro->paginate($totalPorPagina)->appends([
                 'distritoId' => $distritoId,
                 'vinculo' => $vinculo,
