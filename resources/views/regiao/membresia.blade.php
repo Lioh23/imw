@@ -165,7 +165,7 @@
                     <div class="n-chk">
                       <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
                         <input {{ request()->get('situacao') == 'todos' || !request()->get('situacao') ? 'checked' : '' }} 
-                              type="radio" name="situacao" value="todos" class="new-control-input situacao">
+                              type="radio" name="situacao" value="todos" class="new-control-input situacaoTodos situacao">
                         <span class="new-control-indicator"></span>Todos
                       </label>
                     </div>
@@ -236,11 +236,11 @@
           </form>
         </div>
 
-@include('regiao.ajax.membresia')
+        @include('regiao.ajax.membresia')
 
-@endsection
+    @endsection
 
-@section('extras-scripts')
+    @section('extras-scripts')
 
 <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
@@ -305,6 +305,9 @@
   $(document).on('click', '.vinculo', function (e) {
     //e.preventDefault();
     let vinculo = $(this).val();
+    if(vinculo == 'C' || vinculo == 'V'){
+      $('.situacaoTodos').click()
+    }
     $('#vinculoEscolhido').val(vinculo);
     getUrlAll();
 	})

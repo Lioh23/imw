@@ -197,7 +197,7 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
             ->join('instituicoes_instituicoes as distrito', 'distrito.id', 'membresia_membros.distrito_id')
             ->join('instituicoes_instituicoes as igreja', 'igreja.id', 'membresia_membros.igreja_id')
-            ->leftJoin('congregacoes_congregacoes as congregacao', 'congregacao.instituicao_id', 'igreja.id')
+            ->leftJoin('congregacoes_congregacoes as congregacao', 'congregacao.id', 'membresia_membros.congregacao_id')
             ->when($params['situacao'] == 'ativos', function ($query) {
                 $query->where(function ($query) {
                     $query->withoutGlobalScopes();
@@ -233,8 +233,8 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
             })
             ->when($params['distritoId'], fn ($query) => $query->where('distrito.id', $params['distritoId']))
             ->where('membresia_membros.vinculo', $params['vinculo'])
-            ->where('distrito.instituicao_pai_id', $regiaoId)
-            ->orderBy('nome');
+            ->where('distrito.instituicao_pai_id', $regiaoId);
+            //->orderBy('nome');
 
             if($ordem == 'distrito-down'){
                 $membresiaMembro->orderBy('distrito.nome','DESC');
