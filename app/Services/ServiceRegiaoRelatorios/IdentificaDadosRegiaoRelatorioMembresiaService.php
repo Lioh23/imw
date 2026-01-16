@@ -65,14 +65,15 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
         if($params['vinculo'] == 'M') {
             $dtInicial = isset($params['dt_inicial']) ? $params['dt_inicial'] : '';
             $dtFinal = isset($params['dtFinal']) ? $params['dtFinal'] : '';
-            $membresiaMembro =  MembresiaMembro::select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'congregacao.nome as congregacao_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo', 'membresia_rolpermanente.dt_recepcao','membresia_rolpermanente.dt_exclusao',
+            $membresiaMembro =  MembresiaMembro::select('membresia_membros.status', 'membresia_membros.nome', 'membresia_membros.vinculo', 'membresia_membros.data_nascimento', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'congregacao.nome as congregacao_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo', 'membresia_rolpermanente.dt_recepcao','membresia_rolpermanente.dt_exclusao',
                 DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
                               ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
+                // DB::raw("(SELECT nome FROM congregacoes_congregacoes WHERE id = )")
 
             ->join('instituicoes_instituicoes as distrito', 'distrito.id', 'membresia_membros.distrito_id')
             ->join('instituicoes_instituicoes as igreja', 'igreja.id', 'membresia_membros.igreja_id')
-            ->leftJoin('congregacoes_congregacoes as congregacao', 'congregacao.instituicao_id', 'igreja.id')
+            ->leftJoin('congregacoes_congregacoes as congregacao', 'congregacao.id', 'membresia_membros.congregacao_id')
             ->join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')
             ->leftJoin('membresia_situacoes as recepcao_modo', 'recepcao_modo.id', 'membresia_rolpermanente.modo_recepcao_id')
             ->leftJoin('membresia_situacoes as exclusao_modo', 'exclusao_modo.id', 'membresia_rolpermanente.modo_exclusao_id')
@@ -172,6 +173,7 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
             }else{
                 $membresiaMembro->orderBy('membresia_rolpermanente.dt_recepcao', 'DESC');
             }
+            //$membresiaMembro->groupBy('membresia_membros.distrito_id', 'membresia_membros.id', 'membresia_membros.status', 'membresia_membros.nome', 'distrito.nome', 'igreja.nome', 'congregacao.nome', 'recepcao_modo.nome', 'exclusao_modo.nome', 'membresia_rolpermanente.dt_recepcao', 'membresia_rolpermanente.dt_exclusao');
            // dd($membresiaMembro->get());
            // dd($membrosTotal );
             $membrosTotal = $membresiaMembro->get()->count();

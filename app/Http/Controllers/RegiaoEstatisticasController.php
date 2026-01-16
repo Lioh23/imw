@@ -148,6 +148,7 @@ class RegiaoEstatisticasController extends Controller
     {
         try {
             $data = app(IdentificaDadosRegiaoRelatorioMembresiaService::class)->execute($request->all());
+            
             if ($request->ajax()) {
                 return view('regiao.ajax.membresia', $data);
             }
