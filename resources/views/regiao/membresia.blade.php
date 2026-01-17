@@ -234,6 +234,7 @@
               </div>
             </div>
           </form>
+          <div id="btn-exportar"></div>
         </div>
 
         @include('regiao.ajax.membresia')
@@ -359,7 +360,12 @@
       let dtFinal = $('#dt_final').val();
       let totalPorPagina = $('#totalPorPagina').val();
       let urlAtual = `{{ route('regiao.membresia') }}`;
+      let urlAtualExportar = `{{ route('regiao.membresia.exportar') }}`;
       let ordem = $('#input-ordenar').val();
+      urlExportar = `${urlAtualExportar}?distritoId=${distritoId}&vinculo=${vinculo}&situacao=${situacao}&filtro=${filtro}&dtInicial=${dtInicial}&dtFinal=${dtFinal}&ordem=${ordem}&totalPorPagina=${totalPorPagina}`
+      $('#btn-exportar').html(`<a href="${urlExportar}" target="_blanck" class="btn btn-success btn-rounded btn-responsive mb-2" >
+              <i class="fa fa-file-excel" aria-hidden="true"></i> Exportar
+          </a>`)
       url = `${urlAtual}?distritoId=${distritoId}&vinculo=${vinculo}&situacao=${situacao}&filtro=${filtro}&dtInicial=${dtInicial}&dtFinal=${dtFinal}&ordem=${ordem}&totalPorPagina=${totalPorPagina}`;
       fetchData(url)
   }

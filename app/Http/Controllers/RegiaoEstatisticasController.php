@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\MembresiaExport;
 use App\Http\Controllers\Controller;
 use App\Services\EstatisticaClerigosService\HistoricoNomeacoes;
 use App\Services\EstatisticaClerigosService\TotalTicketMedio;
@@ -11,8 +12,14 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use App\Traits\Identifiable;
+use Maatwebsite\Excel\Facades\Excel;
 class RegiaoEstatisticasController extends Controller
 {
+    protected $excel;
+     public function __construct(\Maatwebsite\Excel\Exporter $excel)
+    {
+        $this->excel = $excel;
+    }
     public function totalMembresia(Request $request)
     {
         $checkIgreja = $request->input('checkIgreja', 'distrito'); // Padrão para 'distrito' se nada for selecionado
@@ -154,6 +161,17 @@ class RegiaoEstatisticasController extends Controller
             }
             return view('regiao.membresia', $data);
 
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
+        }
+    }
+
+    public function membresiaExportar(Request $request)
+    {
+        try {
+            $params = $request->all();
+            return Excel::download(new MembresiaExport($params), 'usuarios.xlsx');
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');

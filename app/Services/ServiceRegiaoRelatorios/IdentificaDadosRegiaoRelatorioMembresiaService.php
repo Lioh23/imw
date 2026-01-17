@@ -13,7 +13,45 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
 
     public function execute(array $params = [])
     {
-       
+        $params['pocesso'] = 'executar';
+        $params["distritoId"] = isset($params["distritoId"]) ? $params["distritoId"] : null;
+        $params["vinculo"] = isset($params["vinculo"]) ? $params["vinculo"] : 'M';
+        $params["situacao"] = isset($params["situacao"]) ? $params["situacao"] : 'todos';
+        $params["filtro"] = isset($params["filtro"]) ? $params["filtro"] : null;
+        $params["dtInicial"] = isset($params["dtInicial"]) ? $params["dtInicial"] : null;
+        $params["dtFinal"] = isset($params["dtFinal"]) ? $params["dtFinal"] : null;
+        $params["ordem"] = isset($params["ordem"]) ? $params["ordem"] : null;
+        $params['totalPorPagina'] = isset($params['totalPorPagina']) ? $params['totalPorPagina'] : 10;
+        $regiao = Identifiable::fetchtSessionRegiao();
+        $distritos = Identifiable::fetchDistritosByRegiao($regiao->id);
+ 
+        $data = [
+            'distritos' => $distritos,
+            'regiao_nome' => $regiao->nome,
+        ];
+
+        $data['vinculos']     = $this->fetchTextVinculo($params['vinculo']);
+        $data['situacao']     = $this->fetchTextSituacao($params['situacao']);
+        $data['ondeCongrega'] = 'Todos Distritos';
+        $params['igreja_id'] = 0;
+        $params['congregacao_id'] = 0;
+        $params['regiao_id'] = $regiao->id;
+
+        $membros = $this->fetchMembrosRelatorio($params, $data);
+
+        $dados =  $membros['membresiaMembro'];
+        $data['membros_total'] = $membros['membresiaMembroTotal'];
+        $data['total'] = $membros['membresiaMembroTotal'];
+        $data['links'] = $dados;
+        $data['regiao_nome'] = $regiao->nome;
+        
+        $data['membros'] = $dados;   
+        return $data;
+    }
+
+    public function exportar(array $params = [])
+    {
+        $params['pocesso'] = 'exportar';
         $params["distritoId"] = isset($params["distritoId"]) ? $params["distritoId"] : null;
         $params["vinculo"] = isset($params["vinculo"]) ? $params["vinculo"] : 'M';
         $params["situacao"] = isset($params["situacao"]) ? $params["situacao"] : 'todos';
@@ -62,15 +100,15 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
         $dtInicial = $params['dtInicial'];
         $dtFinal = $params['dtFinal'];
         $ordem = $params['ordem'];
+       // DB::raw("DATE_FORMAT(membresia_membros.data_nascimento, '%d/%m/%Y') data_nascimento")
         if($params['vinculo'] == 'M') {
             $dtInicial = isset($params['dt_inicial']) ? $params['dt_inicial'] : '';
             $dtFinal = isset($params['dtFinal']) ? $params['dtFinal'] : '';
-            $membresiaMembro =  MembresiaMembro::select('membresia_membros.status', 'membresia_membros.nome', 'membresia_membros.vinculo', 'membresia_membros.data_nascimento', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'congregacao.nome as congregacao_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo', 'membresia_rolpermanente.dt_recepcao','membresia_rolpermanente.dt_exclusao',
+            $membresiaMembro =  MembresiaMembro::select('distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'membresia_membros.rol_atual', 'membresia_membros.nome', 
                 DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
                               WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
-                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
-                // DB::raw("(SELECT nome FROM congregacoes_congregacoes WHERE id = )")
-
+                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone"), 
+                'membresia_membros.status', 'membresia_membros.vinculo', 'membresia_membros.data_nascimento', 'membresia_rolpermanente.dt_recepcao', 'recepcao_modo.nome as recepcao_modo', 'membresia_rolpermanente.dt_exclusao', 'exclusao_modo.nome as exclusao_modo', 'congregacao.nome as congregacao_nome')
             ->join('instituicoes_instituicoes as distrito', 'distrito.id', 'membresia_membros.distrito_id')
             ->join('instituicoes_instituicoes as igreja', 'igreja.id', 'membresia_membros.igreja_id')
             ->leftJoin('congregacoes_congregacoes as congregacao', 'congregacao.id', 'membresia_membros.congregacao_id')
@@ -177,7 +215,10 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
            // dd($membresiaMembro->get());
            // dd($membrosTotal );
             $membrosTotal = $membresiaMembro->get()->count();
-            $membros = $membresiaMembro->paginate($totalPorPagina)->appends([
+            if($params['pocesso'] == 'exportar'){
+                $membros = $membresiaMembro->get();
+            }else{
+                $membros = $membresiaMembro->paginate($totalPorPagina)->appends([
                 'distritoId' => $distritoId,
                 'vinculo' => $vinculo,
                 'situacao' => $situacao,
@@ -186,7 +227,8 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
                 'dtFinal' => $dtFinal,
                 'ordem' => $ordem,
                 'totalPorPagina' => $totalPorPagina,
-            ]);
+                ]);
+            }
             return ['membresiaMembro' =>  $membros, 'membresiaMembroTotal' => $membrosTotal];
         } else {
             $dtInicial = $params['dtInicial'];
