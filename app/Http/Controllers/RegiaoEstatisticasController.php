@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use App\Traits\Identifiable;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
 class RegiaoEstatisticasController extends Controller
 {
@@ -171,7 +172,10 @@ class RegiaoEstatisticasController extends Controller
     {
         try {
             $params = $request->all();
-            return Excel::download(new MembresiaExport($params), 'usuarios.xlsx');
+            $regiao = Identifiable::fetchtSessionRegiao();
+            $txt = 'membresia-'.$regiao->nome.'-'.Carbon::now();
+            $params['regiao_nome'] = $regiao->nome;
+            return Excel::download(new MembresiaExport($params), slugDoc($txt).".xlsx");
         } catch (\Exception $e) {
             dd($e);
             return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');

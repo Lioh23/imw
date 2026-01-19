@@ -74,6 +74,7 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
         $params['igreja_id'] = 0;
         $params['congregacao_id'] = 0;
         $params['regiao_id'] = $regiao->id;
+        $params['regiao_nome'] = $regiao->nome;
 
         $membros = $this->fetchMembrosRelatorio($params, $data);
 
@@ -356,12 +357,11 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
 
     private function handleRolDates($query, $field, $dtInicial, $dtFinal)
     {
-       // dd($field, $dtInicial, $dtFinal);
-        return $query->whereHas('rolAtualSessionIgrejaId', function ($query) use ($field, $dtInicial, $dtFinal) {
-            $query->withoutGlobalScopes();
-            $query->when($dtInicial, fn ($query) => $query->where($field, '>=', $dtInicial));
-            $query->when($dtFinal, fn ($query) => $query->where($field, '<=', $dtFinal));
-        });
+        
+        $query->withoutGlobalScopes();
+        $query->when($dtInicial, fn ($query) => $query->where($field, '>=', $dtInicial));
+        $query->when($dtFinal, fn ($query) => $query->where($field, '<=', $dtFinal));
+        
     }
 
     private function handleDates($query, $field, $dtInicial, $dtFinal)

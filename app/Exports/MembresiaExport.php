@@ -26,7 +26,6 @@ class MembresiaExport implements FromCollection, WithHeadings, WithEvents, WithM
     public function collection()
     {
         $data = app(IdentificaDadosRegiaoRelatorioMembresiaService::class)->exportar($this->params);
-        //dd($data['membros']);
         $membros = $data['membros'];
         return $membros;
     }
@@ -48,7 +47,7 @@ class MembresiaExport implements FromCollection, WithHeadings, WithEvents, WithM
             $membros->recepcao_modo,
             $this->formatDate($membros->dt_exclusao),
             $membros->exclusao_modo,
-            $membros->congregacao_nome, 
+            $membros->congregacao_nome ? $membros->congregacao_nome : 'SEDE', 
         ];
     }
 

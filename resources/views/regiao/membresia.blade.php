@@ -190,7 +190,7 @@
                   <div class="form-check form-check-inline">
                     <div class="n-chk">
                       <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                        <input {{ request()->get('dt_filtro') == 'data_nascimento' ? 'checked' : '' }} disabled
+                        <input {{ request()->get('dt_filtro') == 'data_nascimento' ? 'checked' : '' }} 
                               type="radio" name="dt_filtro" value="data_nascimento" class="new-control-input filtro">
                         <span class="new-control-indicator"></span>Nascimento
                       </label>
@@ -199,7 +199,7 @@
                   <div class="form-check form-check-inline">
                     <div class="n-chk">
                       <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                        <input {{ request()->get('dt_filtro') == 'dt_recepcao' ? 'checked' : '' }} disabled
+                        <input {{ request()->get('dt_filtro') == 'dt_recepcao' ? 'checked' : '' }} 
                               type="radio" name="dt_filtro" value="dt_recepcao" class="new-control-input filtro">
                         <span class="new-control-indicator"></span>Recepção
                       </label>
@@ -208,7 +208,7 @@
                   <div class="form-check form-check-inline">
                     <div class="n-chk">
                       <label class="new-control new-checkbox new-checkbox-rounded checkbox-outline-info">
-                        <input {{ request()->get('dt_filtro') == 'dt_exclusao' ? 'checked' : '' }} disabled
+                        <input {{ request()->get('dt_filtro') == 'dt_exclusao' ? 'checked' : '' }} 
                               type="radio" name="dt_filtro" value="dt_exclusao" class="new-control-input filtro">
                         <span class="new-control-indicator"></span>Exclusão
                       </label>
