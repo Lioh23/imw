@@ -61,6 +61,28 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
         $params["ordem"] = isset($params["ordem"]) ? $params["ordem"] : null;
         $params['totalPorPagina'] = isset($params['totalPorPagina']) ? $params['totalPorPagina'] : 10;
         $regiao = Identifiable::fetchtSessionRegiao();
+        $params['igreja_id'] = 0;
+        $params['congregacao_id'] = 0;
+        $params['regiao_id'] = $regiao->id;
+        $params['regiao_nome'] = $regiao->nome;
+        $membros = $this->fetchMembrosRelatorio($params, null);
+        $dados =  $membros['membresiaMembro'];
+        $data['membros'] = $dados;   
+        return $data;
+    }
+
+     public function exportarPdf(array $params = [])
+    {
+        $params['pocesso'] = 'exportar';
+        $params["distritoId"] = isset($params["distritoId"]) ? $params["distritoId"] : null;
+        $params["vinculo"] = isset($params["vinculo"]) ? $params["vinculo"] : 'M';
+        $params["situacao"] = isset($params["situacao"]) ? $params["situacao"] : 'todos';
+        $params["filtro"] = isset($params["filtro"]) ? $params["filtro"] : null;
+        $params["dtInicial"] = isset($params["dtInicial"]) ? $params["dtInicial"] : null;
+        $params["dtFinal"] = isset($params["dtFinal"]) ? $params["dtFinal"] : null;
+        $params["ordem"] = isset($params["ordem"]) ? $params["ordem"] : null;
+        $params['totalPorPagina'] = isset($params['totalPorPagina']) ? $params['totalPorPagina'] : 10;
+        $regiao = Identifiable::fetchtSessionRegiao();
         $distritos = Identifiable::fetchDistritosByRegiao($regiao->id);
  
         $data = [
@@ -74,14 +96,12 @@ class IdentificaDadosRegiaoRelatorioMembresiaService
         $params['igreja_id'] = 0;
         $params['congregacao_id'] = 0;
         $params['regiao_id'] = $regiao->id;
-        $params['regiao_nome'] = $regiao->nome;
 
         $membros = $this->fetchMembrosRelatorio($params, $data);
 
         $dados =  $membros['membresiaMembro'];
         $data['membros_total'] = $membros['membresiaMembroTotal'];
         $data['total'] = $membros['membresiaMembroTotal'];
-        $data['links'] = $dados;
         $data['regiao_nome'] = $regiao->nome;
         
         $data['membros'] = $dados;   

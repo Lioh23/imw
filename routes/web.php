@@ -331,6 +331,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/relatorio/membresia', [RegiaoEstatisticasController::class, 'membresia'])->name('membresia')->middleware('seguranca:regiao-relatorio-membresia');
             //Exportar Excel
             Route::get('/relatorio/membresia/exportar', [RegiaoEstatisticasController::class, 'membresiaExportar'])->name('membresia.exportar')->middleware('seguranca:regiao-relatorio-membresia');
+            //Exportar pdf
+            Route::get('/relatorio/membresia/exportar/pdf', [RegiaoEstatisticasController::class, 'membresiaExportarPdf'])->name('membresia.exportar.pdf')->middleware('seguranca:regiao-relatorio-membresia');
 
             Route::get('/relatorio/historiconomeacoes', [RegiaoEstatisticasController::class, 'historiconomeacoes'])->name('estatistica.historiconomeacoes')->middleware(['seguranca:regiao-menu-estatistica']);
             Route::post('/relatorio/historiconomeacoes/pdf', [RegiaoEstatisticasController::class, 'historiconomeacoesPdf'])->name('relatorio.historiconomeacoes-pdf')->middleware(['seguranca:regiao-menu-estatistica']);

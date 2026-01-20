@@ -3,7 +3,7 @@
   
 
       <div id="conteudo-lista">
-        <div class="widget-content widget-content-area">
+        <div class="widget-content widget-content-area" style="padding-top: 0;">
            <div id="conteudo">
             <div class="table-responsive">
               <div class="table_fixed_box">

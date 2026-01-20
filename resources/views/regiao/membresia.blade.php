@@ -86,7 +86,7 @@
         </div>
 
 
-        <div class="widget-content widget-content-area">
+        <div class="widget-content widget-content-area" style="padding-bottom: 0;">
           <input type="hidden" id="input-ordenar" value="">
           <form class="form-vertical" id="filter_form">
             
@@ -126,7 +126,7 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-6">
+              <div class="col-lg-8">
                 <label class="control-label">Distrito:</label>
                 <select id="distritoId" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror" >
                   <option value="" {{ !request()->get('distrito_id') ? 'selected' : '' }}>TODOS</option>
@@ -217,6 +217,10 @@
                 </div>
               </div>
 
+              <div class="col-lg-2">
+                <span id="btn-exportar"></span>
+                <span id="btn-exportar-pdf"></span>
+              </div>
 
             </div>
           
@@ -234,7 +238,6 @@
               </div>
             </div>
           </form>
-          <div id="btn-exportar"></div>
         </div>
 
         @include('regiao.ajax.membresia')
@@ -360,12 +363,17 @@
       let dtFinal = $('#dt_final').val();
       let totalPorPagina = $('#totalPorPagina').val();
       let urlAtual = `{{ route('regiao.membresia') }}`;
-      let urlAtualExportar = `{{ route('regiao.membresia.exportar') }}`;
       let ordem = $('#input-ordenar').val();
+      let urlAtualExportar = `{{ route('regiao.membresia.exportar') }}`;
       urlExportar = `${urlAtualExportar}?distritoId=${distritoId}&vinculo=${vinculo}&situacao=${situacao}&filtro=${filtro}&dtInicial=${dtInicial}&dtFinal=${dtFinal}&ordem=${ordem}&totalPorPagina=${totalPorPagina}`
       $('#btn-exportar').html(`<a href="${urlExportar}" target="_blanck" class="btn btn-success btn-rounded btn-responsive mb-2" >
-              <i class="fa fa-file-excel" aria-hidden="true"></i> Exportar
-          </a>`)
+          <i class="fa fa-file-excel" aria-hidden="true"></i> Excel
+      </a>`)
+      let urlAtualExportarPdf = `{{ route('regiao.membresia.exportar.pdf') }}`;
+      urlExportarPdf = `${urlAtualExportarPdf}?distritoId=${distritoId}&vinculo=${vinculo}&situacao=${situacao}&filtro=${filtro}&dtInicial=${dtInicial}&dtFinal=${dtFinal}&ordem=${ordem}&totalPorPagina=${totalPorPagina}`
+      $('#btn-exportar-pdf').html(`<a href="${urlExportarPdf}" target="_blanck" class="btn btn-secondary btn-rounded btn-responsive mb-2" >
+          <i class="fa-solid fa-file-pdf"></i> PDF
+      </a>`)
       url = `${urlAtual}?distritoId=${distritoId}&vinculo=${vinculo}&situacao=${situacao}&filtro=${filtro}&dtInicial=${dtInicial}&dtFinal=${dtFinal}&ordem=${ordem}&totalPorPagina=${totalPorPagina}`;
       fetchData(url)
   }

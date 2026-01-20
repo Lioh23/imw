@@ -14,6 +14,7 @@ use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use App\Traits\Identifiable;
 use Carbon\Carbon;
 use Maatwebsite\Excel\Facades\Excel;
+use PDF;
 class RegiaoEstatisticasController extends Controller
 {
     protected $excel;
@@ -181,4 +182,23 @@ class RegiaoEstatisticasController extends Controller
             return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
         }
     }
+
+    public function membresiaExportarPdf(Request $request)
+    {
+        try {
+            $regiao = Identifiable::fetchtSessionRegiao();
+            $txt = 'membresia-'.$regiao->nome.'-'.Carbon::now();
+            $data['regiao_nome'] = $regiao->nome;
+
+            $data = app(IdentificaDadosRegiaoRelatorioMembresiaService::class)->exportarPdf($request->all());
+    
+            $pdf = PDF::loadView('regiao.pdf.membresia', $data)->setPaper('a4', 'landscape');
+            return $pdf->stream('RELATORIO_MEMBRESIA_' . date('YmdHis') . '.pdf');
+            //return Excel::download(new MembresiaExport($params), slugDoc($txt).".xlsx");
+        } catch (\Exception $e) {
+            dd($e);
+            return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
+        }
+    }
+    
 }
