@@ -520,6 +520,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/update/{id}', 'update')->name('update');
             Route::put('/ativar/{id}', 'ativar')->name('ativar');
             Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
+            Route::get('/{id}/nomeacoes', 'nomeacoes')->name('nomeacoes');
         });
 
         Route::prefix('instituicoes')->name('instituicoes.')->controller(HandleInstituicoesController::class)->group(function () {

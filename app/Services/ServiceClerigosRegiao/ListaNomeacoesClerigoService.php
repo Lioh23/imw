@@ -4,6 +4,8 @@ namespace App\Services\ServiceClerigosRegiao;
 
 use App\Models\InstituicoesInstituicao;
 use App\Models\PessoaNomeacao;
+use App\Models\PessoasPessoa;
+use App\Traits\Identifiable;
 
 class ListaNomeacoesClerigoService
 {
@@ -27,6 +29,27 @@ class ListaNomeacoesClerigoService
             'nomeacoes' => $nomeacoes,
             'status'    => $status,
             'clerigoId'        => $clerigoId
+        ];
+    }
+
+    public function instituicao($id): array
+    { 
+        $instituicao = Identifiable::fetchInstituicao($id);
+        $nomeacoes = PessoaNomeacao::where('instituicao_id', $id)
+            ->with('funcaoministerial')
+            ->with('pessoa')
+            ->with('instituicao')
+            ->orderBy(
+                PessoasPessoa::select('nome')
+                    ->whereColumn('pessoas_pessoas.id', 'pessoas_nomeacoes.pessoa_id')
+                    ->limit(1),
+                'asc'
+            )
+            ->orderBy('data_nomeacao', 'desc')
+            ->get();
+        return [
+            'nomeacoes' => $nomeacoes,
+            'instituicao'  => $instituicao,
         ];
     }
 }

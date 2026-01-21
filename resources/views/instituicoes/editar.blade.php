@@ -1,7 +1,7 @@
 @extends('template.layout')
 @section('breadcrumb')
     <x-breadcrumb :breadcrumbs="[
-        ['text' => 'Instituições', 'url' => '/instituicoes-regiao', 'active' => false],
+        ['text' => 'Instituições', 'url' => '/instituicoes-regiao?tipo_instituicao_id=1', 'active' => false],
         ['text' => 'Editar', 'url' => '#', 'active' => true],
     ]">
     </x-breadcrumb>

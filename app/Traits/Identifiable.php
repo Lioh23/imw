@@ -245,4 +245,9 @@ trait Identifiable
             ->first();
     }
 
+    public static function fetchInstituicao(int|null $instituicaoId)
+    {
+        return InstituicoesInstituicao::where('id', $instituicaoId)->first();
+    }
+
 }
