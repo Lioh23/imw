@@ -103,6 +103,12 @@ class MembresiaMembro extends Model
         return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->where('lastrec', 1)->where('igreja_id', Identifiable::fetchSessionIgrejaLocal()->id);
     }
 
+    public function rolAtualSessionIgrejaId(): HasOne
+    {
+        $igrejaId = request()->igreja_id;
+        return $this->hasOne(MembresiaRolPermanente::class, 'membro_id', 'id')->withTrashed()->where('lastrec', 1)->where('igreja_id', $igrejaId);
+    }
+
     public function disciplinas()
     {
         return $this->hasMany(MembresiaDisciplina::class, 'membro_id');

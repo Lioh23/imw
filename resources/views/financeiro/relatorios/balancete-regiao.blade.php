@@ -81,6 +81,9 @@
     <div class="col-lg-12 col-12 layout-spacing">
         <div class="statbox widget box box-shadow">
             <div class="widget-content widget-content-area">
+                 @if($instituicao == 'NaoExiste')
+                    Não  existe movimento consolidado para o período escolhido
+                @else
                 <!-- Conteúdo -->
                 <div class="card mb-3">
                     <div class="card-body">
@@ -197,6 +200,7 @@
                     </div>
                 </div>
                 <!-- Fim do Conteúdo -->
+                @endif
             </div>
         </div>
     </div>

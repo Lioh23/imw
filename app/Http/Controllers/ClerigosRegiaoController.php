@@ -7,7 +7,10 @@ use App\Models\Formacao;
 use Illuminate\Http\Request;
 use App\Models\PessoasPessoa;
 use App\Traits\LocationUtils;
-use App\Http\Requests\StoreReceberNovoClerigoRequest;;
+use App\Http\Requests\StoreReceberNovoClerigoRequest;
+use App\Models\PessoaStatus;
+
+;
 use App\Services\ServiceClerigosRegiao\AtivarClerigoService;
 use App\Services\ServiceClerigosRegiao\BuscarClerigoPorCpfService;
 use App\Services\ServiceClerigosRegiao\ListaClerigosService;
@@ -30,7 +33,6 @@ class ClerigosRegiaoController extends Controller
     {
         $searchTerm = $request->input('search');
         $clerigos = app(ListaClerigosService::class)->execute($searchTerm);
-
         return view('clerigos.index', compact('clerigos'));
     }
 
@@ -44,8 +46,8 @@ class ClerigosRegiaoController extends Controller
     {
         $formacoes =  Formacao::all();
         $ufs = $this->fetchUFs();
-
-        return view('clerigos.novo.index', compact('ufs', 'formacoes'));
+        $situacoes =  PessoaStatus::all();
+        return view('clerigos.novo.index', compact('ufs', 'formacoes', 'situacoes'));
     }
 
     /**
@@ -70,10 +72,11 @@ class ClerigosRegiaoController extends Controller
     public function editar($id)
     {
         $formacoes =  Formacao::all();
+        $situacoes =  PessoaStatus::all();
         $ufs = $this->fetchUFs();
         $clerigo = app(EditarClerigoService::class)->findOne($id);
         //$clerigo = PessoasPessoa::findOrfail($id);
-        return view('clerigos.editar.index', compact('clerigo', 'ufs', 'formacoes'));
+        return view('clerigos.editar.index', compact('clerigo', 'ufs', 'formacoes', 'situacoes'));
     }
 
     /**

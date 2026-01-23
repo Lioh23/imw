@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\MembresiaExport;
 use App\Http\Controllers\Controller;
+use App\Models\MembresiaMembro;
 use App\Services\EstatisticaClerigosService\HistoricoNomeacoes;
 use App\Services\EstatisticaClerigosService\TotalTicketMedio;
 use App\Services\ServiceEstatisticas\TotalMembresiaServices;
@@ -12,16 +12,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
 use App\Traits\Identifiable;
-use Carbon\Carbon;
-use Maatwebsite\Excel\Facades\Excel;
-use PDF;
+use Yajra\DataTables\Facades\DataTables;
+
 class RegiaoEstatisticasController extends Controller
 {
-    protected $excel;
-     public function __construct(\Maatwebsite\Excel\Exporter $excel)
-    {
-        $this->excel = $excel;
-    }
     public function totalMembresia(Request $request)
     {
         $checkIgreja = $request->input('checkIgreja', 'distrito'); // Padrão para 'distrito' se nada for selecionado
@@ -155,11 +149,92 @@ class RegiaoEstatisticasController extends Controller
 
     public function membresia(Request $request)
     {
+        $params = $request->all();
+
+        ;
+
         try {
             $data = app(IdentificaDadosRegiaoRelatorioMembresiaService::class)->execute($request->all());
-            
+            //dd($data['membros']);
+            //dd($request->wantsJson());
             if ($request->ajax()) {
-                return view('regiao.ajax.membresia', $data);
+
+
+                //dd( $params);
+
+
+
+                //$dtInicial = $params['dt_inicial'];
+            //$dtFinal = $params['dt_final'];
+            //dd($params);
+            $membresiaMembro =  MembresiaMembro::query()->select('membresia_membros.*', 'distrito.nome as distrito_nome', 'igreja.nome as igreja_nome', 'congregacao.nome as congregacao_nome', 'recepcao_modo.nome as recepcao_modo', 'exclusao_modo.nome as exclusao_modo', 'membresia_rolpermanente.dt_recepcao','membresia_rolpermanente.dt_exclusao',
+                DB::raw("(SELECT CASE WHEN telefone_preferencial IS NOT NULL AND telefone_preferencial <> '' THEN telefone_preferencial
+                              WHEN telefone_alternativo IS NOT NULL AND telefone_alternativo <> '' THEN telefone_alternativo
+                              ELSE telefone_whatsapp END contato FROM membresia_contatos WHERE membro_id = membresia_membros.id) AS telefone") )
+
+            ->join('instituicoes_instituicoes as distrito', 'distrito.id', 'membresia_membros.distrito_id')
+            ->join('instituicoes_instituicoes as igreja', 'igreja.id', 'membresia_membros.igreja_id')
+            ->leftJoin('congregacoes_congregacoes as congregacao', 'congregacao.id', 'igreja.id')
+            ->join('membresia_rolpermanente', 'membresia_rolpermanente.membro_id', 'membresia_membros.id')
+            ->leftJoin('membresia_situacoes as recepcao_modo', 'recepcao_modo.id', 'membresia_rolpermanente.modo_recepcao_id')
+            ->leftJoin('membresia_situacoes as exclusao_modo', 'exclusao_modo.id', 'membresia_rolpermanente.modo_exclusao_id')
+            // ->when($params['situacao'] == 'ativos', function ($query) {
+            //     $query->where(function ($query) {
+            //         $query->withoutGlobalScopes();
+            //         $query->where('membresia_rolpermanente.status', 'A');
+            //         $query->where('membresia_membros.status', 'A');
+            //     });
+            // })
+            // ->when($params['situacao'] == 'inativos', function ($query) {
+            //     $query->where(function ($query) {
+            //         $query->withoutGlobalScopes();
+            //         $query->where('membresia_rolpermanente.status', 'I');
+            //         $query->where('membresia_membros.status', 'I');
+            //     });
+            // })
+            // ->when($params['dt_filtro'] == 'dt_recepcao', function  ($query) use( $dtInicial, $dtFinal) {
+            //     $query->where(function ($query) {
+            //         $query->withoutGlobalScopes();
+            //         $query->where('membresia_rolpermanente.status', 'A');
+            //     });
+            //     $query->when($dtInicial, fn ($query) => $query->where('membresia_rolpermanente.dt_recepcao', '>=' , $dtInicial));
+            //     $query->when($dtFinal, fn ($query) => $query->where('membresia_rolpermanente.dt_recepcao', '<=' , $dtFinal));
+            // })
+            // ->when($params['dt_filtro'] == 'dt_exclusao', function ($query) use( $dtInicial, $dtFinal) {
+            //     $query->where(function ($query) {
+            //         $query->withoutGlobalScopes();
+            //         $query->where('membresia_rolpermanente.status', 'I');
+            //     });
+            //     $query->when($dtInicial, fn ($query) => $query->where('membresia_rolpermanente.dt_exclusao', '>=' , $dtInicial));
+            //     $query->when($dtFinal, fn ($query) => $query->where('membresia_rolpermanente.dt_exclusao', '<=' , $dtFinal));
+            // })
+            //->when($params['congregacao_id'], fn ($query) => $query->where('membresia_membros.congregacao_id', $params['congregacao_id']))
+            // ->when($params['dt_filtro'], function ($query) use ($params) {
+            //     if ($params['dt_filtro'] == 'data_nascimento') {
+            //         return $this->handleFilterDtNascimento($query, $params['dt_inicial'], $params['dt_final']);
+            //     } else {   
+            //         return $this->handleRolDates($query, $params['dt_filtro'], $params['dt_inicial'], $params['dt_final']);
+            //     }
+            // })
+            // ->when($params['distrito_id'], fn ($query) => $query->where('distrito.id', $params['distrito_id']))
+            // ->where('membresia_membros.vinculo', $params['vinculo'])
+            // ->where('membresia_membros.igreja_id', $igrejaId)
+            // ->where('membresia_rolpermanente.igreja_id', $igrejaId)
+            ->where('distrito.instituicao_pai_id', 23)
+            ->orderBy('membresia_rolpermanente.dt_recepcao', 'DESC');
+
+
+
+
+//dd($membresiaMembro);
+
+
+
+
+
+
+                //dd($membresiaMembro);
+               return DataTables::eloquent($membresiaMembro)->make(true);
             }
             return view('regiao.membresia', $data);
 
@@ -168,37 +243,4 @@ class RegiaoEstatisticasController extends Controller
             return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
         }
     }
-
-    public function membresiaExportar(Request $request)
-    {
-        try {
-            $params = $request->all();
-            $regiao = Identifiable::fetchtSessionRegiao();
-            $txt = 'membresia-'.$regiao->nome.'-'.Carbon::now();
-            $params['regiao_nome'] = $regiao->nome;
-            return Excel::download(new MembresiaExport($params), slugDoc($txt).".xlsx");
-        } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
-        }
-    }
-
-    public function membresiaExportarPdf(Request $request)
-    {
-        try {
-            $regiao = Identifiable::fetchtSessionRegiao();
-            $txt = 'membresia-'.$regiao->nome.'-'.Carbon::now();
-            $data['regiao_nome'] = $regiao->nome;
-
-            $data = app(IdentificaDadosRegiaoRelatorioMembresiaService::class)->exportarPdf($request->all());
-    
-            $pdf = PDF::loadView('regiao.pdf.membresia', $data)->setPaper('a4', 'landscape');
-            return $pdf->stream('RELATORIO_MEMBRESIA_' . date('YmdHis') . '.pdf');
-            //return Excel::download(new MembresiaExport($params), slugDoc($txt).".xlsx");
-        } catch (\Exception $e) {
-            dd($e);
-            return redirect()->back()->with('error', 'Não foi possível abrir a página de relatórios de membresia, escolha um vínculo: Membro, Congregado ou Visitante');
-        }
-    }
-    
 }

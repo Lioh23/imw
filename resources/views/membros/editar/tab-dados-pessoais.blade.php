@@ -464,20 +464,20 @@
                 @enderror
               </div>
 
-              <div class="col-xl-3">
+              <div class="col-xl-4">
                 <label for="data_batismo_espirito">Data de Batismo Espirito Santo</label>
                 <input type="date" class="form-control @error('data_batismo_espirito') is-invalid @enderror" id="data_batismo_espirito" name="data_batismo_espirito" value="{{ old('data_batismo_espirito', $pessoa->data_batismo_espirito) }}">
                 @error('data_batismo_espirito')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
               </div>
-              <div class="col-xl-3">
+              <!-- <div class="col-xl-3">
                 <label for="dt_recepcao">Data de Recepção</label>
                 <input type="date" class="form-control @error('dt_recepcao') is-invalid @enderror" id="dt_recepcao" name="dt_recepcao" value="{{ old('dt_recepcao', optional(optional($pessoa->rolAtualSessionIgreja)->dt_recepcao)->format('Y-m-d')) }}">
                 @error('dt_recepcao')
                   <span class="help-block text-danger">{{ $message }}</span>
                 @enderror
-              </div>
+              </div> -->
             </div>
             <div class="row mb-4">
               <div class="col-md-6">

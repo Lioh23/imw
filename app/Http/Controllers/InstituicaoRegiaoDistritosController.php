@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreReceberNovoRequest;
 use App\Models\InstituicoesInstituicao;
+use App\Services\ServiceClerigosRegiao\ListaNomeacoesClerigoService;
 use App\Services\ServiceInstituicaoRegiao\UpdateRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\ListarRegiaoServices;
 use App\Services\ServiceInstituicaoRegiao\DeletarRegiaoService;
@@ -106,5 +107,29 @@ class InstituicaoRegiaoDistritosController extends Controller
     {
         $instituicao = app(DetalhesRegiaoService::class)->execute($id);
         return response()->json($instituicao);
+    }
+
+    public function nomeacoes($id, Request $request)
+    {
+        $data = app(ListaNomeacoesClerigoService::class)->instituicao($id);
+        return view('instituicoes.nomeacoes', $data);
+        //$instituicao = app(DetalhesRegiaoService::class)->execute($id);
+        //return response()->json($instituicao);
+
+
+
+        // $nomeacoes = PessoaNomeacao::withTrashed(['funcaoMinisterial', 'instituicao.instituicaoPai'])
+        //     ->where('pessoa_id', $clerigoId)
+        //     ->when($status == 'ativo', fn($query) => $query->whereNull('data_termino'))
+        //     ->when($status == 'inativo', fn($query) => $query->whereNotNull('data_termino'))
+        //     ->orderByRaw('data_termino IS NULL DESC')
+        //     ->orderBy('data_nomeacao', 'desc')
+        //     ->orderBy(
+        //         InstituicoesInstituicao::select('nome')
+        //             ->whereColumn('instituicoes_instituicoes.id', 'pessoas_nomeacoes.instituicao_id')
+        //             ->limit(1),
+        //         'asc'
+        //     )
+        //     ->get();
     }
 }

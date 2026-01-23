@@ -48,9 +48,9 @@
         </div>
     </header>
 
-    <h2>RELATÓRIO SECRETARIA {{ $vinculos }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h2>
+    <h2>RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : ''}} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h2>
     <h4>Registros Encontrados: {{ $membros->count() }}</h4>
-    <h4>Vínculo: {{ $vinculos }}</h4>
+    <h4>Vínculo: {{ isset($vinculos) ? $vinculos : '' }}</h4>
     <h4>Situação: {{ $situacao }}</h4>
     <h4>Onde Congrega: {{ $ondeCongrega }}</h4>
 
@@ -75,11 +75,13 @@
                     <td>{{ $membro->nome }}</td>
                     <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
                     <td>
+                        {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
                         @if($membro->vinculo == App\Models\MembresiaMembro::VINCULO_MEMBRO)
-                            {{ $membro->rolAtualSessionIgreja->statusText }}
+                            {{-- $membro->rolAtualSessionIgreja->statusText --}}
+                            {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
                         @else
                             {{ $membro->statusText }}
-                        @endif
+                        @endif 
                     </td>
                     <td>{{ $membro->vinculoText }}</td>
                     <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>

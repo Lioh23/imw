@@ -38,7 +38,7 @@
         .logo {
             display: block;
             margin: 0 auto; /* Centralizar o logotipo */
-            max-width: 100%; /* Garantir que a imagem não ultrapasse o contêiner */
+            max-width: 40%; /* Garantir que a imagem não ultrapasse o contêiner */
     
         }
     </style>

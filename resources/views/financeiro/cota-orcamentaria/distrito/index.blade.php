@@ -146,7 +146,7 @@
                                             <td>R$ {{ number_format($dizimosOfertas, 2,",",".") }}</td>
                                             <td>R$ {{ number_format($cotaOrcamentariaTotal, 2,",",".") }}</td>
                                             <td>R$ {{ number_format($dizimosPastoralFiw, 2,",",".") }}</td>
-                                            <td>R$ {{ number_format($totalIrrfRepasse, 2,",",".") }}</td>
+                                            <td>R$ {{ number_format($irrfRepasse, 2,",",".") }}</td>
                                             <td>R$ {{ number_format($total, 2,",",".") }}</td>
                                         </tr>
                                     @endforeach
@@ -155,7 +155,7 @@
                                         <td><b>R$ {{ number_format($totalDizimosOfertas, 2,",",".") }}</b></td>
                                         <td><b>R$ {{ number_format($totalCotaOrcamentariaTotal, 2,",",".") }}</b></td>
                                         <td><b>R$ {{ number_format($totalDizimosPastoralFiw, 2,",",".") }}</b></td>
-                                        <td><b>R$ {{ number_format($irrfRepasse, 2,",",".") }}</b></td>
+                                        <td><b>R$ {{ number_format($totalIrrfRepasse, 2,",",".") }}</b></td>
                                         <td><b>R$ {{ number_format($totalGeral, 2,",",".") }}</b></td>
                                     </tr>
                                 </tbody>
