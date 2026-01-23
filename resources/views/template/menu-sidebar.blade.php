@@ -10,7 +10,7 @@
 
          <ul class="navbar-nav theme-brand flex-row  text-center">
              <li class="nav-item theme-text">
-                 <a href="/" class="nav-link"> IMWPGA </a>
+                 <a href="/" class="nav-link"> <img src="auth/images/logo_branco.png" alt=""> </a>
              </li>
              <li class="nav-item toggle-sidebar">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"

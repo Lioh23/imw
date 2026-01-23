@@ -124,6 +124,12 @@
     .ordenar{
         cursor: pointer;
     }
+
+img{
+    width: 140px;
+    vertical-align: middle;
+    border-style: none 
+}
     </style>
 </head>
 
