@@ -8,7 +8,7 @@ use App\Services\ServiceRelatorio\IdentificaDadosRelatorioHistoricoEclesiasticoS
 use App\Services\ServiceRelatorio\IdentificaDadosRelatorioMembresiaService;
 use App\Services\ServiceRelatorio\IdentificaDadosRelatorioMembrosDisciplinadosService;
 use Illuminate\Http\Request;
-use PDF;
+use Barryvdh\DomPDF\Facade\PDF;
 
 class RelatorioController extends Controller
 {

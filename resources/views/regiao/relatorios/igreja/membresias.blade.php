@@ -118,7 +118,7 @@
                             <th colspan="2" style="text-align: center;">ATUAL</th>
                             <th style="text-align: center;">TOTAL</th>
                             <th style="text-align: center;">%ROL</th>
-                            <th style="text-align: center;">TOTAL GERAL</th>
+                            <th style="text-align: center;">VARIAÇÃO</th>
                         </tr>
                         <tr>
                             <th></th>   
@@ -212,7 +212,7 @@
                                 $totalTransferenciaExcluidosF[] = $transferenciaExcluidosF;
                                 $totalExcluidoM = $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][2]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_masculino + $item['membrosExcluidos'][4]->sexo_masculino + $item['membrosExcluidos'][5]->sexo_masculino;
                                 $valorTotalExcluidoM[] = $totalExcluidoM;
-                                $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino;
+                                $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][5]->sexo_feminino;
                                 $valorTotalExcluidoF[] = $totalExcluidoF;
                                 $rolAnteriorM = $item['rolAnterior']->sexo_masculino;
                                 $totalRolAnteriorM[] = $rolAnteriorM;
@@ -267,7 +267,13 @@
                                 <td style="text-align: center;">{{ $rolAtualM }}</td>
                                 <td style="text-align: center;">{{ $rolAtualF }}</td>
                                 <td style="text-align: center;">{{ $totalRolAtualMF }}</td>
-                                <td style="text-align: center;">{{ $rolPorcentagem }}%</td>
+                                <td style="text-align: center;">
+                                    @if($totalRolAnteriorMF > 0)
+                                        {{ decimal(($totalRolAtualMF - $totalRolAnteriorMF) / $totalRolAnteriorMF * 100) }}%
+                                    @else
+                                        {{ decimal(0) }}%
+                                    @endif                                    
+                                </td>
                                 <td style="text-align: center;">{{ $geral }}</td>
                             </tr>
                         @empty
@@ -312,7 +318,13 @@
                             <td style="text-align: center;">{{ array_sum($totalRolAtualM) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAtualF) }}</td>
                             <td style="text-align: center;">{{ array_sum($valorTotalRolAtualMF) }}</td>
-                            <td style="text-align: center;">{{ decimal(array_sum($totalRolPorcentagem)) }}%</td>
+                            <td style="text-align: center;">
+                                @if( array_sum($valorTotalRolAnteriorMF) > 0)
+                                    {{ decimal((array_sum($valorTotalRolAtualMF) - array_sum($valorTotalRolAnteriorMF))/array_sum($valorTotalRolAnteriorMF)*100) }}%
+                                @else
+                                    {{ decimal(0) }}%
+                                @endif  
+                            </td>
                             <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
                         </tr>
                     </tbody>
@@ -346,7 +358,7 @@
                             <th style="text-align: center;">ANTERIOR</th>
                             <th style="text-align: center;">ATUAL</th>
                             <th style="text-align: center;">%ROL</th>
-                            <th style="text-align: center;">TOTAL GERAL</th>
+                            <th style="text-align: center;">VARIAÇÃO</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -357,7 +369,7 @@
 
                                 $totalExcluidoM = $item['membrosExcluidos'][0]->sexo_masculino + $item['membrosExcluidos'][1]->sexo_masculino + $item['membrosExcluidos'][2]->sexo_masculino + $item['membrosExcluidos'][3]->sexo_masculino + $item['membrosExcluidos'][4]->sexo_masculino + $item['membrosExcluidos'][5]->sexo_masculino;
 
-                                $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino;
+                                $totalExcluidoF = $item['membrosExcluidos'][0]->sexo_feminino + $item['membrosExcluidos'][1]->sexo_feminino + $item['membrosExcluidos'][2]->sexo_feminino + $item['membrosExcluidos'][3]->sexo_feminino + $item['membrosExcluidos'][4]->sexo_feminino + $item['membrosExcluidos'][5]->sexo_feminino;
                                 $adesao = $item['membrosRecebidos'][1]->sexo_masculino + $item['membrosRecebidos'][1]->sexo_feminino;
                                 $totalAdesao[] = $adesao;
                                 $batismo = $item['membrosRecebidos'][0]->sexo_masculino + $item['membrosRecebidos'][0]->sexo_feminino;
@@ -411,7 +423,13 @@
                                 <td style="text-align: center;">{{ $excluidos }}</td>
                                 <td style="text-align: center;">{{ $rolAnterior }}</td>
                                 <td style="text-align: center;">{{ $rolAtual }}</td>
-                                <td style="text-align: center;">{{ $rolPorcentagem }}%</td>
+                                <td style="text-align: center;">
+                                    @if($rolAnterior > 0)
+                                        {{ decimal(($rolAtual - $rolAnterior) / $rolAnterior * 100) }}%
+                                    @else
+                                        {{ decimal(0) }}%
+                                    @endif 
+                                </td>
                                 <td style="text-align: center;">{{ $geral }}</td>
                             </tr>
                         @empty
@@ -440,7 +458,12 @@
                             <td style="text-align: center;">{{ array_sum($totalExcluidos) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAnterior) }}</td>
                             <td style="text-align: center;">{{ array_sum($totalRolAtual) }}</td>
-                            <td style="text-align: center;">{{ decimal(array_sum($totalRolPorcentagem)) }}%</td>
+                            <td style="text-align: center;">
+                                 @if(array_sum($totalRolAnterior) > 0)
+                                    {{ decimal((array_sum($totalRolAtual) - array_sum($totalRolAnterior)) / array_sum($totalRolAnterior) * 100) }}%
+                                @else
+                                    {{ decimal(0) }}%
+                                @endif 
                             <td style="text-align: center;">{{ decimal(array_sum($valorGeral)) }}</td>
                         </tr>
                        @endif                      

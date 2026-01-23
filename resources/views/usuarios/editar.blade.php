@@ -133,7 +133,34 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="row">
+                        <div class="col-lg-5" id="col-senha">
+                            <div class="form-group">
+                                <label>* Senha </label> <button type="button"  class="btn btn-danger" id="editar-senha" style="float: right;">Editar Senha</button>
+                                <div class="controls">
+                                    <input type="password" name="password" id="password"
+                                        class="form-control @error('password') is-invalid @enderror"
+                                        autocomplete="new-password" disabled />
+                                    @error('password')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-5">
+                            <div class="form-group" id="col-confirmar-senha">
+                                <label>* Confirmar Senha</label>
+                                <div class="controls">
+                                    <input type="password" name="password_confirmation" id="confirmPassword"
+                                        class="form-control @error('password_confirmation') is-invalid @enderror"
+                                        autocomplete="new-password" disabled />
+                                    @error('password_confirmation')
+                                        <small class="form-text text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <br><br>
                     <button type="submit" class="btn btn-primary btn-rounded" id="atualizar">Atualizar</button>
                 </form>
@@ -147,6 +174,12 @@
         $(document).ready(function() {
             $('#telefone').mask('(00) 00000-0000');
             $('#cpf').mask('000.000.000-00');
+        });
+        $('#editar-senha').on('click', function () {
+           $('#password').prop('disabled', false)
+        });
+        $('#password').on('click', function () {
+           $('#confirmPassword').prop('disabled', false)
         });
     </script>
     <script src="{{ asset('usuarios/js/vincula-clerigo.js') }}?t={{ time() }}"></script>

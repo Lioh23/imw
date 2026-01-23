@@ -24,6 +24,8 @@ trait BalanceteUtils
         $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
         $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
 
+        $tipoInstituicao = InstituicoesInstituicao::where('id', $instituicaoId)->first();
+        
         $sql = "SELECT 
                     fpc.numeracao,
                     MAX(fpc.nome) AS nome,
@@ -35,12 +37,14 @@ trait BalanceteUtils
                     financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
                 JOIN 
                     financeiro_caixas fc ON fc.id = fl.caixa_id
+                JOIN
+                    instituicoes_instituicoes ii on ii.id = fl.instituicao_id AND ii.tipo_instituicao_id = $tipoInstituicao->tipo_instituicao_id
                 WHERE 
                     fl.instituicao_id = '$instituicaoId' ";
         if ($caixaID !== 'all') {
             $sql .= "AND fc.id = '$caixaID' ";
         }
-        $sql .= "AND fl.deleted_at IS NULL 
+        $sql .= "AND fl.deleted_at IS NULL AND fl.conciliado = 1 
                 AND fl.data_movimento BETWEEN '$dataInicial' AND '$dataFinal'
                 GROUP BY 
                     fc.descricao,
@@ -61,6 +65,48 @@ trait BalanceteUtils
         }
 
         return $lancamentos;
+
+        // Usando Carbon para manipulação de datas
+        // $dataInicial = Carbon::createFromFormat('m/Y', $dt_inicial)->startOfMonth()->format('Y-m-d');
+        // $dataFinal = Carbon::createFromFormat('m/Y', $dt_final)->endOfMonth()->format('Y-m-d');
+
+        // $sql = "SELECT 
+        //             fpc.numeracao,
+        //             MAX(fpc.nome) AS nome,
+        //             fc.descricao AS caixa,
+        //             SUM(fl.valor) AS total
+        //         FROM 
+        //             financeiro_lancamentos fl
+        //         JOIN 
+        //             financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
+        //         JOIN 
+        //             financeiro_caixas fc ON fc.id = fl.caixa_id
+        //         WHERE 
+        //             fl.instituicao_id = '$instituicaoId' ";
+        // if ($caixaID !== 'all') {
+        //     $sql .= "AND fc.id = '$caixaID' ";
+        // }
+        // $sql .= "AND fl.deleted_at IS NULL 
+        //         AND fl.data_movimento BETWEEN '$dataInicial' AND '$dataFinal'
+        //         GROUP BY 
+        //             fc.descricao,
+        //             CAST(SUBSTRING_INDEX(fpc.numeracao, '.', 1) AS UNSIGNED),  
+        //             CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 2), '.', -1) AS UNSIGNED),   
+        //             CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 3), '.', -1) AS UNSIGNED),  
+        //             fpc.numeracao   
+        //         ORDER BY 
+        //             CAST(SUBSTRING_INDEX(fpc.numeracao, '.', 1) AS UNSIGNED),
+        //             CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 2), '.', -1) AS UNSIGNED),
+        //             CAST(SUBSTRING_INDEX(SUBSTRING_INDEX(fpc.numeracao, '.', 3), '.', -1) AS UNSIGNED),
+        //             fpc.numeracao";
+
+        // try {
+        //     $lancamentos = DB::select($sql);
+        // } catch (\Exception $e) {
+        //     throw $e;
+        // }
+
+        // return $lancamentos;
     }
 
     public static function handleLancamentosRegiao($dt_inicial, $dt_final, $caixaID, $instituicaoId)
@@ -78,7 +124,7 @@ trait BalanceteUtils
                 JOIN 
                     financeiro_plano_contas fpc ON fpc.id = fl.plano_conta_id
                 WHERE 
-                    fl.deleted_at IS NULL ";
+                    fl.deleted_at IS NULL AND fl.conciliado = 1 ";
                     if ($instituicaoId) {
                         $sql .= "AND fl.instituicao_id = '$instituicaoId' ";
                     }

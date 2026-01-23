@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Str;
+
 if (!function_exists('formatStr')) {
     function formatStr($string, $formato) {
         $formattedString = '';
@@ -140,4 +142,9 @@ function generateGUID()
 
 function calculoPorcentagem($valorTotal, $percentual){
     return ($valorTotal / 100) * $percentual;
+}
+
+function slugDoc($txt)
+{
+    return Str::slug($txt);
 }

@@ -1,11 +1,11 @@
 @extends('template.layout')
 
 @section('breadcrumb')
-<x-breadcrumb :breadcrumbs="[
-    ['text' => 'Home', 'url' => '/', 'active' => false],
-    ['text' => 'Relatórios', 'url' => '#', 'active' => false],
-    ['text' => 'Relatório Secretaria/Membresia', 'url' => '#', 'active' => true]
-]"></x-breadcrumb>
+  <x-breadcrumb :breadcrumbs="[
+      ['text' => 'Home', 'url' => '/', 'active' => false],
+      ['text' => 'Relatórios', 'url' => '#', 'active' => false],
+      ['text' => 'Relatório Região/Membresia', 'url' => '#', 'active' => true]
+  ]"></x-breadcrumb>
 @endsection
 
 @section('extras-css')
@@ -25,7 +25,7 @@
     <div class="widget-header">
       <div class="row">
           <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-              <h4>Relatório de Membresia</h4>
+              <h4>Relatório de Membresia Região: {{ $regiao_nome }}</h4>
           </div>
       </div>
   </div>
@@ -35,13 +35,13 @@
         {{-- Congregação --}}
         <div class="form-group row mb-4">
           <div class="col-lg-2 text-right">
-            <label class="control-label">Onde congrega:</label>
+            <label class="control-label">Distrito:</label>
           </div>
           <div class="col-lg-6">
-            <select id="congregacao_id" name="congregacao_id" class="form-control @error('congregacao_id') is-invalid @enderror" >
-              <option value="" {{ !request()->get('congregacao_id') ? 'selected' : '' }}>TODOS</option>
-              @foreach ($congregacoes as $congregacao)
-                <option value="{{ $congregacao->id }}" {{ request()->get('congregacao_id') == $congregacao->id ? 'selected' : '' }}>{{ $congregacao->nome }}</option>
+            <select id="distrito_id" name="distrito_id" class="form-control @error('distrito_id') is-invalid @enderror" >
+              <option value="" {{ !request()->get('distrito_id') ? 'selected' : '' }}>TODOS</option>
+              @foreach ($distritos as $distrito)
+                <option value="{{ $distrito->id }}" {{ request()->get('distrito_id') == $distrito->id ? 'selected' : '' }}>{{ $distrito->nome }}</option>
               @endforeach
             </select>
           </div>
@@ -56,8 +56,8 @@
             <div class="form-check form-check-inline">
               <div class="n-chk">
                 <label class="new-control new-checkbox checkbox-outline-success">
-                  <input {{ !request()->get('vinculo') || request()->get('vinculo') == 'M' ? 'checked' : '' }} 
-                         type="radio" name="vinculo" id="vinculo_membro" value="M" class="new-control-input">
+                  <input {{ request()->get('vinculo') == 'M' ? 'checked' : '' }} 
+                         type="radio" name="vinculo" value="M" class="new-control-input">
                   <span class="new-control-indicator"></span>Membro
                 </label>
               </div>
@@ -193,17 +193,17 @@
 </div>
 
 <!-- TABELA -->
-@isset($membros)
+
   <div class="col-lg-12 col-12 layout-spacing">
     <div class="statbox widget box box-shadow">
         <div class="widget-header">
           <div class="row">
               <div class="col-xl-12 col-md-12 col-sm-12 col-12">
-                  <h4 style="text-transform: uppercase">RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}</h4>
-                  <p class="pl-3">Registros Encontrados: {{ $membros->count() }}</p>
+                  <h4 style="text-transform: uppercase">RELATÓRIO {{ isset($vinculos) ? $vinculos : '' }} - {{ $regiao_nome }}</h4>
+                  <p class="pl-3">Registros Encontrados: </p>
                   <p class="pl-3">Vínculo: {{ isset($vinculos) ? $vinculos : '' }}</p>
                   <p class="pl-3">Situação: {{ $situacao }}</p>
-                  <p class="pl-3">Onde Congrega: {{ $ondeCongrega }}</p>
+                  <p class="pl-3">Local: {{ $ondeCongrega }}</p>
               </div>
           </div>
         </div>
@@ -213,6 +213,8 @@
                 <table class="table table-bordered table-striped table-hover mb-4"  id="aniversariantes">
                     <thead>
                         <tr>
+                            <th>DISTRITO</th>
+                            <th>IGREJA</th>
                             <th>ROL</th>
                             <th>NOME</th>
                             <th>TELEFONE</th>
@@ -227,46 +229,48 @@
                         </tr>
                     </thead>
                     <tbody>
-                      @foreach ($membros as $membro)
-                        <tr>
-                          <td>{{ $membro->rol_atual ?? 0 }}</td>
-                          <td>{{ $membro->nome }}</td>
-                          <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
-                          <td>
-                            @if($membro->vinculo == 'M')
-                              {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
-                            @else
-                              {{ $membro->statusText }}
-                            @endif
-                          </td>
-                          <td>{{ $membro->vinculoText }}</td>
-                          <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
-                          <td>
-                            @if($membro->vinculo == 'M')
-                                {{ $membro->dt_recepcao }}
-                            @else
-                              {{ optional($membro->created_at)->format('d/m/Y') }}
-                            @endif
-                          </td>
-                          <td>{{ $membro->modo_recepcao ? $membro->modo_recepcao : '-' }}</td>
-                          <td>
-                            @if($membro->vinculo == 'M')
-                              {{ $membro->dt_exclusao }}
-                            @else
-                              
-                            @endif
-                          </td>
-                          <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
-                          <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
-                        </tr>
-                      @endforeach
+                      <!-- @foreach ($membros as $membro)
+                          <tr>
+                            <td>{{ $membro->distrito_nome }}</td>
+                            <td>{{ $membro->igreja_nome }}</td>
+                            <td>{{ $membro->rol_atual ?? 0 }}</td>
+                            <td>{{ $membro->nome }}</td>
+                            <td>{{ formatStr($membro->telefone, '## (##) #####-####') }}</td>
+                            <td>
+                              @if($membro->vinculo == 'M')
+                                {{ $membro->status == 'A' ? 'ATIVO' : 'INATIVO' }}
+                              @else
+                                {{ $membro->statusText }}
+                              @endif
+                            </td>
+                            <td>{{ $membro->vinculoText }}</td>
+                            <td>{{ optional($membro->data_nascimento)->format('d/m/Y') }}</td>
+                            <td>
+                              @if($membro->vinculo == 'M')
+                                  {{ $membro->dt_recepcao ? formatDate($membro->dt_recepcao) : '-' }}
+                              @else
+                                {{ optional($membro->created_at)->format('d/m/Y') }}
+                              @endif
+                            </td>
+                            <td>{{ $membro->modo_recepcao ? $membro->modo_recepcao : '-' }}</td>
+                            <td>
+                              @if($membro->vinculo == 'M')
+                                {{ $membro->dt_exclusao ? formatDate($membro->dt_exclusao) : '-'}}
+                              @else
+                                {{ optional($membro->deleted_at)->format('d/m/Y') }}
+                              @endif
+                            </td>
+                            <td>{{ $membro->modo_exclusao ? $membro->modo_exclusao : '-' }}</td>
+                            <td>{{ optional($membro->congregacao)->nome ?? 'SEDE' }}</td>
+                          </tr>
+                      @endforeach -->
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
   </div>
-@endisset
+
 
 @endsection
 
@@ -310,102 +314,73 @@
     $('#dt_final').val('')
   }
  
+  $(document).ready( function() {
 
-new DataTable('#aniversariantes', {
-    layout: {
-        //top1: 'searchBuilder',
-        topStart: {
-          buttons: [
-            'pageLength',
-            {
-              extend: 'excel',
-              className: 'btn btn-primary btn-rounded',
-              text: '<i class="fas fa-file-excel"></i> Excel',
-              titleAttr: 'Excel',
-              title: "RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}"
-            },
-            {
-              extend: 'pdfHtml5',
-              orientation: 'landscape',
-              pageSize: 'LEGAL',
-              className: 'btn btn-primary btn-rounded',
-              text: '<i class="fas fa-file-pdf"></i> PDF',
-              titleAttr: 'PDF',
-              title: "RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}",
-
-              customize: function (doc) {
-                        doc.content.splice(0,1);
-                        var now = new Date();
-                        var jsDate = now.getDate()+'-'+(now.getMonth()+1)+'-'+now.getFullYear();
-                        //doc.pageMargins = [20,50,20,30];
-                        doc.defaultStyle.fontSize = 9;
-                        doc.styles.tableHeader.fontSize = 9;
-                        
-
-                        const hoje = new Date();
-                        const dataFormatada = hoje.toLocaleDateString('pt-BR');
-                        const horaFormatada = hoje.toLocaleTimeString('pt-BR');
-                        const dataHoraFormatada = `${dataFormatada} ${horaFormatada}`;
-                        doc['header']=(function() {
-                            return {
-                                columns: [
-
-                                    {
-                                        alignment: 'left',
-                                        italics: false,
-                                        text: `RELATÓRIO SECRETARIA {{ isset($vinculos) ? $vinculos : '' }} - {{ session()->get('session_perfil')->instituicoes->igrejaLocal->nome }}`,
-                                        fontSize: 14,
-                                        margin: [10,0]
-                                    },
-                                    // {
-                                    //     alignment: 'right',
-                                    //     fontSize: 14,
-                                    //     text: ``
-                                    // }
-                                ],
-                                margin: [20,20,0,0]
-                            }
-                        });
-
-                        var numColumns = doc.content[0].table.body[0].length; 
-                        doc.content[0].table.widths = Array(numColumns).fill('*');
-
-
-                        doc['footer']=(function(page, pages) {
-                            return {
-                                columns: [
-                                    {
-                                        alignment: 'left',
-                                        text: ['Criado em: ', { text: dataHoraFormatada }]
-                                    },
-                                    {
-                                        alignment: 'right',
-                                        text: ['Página ', { text: page.toString() },  ' de ', { text: pages.toString() }]
-                                    }
-                                ],
-                                margin: 20
-                            }
-                        });
-
-                        var objLayout = {};
-                        objLayout['hLineWidth'] = function(i) { return .5; };
-                        objLayout['vLineWidth'] = function(i) { return .5; };
-                        objLayout['hLineColor'] = function(i) { return '#aaa'; };
-                        objLayout['vLineColor'] = function(i) { return '#aaa'; };
-                        objLayout['paddingLeft'] = function(i) { return 4; };
-                        objLayout['paddingRight'] = function(i) { return 4; };
-                        doc.content[0].layout = objLayout;
-                    },
-            }
-            ]
-        },
-        topEnd: 'search',
-        bottomStart: 'info',
-       bottomEnd: 'paging'
+    $('#aniversariantes').DataTable({
+  
+    serverSide: true,
+    processing: true,
+    ajax: {
+      url: '{{ route("regiao.membresia") }}'
     },
-    language: {
-      url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
-    }
-  });
+    columns: [
+      { data: 'distrito_nome',  name: 'distrito_nome' },
+      { data: 'igreja_nome',  name: 'igreja_nome' },
+      { data: 'rol_atual',  name: 'rol_atual' },
+      { data: 'nome',  name: 'nome' },
+      { data: 'telefone',  name: 'telefone'},
+      { data: 'status',  name: 'status' },
+      { data: 'vinculo',  name: 'vinculo' },
+      { data: 'data_nascimento',  name: 'data_nascimento' },
+      { data: 'dt_recepcao',  name: 'dt_recepcao' },
+      { data: 'recepcao_modo',  name: 'recepcao_modo' },
+      { data: 'dt_exclusao',  name: 'dt_exclusao' },
+      { data: 'exclusao_modo',  name: 'exclusao_modo' },
+      { data: 'congregacao_nome',  name: 'congregacao_nome' },
+    ],
+    columnDefs: [ {
+        targets: 5,
+        render: function(data, type, row, meta) {
+                // Check if the data is for display purposes
+               
+                    // Remove any existing non-digit characters to ensure consistent formatting
+                    var cleaned = ('' + data).replace(/\D/g, '');
+                    
+                    // Apply the formatting if the number has 10 digits
+                    var match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+                    if (match) {
+                        return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+                    }
+               
+                // For other data types (filter, sort, etc.), return the original data
+                return data;
+            },
+      }, {
+        targets: [7,8,10],
+        render: function (data, type, row, meta) {
+            return new Date(data).toLocaleDateString('pt-BR');
+        },
+      }
+    ],
+      layout: {
+          //top1: 'searchBuilder',
+          topStart: {
+            buttons: [
+              'pageLength',
+              ]
+          },
+        
+          topEnd: 'search',
+          bottomStart: 'info',
+          bottomEnd: 'paging'
+      },
+      language: {
+        url:"https://cdn.datatables.net/plug-ins/1.11.3/i18n/pt_br.json"
+      }
+    });
+  })
+
+
+
 </script>
 @endsection

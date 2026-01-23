@@ -33,7 +33,7 @@
                 <div class="form-group @error('nome') has-error @enderror">
                     <input type="hidden" id="regiao_id" value="23">
                     <div class="row mb-4">
-                        <div class="col-xl-5">
+                        <div class="col-xl-6">
                             <label for="nome">* Nome</label>
                             <input type="text" class="form-control @error('nome') is-invalid @enderror" id="nome"
                                 name="nome" value="{{ old('nome') }}" maxlength="100">
@@ -42,16 +42,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-xl-3">
-                            <label for="cpf">* CPF</label>
-                            <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf"
-                                name="cpf" value="{{ old('cpf') }}" maxlength="100">
-                            @error('cpf')
-                                <span class="help-block text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-
-                        <div class="col-xl-4">
+                        <div class="col-xl-6">
                             <label for="email">Email</label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
                                 name="email" maxlength="255" value="{{ old('email') }}">
@@ -62,7 +53,15 @@
                     </div>
 
                     <div class="row mb-4">
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
+                            <label for="cpf">* CPF</label>
+                            <input type="text" class="form-control @error('cpf') is-invalid @enderror" id="cpf"
+                                name="cpf" value="{{ old('cpf') }}" maxlength="100">
+                            @error('cpf')
+                                <span class="help-block text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="col-xl-4">
                             <label for="categoria">* Categoria</label>
                             <select class="form-control @error('categoria') is-invalid @enderror" type="text"
                                 id="categoria" name="categoria">
@@ -78,8 +77,22 @@
                                 <span class="help-block text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
+                            <label for="categoria">* Situação</label>
+                            <select class="form-control @error('categoria') is-invalid @enderror" type="text"
+                                id="situacao" name="situacao">
+                                <option value="">Selecione</option>
+                                @foreach($situacoes as $situacao)
+                                    <option value="{{  $situacao->id }}" {{ old('situacao') ==  $situacao->id ? 'selected' : '' }}> {{  $situacao->descricao }}</option>
+                                @endforeach
+                            </select>
+                            @error('situacao')
+                                <span class="help-block text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                    </div>
+                    <div class="row mb-4">
+                        <div class="col-xl-4">
                             <label for="sexo">* Sexo</label>
                             <select class="form-control @error('sexo') is-invalid @enderror" id="sexo" name="sexo">
                                 <option value="">Selecione</option>
@@ -91,7 +104,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                             <label for="estado_civil">* Estado Civil</label>
                             <select class="form-control @error('estado_civil') is-invalid @enderror" id="estado_civil"
                                 name="estado_civil">
@@ -107,7 +120,7 @@
                             @enderror
                         </div>
 
-                        <div class="col-xl-3">
+                        <div class="col-xl-4">
                             <label for="formacao_id">* Formação</label>
                             <select class="form-control @error('formacao_id') is-invalid @enderror" name="formacao_id"
                                 id="formacao_id">
