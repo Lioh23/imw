@@ -10,7 +10,7 @@
 
          <ul class="navbar-nav theme-brand flex-row  text-center">
              <li class="nav-item theme-text">
-                 <a href="/" class="nav-link"> <img src="auth/images/logo_branco.png" alt=""> </a>
+                 <a href="/" class="nav-link"> <img src="{{ url('auth/images/logo_branco.png') }}" alt=""> </a>
              </li>
              <li class="nav-item toggle-sidebar">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -983,11 +983,11 @@
                                  <a href="{{ route('gceu.index') }}">Cadastro</a>
                              @endif
                          </li>
-                         <li {!! Request::is('gceu/lista/teste') || Request::is('gceu/editar*') ? 'class="active"' : '' !!}>
+                         <!-- <li {!! Request::is('gceu/lista/teste') || Request::is('gceu/editar*') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-lista-teste'))
                                  <a href="{{ route('gceu.index.teste') }}">TESTE</a>
                              @endif
-                         </li>
+                         </li> -->
                          <li {!! Request::is('gceu/membros') ? 'class="active"' : '' !!}>
                              @if (auth()->check() && auth()->user()->hasPerfilRegra('gceu-membros'))
                                  <a href="{{ route('gceu.membros') }}">Membros</a>
