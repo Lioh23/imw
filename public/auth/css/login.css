@@ -18,7 +18,7 @@ body {
     max-width: 550px; 
 }
 .logo {
-    width: 350px; /* Aumentado para um tamanho maior */
+    width: 80%; /* Aumentado para um tamanho maior */
     height: auto; /* Garante que a altura seja ajustada proporcionalmente */
     margin: 0 auto 40px; /* Aumentado a margem inferior */
     display: block;
