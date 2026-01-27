@@ -3,8 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\FinalizarNomeacoesRequest;
+use App\Http\Requests\StoreNomeacoesClerigosInstiruicoesRequest;
 use App\Http\Requests\StoreReceberNovoRequest;
 use App\Models\InstituicoesInstituicao;
+use App\Models\InstituicoesTipoInstituicao;
+use App\Models\PessoaFuncaoministerial;
+use App\Models\PessoasPessoa;
+use App\Services\ServiceClerigosRegiao\FinalizarNomeacoesClerigos;
+use App\Services\ServiceClerigosRegiao\ListaClerigosService;
 use App\Services\ServiceClerigosRegiao\ListaNomeacoesClerigoService;
 use App\Services\ServiceInstituicaoRegiao\UpdateRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\ListarRegiaoServices;
@@ -12,6 +19,7 @@ use App\Services\ServiceInstituicaoRegiao\DeletarRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\AtivarRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\DetalhesRegiaoService;
 use App\Services\ServiceInstituicaoRegiao\StoreRegiaoService;
+use App\Services\ServiceNomeacoes\StoreNomeacoesClerigos;
 use App\Traits\LocationUtils;
 use Illuminate\Http\Request;
 
@@ -112,24 +120,30 @@ class InstituicaoRegiaoDistritosController extends Controller
     public function nomeacoes($id, Request $request)
     {
         $data = app(ListaNomeacoesClerigoService::class)->instituicao($id);
-        return view('instituicoes.nomeacoes', $data);
-        //$instituicao = app(DetalhesRegiaoService::class)->execute($id);
-        //return response()->json($instituicao);
+        return view('instituicoes.nomeacoes.index', $data);
+    }
+
+    public function novaNomeacao($id)
+    {
+        $instituicao = InstituicoesInstituicao::where('id', $id)->first();
+
+        $funcoes = PessoaFuncaoministerial::orderBy('funcao')->get();
+
+        $clerigos = app(ListaClerigosService::class)->totalClerigo();
+        return view('instituicoes.nomeacoes.novo', compact('instituicao', 'funcoes', 'clerigos'));
+    }
+
+    public function storeNomeacao(StoreNomeacoesClerigosInstiruicoesRequest $request)
+    {
+        app(StoreNomeacoesClerigos::class)->execute($request);
+
+        return redirect()->route('instituicoes-regiao.nomeacoes', $request->instituicao_id)->with('success', 'Nomeação criada com sucesso!');
+    }
 
 
-
-        // $nomeacoes = PessoaNomeacao::withTrashed(['funcaoMinisterial', 'instituicao.instituicaoPai'])
-        //     ->where('pessoa_id', $clerigoId)
-        //     ->when($status == 'ativo', fn($query) => $query->whereNull('data_termino'))
-        //     ->when($status == 'inativo', fn($query) => $query->whereNotNull('data_termino'))
-        //     ->orderByRaw('data_termino IS NULL DESC')
-        //     ->orderBy('data_nomeacao', 'desc')
-        //     ->orderBy(
-        //         InstituicoesInstituicao::select('nome')
-        //             ->whereColumn('instituicoes_instituicoes.id', 'pessoas_nomeacoes.instituicao_id')
-        //             ->limit(1),
-        //         'asc'
-        //     )
-        //     ->get();
+    public function finalizarNomeacao($instituicao_id ,string $id, FinalizarNomeacoesRequest $request)
+    {
+        app(FinalizarNomeacoesClerigos::class)->execute($id, $request);
+        return redirect()->route('instituicoes-regiao.nomeacoes', $instituicao_id)->with('success', 'Nomeação finalizada com sucesso!');
     }
 }

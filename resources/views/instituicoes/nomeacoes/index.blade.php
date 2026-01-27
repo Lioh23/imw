@@ -81,7 +81,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-12">
-                                <a href="{{-- route('clerigos.nomeacoes.novo', ['pessoa' => $clerigoId]) --}}"
+                                <a href="{{ route('instituicoes-regiao.nomeacoes.novo', ['instituicao' => $instituicao->id]) }}"
                                     title="Inserir um novo registro" class="btn btn-primary right btn-rounded"> <svg
                                         xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                         fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
@@ -121,14 +121,12 @@
                                                         {{ $nomeacao->data_termino }}
                                                     </td>
 
-
-
                                                     <td class="table-action">
                                                         @if (!$nomeacao->data_termino)
                                                             <button type="button" class="btn btn-sm btn-danger btn-rounded"
                                                                 data-bs-toggle="modal" data-bs-target="#modalFinalizar"
                                                                 data-nomeacao-id="{{ $nomeacao->id }}"
-                                                                onclick="abrirModal()">
+                                                                onclick="abrirModal({{ $instituicao->id }},{{ $nomeacao->id }}, {{ $nomeacao->funcao }})">
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="24"
                                                                     height="24" viewBox="0 0 24 24" fill="none"
                                                                     stroke="currentColor" stroke-width="2"
@@ -156,14 +154,44 @@
             </div>
         </div>
     </div>
-    <!-- Modal -->
+     <!-- Modal -->
+    <div class="modal fade " id="modalFinalizar" tabindex="-1" aria-labelledby="modalFinalizarLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content"  style="max-width: 500px; margin: 0 auto">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalFinalizarLabel">Finalizar Nomeação</h5>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p id="funcao" class="form-control-plaintext">{{ old('nome') }}</p>
+                    <form id="finalizarForm" method="POST">
+                        @csrf
+                        <meta name="csrf-token" content="{{ csrf_token() }}">
+                        <div class="mb-3">
+                            <label for="data_termino" class="form-label">Data de Término</label>
+                            <input type="date" class="form-control" id="data_termino" name="data_termino" required
+                                value="{{ old('data_termino') }}" @error('data_termino') is-invalid @enderror>
+                            @error('data_termino')
+                                <span class="help-block text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                         <input type="hidden" id="nomeacao_id" name="nomeacao_id" value="{{ old('nomeacao_id') }}">
+                        <div class="modal-footer">
+                            <button type="button" class="btn" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-primary">Finalizar</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     
     <script>
-        function abrirModal(clerigoId,id, funcao) {
+        function abrirModal(instituicao_id,id, funcao) {
             const nomeacaoId = id;
-            console.log(clerigoId)
             const form = $('#finalizarForm');
-            form.attr('action', '/clerigos/nomeacoes/' + clerigoId + '/finalizar/' + id);
+            form.attr('action', '/instituicoes-regiao/nomeacoes/' + instituicao_id + '/finalizar/' + id);
 
             if (document.getElementById('funcao')) {
                 document.getElementById('funcao').textContent = funcao;

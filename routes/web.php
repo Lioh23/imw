@@ -571,6 +571,9 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/ativar/{id}', 'ativar')->name('ativar');
             Route::get('/{id}/detalhes', 'detalhes')->name('detalhes');
             Route::get('/{id}/nomeacoes', 'nomeacoes')->name('nomeacoes');
+            Route::get('/{instituicao}/nomeacoes/novo', 'novaNomeacao')->name('nomeacoes.novo');
+            Route::post('/{id}nomeacoes/novo', 'storeNomeacao')->name('nomeacoes.store');
+            Route::post('/nomeacoes/{instituicao_id}/finalizar/{id}', 'finalizarNomeacao')->name('finalizar');
         });
 
         Route::prefix('instituicoes')->name('instituicoes.')->controller(HandleInstituicoesController::class)->group(function () {

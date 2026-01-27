@@ -19,4 +19,13 @@ class ListaClerigosService
             ->paginate(50);
         return $clerigos;
     }
+
+    public function totalClerigo()
+    {
+        $regiao_id = (int) session()->get('session_perfil')->instituicao_id;
+        $clerigos = PessoasPessoa::query()->withTrashed()->where('regiao_id', $regiao_id)
+            ->orderBy('nome', 'asc')
+            ->get();
+        return $clerigos;
+    }
 }
