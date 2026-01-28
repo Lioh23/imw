@@ -5,6 +5,7 @@ namespace App\Calculators\ImpostoDeRenda;
 use App\Dtos\ImpostoDeRenda\ProgressaoIrDto;
 use App\Dtos\ImpostoDeRenda\ResponseIrDto;
 use App\Models\DeducaoIr;
+use App\Models\Prebenda;
 use App\Models\TabelaIr;
 use App\Traits\FormatterUtils;
 
@@ -24,10 +25,9 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
         $this->responseIrDto->ano = $ano;
         $this->responseIrDto->rendimentosTributaveis = $rendimentosTributaveis;
         $this->responseIrDto->qtdeDependentes = $qtdeDependentes;
-
+        $this->handleValorRedutor($ano);
         $this->handleValorDedutivelDependentes($ano, $qtdeDependentes);
         $this->handleIrCalculation($ano);
-
         return $this->responseIrDto;
     }
 
@@ -45,6 +45,20 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
         $this->responseIrDto->valorBase = $this->responseIrDto->rendimentosTributaveis - $this->responseIrDto->valorDedutivel;
     }
 
+     private function handleValorRedutor(int $ano): void
+    {
+        $endimentosTributaveis = $this->responseIrDto->rendimentosTributaveis;
+        if ($endimentosTributaveis <= 5000) {
+            $valorRedutor = 0;
+        } else if ($endimentosTributaveis > 5000 && $endimentosTributaveis <= 7350){
+            $valorRedutorIr = Prebenda::where('ano', $ano)->first();
+            $valorRedutor = decimal($valorRedutorIr->redutor_ir - (0.133146 * $endimentosTributaveis));
+        } else if ($endimentosTributaveis > 7350){
+            $valorRedutor = 0;
+        }
+        $this->responseIrDto->valorRedutor =  $valorRedutor;
+    }
+
     private function handleIrCalculation(int $ano): void
     {
         $faixas = TabelaIr::where('ano', $ano)->get();
@@ -60,8 +74,7 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
             $valorBaseADeduzir -= $faixa->deducao_faixa;
             $somaImposto += $valorImposto;
         }
-
-        $this->responseIrDto->valorImposto = $somaImposto;
+        $this->responseIrDto->valorImposto = decimal($somaImposto) - $this->responseIrDto->valorRedutor;
     }
 
     private function handleValorImposto($valorBaseADeduzir, TabelaIr $faixa)

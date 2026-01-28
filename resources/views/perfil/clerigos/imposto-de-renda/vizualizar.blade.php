@@ -26,6 +26,10 @@
                         <p>Valor Base:</p>
                         R$ {{ number_format($data->valorBase, 2, ',', '.') ?? 'Não informado' }}
                     </td>
+                    <td class="d-flex justify-content-between">
+                        <p>Redutor:</p>
+                        R$ {{ number_format($data->valorRedutor, 2, ',', '.') ?? 'Não informado' }}
+                    </td>
                     <td class="d-flex justify-content-between bold">
                         <p>Valor de Imposto:</p>
                         R$ {{ number_format($data->valorImposto, 2, ',', '.') ?? 'Não informado' }}

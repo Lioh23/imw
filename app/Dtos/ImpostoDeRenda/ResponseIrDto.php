@@ -12,6 +12,7 @@ class ResponseIrDto
         public ?int $qtdeDependentes = null,
         public ?float $valorDedutivel = null,
         public ?float $valorBase = null,
+        public ?float $valorRedutor = null,
         public ?float $impostoSemDeducao = null,
         public ?float $valorImposto = null,
         public ?Collection $progressao = null,
