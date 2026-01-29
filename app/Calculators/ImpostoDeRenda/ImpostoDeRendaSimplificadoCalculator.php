@@ -47,13 +47,17 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
 
      private function handleValorRedutor(int $ano): void
     {
-        $endimentosTributaveis = $this->responseIrDto->rendimentosTributaveis;
-        if ($endimentosTributaveis <= 5000) {
-            $valorRedutor = 0;
-        } else if ($endimentosTributaveis > 5000 && $endimentosTributaveis <= 7350){
-            $valorRedutorIr = Prebenda::where('ano', $ano)->first();
-            $valorRedutor = decimal($valorRedutorIr->redutor_ir - (0.133146 * $endimentosTributaveis));
-        } else if ($endimentosTributaveis > 7350){
+        if($ano > 2025){
+            $endimentosTributaveis = $this->responseIrDto->rendimentosTributaveis;
+            if ($endimentosTributaveis <= 5000) {
+                $valorRedutor = 0;
+            } else if ($endimentosTributaveis > 5000 && $endimentosTributaveis <= 7350){
+                $valorRedutorIr = Prebenda::where('ano', $ano)->first();
+                $valorRedutor = decimal($valorRedutorIr->redutor_ir - (0.133146 * $endimentosTributaveis));
+            } else if ($endimentosTributaveis > 7350){
+                $valorRedutor = 0;
+            }
+        }else{
             $valorRedutor = 0;
         }
         $this->responseIrDto->valorRedutor =  $valorRedutor;
