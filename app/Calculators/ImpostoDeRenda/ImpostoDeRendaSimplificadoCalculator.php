@@ -69,7 +69,6 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
 
         $valorBaseADeduzir = $this->responseIrDto->valorBase;
         $somaImposto = 0;
-
         foreach ($faixas as $faixa) {
             $valorImposto = $this->handleValorImposto($valorBaseADeduzir, $faixa);
 
@@ -83,12 +82,12 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
             if ($endimentosTributaveis <= 5000) {
                 $imposto = 0;
             } else if ($endimentosTributaveis > 5000 && $endimentosTributaveis <= 7350){
-                $imposto = decimal($somaImposto) - $this->responseIrDto->valorRedutor;
+                $imposto = $somaImposto - $this->responseIrDto->valorRedutor;
             } else if ($endimentosTributaveis > 7350){
-                $imposto = decimal($somaImposto);
+                $imposto = $somaImposto;
             }
         }else{
-            $imposto = decimal($somaImposto);
+            $imposto = $somaImposto;
         }
         $this->responseIrDto->valorImposto = $imposto;
     }
@@ -123,7 +122,6 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
             $valorMinimo = $this->formatCurrencyBRL($faixa->valor_min, true);
             $dto->textBaseCalculo = "$valorMinimo até $valorMaximo";
         }
-
         return $dto;
     }
 }
