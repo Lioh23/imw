@@ -74,7 +74,15 @@ class ImpostoDeRendaSimplificadoCalculator implements ImpostoDeRendaCalculatorIn
             $valorBaseADeduzir -= $faixa->deducao_faixa;
             $somaImposto += $valorImposto;
         }
-        $this->responseIrDto->valorImposto = decimal($somaImposto) - $this->responseIrDto->valorRedutor;
+        $endimentosTributaveis = $this->responseIrDto->rendimentosTributaveis;
+        if ($endimentosTributaveis <= 5000) {
+            $imposto = 0;
+        } else if ($endimentosTributaveis > 5000 && $endimentosTributaveis <= 7350){
+            $imposto = decimal($somaImposto) - $this->responseIrDto->valorRedutor;
+        } else if ($endimentosTributaveis > 7350){
+            $imposto = decimal($somaImposto);
+        }
+        $this->responseIrDto->valorImposto = $imposto;
     }
 
     private function handleValorImposto($valorBaseADeduzir, TabelaIr $faixa)
