@@ -36,16 +36,12 @@ class ListaNomeacoesClerigoService
     { 
         $instituicao = Identifiable::fetchInstituicao($id);
         $nomeacoes = PessoaNomeacao::where('instituicao_id', $id)
+            ->join('pessoas_pessoas', 'pessoas_pessoas.id', 'pessoas_nomeacoes.pessoa_id')
             ->with('funcaoministerial')
             ->with('pessoa')
             ->with('instituicao')
-            ->orderBy(
-                PessoasPessoa::select('nome')
-                    ->whereColumn('pessoas_pessoas.id', 'pessoas_nomeacoes.pessoa_id')
-                    ->limit(1),
-                'asc'
-            )
-            ->orderBy('data_nomeacao', 'desc')
+            ->orderBy('pessoas_nomeacoes.data_termino', 'ASC')
+            ->orderBy('pessoas_pessoas.nome', 'ASC')
             ->get();
         return [
             'nomeacoes' => $nomeacoes,
